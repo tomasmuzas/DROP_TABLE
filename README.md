@@ -1,9 +1,9 @@
 DROP TABLE
 
-How to setup project:
-Clone repository.
-In console cd to project directory.
-Run “npm install”.
-Run “dotnet restore”.
-Then in Package Manager Console which is in Visual Studio (Tools > NuGet Package Manager > Package Manager Console) run “Update-Database”.
-Now can run project CTRL + F5 in Visual Studio.
+How to setup project: 
+1. Clone repository.
+2. In console cd to project directory.
+3. Run â€œnpm installâ€.
+4. Run â€œdotnet restoreâ€.
+5. Then in Package Manager Console which is in Visual Studio (Tools > NuGet Package Manager > Package Manager Console) run â€œUpdate-Databaseâ€.
+6. Now can run project CTRL + F5 in Visual Studio.
