@@ -1,0 +1,111 @@
+*{
+  font-family: Calibri;
+}
+
+.container{
+  margin-top: 0%;
+}
+
+.containerPhone{
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.light{
+  color: gray;
+}
+
+.flatcontainer{
+  margin-top: 5%;
+  width: 100%;
+  max-width: 100%;
+}
+.card{
+  max-width: 100vh;
+  max-height: 600px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.card:hover {
+  background-color: transparent;
+}
+
+.mainPageLogoSmall{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  max-height: 250px;
+  width: 100%;
+}
+
+.root{
+  width: 100%;
+  flex-grow: 1;
+}
+.gridRoot{
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow: hidden;
+}
+.trr{
+  max-width: 50%;
+}
+.gridList{
+  width: 500;
+  height: 100%;
+}
+.listTile{
+  height: 100%;
+}
+
+.dotted{
+  border-bottom: 1px solid lightgray;
+}
+
+.robot{
+    text-align: center;
+    font-family: "Calibri";
+    font-weight: 500;
+    line-height: 1.5;
+    flex-shrink: 0;
+    white-space: normal;
+    text-transform: uppercase;
+    float: right;
+    letter-spacing: 1px;
+}
+
+.info{
+  float: right;
+}
+.mainPageLogo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  height: auto;
+  min-height: 200px;
+  min-width: 375px;
+}
+
+.image-gallery-slide img {
+  width: auto;
+  height: auto;
+  min-width: 15vh;
+  min-height: 250px;
+}
+
+.image-gallery-thumbnail img{
+  width: 10%;
+  height: 10%;
+}
+
+.footerHeight
+{
+  height: 10vh;
+}
+.content {
+  min-height: 100vh;
+}
