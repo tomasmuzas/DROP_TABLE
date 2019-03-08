@@ -15,8 +15,7 @@ export const getAllApartments = () => (dispatch) => {
     console.log("index")
     return fetch(`https://localhost:44334/api/apartments`, {
         method: "GET",
-        headers: headers,
-        credentials: 'include'
+        headers: headers
     }).then(response => {
         if (!response.ok) {
             throw new Error("Bad response");
@@ -34,8 +33,7 @@ export const getAllApartments = () => (dispatch) => {
 export const getAllAuthentication = () => (dispatch) => {
     return fetch(`/api/authentications/`, {
         method: "GET",
-        headers: headers,
-        credentials: 'include'
+        headers: headers
     }).then(response => {
         if (!response.ok) {
             throw new Error("Bad response");
@@ -54,8 +52,7 @@ export const getAllUsers = () => (dispatch) => {
     console.log("indexas");
     return fetch(`/api/users/`, {
         method: "GET",
-        headers: headers,
-        credentials: 'include'
+        headers: headers
     }).then(response => {
         if (!response.ok) {
             throw new Error("Bad response");
@@ -73,8 +70,7 @@ export const getAllUsers = () => (dispatch) => {
 export const getAllTrips = () => (dispatch) => {
     return fetch(`/api/authentications/`, {
         method: "GET",
-        headers: headers,
-        credentials: 'include'
+        headers: headers
     }).then(response => {
         if (!response.ok) {
             throw new Error("Bad response");
