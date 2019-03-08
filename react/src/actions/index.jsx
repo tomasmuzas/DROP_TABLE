@@ -16,7 +16,7 @@ var headers = {
 
 export const getAllApartments = () => (dispatch) => {
     console.log("index")
-    return fetch(`https://localhost:44334/api/flats`, {
+    return fetch(`https://localhost:44334/api/apartments`, {
         method: "GET",
         headers: headers,
         credentials: 'include'
