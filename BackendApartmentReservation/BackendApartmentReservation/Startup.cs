@@ -18,10 +18,6 @@ namespace BackendApartmentReservation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder => builder.AllowAnyOrigin());
-            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -38,6 +34,11 @@ namespace BackendApartmentReservation
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(options =>
+                options
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .WithMethods("GET", "POST", "PUT", "DELETE"));
             app.UseMvc();
         }
     }
