@@ -8,7 +8,7 @@ namespace BackendApartmentReservation.Controllers
     public class ApartmentsController : ControllerBase
     {
         [HttpGet]
-        [Route("/apartments")]
+        [Route("apartments")]
         public ActionResult<IEnumerable<string>> Get() 
         {
             return new[] { "flat1", "flat2" };
