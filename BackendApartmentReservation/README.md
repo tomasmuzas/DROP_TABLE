@@ -8,3 +8,5 @@
 * Visit local Kibana at `http://127.0.0.1:5601`
 * Go to `Management -> Index Patterns` and enter `logstash-*`
 * After this step, you will be able to see and query all the logs in the `Discover` tab
+
+*Only works when running .NET project as IIS server for some reason*
