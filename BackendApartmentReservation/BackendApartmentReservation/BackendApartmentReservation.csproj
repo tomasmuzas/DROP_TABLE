@@ -16,4 +16,10 @@
     <PackageReference Include="NLog.Targets.ElasticSearch" Version="5.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
