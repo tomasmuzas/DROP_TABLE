@@ -8,7 +8,7 @@ namespace BackendApartmentReservation.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class ProfilesController
+    public class ProfilesController : ControllerBase
     {
         [HttpGet]
         [Route("profiles")]
