@@ -1,8 +1,9 @@
-﻿using BackendApartmentReservation.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using BackendApartmentReservation.Entities;
 using BackendApartmentReservation.Utilities;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 
 namespace BackendApartmentReservation.Controllers
 {
@@ -12,7 +13,7 @@ namespace BackendApartmentReservation.Controllers
     {
         [HttpGet]
         [Route("travels")]
-        public ActionResult<IEnumerable<Travel>> Get()
+        public async Task<IEnumerable<Travel>> Get()
         {
             var travelMock = new Travel()
             {
@@ -26,7 +27,7 @@ namespace BackendApartmentReservation.Controllers
                 TripTickets = TravelOptionStatus.NotRequired
             };
 
-            return new List<Travel> { travelMock };
+            return await Task.FromResult(new List<Travel> { travelMock });
         }
     }
 }
