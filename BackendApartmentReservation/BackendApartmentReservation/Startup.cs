@@ -50,10 +50,5 @@ namespace BackendApartmentReservation
         {
             builder.RegisterModule<IoCConfig>();
         }
-
-        public void ConfigureFilters()
-        {
-
-        }
     }
 }
