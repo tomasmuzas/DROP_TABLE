@@ -6,7 +6,6 @@ namespace BackendApartmentReservation
     {
         protected override void Load(ContainerBuilder builder)
         {
-
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Autofac;
 
+using BackendApartmentReservation.Extensions.Logging;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +21,9 @@ namespace BackendApartmentReservation
         
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingInterceptorFilter()));
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -45,6 +49,11 @@ namespace BackendApartmentReservation
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<IoCConfig>();
+        }
+
+        public void ConfigureFilters()
+        {
+
         }
     }
 }
