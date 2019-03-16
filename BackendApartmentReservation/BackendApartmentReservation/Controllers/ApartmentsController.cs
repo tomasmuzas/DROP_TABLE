@@ -15,7 +15,6 @@ namespace BackendApartmentReservation.Controllers
         
         public async Task<IEnumerable<string>> Get()
         {
-            throw new ArgumentNullException();
             return await Task.FromResult(new[] { "flat1", "flat2" });
         }
     }
