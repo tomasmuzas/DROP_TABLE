@@ -10,7 +10,7 @@ using NLog;
 
 namespace BackendApartmentReservation.Extensions.Logging
 {
-    public class MethodCallLoggingInterceptorFilter : IAsyncActionFilter
+    public class MethodCallLoggingFilter : IAsyncActionFilter
     {
         private readonly Logger _logger = new LogFactory().GetCurrentClassLogger();
 

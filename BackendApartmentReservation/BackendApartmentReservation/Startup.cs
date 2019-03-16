@@ -23,7 +23,7 @@ namespace BackendApartmentReservation
         {
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingInterceptorFilter()));
+                .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()));
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
