@@ -1,14 +1,11 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Threading.Tasks;
 using BackendApartmentReservation.Extensions.Json;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+
 using NLog;
 
-namespace BackendApartmentReservation.Extensions.Logging
+namespace BackendApartmentReservation.Infrastructure.Logging
 {
     public class MethodCallLoggingFilter : IAsyncActionFilter
     {

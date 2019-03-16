@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-using BackendApartmentReservation.Extensions.Logging;
+using BackendApartmentReservation.Infrastructure.Logging;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
