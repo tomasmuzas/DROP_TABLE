@@ -1,5 +1,6 @@
 ﻿using Autofac;
 
+using BackendApartmentReservation.Infrastructure.Exceptions;
 using BackendApartmentReservation.Infrastructure.Logging;
 
 using Microsoft.AspNetCore.Builder;
@@ -23,20 +24,12 @@ namespace BackendApartmentReservation
         {
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()));
+                .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
+                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter()));
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
-
             app.UseHttpsRedirection();
             app.UseCors(options =>
                 options
