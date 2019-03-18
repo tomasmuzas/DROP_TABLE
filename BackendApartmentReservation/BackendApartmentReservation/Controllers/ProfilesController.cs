@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +10,9 @@ namespace BackendApartmentReservation.Controllers
     {
         [HttpGet]
         [Route("profiles")]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<IEnumerable<string>> Get()
         {
-            return new[] { "userProfile1", "userProfile2" };
+            return await Task.FromResult(new[] { "userProfile1", "userProfile2" });
         }
     }
 }

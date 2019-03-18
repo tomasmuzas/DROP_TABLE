@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BackendApartmentReservation.Controllers
 {
@@ -9,9 +10,9 @@ namespace BackendApartmentReservation.Controllers
     {
         [HttpGet]
         [Route("authentication")]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<IEnumerable<string>> Get()
         {
-            return new[] { "auth1", "auth2" };
+            return await Task.FromResult(new[] { "auth1", "auth2" });
         }
     }
 }
