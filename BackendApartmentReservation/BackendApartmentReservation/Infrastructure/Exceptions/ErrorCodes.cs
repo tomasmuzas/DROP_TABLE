@@ -2,6 +2,6 @@
 {
     public static class ErrorCodes
     {
-        public static string GenericInternalServerError = "generic.internal_error";
+        public const string GenericInternalServerError = "generic.internal_error";
     }
 }
