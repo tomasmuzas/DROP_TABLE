@@ -7,6 +7,6 @@ namespace BackendApartmentReservation.Database.Entities
         [Key]
         public int Id { get; set; }
 
-        public string Adress { get; set; }
+        public string Address { get; set; } // TODO: @tomasmuzas this is most likely a temporary solution
     }
 }
