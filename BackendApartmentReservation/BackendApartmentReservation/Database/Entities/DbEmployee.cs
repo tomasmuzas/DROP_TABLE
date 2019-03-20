@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BackendApartmentReservation.Entities
+namespace BackendApartmentReservation.Database.Entities
 {
-    public class Profile
+    public class DbEmployee
     {
+        [Key]
         public int Id { get; set; }
+
         public string FirstName { get; set; }
+
         public string LastName { get; set; }
+
         public string Office { get; set; }
     }
 }

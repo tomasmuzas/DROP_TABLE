@@ -1,6 +1,6 @@
 ﻿using Autofac;
 
-namespace BackendApartmentReservation
+namespace BackendApartmentReservation.Infrastructure.Containers
 {
     public class IoCConfig : Module
     {

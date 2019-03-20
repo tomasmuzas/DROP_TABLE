@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BackendApartmentReservation.Entities;
+
+using BackendApartmentReservation.Database.Entities;
 using BackendApartmentReservation.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,9 @@ namespace BackendApartmentReservation.Controllers
     {
         [HttpGet]
         [Route("travels")]
-        public async Task<IEnumerable<Travel>> Get()
+        public async Task<IEnumerable<DbTrip>> Get()
         {
-            var travelMock = new Travel()
+            var travelMock = new DbTrip()
             {
                 Id = 1,
                 Cost = 100,
@@ -27,7 +28,7 @@ namespace BackendApartmentReservation.Controllers
                 TripTickets = TravelOptionStatus.NotRequired
             };
 
-            return await Task.FromResult(new List<Travel> { travelMock });
+            return await Task.FromResult(new List<DbTrip> { travelMock });
         }
     }
 }

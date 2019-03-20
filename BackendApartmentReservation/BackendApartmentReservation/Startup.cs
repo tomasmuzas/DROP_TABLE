@@ -1,5 +1,6 @@
 ﻿using Autofac;
 
+using BackendApartmentReservation.Infrastructure.Containers;
 using BackendApartmentReservation.Infrastructure.Exceptions;
 using BackendApartmentReservation.Infrastructure.Logging;
 
