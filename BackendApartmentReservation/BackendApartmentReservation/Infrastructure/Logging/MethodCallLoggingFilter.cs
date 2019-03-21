@@ -9,7 +9,7 @@ namespace BackendApartmentReservation.Infrastructure.Logging
 {
     public class MethodCallLoggingFilter : IAsyncActionFilter
     {
-        private readonly Logger _logger = new LogFactory().GetCurrentClassLogger();
+        private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         // Called on async method execution
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
