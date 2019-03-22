@@ -1,14 +1,19 @@
-﻿using Autofac;
+﻿using System.IO;
+
+using Autofac;
 
 using BackendApartmentReservation.Database;
 using BackendApartmentReservation.Infrastructure.Containers;
 using BackendApartmentReservation.Infrastructure.Exceptions;
 using BackendApartmentReservation.Infrastructure.Logging;
 
+using Castle.Core.Internal;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,9 +21,22 @@ namespace BackendApartmentReservation
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var envName = env.EnvironmentName;
+            var rootFolder = env.ContentRootPath;
+
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile(Path.Combine(rootFolder, "appsettings.json")) // Load default settings
+                .AddJsonFile(Path.Combine(rootFolder, $"appsettings.{envName}.json"), optional: true) // Override default settings with env specific settings 
+                .AddEnvironmentVariables() // Override appsettings with environment variables
+                .Build();
+
+            if (!envName.IsNullOrEmpty())
+            {
+                var logFactory = NLog.LogManager.LoadConfiguration(Path.Combine(rootFolder, $"nlog.{envName}.config"));
+                NLog.LogManager.Configuration = logFactory.Configuration;
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -44,6 +62,14 @@ namespace BackendApartmentReservation
                     .AllowAnyHeader()
                     .WithMethods("GET", "POST", "PUT", "DELETE"));
             app.UseMvc();
+
+            using (var context = app.ApplicationServices.GetService<DatabaseContext>())
+            {
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
