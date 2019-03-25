@@ -18,6 +18,9 @@ export default class PageHeader extends React.Component {
                         <ul className="pr-2 navbar-nav mr-auto">
                             <li className="nav-item pt-1 robot "> <LinkButton link="/users" name="Users" /></li>
                         </ul>
+                        <ul className="pr-2 navbar-nav mr-auto">
+                            <li className="nav-item pt-1 robot "> <LinkButton link="/signUp" name="Sign Up!" /></li>
+                        </ul>
                 </nav>
             </div>
         );

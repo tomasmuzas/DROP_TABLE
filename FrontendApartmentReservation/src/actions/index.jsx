@@ -1,8 +1,10 @@
+import { push } from 'react-router-redux';
 
 export const GET_ALL_APARTMENTS = 'GET_ALL_APARTMENTS';
 export const GET_ALL_AUTHENTICATIONS = 'GET_ALL_AUTHENTICATIONS';
 export const GET_ALL_USERS = 'GET_ALL_USERS';
 export const GET_ALL_TRIPS = 'GET_ALL_TRIPS';
+export const SIGN_UP_USER = 'GET_ALL_TRIPS';
 
 
 var headers = {
@@ -13,74 +15,92 @@ var headers = {
 
 export const getAllApartments = () => (dispatch) => {
     console.log("index")
-    return fetch(`https://localhost:44334/api/apartments`, {
+    return fetch(`https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/apartments`, {
         method: "GET",
         headers: headers
     }).then(response => {
         if (!response.ok) {
             throw new Error("Bad response");
-          }
+        }
         response.json()
-        .then(data => {
-            dispatch({
-                type: GET_ALL_APARTMENTS,
-                payload: data
-            });
-        }).catch((error) => console.warn(error));
+            .then(data => {
+                dispatch({
+                    type: GET_ALL_APARTMENTS,
+                    payload: data
+                });
+            }).catch((error) => console.warn(error));
     }).catch((error) => console.warn(error));
 }
 
 export const getAllAuthentication = () => (dispatch) => {
-    return fetch(`/api/authentications/`, {
+    return fetch(`https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/authentication`, {
         method: "GET",
         headers: headers
     }).then(response => {
         if (!response.ok) {
             throw new Error("Bad response");
-          }
+        }
         response.json()
-        .then(data => {
-            dispatch({
-                type: GET_ALL_AUTHENTICATIONS,
-                payload: data
+            .then(data => {
+                dispatch({
+                    type: GET_ALL_AUTHENTICATIONS,
+                    payload: data
+                });
             });
-        });
     }).catch((error) => console.warn(error));
 }
 
 export const getAllUsers = () => (dispatch) => {
     console.log("indexas");
-    return fetch(`/api/users/`, {
+    return fetch(`https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/profiles`, {
         method: "GET",
         headers: headers
     }).then(response => {
         if (!response.ok) {
             throw new Error("Bad response");
-          }
+        }
         response.json()
-        .then(data => {
-            dispatch({
-                type: GET_ALL_USERS,
-                payload: data
+            .then(data => {
+                dispatch({
+                    type: GET_ALL_USERS,
+                    payload: data
+                });
             });
-        });
     }).catch((error) => console.warn(error));
 }
 
 export const getAllTrips = () => (dispatch) => {
-    return fetch(`/api/authentications/`, {
+    return fetch(`https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/travels`, {
         method: "GET",
         headers: headers
     }).then(response => {
         if (!response.ok) {
             throw new Error("Bad response");
-          }
+        }
         response.json()
-        .then(data => {
-            dispatch({
-                type: GET_ALL_TRIPS,
-                payload: data
+            .then(data => {
+                dispatch({
+                    type: GET_ALL_TRIPS,
+                    payload: data
+                });
             });
-        });
     }).catch((error) => console.warn(error));
 }
+
+export const signUpUser = (name, surname, email, password) => (dispatch) => {
+    fetch("https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/users/signUp", {
+        method: "POST",
+        body: JSON.stringify({ name, surname, email, password }),
+        headers,
+        credentials: 'include'
+    }).then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: SIGN_UP_USER,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.warn(error));
+}
+

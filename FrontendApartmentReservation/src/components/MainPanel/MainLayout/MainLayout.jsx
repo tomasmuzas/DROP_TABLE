@@ -7,6 +7,7 @@ import AuthenticationPage from '../../Pages/AuthenticationPage/AuthenticationPag
 import UsersPage from '../../Pages/UsersPage/UsersPage';
 import TripsPage from '../../Pages/TripsPage/TripsPage';
 import PageHeader from './PageHeader';
+import SignUpPage from '../../Pages/SignUpPage/SignUpPage';
 
 export default class MainLayout extends React.Component {
     render() {
@@ -21,6 +22,7 @@ export default class MainLayout extends React.Component {
                     <Route path="/authentication" component={AuthenticationPage}/>
                     <Route path="/trips" component={TripsPage}/>
                     <Route path="/users" component={UsersPage}/>
+                    <Route path="/signup" component={SignUpPage}/>
                     <Route path="*" component={PageNotFound}/>
                 </Switch>
             </div>
