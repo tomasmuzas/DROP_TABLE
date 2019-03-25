@@ -31,12 +31,6 @@ namespace BackendApartmentReservation
                 .AddJsonFile(Path.Combine(rootFolder, $"appsettings.{envName}.json"), optional: true) // Override default settings with env specific settings 
                 .AddEnvironmentVariables() // Override appsettings with environment variables
                 .Build();
-
-            if (!envName.IsNullOrEmpty())
-            {
-                var logFactory = NLog.LogManager.LoadConfiguration(Path.Combine(rootFolder, $"nlog.{envName}.config"));
-                NLog.LogManager.Configuration = logFactory.Configuration;
-            }
         }
 
         public IConfiguration Configuration { get; }

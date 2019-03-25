@@ -10,3 +10,7 @@
 * After this step, you will be able to see and query all the logs in the `Discover` tab
 
 *Only works when running .NET project as IIS server for some reason*
+
+# Logging
+
+To use all out-of-the-box logging features, simply inject `Microsoft.Extensions.Logging.ILogger<T>` where T - class that is logging
