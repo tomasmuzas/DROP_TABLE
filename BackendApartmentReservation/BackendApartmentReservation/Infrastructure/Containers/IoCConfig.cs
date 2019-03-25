@@ -8,8 +8,6 @@ namespace BackendApartmentReservation.Infrastructure.Containers
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterGeneric(typeof(GenericNLogLogger<>))
-                .As(typeof(ICustomLogger<>));
         }
     }
 }
