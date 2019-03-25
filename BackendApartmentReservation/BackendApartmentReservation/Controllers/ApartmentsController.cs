@@ -10,7 +10,7 @@ namespace BackendApartmentReservation.Controllers
     [ApiController]
     public class ApartmentsController : ControllerBase
     {
-        private ILogger<ApartmentsController> _logger;
+        private readonly ILogger<ApartmentsController> _logger;
 
         public ApartmentsController(ILogger<ApartmentsController> logger)
         {
