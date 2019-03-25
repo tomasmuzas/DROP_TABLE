@@ -7,7 +7,6 @@ namespace BackendApartmentReservation.Tests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }
