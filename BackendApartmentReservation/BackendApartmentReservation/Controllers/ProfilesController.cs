@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using BackendApartmentReservation.Database.Entities;
 using BackendApartmentReservation.DataContracts;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
+using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
+using BackendApartmentReservation.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +30,7 @@ namespace BackendApartmentReservation.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (RegistrationInputValidator.IsInputValid(model)) return BadRequest("Input is not valid");
 
             var employee = new DbEmployee
             {
@@ -42,7 +45,8 @@ namespace BackendApartmentReservation.Controllers
             if (!result.Succeeded) return BadRequest(result.Errors.First().Description);
 
             await _userManager.AddToRoleAsync(employee, UserRoleString.User);
-            return Ok();
+            var responseId = new RegisterResponse {Id = employee.Id};
+            return Ok(responseId);
 
         }
     }
