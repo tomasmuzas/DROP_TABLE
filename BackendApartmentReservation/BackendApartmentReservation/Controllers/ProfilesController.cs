@@ -26,11 +26,11 @@ namespace BackendApartmentReservation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("register")]
+        [Route("profiles")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (RegistrationInputValidator.IsInputValid(model)) return BadRequest("Input is not valid");
+            if (RegistrationInputValidator.IsInputValid(model)) return BadRequest("400 Bad Request");
 
             var employee = new DbEmployee
             {
