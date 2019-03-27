@@ -12,8 +12,8 @@ namespace BackendApartmentReservation.Utilities
     {
         public static bool IsInputValid(RegisterRequest registerRequest)
         {
-            var isValidEmail = Regex.IsMatch(registerRequest.Email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
-            var isValidOffice = Regex.IsMatch(registerRequest.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$"); //1+ lowercase, 1+ uppercase, 1+number
+            var isValidEmail = Regex.IsMatch(registerRequest.Email, @"^[^@]+@[^@]+\.[^@]+$");
+            var isValidOffice = Regex.IsMatch(registerRequest.Password, @" ^ (?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$"); //1+ lowercase, 1+ uppercase, 1+number
             return isValidOffice && isValidEmail;
         }
     }
