@@ -44,7 +44,6 @@ namespace BackendApartmentReservation.Controllers
 
             if (!result.Succeeded) return BadRequest(result.Errors.First().Description);
 
-            await _userManager.AddToRoleAsync(employee, UserRoleString.User);
             var responseId = new RegisterResponse {Id = employee.Id};
             return Ok(responseId);
 
