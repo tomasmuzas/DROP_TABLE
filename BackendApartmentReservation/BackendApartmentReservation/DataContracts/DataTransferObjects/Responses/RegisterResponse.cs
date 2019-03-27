@@ -8,7 +8,7 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Response
 {
     public class RegisterResponse
     {
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public int Id { get; set; }
     }
 }

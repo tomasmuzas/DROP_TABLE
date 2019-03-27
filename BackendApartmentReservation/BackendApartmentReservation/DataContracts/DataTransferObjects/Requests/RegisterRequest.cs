@@ -8,19 +8,20 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
 {
     public class RegisterRequest
     {
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
+        [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public string Password { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public string Office { get; set; }
     }
 }
