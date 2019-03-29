@@ -2,12 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.DataContracts;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
-using BackendApartmentReservation.Infrastructure.Exceptions;
-using BackendApartmentReservation.Utilities;
-using BackendApartmentReservation.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,12 +24,9 @@ namespace BackendApartmentReservation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateModelState]
         [Route("profiles")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
-            if (RegistrationInputValidator.IsInputValid(model)) return BadRequest(ErrorCodes.InvalidEntity);
-
             var employee = new DbEmployee
             {
                 FirstName = model.FirstName,
