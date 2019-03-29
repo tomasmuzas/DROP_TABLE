@@ -30,7 +30,7 @@ namespace BackendApartmentReservation.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (RegistrationInputValidator.IsInputValid(model)) return BadRequest("400 Bad Request");
+            if (RegistrationInputValidator.IsInputValid(model)) return BadRequest(ErrorCodes.InvalidEntity);
 
             var employee = new DbEmployee
             {
