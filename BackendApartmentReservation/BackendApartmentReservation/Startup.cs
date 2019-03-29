@@ -40,7 +40,9 @@ namespace BackendApartmentReservation
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
-                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter()));
+                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter()))
+                .AddMvcOptions(options => options.Filters.Add(new RequestValidationFilter()));
+             
 
             var connectionString = Configuration.GetConnectionString("DatabaseContext");
             services.AddDbContext<DatabaseContext>(options => 
