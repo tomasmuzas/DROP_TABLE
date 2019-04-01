@@ -87,20 +87,25 @@ export const getAllTrips = () => (dispatch) => {
     }).catch((error) => console.warn(error));
 }
 
-export const signUpUser = (name, surname, email, password) => (dispatch) => {
-    fetch("https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/users/signUp", {
+export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dispatch) => {
+    fetch("https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/users/profiles", {
         method: "POST",
-        body: JSON.stringify({ name, surname, email, password }),
+        body: JSON.stringify({ FirstName, LastName, Email, Password, Office }),
         headers,
-        credentials: 'include'
     }).then(response => {
-        response.json()
-            .then(data => {
+        if (response.status === 200) {
+            response.json().then(data => {
                 dispatch({
                     type: SIGN_UP_USER,
                     payload: data
+                }).then(() => {
+                    dispatch(push('/'))
                 });
             });
+        }
+        else {
+            alert('Something is broken. Sorry ' + response.status);
+        }
     }).catch((error) => console.warn(error));
 }
 

@@ -11,7 +11,8 @@ class SignUpPage extends React.Component {
             inputName: '',
             inputSurname: '',
             inputEmail: '',
-            inputPassword: ''
+            inputPassword: '',
+            inputOffice: '',
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,12 +20,20 @@ class SignUpPage extends React.Component {
         this.handleSurnameChange = this.handleSurnameChange.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleOfficeChange = this.handleOfficeChange.bind(this);
+
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        const {inputName, inputSurname, inputEmail, inputPassword } = this.state;
-        this.props.signUpUser(inputName, inputSurname, inputEmail, inputPassword);
+        const {inputName, inputSurname, inputEmail, inputPassword, inputOffice} = this.state;
+        const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,15}$");
+        var test = regex.test(inputPassword);
+        if (test) {
+        this.props.signUpUser(inputName, inputSurname, inputEmail, inputPassword, inputOffice);
+        } else {
+            alert('Password must contain one uppercase one lowercase, special symbol and be 5-15 chars length');
+        }
     }
 
     handleNameChange(e) {
@@ -51,8 +60,14 @@ class SignUpPage extends React.Component {
         });
     }
 
+    handleOfficeChange(e) {
+        this.setState({
+            inputOffice: e.target.value
+        });
+    }
+
     render() {
-        const {inputName, inputSurname, inputEmail, inputPassword } = this.state;
+        const {inputName, inputSurname, inputEmail, inputPassword, inputOffice } = this.state;
         return (
             <div className={`loginForm text-center jumbotron mx-auto col-6 pb-1 pt-4`}>
                 <form className={`form-signin`} onSubmit={this.handleSubmit}>
@@ -75,6 +90,11 @@ class SignUpPage extends React.Component {
                         <input type="password" id="inputPassword" className={`form-control`} placeholder="Password"
                             required name="inputPassword" value={inputPassword}
                             onChange={this.handlePasswordChange} />
+                    </div>
+                    <div className="form-group">
+                        <input type="text" id="inputOffice" className={`form-control`} placeholder="Office"
+                            required name="inputOffice" value={inputOffice}
+                            onChange={this.handleOfficeChange} />
                     </div>
                     <button className={`btn btn-lg btn-primary btn-block`} type="submit">Sign up</button>
                 </form>
