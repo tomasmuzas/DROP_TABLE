@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BackendApartmentReservation.Controllers
 {
@@ -7,11 +10,20 @@ namespace BackendApartmentReservation.Controllers
     [ApiController]
     public class ApartmentsController : ControllerBase
     {
+        private readonly ILogger<ApartmentsController> _logger;
+
+        public ApartmentsController(ILogger<ApartmentsController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet]
         [Route("apartments")]
-        public ActionResult<IEnumerable<string>> Get() 
+        
+        public async Task<IEnumerable<string>> Get()
         {
-            return new[] { "flat1", "flat2" };
+            _logger.LogInformation("Initial step");
+            return await Task.FromResult(new[] { "flat1", "flat2" });
         }
     }
 }

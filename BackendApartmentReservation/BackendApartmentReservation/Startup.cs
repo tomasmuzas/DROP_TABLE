@@ -1,6 +1,19 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.IO;
+
+using Autofac;
+
+using BackendApartmentReservation.Database;
+using BackendApartmentReservation.Infrastructure.Containers;
+using BackendApartmentReservation.Infrastructure.Exceptions;
+using BackendApartmentReservation.Infrastructure.Logging;
+
+using Castle.Core.Internal;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,31 +21,36 @@ namespace BackendApartmentReservation
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var envName = env.EnvironmentName;
+            var rootFolder = env.ContentRootPath;
+
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile(Path.Combine(rootFolder, "appsettings.json")) // Load default settings
+                .AddJsonFile(Path.Combine(rootFolder, $"appsettings.{envName}.json"), optional: true) // Override default settings with env specific settings 
+                .AddEnvironmentVariables() // Override appsettings with environment variables
+                .Build();
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        }
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
+                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter()))
+                .AddMvcOptions(options => options.Filters.Add(new RequestValidationFilter()));
+             
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            var connectionString = Configuration.GetConnectionString("DatabaseContext");
+            services.AddDbContext<DatabaseContext>(options => 
+                options.UseSqlServer(connectionString));
+        }
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
-
             app.UseHttpsRedirection();
             app.UseCors(options =>
                 options
@@ -40,6 +58,19 @@ namespace BackendApartmentReservation
                     .AllowAnyHeader()
                     .WithMethods("GET", "POST", "PUT", "DELETE"));
             app.UseMvc();
+
+            using (var context = app.ApplicationServices.GetService<DatabaseContext>())
+            {
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    context.Database.Migrate();
+                }
+            }
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<IoCConfig>();
         }
     }
 }
