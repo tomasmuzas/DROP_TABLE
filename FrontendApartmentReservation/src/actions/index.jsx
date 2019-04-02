@@ -1,4 +1,5 @@
 import { push } from 'react-router-redux';
+import i18n from "../i18n";
 
 export const GET_ALL_APARTMENTS = 'GET_ALL_APARTMENTS';
 export const GET_ALL_AUTHENTICATIONS = 'GET_ALL_AUTHENTICATIONS';
@@ -6,6 +7,7 @@ export const GET_ALL_USERS = 'GET_ALL_USERS';
 export const GET_ALL_TRIPS = 'GET_ALL_TRIPS';
 export const SIGN_UP_USER = 'GET_ALL_TRIPS';
 
+const BACKEND_BASE_URI = process.env.REACT_APP_BACKEND_BASE_URI;
 
 var headers = {
     "Content-Type": "application/json",
@@ -14,8 +16,8 @@ var headers = {
 };
 
 export const getAllApartments = () => (dispatch) => {
-    console.log("index")
-    return fetch(`https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/apartments`, {
+    console.log(process.env)
+    return fetch(BACKEND_BASE_URI + `/api/apartments`, {
         method: "GET",
         headers: headers
     }).then(response => {
@@ -33,7 +35,7 @@ export const getAllApartments = () => (dispatch) => {
 }
 
 export const getAllAuthentication = () => (dispatch) => {
-    return fetch(`https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/authentication`, {
+    return fetch(BACKEND_BASE_URI + `/api/authentication`, {
         method: "GET",
         headers: headers
     }).then(response => {
@@ -52,7 +54,7 @@ export const getAllAuthentication = () => (dispatch) => {
 
 export const getAllUsers = () => (dispatch) => {
     console.log("indexas");
-    return fetch(`https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/profiles`, {
+    return fetch(BACKEND_BASE_URI + `/api/profiles`, {
         method: "GET",
         headers: headers
     }).then(response => {
@@ -70,7 +72,7 @@ export const getAllUsers = () => (dispatch) => {
 }
 
 export const getAllTrips = () => (dispatch) => {
-    return fetch(`https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/travels`, {
+    return fetch(BACKEND_BASE_URI + `/api/travels`, {
         method: "GET",
         headers: headers
     }).then(response => {
@@ -88,7 +90,7 @@ export const getAllTrips = () => (dispatch) => {
 }
 
 export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dispatch) => {
-    fetch("https://backend-apartments-kibanaprod.1d35.starter-us-east-1.openshiftapps.com/api/users/profiles", {
+    fetch(BACKEND_BASE_URI + "/api/users/profiles", {
         method: "POST",
         body: JSON.stringify({ FirstName, LastName, Email, Password, Office }),
         headers,
@@ -104,8 +106,7 @@ export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dis
             });
         }
         else {
-            alert('Something is broken. Sorry ' + response.status);
+            alert(i18n.t("SignUpError") + response.status);
         }
     }).catch((error) => console.warn(error));
 }
-
