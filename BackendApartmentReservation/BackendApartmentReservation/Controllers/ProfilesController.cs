@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Database.Entities;
@@ -42,6 +43,30 @@ namespace BackendApartmentReservation.Controllers
             var responseId = new RegisterResponse {Id = employee.Id};
             return Ok(responseId);
 
+        }
+
+        [HttpGet]
+        [Route("profiles/{userId:int}")]
+        public async Task<IActionResult> GetUserById(int userId)
+        {
+            string userIdInString = userId.ToString();
+
+            try
+            {
+                var result = await _userManager.FindByIdAsync(userIdInString);
+                var response = new GetUserResponse()
+                {
+                    FirstName = result.FirstName,
+                    LastName = result.LastName,
+                    Email = result.Email,
+                    Office = result.Office
+                };
+                return Ok(response);
+            }
+            catch (NullReferenceException)
+            {
+                return BadRequest($"User with ID={userId} was not found.");
+            }                
         }
     }
 }
