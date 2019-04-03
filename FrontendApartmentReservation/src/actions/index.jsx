@@ -14,7 +14,6 @@ if (process.env.NODE_ENV === 'production'){
 else{
     BACKEND_BASE_URI = process.env.REACT_APP_DEV_BASE_URI;
 }
-console.log(process.env);
 
 var headers = {
     "Content-Type": "application/json",
@@ -23,7 +22,6 @@ var headers = {
 };
 
 export const getAllApartments = () => (dispatch) => {
-    console.log(process.env)
     return fetch(BACKEND_BASE_URI + `/api/apartments`, {
         method: "GET",
         headers: headers
