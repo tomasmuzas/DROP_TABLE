@@ -18,62 +18,40 @@ namespace BackendApartmentReservation.Repositories
             _context = context;
         }
 
-        public IEnumerable<DbEmployee> GetAll()
+        public async Task<IEnumerable<DbEmployee>> GetAll()
         {
-            return _context.Employees;
+            return await _context.Employees.ToListAsync();
         }
-        
-        public DbEmployee GetById(int EmployeeID)
+
+        public async Task<DbEmployee> GetById(int employeeID)
         {
-            return _context.Employees.Find(EmployeeID);
+            return await _context.Employees.FindAsync(employeeID);
         }
-        
-        public IEnumerable<DbEmployee> GetByFirstNameLastName(string FirstName, string LastName)
+
+        public async Task Create(DbEmployee dbEmployee)
         {
-            return _context.Employees.Where(e => e.FirstName == FirstName && e.LastName == LastName).ToList();
-        }
-        
-        public DbEmployee Create(DbEmployee DbEmployee)
-        {
-            if (DbEmployee == null)
+            if (dbEmployee.FirstName != null && dbEmployee.LastName != null && dbEmployee.Office != null)
             {
-                return null;
-            }
-            _context.Employees.Add(DbEmployee);
-            _context.SaveChanges();
-
-            return DbEmployee;
+                await _context.Employees.AddAsync(dbEmployee);
+                await _context.SaveChangesAsync();
+            }  
         }
 
-        public bool Update(int id, DbEmployee DbEmployee)
+        public async Task Update(DbEmployee dbEmployee)
         {
-            DbEmployee employeeToUpdate = GetById(id);
-            
-            if (DbEmployee == null || employeeToUpdate == null)
-            {
-                return false;
-            }
-            employeeToUpdate.FirstName = DbEmployee.FirstName;
-            employeeToUpdate.LastName = DbEmployee.LastName;
-            employeeToUpdate.Office = DbEmployee.Office;
-
-            _context.Employees.Update(employeeToUpdate);
+            _context.Employees.Update(dbEmployee);
             _context.SaveChanges();
-
-            return true;
         }
 
-        public bool Delete(int EmployeeID)
+        public async Task Delete(DbEmployee dbEmployee)
         {
-            DbEmployee employee = _context.Employees.Find(EmployeeID);
-            if (employee == null)
-            {
-                return false;
-            }
-            _context.Employees.Remove(employee);
+            _context.Employees.Remove(dbEmployee);
             _context.SaveChanges();
+        }
 
-            return true;
+        public async Task SaveChanges()
+        {
+            _context.SaveChanges();
         }
     }
 }
