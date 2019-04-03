@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using BackendApartmentReservation.Utilities;
 
 namespace BackendApartmentReservation.Database.Entities
 {
@@ -11,16 +11,12 @@ namespace BackendApartmentReservation.Database.Entities
 
         public double Cost { get; set; }
 
-        public string DestinationOffice { get; set; }
+        public DbOffice DestinationOffice { get; set; }
 
         public DateTime DepartureDate { get; set; }
 
         public DateTime ReturnDate { get; set; }
 
-        public TravelOptionStatus TripTickets { get; set; }
-
-        public TravelOptionStatus CarRental { get; set; }
-
-        public TravelOptionStatus Apartments { get; set; }
+        public List<DbGroup> Groups { get; set; }
     }
 }

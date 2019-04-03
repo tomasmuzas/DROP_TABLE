@@ -21,7 +21,7 @@ namespace BackendApartmentReservation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("profiles")]
+        [Route("employees")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
             var employeeId = await _employeeManager.CreateEmployee(
