@@ -1,4 +1,7 @@
 ﻿using Autofac;
+<<<<<<< HEAD
+using BackendApartmentReservation.Managers;
+=======
 
 using BackendApartmentReservation.Infrastructure.Logging;
 using BackendApartmentReservation.Repositories;
