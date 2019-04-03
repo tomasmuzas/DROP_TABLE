@@ -11,7 +11,6 @@ namespace BackendApartmentReservation.Infrastructure.Containers
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ProfileRepository>().As<IProfileRepository>();
             builder.RegisterType<EmployeeManager>()
                 .As<IEmployeeManager>();
             builder.RegisterType<EmployeeRepository>()
