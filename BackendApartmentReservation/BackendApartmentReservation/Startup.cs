@@ -21,10 +21,13 @@ namespace BackendApartmentReservation
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        private readonly IHostingEnvironment _environment;
+
+        public Startup(IHostingEnvironment env)
         {
-            var envName = env.EnvironmentName;
-            var rootFolder = env.ContentRootPath;
+            _environment = env;
+            var envName = _environment.EnvironmentName;
+            var rootFolder = _environment.ContentRootPath;
 
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile(Path.Combine(rootFolder, "appsettings.json")) // Load default settings
@@ -40,7 +43,7 @@ namespace BackendApartmentReservation
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
-                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter()))
+                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_environment)))
                 .AddMvcOptions(options => options.Filters.Add(new RequestValidationFilter()));
              
 
@@ -49,7 +52,7 @@ namespace BackendApartmentReservation
                 options.UseSqlServer(connectionString));
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseHttpsRedirection();
             app.UseCors(options =>
