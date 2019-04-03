@@ -3,6 +3,7 @@
 using BackendApartmentReservation.Infrastructure.Logging;
 using BackendApartmentReservation.Repositories;
 using BackendApartmentReservation.Managers;
+using BackendApartmentReservation.Repositories;
 
 namespace BackendApartmentReservation.Infrastructure.Containers
 {
@@ -13,6 +14,8 @@ namespace BackendApartmentReservation.Infrastructure.Containers
             builder.RegisterType<ProfileRepository>().As<IProfileRepository>();
             builder.RegisterType<EmployeeManager>()
                 .As<IEmployeeManager>();
+            builder.RegisterType<EmployeeRepository>()
+                .As<IEmployeeRepository>();
         }
     }
 }

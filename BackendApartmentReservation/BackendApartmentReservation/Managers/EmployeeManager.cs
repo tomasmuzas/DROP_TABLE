@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-
+using BackendApartmentReservation.Database.Entities;
 using BackendApartmentReservation.Repositories;
 
 namespace BackendApartmentReservation.Managers
@@ -17,7 +17,13 @@ namespace BackendApartmentReservation.Managers
         public async Task<string> CreateEmployee(string firstName, string lastName, string email, string office)
         {
             var employeeId = Guid.NewGuid().ToString();
-            await _employeeRepository.CreateEmployee(firstName, lastName, email, office);
+            DbEmployee dbEmployee = new DbEmployee();
+            dbEmployee.FirstName = firstName;
+            dbEmployee.LastName = lastName;
+            dbEmployee.Email = email;
+            dbEmployee.Office = office;
+
+            await _employeeRepository.CreateEmployee(dbEmployee);
             await _employeeRepository.SaveChanges();
             return employeeId;
         }

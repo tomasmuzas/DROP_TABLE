@@ -9,16 +9,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackendApartmentReservation.Repositories
 {
-    public class ProfileRepository : IProfileRepository
+    public class EmployeeRepository : IEmployeeRepository
     {
         private readonly DatabaseContext _context;
 
-        public ProfileRepository(DatabaseContext context)
+        public EmployeeRepository(DatabaseContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<DbEmployee>> GetAll()
+        public async Task<IEnumerable<DbEmployee>> GetAllEmployees()
         {
             return await _context.Employees.ToListAsync();
         }
@@ -28,22 +28,23 @@ namespace BackendApartmentReservation.Repositories
             return await _context.Employees.FindAsync(employeeID);
         }
 
-        public async Task Create(DbEmployee dbEmployee)
+        public async Task CreateEmployee(DbEmployee dbEmployee)
         {
-            if (dbEmployee.FirstName != null && dbEmployee.LastName != null && dbEmployee.Office != null)
+            if (dbEmployee.FirstName != null && dbEmployee.LastName != null 
+                && dbEmployee.Email != null && dbEmployee.Office != null)
             {
                 await _context.Employees.AddAsync(dbEmployee);
                 await _context.SaveChangesAsync();
             }  
         }
 
-        public async Task Update(DbEmployee dbEmployee)
+        public async Task UpdateEmployee(DbEmployee dbEmployee)
         {
             _context.Employees.Update(dbEmployee);
             _context.SaveChanges();
         }
 
-        public async Task Delete(DbEmployee dbEmployee)
+        public async Task DeleteEmployee(DbEmployee dbEmployee)
         {
             _context.Employees.Remove(dbEmployee);
             _context.SaveChanges();
