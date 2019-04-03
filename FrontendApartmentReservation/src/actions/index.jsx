@@ -7,7 +7,14 @@ export const GET_ALL_USERS = 'GET_ALL_USERS';
 export const GET_ALL_TRIPS = 'GET_ALL_TRIPS';
 export const SIGN_UP_USER = 'GET_ALL_TRIPS';
 
-const BACKEND_BASE_URI = process.env.REACT_APP_BACKEND_BASE_URI;
+var BACKEND_BASE_URI;
+if (process.env.NODE_ENV === 'production'){
+     BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
+}
+else{
+    BACKEND_BASE_URI = process.env.REACT_APP_DEV_BASE_URI;
+}
+console.log(process.env);
 
 var headers = {
     "Content-Type": "application/json",

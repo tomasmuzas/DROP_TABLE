@@ -29,8 +29,8 @@ class SignUpPage extends React.Component {
         e.preventDefault();
         const { inputName, inputSurname, inputEmail, inputPassword, inputOffice } = this.state;
         const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,15}$");
-        var test = regex.test(inputPassword);
-        if (test) {
+        var regexTest = regex.test(inputPassword);
+        if (regexTest) {
             this.props.signUpUser(inputName, inputSurname, inputEmail, inputPassword, inputOffice);
         } else {
             alert(this.props.t("PasswordError"));
