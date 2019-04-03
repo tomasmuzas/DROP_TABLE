@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using BackendApartmentReservation.Managers;
+using BackendApartmentReservation.Repositories;
 
 namespace BackendApartmentReservation.Infrastructure.Containers
 {
@@ -9,6 +10,8 @@ namespace BackendApartmentReservation.Infrastructure.Containers
         {
             builder.RegisterType<EmployeeManager>()
                 .As<IEmployeeManager>();
+            builder.RegisterType<EmployeeRepository>()
+                .As<IEmployeeRepository>();
         }
     }
 }
