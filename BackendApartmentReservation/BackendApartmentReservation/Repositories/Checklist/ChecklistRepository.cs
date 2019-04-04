@@ -17,6 +17,7 @@ namespace BackendApartmentReservation.Repositories.Checklist
         public async Task AddChecklist(DbEmployeeAmenitiesChecklist checklist)
         {
             await _db.Checklists.AddAsync(checklist);
+            await _db.SaveChangesAsync();
         }
     }
 }
