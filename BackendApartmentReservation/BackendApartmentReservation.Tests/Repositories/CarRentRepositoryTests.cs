@@ -1,5 +1,6 @@
 ﻿namespace BackendApartmentReservation.Tests.Repositories
 {
+    using System;
     using System.Linq;
     using System.Threading.Tasks;
     using BackendApartmentReservation.Repositories.Checklist;
@@ -18,7 +19,7 @@
 
                 var amenity = await repository.CreateCarRentAmenityFromCarNumber(carNumber);
                 Assert.NotNull(amenity);
-                Assert.NotNull(amenity.BookedAt);
+                Assert.True(amenity.BookedAt > new DateTimeOffset());
 
                 var reservation = dbContext.CarReservations.FirstOrDefault(c => c.CardPlateNumber == carNumber);
                 Assert.NotNull(reservation);
@@ -48,7 +49,7 @@
                 var amenity = await repository.CreateCarRentAmenityFromCarNumber(carNumber);
 
                 Assert.NotNull(amenity);
-                Assert.NotNull(amenity.BookedAt);
+                Assert.True(amenity.BookedAt > new DateTimeOffset());
 
                 var reservation = dbContext.CarReservations.Single(c => c.CardPlateNumber == carNumber);
                 Assert.NotEqual(0, amenity.Car.Id);
