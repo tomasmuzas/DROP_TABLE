@@ -3,12 +3,12 @@ import i18n from "../i18n";
 
 export const GET_ALL_APARTMENTS = 'GET_ALL_APARTMENTS';
 export const GET_ALL_AUTHENTICATIONS = 'GET_ALL_AUTHENTICATIONS';
-export const GET_ALL_USERS = 'GET_ALL_USERS';
+export const GET_ALL_EMPLOYEES = 'GET_ALL_EMPLOYEES';
 export const GET_ALL_TRIPS = 'GET_ALL_TRIPS';
 export const SIGN_UP_USER = 'GET_ALL_TRIPS';
 
 var BACKEND_BASE_URI;
-if (process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV !== 'production'){
      BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
 }
 else{
@@ -57,8 +57,7 @@ export const getAllAuthentication = () => (dispatch) => {
     }).catch((error) => console.warn(error));
 }
 
-export const getAllUsers = () => (dispatch) => {
-    console.log("indexas");
+export const getAllEmployees = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/profiles`, {
         method: "GET",
         headers: headers
@@ -69,7 +68,7 @@ export const getAllUsers = () => (dispatch) => {
         response.json()
             .then(data => {
                 dispatch({
-                    type: GET_ALL_USERS,
+                    type: GET_ALL_EMPLOYEES,
                     payload: data
                 });
             });
