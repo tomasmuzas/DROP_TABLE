@@ -22,10 +22,7 @@ namespace BackendApartmentReservation.Controllers
                 Cost = 100,
                 DepartureDate = DateTime.UtcNow.AddDays(2),
                 ReturnDate = DateTime.UtcNow.AddDays(5),
-                DestinationOffice = "Office1",
-                Apartments = TravelOptionStatus.NotRequired,
-                CarRental = TravelOptionStatus.NotRequired,
-                TripTickets = TravelOptionStatus.NotRequired
+                DestinationOffice = new DbOffice()
             };
 
             return await Task.FromResult(new List<DbTrip> { travelMock });

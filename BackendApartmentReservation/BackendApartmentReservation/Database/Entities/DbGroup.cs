@@ -11,5 +11,7 @@ namespace BackendApartmentReservation.Database.Entities
         public List<DbEmployee> Employees { get; set; }
 
         public DbEmployee Manager { get; set; }
+
+        public DbOffice StartingOffice { get; set; }
     }
 }

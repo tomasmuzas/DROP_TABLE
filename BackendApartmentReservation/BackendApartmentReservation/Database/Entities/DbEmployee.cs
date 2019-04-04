@@ -13,6 +13,6 @@ namespace BackendApartmentReservation.Database.Entities
 
         public string Email { get; set; }
 
-        public string Office { get; set; }
+        public DbOffice Office { get; set; }
     }
 }
