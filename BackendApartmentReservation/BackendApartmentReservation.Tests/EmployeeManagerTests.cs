@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-
+using BackendApartmentReservation.Database.Entities;
 using BackendApartmentReservation.Managers;
 using BackendApartmentReservation.Repositories;
 
@@ -26,7 +26,13 @@ namespace BackendApartmentReservation.Tests
 
             var id = await manager.CreateEmployee(name, surname, email, office);
 
-            A.CallTo(() => fakeEmployeeRepository.CreateEmployee(name, surname, email, office))
+            var dbEmployee = new DbEmployee();
+            dbEmployee.FirstName = name;
+            dbEmployee.LastName = surname;
+            dbEmployee.Email = email;
+            dbEmployee.Office = office;
+
+            A.CallTo(() => fakeEmployeeRepository.CreateEmployee(dbEmployee))
                 .MustHaveHappenedOnceExactly();
 
             A.CallTo(() => fakeEmployeeRepository.SaveChanges())
