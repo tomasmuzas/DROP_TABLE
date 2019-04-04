@@ -15,7 +15,7 @@ class TripsPage extends React.Component {
                 <div>
                      <div>
                          This is TripsPage
-                        {this.props.trips.map(trip => <div> {trip} </div>)}
+                        {this.props.trips.map(trip => <div> {trip.destinationOffice} </div>)}
                     </div>
                 </div>
             );
