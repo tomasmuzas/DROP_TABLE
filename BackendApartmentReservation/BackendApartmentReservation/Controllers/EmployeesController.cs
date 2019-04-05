@@ -29,7 +29,7 @@ namespace BackendApartmentReservation.Controllers
             dbEmployee.FirstName = model.FirstName;
             dbEmployee.LastName = model.LastName;
             dbEmployee.Email = model.Email;
-            dbEmployee.Office = model.Office;
+            dbEmployee.Office.Address = model.Office;
 
             var employeeId = await _employeeManager.CreateEmployee(dbEmployee);
 
