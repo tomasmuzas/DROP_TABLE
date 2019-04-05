@@ -26,9 +26,9 @@
                 Assert.Equal(reservation.FlightNumber, flightNumber);
 
                 Assert.NotEqual(0, reservation.Id);
-                Assert.NotEqual(0, amenity.Reservation.Id);
+                Assert.NotEqual(0, amenity.FlightReservation.Id);
 
-                Assert.Equal(amenity.Reservation.Id, reservation.Id);
+                Assert.Equal(amenity.FlightReservation.Id, reservation.Id);
             }
         }
 
@@ -52,9 +52,9 @@
                 Assert.True(amenity.BookedAt > new DateTimeOffset());
 
                 var reservation = dbContext.FlightReservations.Single(f => f.FlightNumber == flightNumber);
-                Assert.NotEqual(0, amenity.Reservation.Id);
+                Assert.NotEqual(0, amenity.FlightReservation.Id);
 
-                Assert.Equal(amenity.Reservation.Id, reservation.Id);
+                Assert.Equal(amenity.FlightReservation.Id, reservation.Id);
             }
         }
     }

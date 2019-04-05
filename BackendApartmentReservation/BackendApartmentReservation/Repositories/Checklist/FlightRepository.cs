@@ -33,7 +33,7 @@
             var flightAmenity = new DbFlightAmenity
             {
                 BookedAt = DateTimeOffset.Now,
-                Reservation = flightReservation
+                FlightReservation = flightReservation
             };
 
             await _db.FlightAmenities.AddAsync(flightAmenity);

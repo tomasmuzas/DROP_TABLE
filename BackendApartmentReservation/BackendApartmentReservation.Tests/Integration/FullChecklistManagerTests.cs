@@ -65,15 +65,15 @@
 
                 Assert.NotNull(checklist.Flight);
                 Assert.NotEqual(0, checklist.Flight.Id);
-                Assert.NotNull(checklist.Flight.Reservation);
-                Assert.NotEqual(0, checklist.Flight.Reservation.Id);
-                Assert.Equal(flightInfo.FlightNumber, checklist.Flight.Reservation.FlightNumber);
+                Assert.NotNull(checklist.Flight.FlightReservation);
+                Assert.NotEqual(0, checklist.Flight.FlightReservation.Id);
+                Assert.Equal(flightInfo.FlightNumber, checklist.Flight.FlightReservation.FlightNumber);
 
                 Assert.NotNull(checklist.Car);
                 Assert.NotEqual(0, checklist.Car.Id);
-                Assert.NotNull(checklist.Car.Car);
-                Assert.NotEqual(0, checklist.Car.Car.Id);
-                Assert.Equal(carInfo.CarNumber, checklist.Car.Car.CardPlateNumber);
+                Assert.NotNull(checklist.Car.CarReservation);
+                Assert.NotEqual(0, checklist.Car.CarReservation.Id);
+                Assert.Equal(carInfo.CarNumber, checklist.Car.CarReservation.CarNumber);
             }
         }
     }

@@ -21,14 +21,14 @@
                 Assert.NotNull(amenity);
                 Assert.True(amenity.BookedAt > new DateTimeOffset());
 
-                var reservation = dbContext.CarReservations.FirstOrDefault(c => c.CardPlateNumber == carNumber);
+                var reservation = dbContext.CarReservations.FirstOrDefault(c => c.CarNumber == carNumber);
                 Assert.NotNull(reservation);
-                Assert.Equal(reservation.CardPlateNumber, carNumber);
+                Assert.Equal(reservation.CarNumber, carNumber);
 
                 Assert.NotEqual(0, reservation.Id);
-                Assert.NotEqual(0, amenity.Car.Id);
+                Assert.NotEqual(0, amenity.CarReservation.Id);
 
-                Assert.Equal(amenity.Car.Id, reservation.Id);
+                Assert.Equal(amenity.CarReservation.Id, reservation.Id);
             }
         }
 
@@ -40,7 +40,7 @@
                 var carNumber = "CAR456";
                 dbContext.CarReservations.Add(new DbCarReservation
                 {
-                    CardPlateNumber = carNumber
+                    CarNumber = carNumber
                 });
                 await dbContext.SaveChangesAsync();
 
@@ -51,10 +51,10 @@
                 Assert.NotNull(amenity);
                 Assert.True(amenity.BookedAt > new DateTimeOffset());
 
-                var reservation = dbContext.CarReservations.Single(c => c.CardPlateNumber == carNumber);
-                Assert.NotEqual(0, amenity.Car.Id);
+                var reservation = dbContext.CarReservations.Single(c => c.CarNumber == carNumber);
+                Assert.NotEqual(0, amenity.CarReservation.Id);
 
-                Assert.Equal(amenity.Car.Id, reservation.Id);
+                Assert.Equal(amenity.CarReservation.Id, reservation.Id);
             }
         }
     }

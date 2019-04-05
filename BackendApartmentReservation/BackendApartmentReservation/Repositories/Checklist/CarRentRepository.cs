@@ -18,13 +18,13 @@
 
         public async Task<DbCarRentAmenity> CreateCarRentAmenityFromCarNumber(string carNumber)
         {
-            var carReservation = await _db.CarReservations.SingleOrDefaultAsync(r => r.CardPlateNumber == carNumber);
+            var carReservation = await _db.CarReservations.SingleOrDefaultAsync(r => r.CarNumber == carNumber);
 
             if (carReservation == default(DbCarReservation))
             {
                 carReservation = new DbCarReservation
                 {
-                    CardPlateNumber = carNumber
+                    CarNumber = carNumber
                 };
 
                 await _db.CarReservations.AddAsync(carReservation);
@@ -33,7 +33,7 @@
             var carRentAmenity = new DbCarRentAmenity
             {
                 BookedAt = DateTimeOffset.Now,
-                Car = carReservation
+                CarReservation = carReservation
             };
 
             await _db.CarRentAmenities.AddAsync(carRentAmenity);
