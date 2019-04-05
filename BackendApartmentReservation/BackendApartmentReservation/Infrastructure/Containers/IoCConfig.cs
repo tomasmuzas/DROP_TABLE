@@ -3,7 +3,6 @@
 using BackendApartmentReservation.Infrastructure.Logging;
 using BackendApartmentReservation.Repositories;
 using BackendApartmentReservation.Managers;
-using BackendApartmentReservation.Repositories;
 
 namespace BackendApartmentReservation.Infrastructure.Containers
 {
