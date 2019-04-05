@@ -14,14 +14,9 @@ namespace BackendApartmentReservation.Managers
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<string> CreateEmployee(string firstName, string lastName, string email, string office)
+        public async Task<string> CreateEmployee(DbEmployee dbEmployee)
         {
-            var employeeId = Guid.NewGuid().ToString();
-            DbEmployee dbEmployee = new DbEmployee();
-            dbEmployee.FirstName = firstName;
-            dbEmployee.LastName = lastName;
-            dbEmployee.Email = email;
-            dbEmployee.Office = office;
+            var employeeId = Guid.NewGuid().ToString() ;
 
             await _employeeRepository.CreateEmployee(dbEmployee);
             await _employeeRepository.SaveChanges();
