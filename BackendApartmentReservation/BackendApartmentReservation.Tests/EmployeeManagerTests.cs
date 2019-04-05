@@ -20,7 +20,7 @@ namespace BackendApartmentReservation.Tests
             var name = "Name";
             var surname = "Surname";
             var email = "Email";
-            var office = "Office";
+            var office = new DbOffice();
 
             var manager = new EmployeeManager(fakeEmployeeRepository);
 
