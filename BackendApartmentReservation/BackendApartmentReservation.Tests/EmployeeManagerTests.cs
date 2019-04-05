@@ -24,13 +24,13 @@ namespace BackendApartmentReservation.Tests
 
             var manager = new EmployeeManager(fakeEmployeeRepository);
 
-            var id = await manager.CreateEmployee(name, surname, email, office);
-
             var dbEmployee = new DbEmployee();
             dbEmployee.FirstName = name;
             dbEmployee.LastName = surname;
             dbEmployee.Email = email;
             dbEmployee.Office = office;
+
+            var id = await manager.CreateEmployee(dbEmployee);
 
             A.CallTo(() => fakeEmployeeRepository.CreateEmployee(dbEmployee))
                 .MustHaveHappenedOnceExactly();
