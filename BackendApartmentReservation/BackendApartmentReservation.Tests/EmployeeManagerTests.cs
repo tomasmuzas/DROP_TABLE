@@ -35,9 +35,6 @@ namespace BackendApartmentReservation.Tests
             A.CallTo(() => fakeEmployeeRepository.CreateEmployee(dbEmployee))
                 .MustHaveHappenedOnceExactly();
 
-            A.CallTo(() => fakeEmployeeRepository.SaveChanges())
-                .MustHaveHappenedOnceExactly();
-
             Assert.NotEmpty(id);
         }
     }

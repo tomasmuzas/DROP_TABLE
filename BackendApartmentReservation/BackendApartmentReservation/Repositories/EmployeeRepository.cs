@@ -23,7 +23,7 @@ namespace BackendApartmentReservation.Repositories
             return await _context.Employees.ToListAsync();
         }
 
-        public async Task<DbEmployee> GetById(int employeeID)
+        public async Task<DbEmployee> GetEmployeeById(int employeeID)
         {
             return await _context.Employees.FindAsync(employeeID);
         }
@@ -31,28 +31,26 @@ namespace BackendApartmentReservation.Repositories
         public async Task CreateEmployee(DbEmployee dbEmployee)
         {
             if (dbEmployee.FirstName != null && dbEmployee.LastName != null 
-                && dbEmployee.Email != null && dbEmployee.Office != null)
+                && dbEmployee.Email != null)
             {
                 await _context.Employees.AddAsync(dbEmployee);
                 await _context.SaveChangesAsync();
-            }  
+            }  else
+            {
+                throw new ArgumentNullException();
+            }
         }
 
         public async Task UpdateEmployee(DbEmployee dbEmployee)
         {
             _context.Employees.Update(dbEmployee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteEmployee(DbEmployee dbEmployee)
         {
             _context.Employees.Remove(dbEmployee);
-            _context.SaveChanges();
-        }
-
-        public async Task SaveChanges()
-        {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

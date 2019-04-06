@@ -7,10 +7,9 @@ namespace BackendApartmentReservation.Repositories
     public interface IEmployeeRepository
     {
         Task<IEnumerable<DbEmployee>> GetAllEmployees();
-        Task<DbEmployee> GetById(int employeeID);
+        Task<DbEmployee> GetEmployeeById(int employeeID);
         Task CreateEmployee(DbEmployee dbEmployee);
         Task UpdateEmployee(DbEmployee dbEmployee);
         Task DeleteEmployee(DbEmployee dbEmployee);
-        Task SaveChanges();
     }
 }

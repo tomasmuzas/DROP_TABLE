@@ -19,7 +19,6 @@ namespace BackendApartmentReservation.Managers
             var employeeId = Guid.NewGuid().ToString() ;
 
             await _employeeRepository.CreateEmployee(dbEmployee);
-            await _employeeRepository.SaveChanges();
             return employeeId;
         }
     }
