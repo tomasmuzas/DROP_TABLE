@@ -4,6 +4,7 @@ import i18n from "../i18n";
 export const GET_ALL_APARTMENTS = 'GET_ALL_APARTMENTS';
 export const GET_ALL_AUTHENTICATIONS = 'GET_ALL_AUTHENTICATIONS';
 export const GET_ALL_EMPLOYEES = 'GET_ALL_EMPLOYEES';
+export const GET_AVAILABLE_EMPLOYEES = 'GET_AVAILABLE_EMPLOYEES';
 export const GET_ALL_TRIPS = 'GET_ALL_TRIPS';
 export const SIGN_UP_USER = 'GET_ALL_TRIPS';
 
@@ -69,6 +70,26 @@ export const getAllEmployees = () => (dispatch) => {
             .then(data => {
                 dispatch({
                     type: GET_ALL_EMPLOYEES,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.warn(error));
+}
+
+export const getAvailableEmployees = (departureDate, returnDate) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/employees`, {
+        method: "GET",
+        body: JSON.stringify({ departureDate, returnDate}),
+        headers: headers
+    }).then(response => {
+        console.log('get avail emplo')
+        if (!response.ok) {
+            throw new Error("Bad response");
+        }
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_AVAILABLE_EMPLOYEES,
                     payload: data
                 });
             });
