@@ -35,7 +35,8 @@ namespace BackendApartmentReservation.Repositories
             {
                 await _context.Employees.AddAsync(dbEmployee);
                 await _context.SaveChangesAsync();
-            }  else
+            }
+            else
             {
                 throw new ArgumentNullException();
             }

@@ -24,7 +24,8 @@ namespace BackendApartmentReservation.Infrastructure.Containers
                 .As<IFlightRepository>();
             builder.RegisterType<ChecklistRepository>()
                 .As<IChecklistRepository>();
-            builder.RegisterType<EmployeeRepository>().As<IEmployeeRepository>();
+            builder.RegisterType<EmployeeRepository>()
+                .As<IEmployeeRepository>();
         }
     }
 }
