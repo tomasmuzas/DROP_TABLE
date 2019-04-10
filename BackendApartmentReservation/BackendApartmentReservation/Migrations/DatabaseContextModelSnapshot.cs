@@ -103,6 +103,8 @@ namespace BackendApartmentReservation.Migrations
 
                     b.Property<string>("Email");
 
+                    b.Property<string>("ExternalEmployeeId");
+
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");

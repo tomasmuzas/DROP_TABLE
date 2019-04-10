@@ -17,6 +17,7 @@ namespace BackendApartmentReservation.Managers
         public async Task<string> CreateEmployee(DbEmployee dbEmployee)
         {
             var employeeId = Guid.NewGuid().ToString() ;
+            dbEmployee.ExternalEmployeeId = employeeId;
 
             await _employeeRepository.CreateEmployee(dbEmployee);
             return employeeId;
