@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackendApartmentReservation.Tests
 {
-    public class TestBase
+    public class DatabaseTestBase
     {
         public DatabaseContext GetNewDatabaseContext()
         {

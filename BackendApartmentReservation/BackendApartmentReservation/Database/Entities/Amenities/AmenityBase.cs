@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace BackendApartmentReservation.Database.Entities
+﻿namespace BackendApartmentReservation.Database.Entities.Amenities
 {
+    using System;
+
     public class AmenityBase
     {
-        public bool Required { get; set; }
-
         public DateTimeOffset? BookedAt { get; set; }
     }
 }

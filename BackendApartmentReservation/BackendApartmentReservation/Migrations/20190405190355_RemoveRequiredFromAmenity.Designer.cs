@@ -4,14 +4,16 @@ using BackendApartmentReservation.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendApartmentReservation.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190405190355_RemoveRequiredFromAmenity")]
+    partial class RemoveRequiredFromAmenity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,8 +98,6 @@ namespace BackendApartmentReservation.Migrations
                     b.Property<int?>("DbGroupId");
 
                     b.Property<string>("Email");
-
-                    b.Property<string>("ExternalEmployeeId");
 
                     b.Property<string>("FirstName");
 
