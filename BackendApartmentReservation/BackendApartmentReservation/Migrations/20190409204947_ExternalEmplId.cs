@@ -9,7 +9,7 @@ namespace BackendApartmentReservation.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "ExternalEmployeeId",
                 table: "Employees",
-                nullable: true);
+                nullable: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
