@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using BackendApartmentReservation.Database.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using BackendApartmentReservation.Database.Entities;
 
@@ -6,10 +8,10 @@ namespace BackendApartmentReservation.Repositories
 {
     public interface IEmployeeRepository
     {
-        Task CreateEmployee(string firstName, string lastName, string email, string office);
-
-        Task SaveChanges();
-
-        Task<DbEmployee> GetEmployeeById(int id);
+        Task<IEnumerable<DbEmployee>> GetAllEmployees();
+        Task<DbEmployee> GetEmployeeById(int employeeID);
+        Task CreateEmployee(DbEmployee dbEmployee);
+        Task UpdateEmployee(DbEmployee dbEmployee);
+        Task DeleteEmployee(DbEmployee dbEmployee);
     }
 }

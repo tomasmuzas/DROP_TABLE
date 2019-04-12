@@ -5,6 +5,8 @@ namespace BackendApartmentReservation.Infrastructure.Containers
 {
     using Repositories.Checklist;
 
+    using Repositories;
+
     public class IoCConfig : Module
     {
         protected override void Load(ContainerBuilder builder)
@@ -22,6 +24,8 @@ namespace BackendApartmentReservation.Infrastructure.Containers
                 .As<IFlightRepository>();
             builder.RegisterType<ChecklistRepository>()
                 .As<IChecklistRepository>();
+            builder.RegisterType<EmployeeRepository>()
+                .As<IEmployeeRepository>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BackendApartmentReservation.Database.Entities;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
 using BackendApartmentReservation.Managers;
@@ -24,11 +25,12 @@ namespace BackendApartmentReservation.Controllers
         [Route("employees")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
-            var employeeId = await _employeeManager.CreateEmployee(
-                             model.FirstName,
-                             model.LastName,
-                             model.Email,
-                             model.Office);
+            DbEmployee dbEmployee = new DbEmployee();
+            dbEmployee.FirstName = model.FirstName;
+            dbEmployee.LastName = model.LastName;
+            dbEmployee.Email = model.Email;
+
+            var employeeId = await _employeeManager.CreateEmployee(dbEmployee);
 
             var response = new RegisterResponse
             {
