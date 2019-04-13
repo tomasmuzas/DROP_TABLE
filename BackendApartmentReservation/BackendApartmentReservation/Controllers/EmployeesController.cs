@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackendApartmentReservation.Controllers
 {
+    using System.Collections.Generic;
+
     [Route("api")]
     [ApiController]
     public class EmployeesController : ControllerBase
@@ -18,6 +20,13 @@ namespace BackendApartmentReservation.Controllers
         public EmployeesController(IEmployeeManager employeeManager)
         {
             _employeeManager = employeeManager;
+        }
+
+        [HttpGet]
+        [Route("employees")]
+        public async Task<IEnumerable<GetUserResponse>> GetAllEmployees()
+        {
+            return await _employeeManager.GetAllEmployees();
         }
 
         [HttpPost]
