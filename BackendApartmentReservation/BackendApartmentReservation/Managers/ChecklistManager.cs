@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BackendApartmentReservation.Database.Entities;
+using BackendApartmentReservation.Database.Entities.Amenities;
 using BackendApartmentReservation.Repositories;
 
 namespace BackendApartmentReservation.Managers
@@ -12,8 +13,9 @@ namespace BackendApartmentReservation.Managers
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IFlightRepository _flightRepository;
         private readonly ICarRentRepository _carRentRepository;
+        private readonly ILivingPlaceRepository _livingPlaceRepository;
 
-        private readonly IChecklistRepository _cheklistRepository;
+        private readonly IChecklistRepository _checklistRepository;
 
         private readonly ILogger<ChecklistManager> _logger;
 
@@ -21,14 +23,16 @@ namespace BackendApartmentReservation.Managers
             IEmployeeRepository employeeRepository,
             IFlightRepository flightRepository,
             ICarRentRepository carRentRepository,
+            ILivingPlaceRepository livingPlaceRepository,
             IChecklistRepository checklistRepository,
             ILogger<ChecklistManager> logger)
         {
             _employeeRepository = employeeRepository;
             _flightRepository = flightRepository;
             _carRentRepository = carRentRepository;
+            _livingPlaceRepository = livingPlaceRepository;
 
-            _cheklistRepository = checklistRepository;
+            _checklistRepository = checklistRepository;
 
             _logger = logger;
         }
@@ -36,7 +40,8 @@ namespace BackendApartmentReservation.Managers
         public async Task<DbEmployeeAmenitiesChecklist> CreateChecklistForEmployee(
             int employeeId,
             FlightReservationInfo flightReservationInfo,
-            CarReservationInfo carReservationInfo)
+            CarReservationInfo carReservationInfo,
+            LivingPlaceReservationInfo livingPlaceReservationInfo)
         {
             var employee = await _employeeRepository.GetEmployeeById(employeeId);
 
@@ -59,7 +64,33 @@ namespace BackendApartmentReservation.Managers
                 _logger.LogInformation($"Created car rent amenity for employee {employee.Id}.");
             }
 
-            await _cheklistRepository.AddChecklist(checklist);
+            if (livingPlaceReservationInfo.Required) { 
+
+            DbApartmentAmenity apartmentAmenity = null;
+            DbHotelAmenity hotelAmenity = null;
+            if (livingPlaceReservationInfo.ApartmentReservationInfo.Required)
+            {
+                apartmentAmenity =
+                    await _livingPlaceRepository.CreateApartmentAmenity(livingPlaceReservationInfo
+                        .ApartmentReservationInfo.ApartmentAddress);
+            }
+
+            if (livingPlaceReservationInfo.HotelReservationInfo.Required)
+            {
+                hotelAmenity =
+                    await _livingPlaceRepository.CreateHotelAmenity(livingPlaceReservationInfo
+                        .HotelReservationInfo.HotelAddress);
+            }
+
+
+
+
+            var livingPlaceAmenity = await _livingPlaceRepository.CreateLivingPlaceAmenity(apartmentAmenity, hotelAmenity);
+            checklist.LivingPlace = livingPlaceAmenity;
+            _logger.LogInformation($"Created living place amenity for employee {employee.Id}.");
+            }
+
+            await _checklistRepository.AddChecklist(checklist);
 
             return checklist;
         }
