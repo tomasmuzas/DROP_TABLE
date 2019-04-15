@@ -14,11 +14,11 @@ namespace BackendApartmentReservation.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class ProfilesController : ControllerBase
+    public class EmployeesController : ControllerBase
     {
         private readonly UserManager<DbEmployee> _userManager;
         [HttpGet]
-        [Route("profiles")]
+        [Route("employees")]
         public async Task<IEnumerable<string>> Get()
         {
             return await Task.FromResult(new[] { "userProfile1", "userProfile2" });
@@ -26,7 +26,7 @@ namespace BackendApartmentReservation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("profiles")]
+        [Route("employees")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
             var employee = new DbEmployee
@@ -47,7 +47,7 @@ namespace BackendApartmentReservation.Controllers
         }
 
         [HttpGet]
-        [Route("profiles/{userId}")]
+        [Route("employees/{userId}")]
         public async Task<IActionResult> GetUserById(string userId)
         {
             try
