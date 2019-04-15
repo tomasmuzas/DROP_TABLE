@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BackendApartmentReservation.Database;
+using BackendApartmentReservation.Database.Entities.Amenities;
+using BackendApartmentReservation.Database.Entities.Reservations;
+using BackendHotelReservation.Repositories.Checklist;
+using Microsoft.EntityFrameworkCore;
+
+namespace BackendApartmentReservation.Repositories.Checklist
+{
+    public class LivingPlaceRepository : ILivingPlaceRepository
+    {
+        private readonly DatabaseContext _db;
+        private readonly ApartmentRepository _apartmentRepository;
+        private readonly HotelRepository _hotelRepository;
+
+        public LivingPlaceRepository(DatabaseContext db, ApartmentRepository apartmentRepository, HotelRepository hotelRepository)
+        {
+            _db = db;
+            _apartmentRepository = apartmentRepository;
+            _hotelRepository = hotelRepository;
+        }
+
+        public async Task<DbLivingPlaceAmenity> CreateLivingPlaceAmenity(DbApartmentAmenity apartmentAmenity, DbHotelAmenity hotelAmenity)
+        {
+            var livingPlaceReservation = await _db.LivingPlaceReservations.SingleOrDefaultAsync();
+
+            if (livingPlaceReservation == default(DbLivingPlaceReservation))
+            {
+                livingPlaceReservation = new DbLivingPlaceReservation()
+                {
+                    ApartmentReservation = apartmentAmenity.ApartmentReservation, //TODO: @aku ?? Null checks needed or not
+                    HotelReservation = hotelAmenity.HotelReservation 
+                };
+                await _db.LivingPlaceReservations.AddAsync(livingPlaceReservation);
+            }
+            var livingPlaceAmenity = new DbLivingPlaceAmenity
+            {
+                LivingPlaceReservation = livingPlaceReservation
+            };
+
+            await _db.LivingPlaceAmenities.AddAsync(livingPlaceAmenity);
+
+            await _db.SaveChangesAsync();
+
+            return livingPlaceAmenity;
+        }
+
+        public async Task<DbApartmentAmenity> CreateApartmentAmenity(string address)
+        {
+            return await _apartmentRepository.CreateApartmentAmenity(address);
+
+        }
+
+        public async Task<DbHotelAmenity> CreateHotelAmenity(string address)
+        {
+            return await _hotelRepository.CreateHotelAmenity(address);
+        }
+    }
+}
