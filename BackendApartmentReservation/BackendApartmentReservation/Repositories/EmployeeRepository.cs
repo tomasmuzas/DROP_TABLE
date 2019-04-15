@@ -23,6 +23,11 @@ namespace BackendApartmentReservation.Repositories
             return await _context.Employees.ToListAsync();
         }
 
+        public async Task<DbEmployee> GetEmployeeById(int employeeID)
+        {
+            return await _context.Employees.FindAsync(employeeID);
+        }
+
         public async Task<DbEmployee> GetEmployeeById(string employeeID)
         {
             return await _context.Employees.FindAsync(employeeID);
