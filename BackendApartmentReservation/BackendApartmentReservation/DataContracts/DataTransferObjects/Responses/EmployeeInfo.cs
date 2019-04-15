@@ -2,7 +2,7 @@
 
 namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Responses
 {
-    public class GetUserResponse
+    public class EmployeeInfo
     {
         [Required(AllowEmptyStrings = false)]
         public string FirstName { get; set; }

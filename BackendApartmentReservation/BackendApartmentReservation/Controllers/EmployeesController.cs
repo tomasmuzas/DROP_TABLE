@@ -1,27 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Database.Entities;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
 using BackendApartmentReservation.Infrastructure.Exceptions;
+using BackendApartmentReservation.Managers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendApartmentReservation.Controllers
 {
+    using System.Collections.Generic;
+
     [Route("api")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly UserManager<DbEmployee> _userManager;
+        private readonly IEmployeeManager _employeeManager;
+
+        public EmployeesController(IEmployeeManager employeeManager)
+        {
+            _employeeManager = employeeManager;
+        }
+
         [HttpGet]
         [Route("employees")]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<IEnumerable<EmployeeInfo>> GetAllEmployees()
         {
-            return await Task.FromResult(new[] { "userProfile1", "userProfile2" });
+            return await _employeeManager.GetAllEmployees();
         }
 
         [HttpPost]
@@ -29,31 +35,28 @@ namespace BackendApartmentReservation.Controllers
         [Route("employees")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
-            var employee = new DbEmployee
+            DbEmployee dbEmployee = new DbEmployee();
+            dbEmployee.FirstName = model.FirstName;
+            dbEmployee.LastName = model.LastName;
+            dbEmployee.Email = model.Email;
+
+            var employeeId = await _employeeManager.CreateEmployee(dbEmployee);
+
+            var response = new RegisterResponse
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                Office = model.Office
+                Id = employeeId
             };
-
-            var result = await _userManager.CreateAsync(employee, model.Password);
-
-            if (!result.Succeeded) return BadRequest(result.Errors.First().Description);
-
-            var responseId = new RegisterResponse {Id = employee.Id};
-            return Ok(responseId);
-
+            return Ok(response);
         }
 
         [HttpGet]
         [Route("employees/{userId}")]
-        public async Task<IActionResult> GetUserById(string userId)
+        public async Task<IActionResult> GetEmployeeById(string employeeId)
         {
             try
             {
-                var result = await _userManager.FindByIdAsync(userId);
-                var response = new GetUserResponse()
+                var result = await _employeeManager.FindByIdAsync(employeeId);
+                var response = new EmployeeInfo()
                 {
                     FirstName = result.FirstName,
                     LastName = result.LastName,
