@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BackendApartmentReservation.Database.Entities;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
+using BackendApartmentReservation.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -46,14 +47,12 @@ namespace BackendApartmentReservation.Controllers
         }
 
         [HttpGet]
-        [Route("profiles/{userId:int}")]
-        public async Task<IActionResult> GetUserById(int userId)
+        [Route("profiles/{userId}")]
+        public async Task<IActionResult> GetUserById(string userId)
         {
-            string userIdInString = userId.ToString();
-
             try
             {
-                var result = await _userManager.FindByIdAsync(userIdInString);
+                var result = await _userManager.FindByIdAsync(userId);
                 var response = new GetUserResponse()
                 {
                     FirstName = result.FirstName,
@@ -65,7 +64,7 @@ namespace BackendApartmentReservation.Controllers
             }
             catch (NullReferenceException)
             {
-                return BadRequest($"User with ID={userId} was not found.");
+                return BadRequest(ErrorCodes.EmployeeNotFound);
             }                
         }
     }
