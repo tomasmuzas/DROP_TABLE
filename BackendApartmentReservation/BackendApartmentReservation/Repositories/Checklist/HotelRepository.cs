@@ -43,8 +43,6 @@ namespace BackendHotelReservation.Repositories.Checklist
             await _db.SaveChangesAsync();
 
             return hotelAmenity;
-
-
         }
 
     }

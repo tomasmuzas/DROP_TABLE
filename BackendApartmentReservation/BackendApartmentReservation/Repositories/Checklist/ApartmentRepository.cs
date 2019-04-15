@@ -41,8 +41,6 @@ namespace BackendApartmentReservation.Repositories.Checklist
             await _db.SaveChangesAsync();
 
             return apartmentAmenity;
-
-
         }
 
     }

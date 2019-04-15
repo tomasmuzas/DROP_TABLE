@@ -82,9 +82,6 @@ namespace BackendApartmentReservation.Managers
                         .HotelReservationInfo.HotelAddress);
             }
 
-
-
-
             var livingPlaceAmenity = await _livingPlaceRepository.CreateLivingPlaceAmenity(apartmentAmenity, hotelAmenity);
             checklist.LivingPlace = livingPlaceAmenity;
             _logger.LogInformation($"Created living place amenity for employee {employee.Id}.");
