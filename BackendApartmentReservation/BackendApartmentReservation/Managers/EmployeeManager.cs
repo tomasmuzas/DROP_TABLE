@@ -27,16 +27,28 @@ namespace BackendApartmentReservation.Managers
             return employeeId;
         }
 
-        public async Task<IEnumerable<GetUserResponse>> GetAllEmployees()
+        public async Task<IEnumerable<EmployeeInfo>> GetAllEmployees()
         {
             var employees = await  _employeeRepository.GetAllEmployees();
-            return employees.Select(e => new GetUserResponse
+            return employees.Select(e => new EmployeeInfo
             {
                 Id = e.ExternalEmployeeId,
                 Email = e.Email,
                 FirstName = e.FirstName,
                 LastName = e.LastName
             });
+        }
+
+        public async Task<EmployeeInfo> GetEmployeeById(string employeeID)
+        {
+            var employee = await _employeeRepository.GetEmployeeById(employeeID);
+            return new EmployeeInfo
+            {
+                Id = employee.ExternalEmployeeId,
+                Email = employee.Email,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName
+            };
         }
     }
 }

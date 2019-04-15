@@ -10,6 +10,8 @@ namespace BackendApartmentReservation.Managers
     {
         Task<string> CreateEmployee(DbEmployee dbEmployee);
 
-        Task<IEnumerable<GetUserResponse>> GetAllEmployees();
+        Task<IEnumerable<EmployeeInfo>> GetAllEmployees();
+
+        Task<EmployeeInfo> GetEmployeeById(string employeeID);
     }
 }
