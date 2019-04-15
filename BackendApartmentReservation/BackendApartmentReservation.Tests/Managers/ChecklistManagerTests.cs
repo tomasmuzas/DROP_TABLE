@@ -1,4 +1,7 @@
-﻿namespace BackendApartmentReservation.Tests.Managers
+﻿using System;
+using BackendApartmentReservation.Database.Entities.Reservations;
+
+namespace BackendApartmentReservation.Tests.Managers
 {
     using System.Threading.Tasks;
     using BackendApartmentReservation.Managers;
@@ -16,8 +19,9 @@
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IFlightRepository _flightRepository;
         private readonly ICarRentRepository _carRentRepository;
+        private readonly ILivingPlaceRepository _livingPlaceRepository;
 
-        private readonly IChecklistRepository _cheklistRepository;
+        private readonly IChecklistRepository _checklistRepository;
 
         private readonly ILogger<ChecklistManager> _logger;
 
@@ -28,8 +32,9 @@
             _employeeRepository = A.Fake<IEmployeeRepository>();
             _flightRepository = A.Fake<IFlightRepository>();
             _carRentRepository = A.Fake<ICarRentRepository>();
+            _livingPlaceRepository = A.Fake<ILivingPlaceRepository>();
 
-            _cheklistRepository = A.Fake<IChecklistRepository>();
+            _checklistRepository = A.Fake<IChecklistRepository>();
 
             _logger = new NullLogger<ChecklistManager>();
 
@@ -37,26 +42,38 @@
                 _employeeRepository,
                 _flightRepository,
                 _carRentRepository,
-                _cheklistRepository,
+                _livingPlaceRepository,
+                _checklistRepository,
                 _logger);
         }
 
-        [InlineData(false, false)]
-        [InlineData(false, true)]
-        [InlineData(true, false)]
-        [InlineData(true, true)]
+        [InlineData(false, false, false)]
+        [InlineData(false, true, false)]
+        [InlineData(true, false, true)]
+        [InlineData(true, true, true)]
         [Theory]
-        public async Task CreateChecklistForEmployee_CreatesProperChecklist(bool flight, bool car)
+        public async Task CreateChecklistForEmployee_CreatesProperChecklist(bool flight, bool car, bool livingPlace)
         {
             var employee = new DbEmployee
             {
                 Id = 5
             };
 
+            var apartment = new DbApartmentAmenity
+            {
+                BookedAt = DateTimeOffset.Now,
+                ApartmentReservation = new DbApartmentReservation { Address = "Vilnius" }
+            };
+            var hotel = new DbHotelAmenity
+            {
+                BookedAt = DateTimeOffset.Now,
+                HotelReservation = new DbHotelReservation() { Address = "Kaunas" }
+            };
+
             var employeeRepositoryCall = A.CallTo(() => _employeeRepository.GetEmployeeById(employee.Id));
 
             var checklistRepositoryCall =
-                A.CallTo(() => _cheklistRepository.AddChecklist(A<DbEmployeeAmenitiesChecklist>._));
+                A.CallTo(() => _checklistRepository.AddChecklist(A<DbEmployeeAmenitiesChecklist>._));
 
             var flightNumber = "FL1234";
             var flightRepositoryCall =
@@ -64,6 +81,9 @@
 
             var carNumber = "CAR123";
             var carRepositoryCall = A.CallTo(() => _carRentRepository.CreateCarRentAmenityFromCarNumber(carNumber));
+
+            var livingPlaceRepositoryCall = A.CallTo(() =>
+                _livingPlaceRepository.CreateLivingPlaceAmenity(apartment, hotel));
 
             if (flight)
             {
@@ -73,6 +93,11 @@
             if (car)
             {
                 carRepositoryCall.Returns(new DbCarRentAmenity());
+            }
+
+            if (livingPlace)
+            {
+                livingPlaceRepositoryCall.Returns(new DbLivingPlaceAmenity());
             }
 
             employeeRepositoryCall.Returns(employee);
@@ -96,6 +121,12 @@
                 {
                     Required = car,
                     CarNumber = carNumber
+                },
+                new LivingPlaceReservationInfo
+                {
+                    Required = true,
+                    ApartmentReservationInfo = new ApartmentReservationInfo { ApartmentAddress = "Vilnius" },
+                    HotelReservationInfo = new HotelReservationInfo { HotelAddress = "Kaunas" }
                 });
 
             employeeRepositoryCall.MustHaveHappenedOnceExactly();

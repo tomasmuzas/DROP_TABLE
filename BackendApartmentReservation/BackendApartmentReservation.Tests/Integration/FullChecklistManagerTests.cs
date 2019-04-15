@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Tests.Integration
+﻿using BackendHotelReservation.Repositories.Checklist;
+
+namespace BackendApartmentReservation.Tests.Integration
 {
     using System.Threading.Tasks;
     using BackendApartmentReservation.Managers;
@@ -19,12 +21,16 @@
                 var employeeRepository = A.Fake<IEmployeeRepository>(o => o.Strict());
                 var flightRepository = new FlightRepository(dbContext);
                 var carRentRepository = new CarRentRepository(dbContext);
+                var apartmentRepository = new ApartmentRepository(dbContext);
+                var hotelRepository = new HotelRepository(dbContext);
+                var livingSpaceRepository = new LivingPlaceRepository(dbContext, apartmentRepository, hotelRepository);
                 var checklistRepository = new ChecklistRepository(dbContext);
 
                 var checklistManager = new ChecklistManager(
                     employeeRepository,
                     flightRepository,
                     carRentRepository,
+                    livingSpaceRepository,
                     checklistRepository,
                     new NullLogger<ChecklistManager>());
                 var employee = new DbEmployee
@@ -53,10 +59,19 @@
                     CarNumber = "CAR123"
                 };
 
-                var checklist = await checklistManager.CreateChecklistForEmployee(
+                var livingSpaceInfo = new LivingPlaceReservationInfo
+                {
+                    ApartmentReservationInfo = new ApartmentReservationInfo { ApartmentAddress = "Vilnius"},
+                    HotelReservationInfo = new HotelReservationInfo { HotelAddress = "Kaunas"}
+                };
+
+
+            var checklist = await checklistManager.CreateChecklistForEmployee(
                     employee.Id,
                     flightInfo,
-                    carInfo);
+                    carInfo,
+                    livingSpaceInfo
+                    );
 
                 Assert.NotNull(checklist);
 
