@@ -19,7 +19,7 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
         public string Email { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [RegularExpression(@" ^ (?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,15}$")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$")]
         public string Password { get; set; }
 
         [Required(AllowEmptyStrings = false)]
