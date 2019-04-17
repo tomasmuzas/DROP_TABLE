@@ -1,18 +1,18 @@
-﻿using System;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using NLog.Web;
-
-namespace BackendApartmentReservation.Infrastructure.Logging
+﻿namespace BackendApartmentReservation.Infrastructure.Logging
 {
+    using System;
+    using System.IO;
+    using Microsoft.AspNetCore.Hosting;
+    using NLog.Web;
+
     public static class NLogExtensions
     {
         public static IWebHostBuilder UseKibanaNLog(this IWebHostBuilder builder)
         {
             var aspNetCoreEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var environmentName = string.IsNullOrWhiteSpace(aspNetCoreEnvironment)
-                                      ? "local"
-                                      : aspNetCoreEnvironment.ToLower();
+                ? "local"
+                : aspNetCoreEnvironment.ToLower();
 
             var rootFolder = AppContext.BaseDirectory;
 

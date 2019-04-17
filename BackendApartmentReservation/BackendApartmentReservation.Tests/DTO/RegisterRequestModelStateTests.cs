@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BackendApartmentReservation.Tests.DTO
+﻿namespace BackendApartmentReservation.Tests.DTO
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using DataContracts.DataTransferObjects.Requests;
     using Xunit;

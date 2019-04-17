@@ -1,11 +1,10 @@
-﻿using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.Database.Entities.Amenities;
-using BackendApartmentReservation.Database.Entities.Reservations;
-
-using Microsoft.EntityFrameworkCore;
-
-namespace BackendApartmentReservation.Database
+﻿namespace BackendApartmentReservation.Database
 {
+    using Entities;
+    using Entities.Amenities;
+    using Entities.Reservations;
+    using Microsoft.EntityFrameworkCore;
+
     public class DatabaseContext : DbContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options)

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace BackendApartmentReservation.Extensions.Json
+﻿namespace BackendApartmentReservation.Extensions.Json
 {
+    using Newtonsoft.Json;
+
     public static class JsonSerializationExtensions
     {
         private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings

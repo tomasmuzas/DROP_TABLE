@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database;
-using BackendApartmentReservation.Database.Entities;
-using Microsoft.EntityFrameworkCore;
-
-namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Database;
+    using Database.Entities;
+    using Microsoft.EntityFrameworkCore;
+
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly DatabaseContext _context;
@@ -30,8 +28,7 @@ namespace BackendApartmentReservation.Repositories
 
         public async Task CreateEmployee(DbEmployee dbEmployee)
         {
-            if (dbEmployee.FirstName != null && dbEmployee.LastName != null 
-                && dbEmployee.Email != null)
+            if (dbEmployee.FirstName != null && dbEmployee.LastName != null && dbEmployee.Email != null)
             {
                 await _context.Employees.AddAsync(dbEmployee);
                 await _context.SaveChangesAsync();

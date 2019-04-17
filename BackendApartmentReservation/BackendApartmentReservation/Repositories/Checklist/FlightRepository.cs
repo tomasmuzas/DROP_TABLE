@@ -18,7 +18,8 @@
 
         public async Task<DbFlightAmenity> CreateFlightAmenityFromFlightNumber(string flightNumber)
         {
-            var flightReservation = await _db.FlightReservations.SingleOrDefaultAsync(r => r.FlightNumber == flightNumber);
+            var flightReservation =
+                await _db.FlightReservations.SingleOrDefaultAsync(r => r.FlightNumber == flightNumber);
 
             if (flightReservation == default(DbFlightReservation))
             {

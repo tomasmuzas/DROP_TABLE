@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
-namespace BackendApartmentReservation.Controllers
+﻿namespace BackendApartmentReservation.Controllers
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+
     [Route("api")]
     [ApiController]
     public class ApartmentsController : ControllerBase
@@ -19,7 +18,6 @@ namespace BackendApartmentReservation.Controllers
 
         [HttpGet]
         [Route("apartments")]
-        
         public async Task<IEnumerable<string>> Get()
         {
             _logger.LogInformation("Initial step");

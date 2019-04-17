@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.Repositories;
-
-namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Managers
 {
+    using System.Threading.Tasks;
+    using Database.Entities;
     using Microsoft.Extensions.Logging;
+    using Repositories;
     using Repositories.Checklist;
 
     public class ChecklistManager : IChecklistManager
@@ -47,14 +46,16 @@ namespace BackendApartmentReservation.Managers
 
             if (flightReservationInfo.Required)
             {
-                var flightAmenity = await _flightRepository.CreateFlightAmenityFromFlightNumber(flightReservationInfo.FlightNumber);
+                var flightAmenity =
+                    await _flightRepository.CreateFlightAmenityFromFlightNumber(flightReservationInfo.FlightNumber);
                 checklist.Flight = flightAmenity;
                 _logger.LogInformation($"Created flight amenity for employee {employee.Id}.");
             }
 
             if (carReservationInfo.Required)
             {
-                var carAmenity = await _carRentRepository.CreateCarRentAmenityFromCarNumber(carReservationInfo.CarNumber);
+                var carAmenity =
+                    await _carRentRepository.CreateCarRentAmenityFromCarNumber(carReservationInfo.CarNumber);
                 checklist.Car = carAmenity;
                 _logger.LogInformation($"Created car rent amenity for employee {employee.Id}.");
             }

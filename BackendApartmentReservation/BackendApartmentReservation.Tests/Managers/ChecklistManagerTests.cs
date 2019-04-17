@@ -19,8 +19,6 @@
 
         private readonly IChecklistRepository _cheklistRepository;
 
-        private readonly ILogger<ChecklistManager> _logger;
-
         private readonly ChecklistManager _manager;
 
         public ChecklistManagerTests()
@@ -31,14 +29,14 @@
 
             _cheklistRepository = A.Fake<IChecklistRepository>();
 
-            _logger = new NullLogger<ChecklistManager>();
+            ILogger<ChecklistManager> logger = new NullLogger<ChecklistManager>();
 
             _manager = new ChecklistManager(
                 _employeeRepository,
                 _flightRepository,
                 _carRentRepository,
                 _cheklistRepository,
-                _logger);
+                logger);
         }
 
         [InlineData(false, false)]

@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using BackendApartmentReservation.Database.Entities.Amenities;
-
-namespace BackendApartmentReservation.Database.Entities
+﻿namespace BackendApartmentReservation.Database.Entities
 {
+    using System.ComponentModel.DataAnnotations;
+    using Amenities;
+
     public class DbEmployeeAmenitiesChecklist
     {
         [Key]

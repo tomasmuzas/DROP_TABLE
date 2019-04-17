@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.Repositories;
-
-namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Managers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+    using Database.Entities;
     using DataContracts.DataTransferObjects.Responses;
+    using Repositories;
 
     public class EmployeeManager : IEmployeeManager
     {
@@ -20,7 +19,7 @@ namespace BackendApartmentReservation.Managers
 
         public async Task<string> CreateEmployee(DbEmployee dbEmployee)
         {
-            var employeeId = Guid.NewGuid().ToString() ;
+            var employeeId = Guid.NewGuid().ToString();
             dbEmployee.ExternalEmployeeId = employeeId;
 
             await _employeeRepository.CreateEmployee(dbEmployee);
@@ -29,7 +28,7 @@ namespace BackendApartmentReservation.Managers
 
         public async Task<IEnumerable<GetUserResponse>> GetAllEmployees()
         {
-            var employees = await  _employeeRepository.GetAllEmployees();
+            var employees = await _employeeRepository.GetAllEmployees();
             return employees.Select(e => new GetUserResponse
             {
                 Id = e.ExternalEmployeeId,

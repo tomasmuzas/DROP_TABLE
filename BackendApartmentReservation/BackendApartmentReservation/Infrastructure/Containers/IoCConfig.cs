@@ -1,11 +1,9 @@
-﻿using Autofac;
-using BackendApartmentReservation.Managers;
-
-namespace BackendApartmentReservation.Infrastructure.Containers
+﻿namespace BackendApartmentReservation.Infrastructure.Containers
 {
-    using Repositories.Checklist;
-
+    using Autofac;
+    using Managers;
     using Repositories;
+    using Repositories.Checklist;
 
     public class IoCConfig : Module
     {
