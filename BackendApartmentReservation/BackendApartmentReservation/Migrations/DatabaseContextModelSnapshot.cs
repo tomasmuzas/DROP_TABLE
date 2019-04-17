@@ -145,6 +145,19 @@ namespace BackendApartmentReservation.Migrations
                     b.ToTable("Checklists");
                 });
 
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployeeGroup", b =>
+                {
+                    b.Property<int>("EmployeeId");
+
+                    b.Property<int>("GroupId");
+
+                    b.HasKey("EmployeeId", "GroupId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("DbEmployeeGroup");
+                });
+
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -302,6 +315,19 @@ namespace BackendApartmentReservation.Migrations
                     b.HasOne("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", "LivingPlace")
                         .WithMany()
                         .HasForeignKey("LivingPlaceId");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployeeGroup", b =>
+                {
+                    b.HasOne("BackendApartmentReservation.Database.Entities.DbEmployee", "DbEmployee")
+                        .WithMany("GroupsLink")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BackendApartmentReservation.Database.Entities.DbGroup", "DbGroup")
+                        .WithMany("EmployeesLink")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbGroup", b =>

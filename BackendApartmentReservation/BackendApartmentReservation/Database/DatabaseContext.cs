@@ -39,5 +39,21 @@ namespace BackendApartmentReservation.Database
         public DbSet<DbFlightReservation> FlightReservations { get; set; }
 
         public DbSet<DbHotelReservation> HotelReservations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DbEmployeeGroup>()
+                .HasKey(x => new { x.EmployeeId, x.GroupId });
+
+            modelBuilder.Entity<DbEmployeeGroup>()
+                .HasOne(pt => pt.DbEmployee)
+                .WithMany(p => p.GroupsLink)
+                .HasForeignKey(pt => pt.EmployeeId);
+
+            modelBuilder.Entity<DbEmployeeGroup>()
+                .HasOne(pt => pt.DbGroup)
+                .WithMany(t => t.EmployeesLink)
+                .HasForeignKey(pt => pt.GroupId);
+        }
     }
 }

@@ -9,9 +9,11 @@ namespace BackendApartmentReservation.Database.Entities
         public int Id { get; set; }
 
         public List<DbEmployee> Employees { get; set; }
-
+        
         public DbEmployee Manager { get; set; }
 
         public DbOffice StartingOffice { get; set; }
+
+        public List<DbEmployeeGroup> EmployeesLink { get; set; }
     }
 }

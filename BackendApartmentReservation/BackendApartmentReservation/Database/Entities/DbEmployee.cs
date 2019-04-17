@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BackendApartmentReservation.Database.Entities
 {
@@ -16,5 +17,7 @@ namespace BackendApartmentReservation.Database.Entities
         public string Email { get; set; }
 
         public DbOffice Office { get; set; }
+
+        public List<DbEmployeeGroup> GroupsLink { get; set; }
     }
 }
