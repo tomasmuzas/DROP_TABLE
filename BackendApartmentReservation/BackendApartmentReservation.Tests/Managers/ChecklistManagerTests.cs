@@ -33,6 +33,7 @@ namespace BackendApartmentReservation.Tests.Managers
             _flightRepository = A.Fake<IFlightRepository>();
             _carRentRepository = A.Fake<ICarRentRepository>();
             _livingPlaceRepository = A.Fake<ILivingPlaceRepository>();
+            
 
             _checklistRepository = A.Fake<IChecklistRepository>();
 
@@ -59,17 +60,6 @@ namespace BackendApartmentReservation.Tests.Managers
                 Id = 5
             };
 
-            var apartment = new DbApartmentAmenity
-            {
-                BookedAt = DateTimeOffset.Now,
-                ApartmentReservation = new DbApartmentReservation { Address = "Vilnius" }
-            };
-            var hotel = new DbHotelAmenity
-            {
-                BookedAt = DateTimeOffset.Now,
-                HotelReservation = new DbHotelReservation() { Address = "Kaunas" }
-            };
-
             var employeeRepositoryCall = A.CallTo(() => _employeeRepository.GetEmployeeById(employee.Id));
 
             var checklistRepositoryCall =
@@ -81,9 +71,13 @@ namespace BackendApartmentReservation.Tests.Managers
 
             var carNumber = "CAR123";
             var carRepositoryCall = A.CallTo(() => _carRentRepository.CreateCarRentAmenityFromCarNumber(carNumber));
-
+            
+            //var apartmentRepositoryCall = A.CallTo(() => _livingPlaceRepository.CreateApartmentAmenity("ApartmentString"));
+            //var hotelRepositoryCall = A.CallTo(() => _livingPlaceRepository.CreateHotelAmenity("HotelString"));
             var livingPlaceRepositoryCall = A.CallTo(() =>
-                _livingPlaceRepository.CreateLivingPlaceAmenity(apartment, hotel));
+                _livingPlaceRepository.
+                    CreateLivingPlaceAmenity(_livingPlaceRepository.CreateApartmentAmenity("VilniusApartment")
+                        .Result, _livingPlaceRepository.CreateHotelAmenity("VilniusHotel").Result)); //TODO: DOESN'T WORK
 
             if (flight)
             {
@@ -97,6 +91,8 @@ namespace BackendApartmentReservation.Tests.Managers
 
             if (livingPlace)
             {
+                //apartmentRepositoryCall.Returns(new DbApartmentAmenity());
+                //hotelRepositoryCall.Returns(new DbHotelAmenity());
                 livingPlaceRepositoryCall.Returns(new DbLivingPlaceAmenity());
             }
 
@@ -124,9 +120,9 @@ namespace BackendApartmentReservation.Tests.Managers
                 },
                 new LivingPlaceReservationInfo
                 {
-                    Required = true,
-                    ApartmentReservationInfo = new ApartmentReservationInfo { ApartmentAddress = "Vilnius" },
-                    HotelReservationInfo = new HotelReservationInfo { HotelAddress = "Kaunas" }
+                    Required = livingPlace,
+                    ApartmentReservationInfo = new ApartmentReservationInfo { Required = true, ApartmentAddress = "Vilnius" },
+                    HotelReservationInfo = new HotelReservationInfo {Required = false, HotelAddress = "Kaunas" }
                 });
 
             employeeRepositoryCall.MustHaveHappenedOnceExactly();
@@ -154,6 +150,18 @@ namespace BackendApartmentReservation.Tests.Managers
             {
                 flightRepositoryCall.MustNotHaveHappened();
                 //flightLogCall.MustNotHaveHappened();
+            }
+            if (livingPlace)
+            {
+                //apartmentRepositoryCall.MustHaveHappened();
+                //hotelRepositoryCall.MustHaveHappened();
+                livingPlaceRepositoryCall.MustHaveHappened();
+            }
+            else
+            {
+                //apartmentRepositoryCall.MustNotHaveHappened();
+                //hotelRepositoryCall.MustNotHaveHappened();
+                livingPlaceRepositoryCall.MustNotHaveHappened();
             }
         }
     }
