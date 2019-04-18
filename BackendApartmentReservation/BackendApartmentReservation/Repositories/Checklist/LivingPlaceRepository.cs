@@ -25,7 +25,10 @@ namespace BackendApartmentReservation.Repositories.Checklist
 
         public async Task<DbLivingPlaceAmenity> CreateLivingPlaceAmenity(DbApartmentAmenity apartmentAmenity, DbHotelAmenity hotelAmenity)
         {
-            var livingPlaceReservation = await _db.LivingPlaceReservations.SingleOrDefaultAsync(r=> r.ApartmentReservation == apartmentAmenity.ApartmentReservation && r.HotelReservation == hotelAmenity.HotelReservation );
+            var apartmentReservation = apartmentAmenity?.ApartmentReservation;
+            var hotelReservation = hotelAmenity?.HotelReservation;
+            var livingPlaceReservation = await _db.LivingPlaceReservations.SingleOrDefaultAsync(r=> r.ApartmentReservation == apartmentReservation
+                                                                                                    && r.HotelReservation == hotelReservation);
 
             if (livingPlaceReservation == default(DbLivingPlaceReservation))
             {
