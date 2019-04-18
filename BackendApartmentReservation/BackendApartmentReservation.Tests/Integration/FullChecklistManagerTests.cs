@@ -61,8 +61,9 @@ namespace BackendApartmentReservation.Tests.Integration
 
                 var livingSpaceInfo = new LivingPlaceReservationInfo
                 {
-                    ApartmentReservationInfo = new ApartmentReservationInfo { ApartmentAddress = "Vilnius"},
-                    HotelReservationInfo = new HotelReservationInfo { HotelAddress = "Kaunas"}
+                    Required = true,
+                    ApartmentReservationInfo = new ApartmentReservationInfo {Required = true, ApartmentAddress = "Vilnius"},
+                    HotelReservationInfo = new HotelReservationInfo { Required = false, HotelAddress = "Kaunas"}
                 };
 
 
@@ -89,6 +90,14 @@ namespace BackendApartmentReservation.Tests.Integration
                 Assert.NotNull(checklist.Car.CarReservation);
                 Assert.NotEqual(0, checklist.Car.CarReservation.Id);
                 Assert.Equal(carInfo.CarNumber, checklist.Car.CarReservation.CarNumber);
+
+                Assert.NotNull(checklist.LivingPlace);
+                Assert.NotEqual(0, checklist.LivingPlace.Id);
+                Assert.NotNull(checklist.LivingPlace.LivingPlaceReservation.ApartmentReservation);
+                Assert.NotEqual(0, checklist.LivingPlace.LivingPlaceReservation.Id);
+                Assert.Equal(livingSpaceInfo.ApartmentReservationInfo.ApartmentAddress, checklist.LivingPlace.LivingPlaceReservation.ApartmentReservation.Address);
+                Assert.Null(checklist.LivingPlace.LivingPlaceReservation.HotelReservation);
+
             }
         }
     }
