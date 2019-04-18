@@ -5,7 +5,11 @@ namespace BackendApartmentReservation.Managers
 {
     public interface IChecklistManager
     {
-        Task<DbEmployeeAmenitiesChecklist> CreateChecklistForEmployee(int employeeId, FlightReservationInfo flightReservationInfo, CarReservationInfo carReservationInfo, LivingPlaceReservationInfo livingPlaceReservationInfo);
+        Task<DbEmployeeAmenitiesChecklist> CreateChecklistForEmployee(
+            int employeeId, 
+            FlightReservationInfo flightReservationInfo, 
+            CarReservationInfo carReservationInfo, 
+            LivingPlaceReservationInfo livingPlaceReservationInfo);
 
     }
 }
