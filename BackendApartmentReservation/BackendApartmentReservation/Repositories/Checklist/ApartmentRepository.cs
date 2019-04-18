@@ -20,7 +20,7 @@ namespace BackendApartmentReservation.Repositories.Checklist
 
         public async Task<DbApartmentAmenity> CreateApartmentAmenity(string address)
         {
-            var apartmentReservation = await _db.ApartmentReservations.SingleOrDefaultAsync();
+            var apartmentReservation = await _db.ApartmentReservations.SingleOrDefaultAsync(r => r.Address == address);
 
             if (apartmentReservation == default(DbApartmentReservation))
             {

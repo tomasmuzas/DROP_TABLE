@@ -22,21 +22,21 @@ namespace BackendHotelReservation.Repositories.Checklist
 
         public async Task<DbHotelAmenity> CreateHotelAmenity(string address)
         {
-            var HotelReservation = await _db.HotelReservations.SingleOrDefaultAsync();
+            var hotelReservation = await _db.HotelReservations.SingleOrDefaultAsync(r => r.Address == address);
 
-            if (HotelReservation == default(DbHotelReservation))
+            if (hotelReservation == default(DbHotelReservation))
             {
-                HotelReservation = new DbHotelReservation
+                hotelReservation = new DbHotelReservation
                 {
                     Address = address
                 };
-                await _db.HotelReservations.AddAsync(HotelReservation);
+                await _db.HotelReservations.AddAsync(hotelReservation);
             }
 
             var hotelAmenity = new DbHotelAmenity
             {
                 BookedAt = DateTimeOffset.Now,
-                HotelReservation = HotelReservation
+                HotelReservation = hotelReservation
             };
             await _db.HotelAmenities.AddAsync(hotelAmenity);
 
