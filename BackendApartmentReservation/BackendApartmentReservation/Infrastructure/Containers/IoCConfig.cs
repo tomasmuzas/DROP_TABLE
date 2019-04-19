@@ -26,6 +26,12 @@ namespace BackendApartmentReservation.Infrastructure.Containers
                 .As<IChecklistRepository>();
             builder.RegisterType<EmployeeRepository>()
                 .As<IEmployeeRepository>();
+            builder.RegisterType<LivingPlaceRepository>()
+                .As<ILivingPlaceRepository>();
+            builder.RegisterType<ApartmentRepository>()
+                .As<IApartmentRepository>();
+            builder.RegisterType<HotelRepository>()
+                .As<IHotelRepository>();
         }
     }
 }

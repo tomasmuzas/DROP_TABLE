@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BackendApartmentReservation.Database;
 using BackendApartmentReservation.Database.Entities.Amenities;
 using BackendApartmentReservation.Database.Entities.Reservations;
-using BackendHotelReservation.Repositories.Checklist;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackendApartmentReservation.Repositories.Checklist

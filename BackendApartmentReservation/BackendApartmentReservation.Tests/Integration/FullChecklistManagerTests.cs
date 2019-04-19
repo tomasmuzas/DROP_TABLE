@@ -1,5 +1,4 @@
-﻿using BackendHotelReservation.Repositories.Checklist;
-
+﻿
 namespace BackendApartmentReservation.Tests.Integration
 {
     using System.Threading.Tasks;

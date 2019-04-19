@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Database;
 using BackendApartmentReservation.Database.Entities.Amenities;
 using BackendApartmentReservation.Database.Entities.Reservations;
-using BackendApartmentReservation.Repositories.Checklist;
 using Microsoft.EntityFrameworkCore;
 
-namespace BackendHotelReservation.Repositories.Checklist
+namespace BackendApartmentReservation.Repositories.Checklist
 {
     public class HotelRepository : IHotelRepository
     {
