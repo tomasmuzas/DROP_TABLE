@@ -1,4 +1,5 @@
-﻿namespace BackendApartmentReservation.Tests.Integration
+﻿
+namespace BackendApartmentReservation.Tests.Integration
 {
     using System.Threading.Tasks;
     using BackendApartmentReservation.Managers;
@@ -19,12 +20,16 @@
                 var employeeRepository = A.Fake<IEmployeeRepository>(o => o.Strict());
                 var flightRepository = new FlightRepository(dbContext);
                 var carRentRepository = new CarRentRepository(dbContext);
+                var apartmentRepository = new ApartmentRepository(dbContext);
+                var hotelRepository = new HotelRepository(dbContext);
+                var livingSpaceRepository = new LivingPlaceRepository(dbContext, apartmentRepository, hotelRepository);
                 var checklistRepository = new ChecklistRepository(dbContext);
 
                 var checklistManager = new ChecklistManager(
                     employeeRepository,
                     flightRepository,
                     carRentRepository,
+                    livingSpaceRepository,
                     checklistRepository,
                     new NullLogger<ChecklistManager>());
                 var employee = new DbEmployee
@@ -53,10 +58,20 @@
                     CarNumber = "CAR123"
                 };
 
-                var checklist = await checklistManager.CreateChecklistForEmployee(
+                var livingSpaceInfo = new LivingPlaceReservationInfo
+                {
+                    Required = true,
+                    ApartmentReservationInfo = new ApartmentReservationInfo {Required = true, ApartmentAddress = "Vilnius"},
+                    HotelReservationInfo = new HotelReservationInfo { Required = false, HotelAddress = "Kaunas"}
+                };
+
+
+            var checklist = await checklistManager.CreateChecklistForEmployee(
                     employee.Id,
                     flightInfo,
-                    carInfo);
+                    carInfo,
+                    livingSpaceInfo
+                    );
 
                 Assert.NotNull(checklist);
 
@@ -74,6 +89,14 @@
                 Assert.NotNull(checklist.Car.CarReservation);
                 Assert.NotEqual(0, checklist.Car.CarReservation.Id);
                 Assert.Equal(carInfo.CarNumber, checklist.Car.CarReservation.CarNumber);
+
+                Assert.NotNull(checklist.LivingPlace);
+                Assert.NotEqual(0, checklist.LivingPlace.Id);
+                Assert.NotNull(checklist.LivingPlace.LivingPlaceReservation.ApartmentReservation);
+                Assert.NotEqual(0, checklist.LivingPlace.LivingPlaceReservation.Id);
+                Assert.Equal(livingSpaceInfo.ApartmentReservationInfo.ApartmentAddress, checklist.LivingPlace.LivingPlaceReservation.ApartmentReservation.Address);
+                Assert.Null(checklist.LivingPlace.LivingPlaceReservation.HotelReservation);
+
             }
         }
     }

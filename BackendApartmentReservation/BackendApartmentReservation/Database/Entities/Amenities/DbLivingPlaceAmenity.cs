@@ -9,8 +9,6 @@ namespace BackendApartmentReservation.Database.Entities.Amenities
         [Key]
         public int Id { get; set; }
 
-        public DbHotelReservation Hotel { get; set; }
-
-        public DbApartment Apartment { get; set; }
+        public DbLivingPlaceReservation LivingPlaceReservation { get; set; }
     }
 }
