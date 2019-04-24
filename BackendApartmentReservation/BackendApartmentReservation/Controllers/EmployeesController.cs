@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackendApartmentReservation.Controllers
 {
+    using BackendApartmentReservation.Infrastructure.Exceptions;
+    using System;
     using System.Collections.Generic;
 
     [Route("api")]
@@ -24,7 +26,7 @@ namespace BackendApartmentReservation.Controllers
 
         [HttpGet]
         [Route("employees")]
-        public async Task<IEnumerable<GetUserResponse>> GetAllEmployees()
+        public async Task<IEnumerable<EmployeeInfo>> GetAllEmployees()
         {
             return await _employeeManager.GetAllEmployees();
         }
@@ -46,6 +48,20 @@ namespace BackendApartmentReservation.Controllers
                Id = employeeId
             };
             return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("employees/{userId}")]
+        public async Task<IActionResult> GetEmployeeById(string employeeID)
+        {
+            var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeID);
+
+            if (employee == null)
+            {
+                return BadRequest(ErrorCodes.EmployeeNotFound);
+            }
+
+            return Ok(employee);
         }
     }
 }

@@ -28,6 +28,11 @@ namespace BackendApartmentReservation.Repositories
             return await _context.Employees.FindAsync(employeeID);
         }
 
+        public async Task<DbEmployee> GetEmployeeByEmployeeId(string employeeID)
+        {
+            return await _context.Employees.FirstOrDefaultAsync(e => e.ExternalEmployeeId == employeeID);
+        }
+
         public async Task CreateEmployee(DbEmployee dbEmployee)
         {
             if (dbEmployee.FirstName != null && dbEmployee.LastName != null 
