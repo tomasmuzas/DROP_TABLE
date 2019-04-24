@@ -54,15 +54,14 @@ namespace BackendApartmentReservation.Controllers
         [Route("employees/{userId}")]
         public async Task<IActionResult> GetEmployeeById(string employeeID)
         {
-            try
-            {
-                var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeID);
-                return Ok(employee);
-            }
-            catch (NullReferenceException)
+            var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeID);
+
+            if (employee == null)
             {
                 return BadRequest(ErrorCodes.EmployeeNotFound);
             }
+
+            return Ok(employee);
         }
     }
 }
