@@ -28,9 +28,9 @@ namespace BackendApartmentReservation.Repositories
             return await _context.Employees.FindAsync(employeeID);
         }
 
-        public async Task<DbEmployee> GetEmployeeById(string employeeID)
+        public async Task<DbEmployee> GetEmployeeByEmployeeId(string employeeID)
         {
-            return await _context.Employees.FindAsync(employeeID);
+            return await _context.Employees.FirstOrDefaultAsync(e => e.ExternalEmployeeId == employeeID);
         }
 
         public async Task CreateEmployee(DbEmployee dbEmployee)

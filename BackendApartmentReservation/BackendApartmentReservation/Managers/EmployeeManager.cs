@@ -39,9 +39,9 @@ namespace BackendApartmentReservation.Managers
             });
         }
 
-        public async Task<EmployeeInfo> GetEmployeeById(string employeeID)
+        public async Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeID)
         {
-            var employee = await _employeeRepository.GetEmployeeById(employeeID);
+            var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeID);
             return new EmployeeInfo
             {
                 Id = employee.ExternalEmployeeId,

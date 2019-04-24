@@ -56,14 +56,8 @@ namespace BackendApartmentReservation.Controllers
         {
             try
             {
-                var result = await _employeeManager.GetEmployeeById(employeeID);
-                var response = new EmployeeInfo()
-                {
-                    FirstName = result.FirstName,
-                    LastName = result.LastName,
-                    Email = result.Email
-                };
-                return Ok(response);
+                var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeID);
+                return Ok(employee);
             }
             catch (NullReferenceException)
             {

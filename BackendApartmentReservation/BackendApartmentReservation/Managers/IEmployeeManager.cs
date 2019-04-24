@@ -12,6 +12,6 @@ namespace BackendApartmentReservation.Managers
 
         Task<IEnumerable<EmployeeInfo>> GetAllEmployees();
 
-        Task<EmployeeInfo> GetEmployeeById(string employeeID);
+        Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeID);
     }
 }
