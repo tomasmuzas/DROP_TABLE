@@ -24,7 +24,6 @@ namespace BackendApartmentReservation.Database
 
         public DbSet<DbOffice> Offices { get; set; }
 
-        // Amenities
         public DbSet<DbEmployeeAmenitiesChecklist> Checklists { get; set; }
 
         public DbSet<DbCarRentAmenity> CarRentAmenities { get; set; }
@@ -46,7 +45,8 @@ namespace BackendApartmentReservation.Database
         public DbSet<DbHotelReservation> HotelReservations { get; set; }
 
         public DbSet<DbApartmentReservation> ApartmentReservations { get; set; }
-        
+
+        public DbSet<DbEmployeePlan> EmployeePlans { get; set; }
 
     }
 }
