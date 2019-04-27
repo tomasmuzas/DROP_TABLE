@@ -12,8 +12,7 @@ namespace BackendApartmentReservation.Managers
         private readonly ITripRepository _tripRepository;
 
         public TripInformationManager(
-            ITripRepository tripRepository,
-            IEmployeeManager employeeManager)
+            ITripRepository tripRepository)
         {
             _tripRepository = tripRepository;
         }
