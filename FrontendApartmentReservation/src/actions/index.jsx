@@ -6,15 +6,19 @@ export const GET_ALL_AUTHENTICATIONS = 'GET_ALL_AUTHENTICATIONS';
 export const GET_ALL_EMPLOYEES = 'GET_ALL_EMPLOYEES';
 export const GET_AVAILABLE_EMPLOYEES = 'GET_AVAILABLE_EMPLOYEES';
 export const GET_ALL_TRIPS = 'GET_ALL_TRIPS';
-export const SIGN_UP_USER = 'GET_ALL_TRIPS';
+export const SIGN_UP_USER = 'SIGN_UP_USER';
+export const GET_ALL_OFFICES = 'GET_ALL_OFFICES';
+export const CREATE_TRIP = 'CREATE_TRIP';
+
 
 var BACKEND_BASE_URI;
-if (process.env.NODE_ENV !== 'production'){
+if (process.env.NODE_ENV === 'production'){
      BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
 }
 else{
     BACKEND_BASE_URI = process.env.REACT_APP_DEV_BASE_URI;
 }
+console.log(BACKEND_BASE_URI);
 
 var headers = {
     "Content-Type": "application/json",
@@ -37,6 +41,24 @@ export const getAllApartments = () => (dispatch) => {
                     payload: data
                 });
             }).catch((error) => console.warn(error));
+    }).catch((error) => console.warn(error));
+}
+
+export const getAllOffices = () => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/offices`, {
+        method: "GET",
+        headers: headers
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error("Bad response");
+        }
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_ALL_OFFICES,
+                    payload: data
+                });
+            });
     }).catch((error) => console.warn(error));
 }
 
@@ -79,15 +101,14 @@ export const getAllEmployees = () => (dispatch) => {
 export const getAvailableEmployees = (departureDate, returnDate) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees`, {
         method: "GET",
-        body: JSON.stringify({ departureDate, returnDate}),
         headers: headers
     }).then(response => {
-        console.log('get avail emplo')
         if (!response.ok) {
             throw new Error("Bad response");
         }
         response.json()
             .then(data => {
+                console.warn(data);
                 dispatch({
                     type: GET_AVAILABLE_EMPLOYEES,
                     payload: data
@@ -124,6 +145,29 @@ export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dis
             response.json().then(data => {
                 dispatch({
                     type: SIGN_UP_USER,
+                    payload: data
+                }).then(() => {
+                    dispatch(push('/'))
+                });
+            });
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+
+export const createTrip = (UsersId, OfficeId, DepartureDate, ReturnDate) => (dispatch) => {
+    fetch(BACKEND_BASE_URI + "/api/trip", {
+        method: "POST",
+        body: JSON.stringify({ UsersId, OfficeId, DepartureDate, ReturnDate }),
+        headers,
+    }).then(response => {
+        if (response.status === 200) {
+            response.json().then(data => {
+                dispatch({
+                    type: CREATE_TRIP,
                     payload: data
                 }).then(() => {
                     dispatch(push('/'))
