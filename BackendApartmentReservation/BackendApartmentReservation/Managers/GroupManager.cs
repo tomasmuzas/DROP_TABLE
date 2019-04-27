@@ -25,11 +25,11 @@ namespace BackendApartmentReservation.Managers
             var office = await _officeRepository.GetOfficeById(officeID);
             
             group.StartingOffice = office;
-            group.EmployeesLink = new List<DbEmployeeGroup>();
+            group.Employees = new List<DbEmployeeGroup>();
 
             foreach (DbEmployee e in employees)
             {
-                group.EmployeesLink.Add(
+                group.Employees.Add(
                 new DbEmployeeGroup
                 {
                     DbEmployee = e,

@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BackendApartmentReservation.Database;
 using BackendApartmentReservation.Database.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackendApartmentReservation.Repositories
 {
@@ -17,6 +19,10 @@ namespace BackendApartmentReservation.Repositories
         {
             return await _context.Offices.FindAsync(officeID);
         }
-        
+
+        public async Task<IEnumerable<DbOffice>> GetAllOffices()
+        {
+            return await _context.Offices.ToListAsync();
+        }
     }
 }

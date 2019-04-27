@@ -394,12 +394,12 @@ namespace BackendApartmentReservation.Migrations
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployeeGroup", b =>
                 {
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbEmployee", "DbEmployee")
-                        .WithMany("GroupsLink")
+                        .WithMany("Groups")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbGroup", "DbGroup")
-                        .WithMany("EmployeesLink")
+                        .WithMany("Employees")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

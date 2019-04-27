@@ -36,12 +36,12 @@ namespace BackendApartmentReservation.Repositories
         public async Task AddEmployeeToGroup(int groupID, int emplID)
         {
             var group = await _context.Groups
-            .Include(p => p.EmployeesLink)
+            .Include(p => p.Employees)
             .SingleAsync(p => p.Id == groupID);
 
             var newEmpl = await _context.Employees
                 .SingleAsync(p => p.Id == emplID);
-            group.EmployeesLink.Add(new DbEmployeeGroup
+            group.Employees.Add(new DbEmployeeGroup
             {
                 DbEmployee = newEmpl,
                 DbGroup = group

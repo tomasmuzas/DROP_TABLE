@@ -18,6 +18,6 @@ namespace BackendApartmentReservation.Database.Entities
 
         public DbOffice Office { get; set; }
 
-        public List<DbEmployeeGroup> GroupsLink { get; set; }
+        public List<DbEmployeeGroup> Groups { get; set; }
     }
 }

@@ -56,12 +56,12 @@ namespace BackendApartmentReservation.Database
 
             modelBuilder.Entity<DbEmployeeGroup>()
                 .HasOne(pt => pt.DbEmployee)
-                .WithMany(p => p.GroupsLink)
+                .WithMany(p => p.Groups)
                 .HasForeignKey(pt => pt.EmployeeId);
 
             modelBuilder.Entity<DbEmployeeGroup>()
                 .HasOne(pt => pt.DbGroup)
-                .WithMany(t => t.EmployeesLink)
+                .WithMany(t => t.Employees)
                 .HasForeignKey(pt => pt.GroupId);
         }
     }
