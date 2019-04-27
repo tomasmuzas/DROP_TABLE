@@ -7,6 +7,6 @@ namespace BackendApartmentReservation.Database.Entities.Reservations
         [Key]
         public int Id { get; set; }
 
-        public string CardPlateNumber { get; set; }
+        public string CarNumber { get; set; }
     }
 }

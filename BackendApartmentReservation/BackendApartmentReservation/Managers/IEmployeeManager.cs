@@ -1,9 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using BackendApartmentReservation.Database.Entities;
+using System.Threading.Tasks;
 
 namespace BackendApartmentReservation.Managers
 {
+    using System.Collections.Generic;
+    using DataContracts.DataTransferObjects.Responses;
+
     public interface IEmployeeManager
     {
-        Task<string> CreateEmployee(string firstName, string lastName, string email, string office);
+        Task<string> CreateEmployee(DbEmployee dbEmployee);
+
+        Task<IEnumerable<EmployeeInfo>> GetAllEmployees();
+
+        Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeID);
     }
 }
