@@ -7,7 +7,8 @@ namespace BackendApartmentReservation.Extensions.Json
         private static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore,
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            MaxDepth = 2
         };
 
         public static string ToJson(this object obj)

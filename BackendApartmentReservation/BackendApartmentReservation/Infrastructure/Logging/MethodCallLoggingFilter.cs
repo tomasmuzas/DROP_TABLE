@@ -25,7 +25,7 @@ namespace BackendApartmentReservation.Infrastructure.Logging
 
                 _logger.Info($"Controller action {fullActionName} has successfully finished execution.\n\n" +
                              $"HTTP method: {httpMethod}\n" +
-                             $"Parameters: {parameters.ToJson()}\n" +
+                             //$"Parameters: {parameters.ToJson()}\n" + TODO  @tomu fix parameter serialization recursion
                              $"Result: {result?.Value?.ToJson() ?? "Void"}\n\n" +
                              $"Status code: {result?.StatusCode?.ToString() ?? "unknown"}");
             }
