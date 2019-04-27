@@ -7,6 +7,8 @@ export default function reducer(state = [], action = {}) {
                 ...state,
                 action.payload
             ];
+        case 'GET_AVAILABLE_EMPLOYEES':
+            return action.payload;
         default:
             return state;
     }

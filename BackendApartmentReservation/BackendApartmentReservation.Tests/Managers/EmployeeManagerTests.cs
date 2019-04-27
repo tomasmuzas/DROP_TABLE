@@ -10,6 +10,9 @@ using Xunit;
 
 namespace BackendApartmentReservation.Tests
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class EmployeeManagerTests
     {
         [Fact]
@@ -36,6 +39,48 @@ namespace BackendApartmentReservation.Tests
                 .MustHaveHappenedOnceExactly();
 
             Assert.NotEmpty(id);
+        }
+
+        [Fact]
+        public async Task GetAllEmployees_MapsListsCorrectly()
+        {
+            var fakeEmployeeRepository = A.Fake<IEmployeeRepository>();
+            var fakeEmployeeList = new List<DbEmployee>
+            {
+                new DbEmployee
+                {
+                    FirstName = "Name1",
+                    LastName = "Surname1",
+                    Email = "Email1",
+                    ExternalEmployeeId = "id1"
+                },
+                new DbEmployee
+                {
+                    FirstName = "Name2",
+                    LastName = "Surname2",
+                    Email = "Email2",
+                    ExternalEmployeeId = "id2"
+                }
+            };
+
+            A.CallTo(() => fakeEmployeeRepository.GetAllEmployees())
+                .Returns(fakeEmployeeList);
+
+            var manager = new EmployeeManager(fakeEmployeeRepository);
+
+            var responseEmployees = await manager.GetAllEmployees();
+
+            A.CallTo(() => fakeEmployeeRepository.GetAllEmployees())
+                .MustHaveHappenedOnceExactly();
+
+            foreach (var employee in fakeEmployeeList)
+            {
+                responseEmployees.Single(e =>
+                    e.Id == employee.ExternalEmployeeId
+                    && e.FirstName == employee.FirstName
+                    && e.LastName == employee.LastName
+                    && e.Email == employee.Email);
+            }
         }
     }
 }

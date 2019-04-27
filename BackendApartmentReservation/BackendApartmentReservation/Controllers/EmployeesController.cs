@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackendApartmentReservation.Controllers
 {
+    using BackendApartmentReservation.Infrastructure.Exceptions;
+    using System;
+    using System.Collections.Generic;
+
     [Route("api")]
     [ApiController]
     public class EmployeesController : ControllerBase
@@ -18,6 +22,13 @@ namespace BackendApartmentReservation.Controllers
         public EmployeesController(IEmployeeManager employeeManager)
         {
             _employeeManager = employeeManager;
+        }
+
+        [HttpGet]
+        [Route("employees")]
+        public async Task<IEnumerable<EmployeeInfo>> GetAllEmployees()
+        {
+            return await _employeeManager.GetAllEmployees();
         }
 
         [HttpPost]
@@ -37,6 +48,20 @@ namespace BackendApartmentReservation.Controllers
                Id = employeeId
             };
             return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("employees/{userId}")]
+        public async Task<IActionResult> GetEmployeeById(string employeeID)
+        {
+            var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeID);
+
+            if (employee == null)
+            {
+                return BadRequest(ErrorCodes.EmployeeNotFound);
+            }
+
+            return Ok(employee);
         }
     }
 }
