@@ -19,7 +19,6 @@ namespace BackendApartmentReservation.Controllers
             var travelMock = new DbTrip()
             {
                 Id = 1,
-                Cost = 100,
                 DepartureDate = DateTime.UtcNow.AddDays(2),
                 ReturnDate = DateTime.UtcNow.AddDays(5),
                 DestinationOffice = new DbOffice()
