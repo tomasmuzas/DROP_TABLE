@@ -41,6 +41,9 @@ class PageHeader extends React.Component {
                         <li className="nav-item pt-1 robot "> <LinkButton link="/signUp" name={t("SignUp")} /></li>
                     </ul>
                     <ul className="pr-2 navbar-nav mr-auto">
+                        <li className="nav-item pt-1 robot "> <LinkButton link="/createTrip" name={t("CreateTrip")} /></li>
+                    </ul>
+                    <ul className="pr-2 navbar-nav mr-auto">
                         <li className="nav-item pt-1 robot "> <label style={{ color: 'white' }}> LT </label> <Switch
                             checked={this.state.checked}
                             onChange={this.handleChange()}

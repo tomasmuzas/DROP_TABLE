@@ -1,8 +1,9 @@
-import users from './users';
+import employees from './employees';
 import trips from './trips';
 import authentication from './authentication';
-import apartments from './apartments'
+import apartments from './apartments';
+import offices from './offices';
 
 export default {
-    users, trips, authentication, apartments
+    employees, trips, authentication, apartments, offices
 };

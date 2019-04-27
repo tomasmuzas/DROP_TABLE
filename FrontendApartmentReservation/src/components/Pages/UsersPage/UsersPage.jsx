@@ -6,16 +6,17 @@ import * as actionCreators from '../../../actions';
 class UsersPage extends React.Component {
 
     componentWillMount() {
-        this.props.getAllUsers();
+        this.props.getAllEmployees();
     }
 
     render() {
-        if (this.props.users) {
+        if (this.props.employees) {
+            console.log(this.props.employees)
             return (
                 <div>
                    <div>
                         This is UsersPage
-                        {this.props.users.map(user => <div> {user} </div>)}
+                        {this.props.employees.map(employee => <div> {employee} </div>)}
                     </div>
                 </div>
             );
@@ -35,7 +36,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        users: state.users
+        employees: state.employees
     };
 }
 
