@@ -27,7 +27,8 @@ i18n.use(LanguageDetector).init({
         "ReturnDate": "Return date",
         "CarRequired": "Is car required?",
         "ApartmentsRequired": "Are apartments required?",
-        "FlightRequired": "Is flight required?"
+        "FlightRequired": "Is flight required?",
+        "FinishCreation": "Finish"
       }
     },
     lt: {
@@ -53,7 +54,8 @@ i18n.use(LanguageDetector).init({
         "ReturnDate": "Grįžimo data",
         "CarRequired": "Ar mašina reikalinga?",
         "ApartmentsRequired": "Ar apartamentai reikalingi?",
-        "FlightRequired": "Ar skrydžiai reikalingi?"
+        "FlightRequired": "Ar skrydžiai reikalingi?",
+        "FinishCreation": "Užbaigti"
       }
     }
   },

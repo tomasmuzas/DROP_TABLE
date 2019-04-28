@@ -71,7 +71,7 @@ class SignUpPage extends React.Component {
         const { inputName, inputSurname, inputEmail, inputPassword, inputOffice } = this.state;
         const { t } = this.props;
         return (
-            <div className={`loginForm text-center jumbotron mx-auto col-6 pb-1 pt-4`}>
+            <div className={`loginForm text-center jumbotron mx-auto col-12 col-lg-6 pb-1 pt-4`}>
                 <form className={`form-signin`} onSubmit={this.handleSubmit}>
                     <div className="form-group mb-2">
                         <input type="text" id="inputFullName" className={`form-control`} placeholder={t("Name")}

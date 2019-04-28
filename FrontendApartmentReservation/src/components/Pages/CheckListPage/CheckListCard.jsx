@@ -13,12 +13,12 @@ import IconButton from '@material-ui/core/IconButton';
 import i18n from "../../../i18n"
 
 function CheckListCard(props) {
-    
-    const { checkListInfo, t } = props;
+
+    const { checkListInfo, t, tripId } = props;
     return (
-        <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E'}}>
+        <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
             <div className="col justify-content-md-center nameDiv pl-5">
-            <h5>{checkListInfo.firstName} {checkListInfo.lastName}</h5>
+                <h5>{checkListInfo.employee.firstName} {checkListInfo.employee.lastName}</h5>
             </div>
             <div className="col pr-5">
                 <div style={{ float: "right" }}>
@@ -34,9 +34,11 @@ function CheckListCard(props) {
                         control={<Checkbox checked={checkListInfo.isCarRentRequired} />}
                         label={t("CarRequired")}
                     />
-                    <IconButton className="EditIconButton">
-                        <Icon>edit_icon</Icon>
-                    </IconButton>
+                    <Link to={'/' + tripId + '/checklist/' + checkListInfo.employee.id}>
+                        <IconButton className="EditIconButton">
+                            <Icon>edit_icon</Icon>
+                        </IconButton>
+                    </Link>
                 </div>
             </div>
         </div>
