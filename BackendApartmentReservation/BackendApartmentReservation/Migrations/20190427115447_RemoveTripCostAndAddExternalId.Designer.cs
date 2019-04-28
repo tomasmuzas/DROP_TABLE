@@ -4,14 +4,16 @@ using BackendApartmentReservation.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendApartmentReservation.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190427115447_RemoveTripCostAndAddExternalId")]
+    partial class RemoveTripCostAndAddExternalId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,9 +158,9 @@ namespace BackendApartmentReservation.Migrations
 
                     b.Property<int?>("FlightId");
 
-                    b.Property<int?>("LivingPlaceId");
+                    b.Property<int?>("GroupId");
 
-                    b.Property<int?>("TripId");
+                    b.Property<int?>("LivingPlaceId");
 
                     b.HasKey("Id");
 
@@ -168,9 +170,9 @@ namespace BackendApartmentReservation.Migrations
 
                     b.HasIndex("FlightId");
 
-                    b.HasIndex("LivingPlaceId");
+                    b.HasIndex("GroupId");
 
-                    b.HasIndex("TripId");
+                    b.HasIndex("LivingPlaceId");
 
                     b.ToTable("Checklists");
                 });
@@ -369,13 +371,13 @@ namespace BackendApartmentReservation.Migrations
                         .WithMany()
                         .HasForeignKey("FlightId");
 
+                    b.HasOne("BackendApartmentReservation.Database.Entities.DbGroup", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
                     b.HasOne("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", "LivingPlace")
                         .WithMany()
                         .HasForeignKey("LivingPlaceId");
-
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbTrip", "Trip")
-                        .WithMany()
-                        .HasForeignKey("TripId");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbGroup", b =>

@@ -9,8 +9,6 @@ namespace BackendApartmentReservation.Database.Entities
         [Key]
         public int Id { get; set; }
 
-        public double Cost { get; set; }
-
         public DbOffice DestinationOffice { get; set; }
 
         public DateTime DepartureDate { get; set; }
@@ -18,5 +16,7 @@ namespace BackendApartmentReservation.Database.Entities
         public DateTime ReturnDate { get; set; }
 
         public List<DbGroup> Groups { get; set; }
+
+        public string ExternalTripId { get; set; }
     }
 }

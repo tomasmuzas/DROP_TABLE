@@ -11,7 +11,7 @@ namespace BackendApartmentReservation.Database.Entities
 
         public DbEmployee Employee { get; set; }
 
-        public DbGroup Group { get; set; }
+        public DbTrip Trip { get; set; }
 
         public DbLivingPlaceAmenity LivingPlace { get; set; }
 
