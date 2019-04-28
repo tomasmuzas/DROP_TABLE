@@ -18,6 +18,8 @@ namespace BackendApartmentReservation.Infrastructure.Containers
                 .As<IChecklistManager>();
             builder.RegisterType<OfficeManager>()
                 .As<IOfficeManager>();
+            builder.RegisterType<TripInformationManager>()
+                .As<ITripInformationManager>();
 
             // Repositories
             builder.RegisterType<CarRentRepository>()
@@ -36,7 +38,8 @@ namespace BackendApartmentReservation.Infrastructure.Containers
                 .As<IHotelRepository>();
             builder.RegisterType<OfficeRepository>()
                 .As<IOfficeRepository>();
-
+            builder.RegisterType<TripRepository>()
+                .As<ITripRepository>();
         }
     }
 }

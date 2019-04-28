@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using BackendApartmentReservation.Database.Entities;
-
 namespace BackendApartmentReservation.Repositories
 {
     public interface IEmployeeRepository
