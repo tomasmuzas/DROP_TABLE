@@ -109,3 +109,17 @@
 .content {
   min-height: 100vh;
 }
+
+.EditIconButton:hover {
+  background-color: inherit !important;
+}
+
+.nameDiv{
+  position:absolute;
+}
+
+.nameDiv h5{
+  margin:auto;
+  line-height:51px;
+  vertical-align:middle;
+}
