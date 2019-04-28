@@ -24,7 +24,11 @@ i18n.use(LanguageDetector).init({
         "SelectOffice" : "Select DB office",
         "Cost" : "Cost",
         "DepartureDate" : "Departure time",
-        "ReturnDate": "Return date"
+        "ReturnDate": "Return date",
+        "CarRequired": "Is car required?",
+        "ApartmentsRequired": "Are apartments required?",
+        "FlightRequired": "Is flight required?",
+        "FinishCreation": "Finish"
       }
     },
     lt: {
@@ -47,7 +51,11 @@ i18n.use(LanguageDetector).init({
         "SelectOffice" : "Pasirinkite DB offisą",
         "Cost" : "Kaina",
         "DepartureDate" : "Išvykimo data",
-        "ReturnDate": "Grįžimo data"
+        "ReturnDate": "Grįžimo data",
+        "CarRequired": "Ar mašina reikalinga?",
+        "ApartmentsRequired": "Ar apartamentai reikalingi?",
+        "FlightRequired": "Ar skrydžiai reikalingi?",
+        "FinishCreation": "Užbaigti"
       }
     }
   },

@@ -9,6 +9,7 @@ export const GET_ALL_TRIPS = 'GET_ALL_TRIPS';
 export const SIGN_UP_USER = 'SIGN_UP_USER';
 export const GET_ALL_OFFICES = 'GET_ALL_OFFICES';
 export const CREATE_TRIP = 'CREATE_TRIP';
+export const GET_TRIP_BASIC = 'GET_TRIP_BASIC';
 
 
 var BACKEND_BASE_URI;
@@ -129,6 +130,24 @@ export const getAllTrips = () => (dispatch) => {
             .then(data => {
                 dispatch({
                     type: GET_ALL_TRIPS,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.warn(error));
+}
+
+export const getBasicTrip = (tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/tripinfo/` + tripId +'/basic', {
+        method: "GET",
+        headers: headers
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error("Bad response");
+        }
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_TRIP_BASIC,
                     payload: data
                 });
             });

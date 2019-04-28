@@ -9,6 +9,7 @@ import TripsPage from '../../Pages/TripsPage/TripsPage';
 import PageHeader from './PageHeader';
 import SignUpPage from '../../Pages/SignUpPage/SignUpPage';
 import CreateTrip from '../../Pages/TripsPage/CreateTrip';
+import TripCheckList from '../../Pages/CheckListPage/TripCheckList';
 
 export default class MainLayout extends React.Component {
     render() {
@@ -25,6 +26,7 @@ export default class MainLayout extends React.Component {
                     <Route path="/users" component={UsersPage}/>
                     <Route path="/signup" component={SignUpPage}/>
                     <Route path="/createTrip" component={CreateTrip}/>
+                    <Route path="/trip/:tripId" component={TripCheckList}/>
                     <Route path="*" component={PageNotFound}/>
                 </Switch>
             </div>
