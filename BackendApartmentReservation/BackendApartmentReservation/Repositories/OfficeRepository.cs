@@ -19,5 +19,10 @@
         {
             return await _db.Offices.ToListAsync();
         }
+
+        public async Task<DbOffice> GetOfficeById(int officeId)
+        {
+            return await _db.Offices.FirstOrDefaultAsync(o => o.Id == officeId);
+        }
     }
 }
