@@ -6,5 +6,7 @@ namespace BackendApartmentReservation.Managers
     public interface IChecklistManager
     {
         Task<DbEmployeeAmenitiesChecklist> CreateEmptyChecklistForEmployee(string employeeId, string tripId);
+
+        Task AddFlightForEmployee(string employeeId, string tripId);
     }
 }

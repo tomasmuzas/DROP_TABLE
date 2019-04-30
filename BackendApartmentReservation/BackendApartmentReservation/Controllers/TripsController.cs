@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using BackendApartmentReservation.Database.Entities;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendApartmentReservation.Controllers
 {
-    [Route("api")]
+    using Managers;
+
+    [Route("api/trips")]
     [ApiController]
     public class TripsController : ControllerBase
     {
-        [HttpGet]
-        [Route("trips")]
-        public async Task<IEnumerable<DbTrip>> Get()
-        {
-            var travelMock = new DbTrip()
-            {
-                Id = 1,
-                DepartureDate = DateTime.UtcNow.AddDays(2),
-                ReturnDate = DateTime.UtcNow.AddDays(5),
-                DestinationOffice = new DbOffice()
-            };
+        private readonly IChecklistManager _checklistManager;
 
-            return await Task.FromResult(new List<DbTrip> { travelMock });
+        public TripsController(IChecklistManager checklistManager)
+        {
+            _checklistManager = checklistManager;
+        }
+
+        [HttpPost]
+        [Route("{tripId}/employees/{employeeId}/flight")]
+        public async Task AddFlightToTrip(string tripId, string employeeId)
+        {
+            await _checklistManager.AddFlightForEmployee(employeeId, tripId);
         }
     }
 }
