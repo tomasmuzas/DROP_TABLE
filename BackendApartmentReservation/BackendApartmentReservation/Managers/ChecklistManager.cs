@@ -14,7 +14,7 @@ namespace BackendApartmentReservation.Managers
         private readonly ITripRepository _tripRepository;
         private readonly IChecklistRepository _checklistRepository;
 
-        private readonly IFlightManager _flightManager;
+        private readonly IFlightRepository _flightRepository;
 
         private readonly ILogger<ChecklistManager> _logger;
 
@@ -22,14 +22,14 @@ namespace BackendApartmentReservation.Managers
             IEmployeeRepository employeeRepository,
             IChecklistRepository checklistRepository,
             ITripRepository tripRepository,
-            IFlightManager flightManager,
+            IFlightRepository flightRepository,
             ILogger<ChecklistManager> logger)
         {
             _employeeRepository = employeeRepository;
             _tripRepository = tripRepository;
             _checklistRepository = checklistRepository;
 
-            _flightManager = flightManager;
+            _flightRepository = flightRepository;
 
             _logger = logger;
         }
@@ -70,8 +70,19 @@ namespace BackendApartmentReservation.Managers
                 throw new ArgumentException("");
             }
 
-            await _flightManager.AddEmptyFlightToChecklist(checklist);
+            var flight = await _flightRepository.CreateEmptyFlight();
+            checklist.Flight = flight;
+            await _checklistRepository.UpdateChecklist(checklist);
+
             _logger.LogInformation($"Added empty flight to the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task UpdateFlightForEmployee(string employeeId, string tripId, FlightReservationInfo info)
+        {
+            var flight = await _checklistRepository.GetChecklistFullFlight(employeeId, tripId);
+            flight.FlightReservation.FlightNumber = info.FlightNumber;
+            await _flightRepository.UpdateFlight(flight);
+            _logger.LogInformation($"Updated flight information for the checklist for employee {employeeId} and trip {tripId}");
         }
     }
 }

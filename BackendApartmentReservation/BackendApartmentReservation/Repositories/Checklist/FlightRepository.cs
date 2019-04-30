@@ -35,5 +35,11 @@
 
             return flightAmenity;
         }
+
+        public async Task UpdateFlight(DbFlightAmenity flight)
+        {
+            _db.Update(flight);
+            await _db.SaveChangesAsync();
+        }
     }
 }

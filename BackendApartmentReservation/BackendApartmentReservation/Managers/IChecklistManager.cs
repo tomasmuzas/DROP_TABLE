@@ -8,5 +8,7 @@ namespace BackendApartmentReservation.Managers
         Task<DbEmployeeAmenitiesChecklist> CreateEmptyChecklistForEmployee(string employeeId, string tripId);
 
         Task AddFlightForEmployee(string employeeId, string tripId);
+
+        Task UpdateFlightForEmployee(string employeeId, string tripId, FlightReservationInfo info);
     }
 }

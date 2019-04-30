@@ -12,5 +12,7 @@
         /// <param name="flightNumber"></param>
         /// <returns></returns>
         Task<DbFlightAmenity> CreateEmptyFlight();
+
+        Task UpdateFlight(DbFlightAmenity flight);
     }
 }
