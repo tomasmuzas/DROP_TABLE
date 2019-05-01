@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using BackendApartmentReservation.Database.Entities;
+using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
+using BackendApartmentReservation.Managers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendApartmentReservation.Controllers
@@ -11,6 +13,13 @@ namespace BackendApartmentReservation.Controllers
     [ApiController]
     public class TripsController : ControllerBase
     {
+        private readonly ITripManager _tripManager;
+
+        public TripsController(ITripManager tripManager)
+        {
+            _tripManager = tripManager;
+        }
+
         [HttpGet]
         [Route("trips")]
         public async Task<IEnumerable<DbTrip>> Get()
@@ -24,6 +33,13 @@ namespace BackendApartmentReservation.Controllers
             };
 
             return await Task.FromResult(new List<DbTrip> { travelMock });
+        }
+
+        [HttpPost]
+        [Route("trips")]
+        public async Task<IActionResult> CreateBasicTrip([FromBody] CreateTripRequest tripRequest)
+        {
+            return Ok(await _tripManager.CreateBasicTrip(tripRequest));
         }
     }
 }
