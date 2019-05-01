@@ -196,6 +196,8 @@ namespace BackendApartmentReservation.Migrations
 
                     b.Property<int?>("DbTripId");
 
+                    b.Property<string>("ExternalGroupId");
+
                     b.Property<int?>("ManagerId");
 
                     b.Property<int?>("StartingOfficeId");
