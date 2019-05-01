@@ -17,6 +17,13 @@ namespace BackendApartmentReservation.Controllers
             _checklistManager = checklistManager;
         }
 
+        [HttpGet]
+        [Route("{tripId}/employees/{employeeId}/flight")]
+        public async Task<FlightReservationInfo> GetFlightInfo(string tripId, string employeeId)
+        {
+            return await _checklistManager.GetFlightInfo(employeeId, tripId);
+        }
+
         [HttpPost]
         [Route("{tripId}/employees/{employeeId}/flight")]
         public async Task AddFlight(string tripId, string employeeId)

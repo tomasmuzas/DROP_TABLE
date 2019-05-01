@@ -12,5 +12,7 @@ namespace BackendApartmentReservation.Managers
         Task AddFlightForEmployee(string employeeId, string tripId);
 
         Task UpdateFlightForEmployee(string employeeId, string tripId, FlightReservationRequest info);
+
+        Task<FlightReservationInfo> GetFlightInfo(string employeeId, string tripId);
     }
 }

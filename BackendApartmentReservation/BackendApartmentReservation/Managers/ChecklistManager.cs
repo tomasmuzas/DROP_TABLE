@@ -90,5 +90,26 @@ namespace BackendApartmentReservation.Managers
             await _flightRepository.UpdateFlight(flight);
             _logger.LogInformation($"Updated flight information for the checklist for employee {employeeId} and trip {tripId}");
         }
+
+        public async Task<FlightReservationInfo> GetFlightInfo(string employeeId, string tripId)
+        {
+            var flight = await _checklistRepository.GetChecklistFullFlight(employeeId, tripId);
+
+            var flightInfo = new FlightReservationInfo();
+
+            if (flight == null)
+            {
+                flightInfo.IsRequired = false;
+                return flightInfo;
+            }
+
+            flightInfo.IsRequired = true;
+            flightInfo.FlightNumber = flight.FlightReservation.FlightNumber;
+            flightInfo.Company = flight.FlightReservation.Company;
+            flightInfo.AirportAddress = flight.FlightReservation.AirportAddress;
+            flightInfo.FlightTime = flight.FlightReservation.FlightTime;
+
+            return flightInfo;
+        }
     }
 }
