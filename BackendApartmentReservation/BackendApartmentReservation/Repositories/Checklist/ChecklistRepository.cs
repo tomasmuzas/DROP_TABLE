@@ -58,11 +58,10 @@ namespace BackendApartmentReservation.Repositories.Checklist
             return await _db.Checklists
                 .Include(c => c.Employee)
                 .Include(c => c.Trip)
-                .Include(c => c.Flight)
-                    .ThenInclude(f => f.FlightReservation)
                 .Where(c => c.Employee.ExternalEmployeeId == employeeId
                     && c.Trip.ExternalTripId == tripId)
                 .Select(c => c.Flight)
+                    .Include(c => c.FlightReservation)
                 .SingleOrDefaultAsync();
         }
     }
