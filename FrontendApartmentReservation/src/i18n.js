@@ -41,6 +41,7 @@ i18n.use(LanguageDetector).init({
         "FlightInfoUpdate": "Flight info updated",
         "CarInfoUpdate": "Car info updated",
         "ApartmentsInfoUpdated":"Apartments info updated",
+        "DestinationOffice": "Destination Office",
       }
     },
     lt: {
@@ -80,6 +81,7 @@ i18n.use(LanguageDetector).init({
         "FlightInfoUpdate": "Skrydžio informacija išsaugota",
         "CarInfoUpdate": "Mašinos informacija išsaugota",
         "ApartmentsInfoUpdated":"Apartamentų informacija išsaugota",
+        "DestinationOffice": "Išvykimo ofisas",
       }
     }
   },
