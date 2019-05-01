@@ -11,6 +11,8 @@ import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import i18n from "../../../i18n"
+import arrowUp from './up-arrow.png';
+import arrowDown from './down-arrow.png';
 
 class CheckListCard extends React.Component {
     constructor(props) {
@@ -18,6 +20,8 @@ class CheckListCard extends React.Component {
         this.state = {
             showDetails: false,
             flightInfo: { IsRequired: true, FlightNumber: 12342, FlightTime: '2019-05-01T11:11', AirportAddress: 'Didlaukio g. 59', FlightCompany: 'SAS' },
+            carInfo: { IsRequired: true, carNumber: 12342, PickUpPoint: 'Didlaukio g. 59'},
+            apartmentsInfo: { IsRequired: true, AppartmentsAddress:'Didlaukio g. 59'},
         }
 
         this.handleShowDetailsChange = this.handleShowDetailsChange.bind(this);
@@ -25,7 +29,7 @@ class CheckListCard extends React.Component {
 
     handleShowDetailsChange(e) {
         this.setState({
-            showDetails: e.target.checked
+            showDetails: !this.state.showDetails
         })
     }
 
@@ -67,27 +71,23 @@ class CheckListCard extends React.Component {
 
                 </div>
                 <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
-                    <Checkbox checked={this.state.showDetails} onChange={this.handleShowDetailsChange} />
-                    <label className="pt-2 mt-1">Show details </label>
+                    <div className="pl-4 pb-4">
+                        <img src={this.state.showDetails? arrowUp: arrowDown} alt="lalal" style={{ height: '32px', width: '32px' }} onClick={this.handleShowDetailsChange} />
+                    </div>
                 </div>
                 <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }} hidden={!this.state.showDetails}>
-                    <div className = "col-4" hidden={!this.state.flightInfo.IsRequired}>
-                        <h6> Flight number: {this.state.flightInfo.FlightNumber}</h6>
-                        <h6> Flight company: {this.state.flightInfo.FlightCompany}</h6>
-                        <h6> Airport address: {this.state.flightInfo.AirportAddress}</h6>
-                        <h6> Flight Date : {this.state.flightInfo.FlightTime}</h6>
+                    <div className="col-12 col-lg-4" hidden={!this.state.flightInfo.IsRequired}>
+                        <h6> {t("FlightNumber")}: {this.state.flightInfo.FlightNumber}</h6>
+                        <h6> {t("FlightCompany")}:  {this.state.flightInfo.FlightCompany}</h6>
+                        <h6> {t("AirportAddress")}:  {this.state.flightInfo.AirportAddress}</h6>
+                        <h6> {t("FlightTime")}: {this.state.flightInfo.FlightTime}</h6>
                     </div>
-                    <div className = "col-4" hidden={!this.state.flightInfo.IsRequired}>
-                        <h6> Flight number: {this.state.flightInfo.FlightNumber}</h6>
-                        <h6> Flight company: {this.state.flightInfo.FlightCompany}</h6>
-                        <h6> Airport address: {this.state.flightInfo.AirportAddress}</h6>
-                        <h6> Flight Date : {this.state.flightInfo.FlightTime}</h6>
+                    <div className="col-12 col-lg-4" hidden={!this.state.carInfo.IsRequired}>
+                        <h6> {t("CarNumber")}: {this.state.carInfo.carNumber}</h6>
                     </div>
-                    <div className = "col-4" hidden={!this.state.flightInfo.IsRequired}>
-                        <h6> Flight number: {this.state.flightInfo.FlightNumber}</h6>
-                        <h6> Flight company: {this.state.flightInfo.FlightCompany}</h6>
-                        <h6> Airport address: {this.state.flightInfo.AirportAddress}</h6>
-                        <h6> Flight Date : {this.state.flightInfo.FlightTime}</h6>
+                    <div className="col-12 col-lg-4" hidden={!this.state.apartmentsInfo.IsRequired}>
+                        <h6> {t("ApartmentsAddres")}: {this.state.apartmentsInfo.AppartmentsAddress}</h6>
+
                     </div>
                 </div>
             </div>

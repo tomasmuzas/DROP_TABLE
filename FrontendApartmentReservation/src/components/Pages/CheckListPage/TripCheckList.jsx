@@ -28,7 +28,7 @@ class TripCheckList extends React.Component {
                 <div>
                     <div>
                         {this.props.tripbasic.checklistInfos.map(checkListInfo =>
-                            <CheckListCard checkListInfo={checkListInfo} tripId={this.props.tripbasic.tripId} />)}
+                            <CheckListCard checkListInfo={checkListInfo} tripId={this.props.tripbasic.tripId} key={this.props.tripbasic.tripId} />)}
                     </div>
                     <div className="pt-5 justify-content-md-center" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
                     <Link className={`btn btn-lg btn-primary btn-block`} style={{ width: '30%' }} to={''} type="submit">{t("FinishCreation")}</Link>
