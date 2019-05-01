@@ -4,6 +4,7 @@ using BackendApartmentReservation.Database.Entities;
 namespace BackendApartmentReservation.Managers
 {
     using DataContracts.DataTransferObjects.Requests;
+    using DataContracts.DataTransferObjects.Responses;
 
     public interface IChecklistManager
     {
@@ -16,5 +17,7 @@ namespace BackendApartmentReservation.Managers
         Task<FlightReservationInfo> GetFlightInfo(string employeeId, string tripId);
 
         Task DeleteFlight(string employeeId, string tripId);
+
+        Task<ChecklistInformationResponse> GetFullChecklist(string employeeId, string tripId);
     }
 }

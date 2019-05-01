@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackendApartmentReservation.Controllers
 {
     using DataContracts.DataTransferObjects.Requests;
+    using DataContracts.DataTransferObjects.Responses;
     using Managers;
 
-    [Route("api/trips")]
+    [Route("api/trips/{tripId}/employees/{employeeId}")]
     [ApiController]
     public class PersonalTripInformationController : ControllerBase
     {
@@ -18,21 +19,28 @@ namespace BackendApartmentReservation.Controllers
         }
 
         [HttpGet]
-        [Route("{tripId}/employees/{employeeId}/flight")]
+        [Route("checklist")]
+        public async Task<ChecklistInformationResponse> GetEmployeeChecklistInformation(string tripId, string employeeId)
+        {
+            return await _checklistManager.GetFullChecklist(employeeId, tripId);
+        }
+
+        [HttpGet]
+        [Route("flight")]
         public async Task<FlightReservationInfo> GetFlightInfo(string tripId, string employeeId)
         {
             return await _checklistManager.GetFlightInfo(employeeId, tripId);
         }
 
         [HttpPost]
-        [Route("{tripId}/employees/{employeeId}/flight")]
+        [Route("flight")]
         public async Task AddFlight(string tripId, string employeeId)
         {
             await _checklistManager.AddFlightForEmployee(employeeId, tripId);
         }
 
         [HttpPut]
-        [Route("{tripId}/employees/{employeeId}/flight")]
+        [Route("flight")]
         public async Task UpdateFlight(
             string tripId,
             string employeeId,
@@ -42,7 +50,7 @@ namespace BackendApartmentReservation.Controllers
         }
 
         [HttpDelete]
-        [Route("{tripId}/employees/{employeeId}/flight")]
+        [Route("flight")]
         public async Task DeleteFlight(string tripId, string employeeId)
         {
             await _checklistManager.DeleteFlight(employeeId, tripId);

@@ -6,6 +6,7 @@ namespace BackendApartmentReservation.Managers
 {
     using System;
     using DataContracts.DataTransferObjects.Requests;
+    using DataContracts.DataTransferObjects.Responses;
     using Microsoft.Extensions.Logging;
     using Repositories.Checklist;
 
@@ -33,6 +34,16 @@ namespace BackendApartmentReservation.Managers
             _flightRepository = flightRepository;
 
             _logger = logger;
+        }
+
+        public async Task<ChecklistInformationResponse> GetFullChecklist(string employeeId, string tripId)
+        {
+            var flightInfo = await GetFlightInfo(employeeId, tripId);
+
+            return new ChecklistInformationResponse
+            {
+                Flight = flightInfo
+            };
         }
 
         public async Task<DbEmployeeAmenitiesChecklist> CreateEmptyChecklistForEmployee(
