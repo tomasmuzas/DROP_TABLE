@@ -15,6 +15,7 @@
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ITripRepository _tripRepository;
         private readonly IChecklistRepository _checklistRepository;
+        private readonly IFlightRepository _flightRepository;
 
         private readonly ChecklistManager _manager;
 
@@ -22,6 +23,7 @@
         {
             _employeeRepository = A.Fake<IEmployeeRepository>();
             _tripRepository = A.Fake<ITripRepository>();
+            _flightRepository = A.Fake<IFlightRepository>();
 
             _checklistRepository = A.Fake<IChecklistRepository>();
 
@@ -31,6 +33,7 @@
                 _employeeRepository,
                 _checklistRepository,
                 _tripRepository,
+                _flightRepository,
                 logger);
         }
 

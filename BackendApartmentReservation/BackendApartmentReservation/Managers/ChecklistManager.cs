@@ -125,7 +125,6 @@ namespace BackendApartmentReservation.Managers
 
         public async Task DeleteFlight(string employeeId, string tripId)
         {
-
             var checklist = await _checklistRepository.GetFullChecklist(employeeId, tripId);
             var flight = checklist.Flight;
 
