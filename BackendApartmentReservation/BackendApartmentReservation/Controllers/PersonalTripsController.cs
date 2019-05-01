@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackendApartmentReservation.Controllers
 {
+    using DataContracts.DataTransferObjects.Requests;
     using Managers;
 
     [Route("api/trips")]
@@ -25,7 +26,10 @@ namespace BackendApartmentReservation.Controllers
 
         [HttpPut]
         [Route("{tripId}/employees/{employeeId}/flight")]
-        public async Task UpdateFlight(string tripId, string employeeId, [FromBody] FlightReservationInfo info)
+        public async Task UpdateFlight(
+            string tripId,
+            string employeeId,
+            [FromBody] FlightReservationRequest info)
         {
             await _checklistManager.UpdateFlightForEmployee(employeeId, tripId, info);
         }

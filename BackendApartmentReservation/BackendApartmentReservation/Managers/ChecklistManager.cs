@@ -5,6 +5,7 @@ using BackendApartmentReservation.Repositories;
 namespace BackendApartmentReservation.Managers
 {
     using System;
+    using DataContracts.DataTransferObjects.Requests;
     using Microsoft.Extensions.Logging;
     using Repositories.Checklist;
 
@@ -77,10 +78,15 @@ namespace BackendApartmentReservation.Managers
             _logger.LogInformation($"Added empty flight to the checklist for employee {employeeId} and trip {tripId}");
         }
 
-        public async Task UpdateFlightForEmployee(string employeeId, string tripId, FlightReservationInfo info)
+        public async Task UpdateFlightForEmployee(string employeeId, string tripId, FlightReservationRequest info)
         {
             var flight = await _checklistRepository.GetChecklistFullFlight(employeeId, tripId);
+
             flight.FlightReservation.FlightNumber = info.FlightNumber;
+            flight.FlightReservation.Company = info.Company;
+            flight.FlightReservation.AirportAddress = info.AirportAddress;
+            flight.FlightReservation.FlightTime = info.FlightTime;
+
             await _flightRepository.UpdateFlight(flight);
             _logger.LogInformation($"Updated flight information for the checklist for employee {employeeId} and trip {tripId}");
         }
