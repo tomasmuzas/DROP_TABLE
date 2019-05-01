@@ -20,8 +20,6 @@ namespace BackendApartmentReservation.Infrastructure.Containers
                 .As<IOfficeManager>();
             builder.RegisterType<TripInformationManager>()
                 .As<ITripInformationManager>();
-            builder.RegisterType<FlightManager>()
-                .As<IFlightManager>();
 
             // Repositories
             builder.RegisterType<CarRentRepository>()
