@@ -1,5 +1,6 @@
 ﻿namespace BackendApartmentReservation.Tests.Managers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using BackendApartmentReservation.Managers;
     using BackendApartmentReservation.Repositories;
@@ -25,7 +26,7 @@
             _tripRepository = A.Fake<ITripRepository>();
             _flightRepository = A.Fake<IFlightRepository>();
 
-            _checklistRepository = A.Fake<IChecklistRepository>();
+            _checklistRepository = A.Fake<IChecklistRepository>(o => o.Strict());
 
             ILogger<ChecklistManager> logger = new NullLogger<ChecklistManager>();
 
@@ -57,6 +58,11 @@
             var checklistRepositoryCall =
                 A.CallTo(() => _checklistRepository.AddChecklist(A<DbEmployeeAmenitiesChecklist>._));
 
+            var getChecklistCall = A.CallTo(() =>
+                _checklistRepository.GetChecklist(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getChecklistCall.Returns(Task.FromResult((DbEmployeeAmenitiesChecklist)null));
+
             employeeRepositoryCall.Returns(employee);
             tripRepositoryCall.Returns(trip);
             checklistRepositoryCall.Returns(Task.CompletedTask);
@@ -75,6 +81,7 @@
             employeeRepositoryCall.MustHaveHappenedOnceExactly();
             tripRepositoryCall.MustHaveHappenedOnceExactly();
             checklistRepositoryCall.MustHaveHappenedOnceExactly();
+            getChecklistCall.MustHaveHappenedOnceExactly();
 
             Assert.Equal(checklist.Employee, employee);
             Assert.Equal(checklist.Trip, trip);
