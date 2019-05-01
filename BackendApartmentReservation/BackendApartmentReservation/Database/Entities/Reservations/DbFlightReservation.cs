@@ -13,7 +13,7 @@ namespace BackendApartmentReservation.Database.Entities.Reservations
 
         public string FlightNumber { get; set; }
 
-        public DateTime FlightTime { get; set; }
+        public DateTime? FlightTime { get; set; }
 
         public string AirportAddress { get; set; }
     }
