@@ -41,5 +41,15 @@
             _db.Update(flight);
             await _db.SaveChangesAsync();
         }
+
+        public async Task DeleteFlight(DbFlightAmenity flight)
+        {
+            _db.FlightAmenities.Remove(flight);
+            await _db.SaveChangesAsync();
+
+            var flightReservation = flight.FlightReservation;
+            _db.FlightReservations.Remove(flightReservation);
+            await _db.SaveChangesAsync();
+        }
     }
 }

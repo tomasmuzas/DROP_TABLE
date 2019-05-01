@@ -14,5 +14,7 @@
         Task<DbFlightAmenity> CreateEmptyFlight();
 
         Task UpdateFlight(DbFlightAmenity flight);
+
+        Task DeleteFlight(DbFlightAmenity flight);
     }
 }

@@ -111,5 +111,18 @@ namespace BackendApartmentReservation.Managers
 
             return flightInfo;
         }
+
+        public async Task DeleteFlight(string employeeId, string tripId)
+        {
+
+            var checklist = await _checklistRepository.GetFullChecklist(employeeId, tripId);
+            var flight = checklist.Flight;
+
+            checklist.Flight = null;
+            await _checklistRepository.UpdateChecklist(checklist);
+
+            await _flightRepository.DeleteFlight(flight);
+            _logger.LogInformation($"Deleted flight for the checklist for employee {employeeId} and trip {tripId}");
+        }
     }
 }

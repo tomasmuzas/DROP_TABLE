@@ -8,11 +8,11 @@ namespace BackendApartmentReservation.Controllers
 
     [Route("api/trips")]
     [ApiController]
-    public class PersonalTripsController : ControllerBase
+    public class PersonalTripInformationController : ControllerBase
     {
         private readonly IChecklistManager _checklistManager;
 
-        public PersonalTripsController(IChecklistManager checklistManager)
+        public PersonalTripInformationController(IChecklistManager checklistManager)
         {
             _checklistManager = checklistManager;
         }
@@ -39,6 +39,13 @@ namespace BackendApartmentReservation.Controllers
             [FromBody] FlightReservationRequest info)
         {
             await _checklistManager.UpdateFlightForEmployee(employeeId, tripId, info);
+        }
+
+        [HttpDelete]
+        [Route("{tripId}/employees/{employeeId}/flight")]
+        public async Task DeleteFlight(string tripId, string employeeId)
+        {
+            await _checklistManager.DeleteFlight(employeeId, tripId);
         }
     }
 }
