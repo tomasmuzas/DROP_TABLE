@@ -1,14 +1,12 @@
-﻿namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
 {
     using System;
 
-    public class FlightReservationInfo
+    public class FlightReservationRequest
     {
-        public bool IsRequired { get; set;  }
+        public string Company { get; set; }
 
         public string FlightNumber { get; set; }
-
-        public string Company { get; set; }
 
         public DateTime? FlightTime { get; set; }
 
