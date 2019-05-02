@@ -36,7 +36,7 @@ namespace BackendApartmentReservation.Managers
             _logger = logger;
         }
 
-        public async Task<ChecklistInformationResponse> GetFullChecklist(string employeeId, string tripId)
+        public async Task<ChecklistInformationResponse> GetFullChecklistInformation(string employeeId, string tripId)
         {
             var flightInfo = await GetFlightInfo(employeeId, tripId);
 
@@ -46,9 +46,7 @@ namespace BackendApartmentReservation.Managers
             };
         }
 
-        public async Task<DbEmployeeAmenitiesChecklist> CreateEmptyChecklistForEmployee(
-            string employeeId,
-            string tripId)
+        public async Task<DbEmployeeAmenitiesChecklist> CreateEmptyChecklistForEmployee(string employeeId, string tripId)
         {
             var existingChecklist = await _checklistRepository.GetChecklist(employeeId, tripId);
 

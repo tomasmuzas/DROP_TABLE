@@ -22,7 +22,7 @@ namespace BackendApartmentReservation.Controllers
         [Route("checklist")]
         public async Task<ChecklistInformationResponse> GetEmployeeChecklistInformation(string tripId, string employeeId)
         {
-            return await _checklistManager.GetFullChecklist(employeeId, tripId);
+            return await _checklistManager.GetFullChecklistInformation(employeeId, tripId);
         }
 
         [HttpGet]

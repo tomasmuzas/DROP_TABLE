@@ -18,6 +18,6 @@ namespace BackendApartmentReservation.Managers
 
         Task DeleteFlight(string employeeId, string tripId);
 
-        Task<ChecklistInformationResponse> GetFullChecklist(string employeeId, string tripId);
+        Task<ChecklistInformationResponse> GetFullChecklistInformation(string employeeId, string tripId);
     }
 }
