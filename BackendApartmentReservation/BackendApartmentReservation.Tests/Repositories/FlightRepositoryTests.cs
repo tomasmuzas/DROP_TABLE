@@ -13,16 +13,14 @@
         {
             using (var dbContext = GetNewDatabaseContext())
             {
-                var flightNumber = "FL123";
                 var repository = new FlightRepository(dbContext);
 
                 var amenity = await repository.CreateEmptyFlight();
                 Assert.NotNull(amenity);
                 Assert.True(amenity.BookedAt > new DateTimeOffset());
 
-                var reservation = dbContext.FlightReservations.FirstOrDefault(f => f.FlightNumber == flightNumber);
+                var reservation = dbContext.FlightReservations.Single();
                 Assert.NotNull(reservation);
-                Assert.Equal(reservation.FlightNumber, flightNumber);
 
                 Assert.NotEqual(0, reservation.Id);
                 Assert.NotEqual(0, amenity.FlightReservation.Id);

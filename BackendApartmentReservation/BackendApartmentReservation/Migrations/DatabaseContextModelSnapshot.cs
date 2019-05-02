@@ -276,7 +276,7 @@ namespace BackendApartmentReservation.Migrations
 
                     b.Property<string>("FlightNumber");
 
-                    b.Property<DateTime>("FlightTime");
+                    b.Property<DateTime?>("FlightTime");
 
                     b.HasKey("Id");
 

@@ -17,10 +17,7 @@
 
         public async Task<DbFlightAmenity> CreateEmptyFlight()
         {
-            var flightReservation = new DbFlightReservation
-            {
-                FlightNumber = "FL123"
-            };
+            var flightReservation = new DbFlightReservation();
 
             var flightAmenity = new DbFlightAmenity
             {
