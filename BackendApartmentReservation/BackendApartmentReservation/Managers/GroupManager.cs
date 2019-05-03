@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Database.Entities;
 using BackendApartmentReservation.Repositories;
@@ -29,15 +28,28 @@ namespace BackendApartmentReservation.Managers
             var office = await _officeRepository.GetOfficeById(officeID);
             group.StartingOffice = office;
 
-            group.Employees = employees.Select(e => new DbEmployeeGroup {DbEmployee = e, DbGroup = group }).ToList();
-
             await _groupRepository.CreateGroup(group);
+
+            foreach (DbEmployee e in employees)
+            {
+                var employeeGroup = new DbEmployeeGroup{ DbEmployee = e, DbGroup = group };
+                employeeGroup.DbEmployee = e;
+                employeeGroup.DbGroup = group;
+                await _groupRepository.CreateEmployeeGroup(employeeGroup);
+            }
+            
             return groupId;
         }
 
         public async Task AddEmployeeToGroup(string groupID, string emplID)
-        { 
-            await _groupRepository.AddEmployeeToGroup(groupID, emplID);
+        {
+            var group = await _groupRepository.GetGroupById(groupID);
+            var empl = await _employeeRepository.GetEmployeeByEmployeeId(emplID);
+            var employeeGroup = new DbEmployeeGroup();
+            employeeGroup.DbGroup = group;
+            employeeGroup.DbEmployee = empl;
+
+            await _groupRepository.CreateEmployeeGroup(employeeGroup);
         }
     }
 }

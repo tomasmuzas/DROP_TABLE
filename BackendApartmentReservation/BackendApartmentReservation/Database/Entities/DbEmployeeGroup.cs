@@ -1,10 +1,11 @@
-﻿namespace BackendApartmentReservation.Database.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BackendApartmentReservation.Database.Entities
 {
     public class DbEmployeeGroup
     {
-        public int EmployeeId { get; set; }
-
-        public int GroupId { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         public DbEmployee DbEmployee { get; set; }
 

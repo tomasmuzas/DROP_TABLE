@@ -9,7 +9,7 @@ namespace BackendApartmentReservation.Migrations
            migrationBuilder.AddColumn<string>(
                 name: "ExternalGroupId",
                 table: "Groups",
-                nullable: false);
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

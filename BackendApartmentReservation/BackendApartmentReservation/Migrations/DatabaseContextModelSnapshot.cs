@@ -123,8 +123,6 @@ namespace BackendApartmentReservation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DbGroupId");
-
                     b.Property<string>("Email");
 
                     b.Property<string>("ExternalEmployeeId");
@@ -136,8 +134,6 @@ namespace BackendApartmentReservation.Migrations
                     b.Property<int?>("OfficeId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DbGroupId");
 
                     b.HasIndex("OfficeId");
 
@@ -177,13 +173,19 @@ namespace BackendApartmentReservation.Migrations
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployeeGroup", b =>
                 {
-                    b.Property<int>("EmployeeId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("GroupId");
+                    b.Property<int?>("DbEmployeeId");
 
-                    b.HasKey("EmployeeId", "GroupId");
+                    b.Property<int?>("DbGroupId");
 
-                    b.HasIndex("GroupId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("DbEmployeeId");
+
+                    b.HasIndex("DbGroupId");
 
                     b.ToTable("DbEmployeeGroup");
                 });
@@ -361,10 +363,6 @@ namespace BackendApartmentReservation.Migrations
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployee", b =>
                 {
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbGroup")
-                        .WithMany("Employees")
-                        .HasForeignKey("DbGroupId");
-
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbOffice", "Office")
                         .WithMany()
                         .HasForeignKey("OfficeId");
@@ -396,14 +394,12 @@ namespace BackendApartmentReservation.Migrations
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployeeGroup", b =>
                 {
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbEmployee", "DbEmployee")
-                        .WithMany("Groups")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("DbEmployeeId");
 
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbGroup", "DbGroup")
-                        .WithMany("Employees")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("DbGroupId");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbGroup", b =>

@@ -18,6 +18,8 @@ namespace BackendApartmentReservation.Database
 
         public DbSet<DbGroup> Groups { get; set; }
 
+        public DbSet<DbEmployeeGroup> DbEmployeeGroup { get; set; }
+
         public DbSet<DbTrip> Trips { get; set; }
 
         public DbSet<DbApartment> Apartments { get; set; }
@@ -46,23 +48,5 @@ namespace BackendApartmentReservation.Database
         public DbSet<DbHotelReservation> HotelReservations { get; set; }
 
         public DbSet<DbApartmentReservation> ApartmentReservations { get; set; }
-        
-
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<DbEmployeeGroup>()
-                .HasKey(x => new { x.EmployeeId, x.GroupId });
-
-            modelBuilder.Entity<DbEmployeeGroup>()
-                .HasOne(pt => pt.DbEmployee)
-                .WithMany(p => p.Groups)
-                .HasForeignKey(pt => pt.EmployeeId);
-
-            modelBuilder.Entity<DbEmployeeGroup>()
-                .HasOne(pt => pt.DbGroup)
-                .WithMany(t => t.Employees)
-                .HasForeignKey(pt => pt.GroupId);
-        }
     }
 }

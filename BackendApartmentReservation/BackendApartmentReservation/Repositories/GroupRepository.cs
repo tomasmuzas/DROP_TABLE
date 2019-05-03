@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Database;
 using BackendApartmentReservation.Database.Entities;
@@ -24,7 +22,7 @@ namespace BackendApartmentReservation.Repositories
 
         public async Task<DbGroup> GetGroupById(string groupID)
         {
-            return await _context.Groups.FirstOrDefaultAsync(e => e.ExternalGroupId == groupID);
+            return await _context.Groups.SingleOrDefaultAsync(e => e.ExternalGroupId == groupID);
         }
 
         public async Task CreateGroup(DbGroup dbGroup)
@@ -33,20 +31,9 @@ namespace BackendApartmentReservation.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddEmployeeToGroup(string groupID, string emplID)
+        public async Task CreateEmployeeGroup(DbEmployeeGroup dbEmployeeGroup)
         {
-            var group = await _context.Groups
-            .Include(p => p.Employees)
-            .SingleAsync(p => p.ExternalGroupId == groupID);
-
-            var newEmpl = await _context.Employees
-                .SingleAsync(p => p.ExternalEmployeeId == emplID);
-            group.Employees.Add(new DbEmployeeGroup
-            {
-                DbEmployee = newEmpl,
-                DbGroup = group
-            });
-
+            await _context.DbEmployeeGroup.AddAsync(dbEmployeeGroup);
             await _context.SaveChangesAsync();
         }
     }

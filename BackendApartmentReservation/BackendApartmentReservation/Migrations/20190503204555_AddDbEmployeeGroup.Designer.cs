@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackendApartmentReservation.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20190417114705_AddDbEmployeeGroupTable")]
-    partial class AddDbEmployeeGroupTable
+    [Migration("20190503204555_AddDbEmployeeGroup")]
+    partial class AddDbEmployeeGroup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,23 @@ namespace BackendApartmentReservation.Migrations
                 .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbApartmentAmenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ApartmentReservationId");
+
+                    b.Property<DateTimeOffset?>("BookedAt");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApartmentReservationId");
+
+                    b.ToTable("ApartmentAmenities");
+                });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbCarRentAmenity", b =>
                 {
@@ -55,23 +72,36 @@ namespace BackendApartmentReservation.Migrations
                     b.ToTable("FlightAmenities");
                 });
 
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbHotelAmenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTimeOffset?>("BookedAt");
+
+                    b.Property<int?>("HotelReservationId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelReservationId");
+
+                    b.ToTable("HotelAmenities");
+                });
+
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ApartmentId");
-
                     b.Property<DateTimeOffset?>("BookedAt");
 
-                    b.Property<int?>("HotelId");
+                    b.Property<int?>("LivingPlaceReservationId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApartmentId");
-
-                    b.HasIndex("HotelId");
+                    b.HasIndex("LivingPlaceReservationId");
 
                     b.ToTable("LivingPlaceAmenities");
                 });
@@ -95,8 +125,6 @@ namespace BackendApartmentReservation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("DbGroupId");
-
                     b.Property<string>("Email");
 
                     b.Property<string>("ExternalEmployeeId");
@@ -108,8 +136,6 @@ namespace BackendApartmentReservation.Migrations
                     b.Property<int?>("OfficeId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DbGroupId");
 
                     b.HasIndex("OfficeId");
 
@@ -149,13 +175,19 @@ namespace BackendApartmentReservation.Migrations
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployeeGroup", b =>
                 {
-                    b.Property<int>("EmployeeId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("GroupId");
+                    b.Property<int?>("DbEmployeeId");
 
-                    b.HasKey("EmployeeId", "GroupId");
+                    b.Property<int?>("DbGroupId");
 
-                    b.HasIndex("GroupId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("DbEmployeeId");
+
+                    b.HasIndex("DbGroupId");
 
                     b.ToTable("DbEmployeeGroup");
                 });
@@ -167,6 +199,8 @@ namespace BackendApartmentReservation.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("DbTripId");
+
+                    b.Property<string>("ExternalGroupId");
 
                     b.Property<int?>("ManagerId");
 
@@ -190,6 +224,8 @@ namespace BackendApartmentReservation.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address");
+
+                    b.Property<string>("ExternalOfficeId");
 
                     b.Property<int?>("OfficeApartmentId");
 
@@ -219,6 +255,19 @@ namespace BackendApartmentReservation.Migrations
                     b.HasIndex("DestinationOfficeId");
 
                     b.ToTable("Trips");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Reservations.DbApartmentReservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApartmentReservations");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Reservations.DbCarReservation", b =>
@@ -253,11 +302,37 @@ namespace BackendApartmentReservation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("HotelName");
+                    b.Property<string>("Address");
 
                     b.HasKey("Id");
 
                     b.ToTable("HotelReservations");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Reservations.DbLivingPlaceReservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ApartmentReservationId");
+
+                    b.Property<int?>("HotelReservationId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApartmentReservationId");
+
+                    b.HasIndex("HotelReservationId");
+
+                    b.ToTable("LivingPlaceReservations");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbApartmentAmenity", b =>
+                {
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbApartmentReservation", "ApartmentReservation")
+                        .WithMany()
+                        .HasForeignKey("ApartmentReservationId");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbCarRentAmenity", b =>
@@ -274,23 +349,22 @@ namespace BackendApartmentReservation.Migrations
                         .HasForeignKey("FlightReservationId");
                 });
 
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbHotelAmenity", b =>
+                {
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbHotelReservation", "HotelReservation")
+                        .WithMany()
+                        .HasForeignKey("HotelReservationId");
+                });
+
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", b =>
                 {
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbApartment", "Apartment")
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbLivingPlaceReservation", "LivingPlaceReservation")
                         .WithMany()
-                        .HasForeignKey("ApartmentId");
-
-                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbHotelReservation", "Hotel")
-                        .WithMany()
-                        .HasForeignKey("HotelId");
+                        .HasForeignKey("LivingPlaceReservationId");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployee", b =>
                 {
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbGroup")
-                        .WithMany("Employees")
-                        .HasForeignKey("DbGroupId");
-
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbOffice", "Office")
                         .WithMany()
                         .HasForeignKey("OfficeId");
@@ -322,14 +396,12 @@ namespace BackendApartmentReservation.Migrations
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployeeGroup", b =>
                 {
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbEmployee", "DbEmployee")
-                        .WithMany("Groups")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("DbEmployeeId");
 
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbGroup", "DbGroup")
-                        .WithMany("Employees")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("DbGroupId");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbGroup", b =>
@@ -359,6 +431,17 @@ namespace BackendApartmentReservation.Migrations
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbOffice", "DestinationOffice")
                         .WithMany()
                         .HasForeignKey("DestinationOfficeId");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Reservations.DbLivingPlaceReservation", b =>
+                {
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbApartmentReservation", "ApartmentReservation")
+                        .WithMany()
+                        .HasForeignKey("ApartmentReservationId");
+
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbHotelReservation", "HotelReservation")
+                        .WithMany()
+                        .HasForeignKey("HotelReservationId");
                 });
 #pragma warning restore 612, 618
         }

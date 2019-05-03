@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BackendApartmentReservation.Database.Entities
 {
@@ -13,7 +12,5 @@ namespace BackendApartmentReservation.Database.Entities
         public DbEmployee Manager { get; set; }
 
         public DbOffice StartingOffice { get; set; }
-
-        public List<DbEmployeeGroup> Employees { get; set; }
     }
 }
