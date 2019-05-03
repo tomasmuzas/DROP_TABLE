@@ -7,9 +7,6 @@ namespace BackendApartmentReservation.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            /*migrationBuilder.DropTable(
-                name: "DbEmployeeGroup2");*/
-
             migrationBuilder.CreateTable(
                 name: "DbEmployeeGroup",
                 columns: table => new
@@ -51,42 +48,6 @@ namespace BackendApartmentReservation.Migrations
         {
             migrationBuilder.DropTable(
                 name: "DbEmployeeGroup");
-
-            /*migrationBuilder.CreateTable(
-                name: "DbEmployeeGroup2",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DbEmployeeId = table.Column<int>(nullable: true),
-                    DbGroupId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DbEmployeeGroup2", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DbEmployeeGroup2_Employees_DbEmployeeId",
-                        column: x => x.DbEmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_DbEmployeeGroup2_Groups_DbGroupId",
-                        column: x => x.DbGroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DbEmployeeGroup2_DbEmployeeId",
-                table: "DbEmployeeGroup2",
-                column: "DbEmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DbEmployeeGroup2_DbGroupId",
-                table: "DbEmployeeGroup2",
-                column: "DbGroupId");*/
         }
     }
 }
