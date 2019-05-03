@@ -7,6 +7,6 @@
     public interface IOfficeRepository
     {
         Task<IEnumerable<DbOffice>> GetAllOffices();
-        Task<DbOffice> GetOfficeById(int officeId);
+        Task<DbOffice> GetOfficeById(string officeId);
     }
 }

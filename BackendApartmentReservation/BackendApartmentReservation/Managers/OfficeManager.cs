@@ -26,7 +26,7 @@
             });
         }
 
-        public async Task<OfficeInfoResponse> GetOfficeById(int officeId)
+        public async Task<OfficeInfoResponse> GetOfficeById(string officeId)
         {
             var office = await _officeRepository.GetOfficeById(officeId);
 

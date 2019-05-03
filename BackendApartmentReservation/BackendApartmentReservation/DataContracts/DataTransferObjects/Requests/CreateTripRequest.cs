@@ -7,7 +7,7 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
     public class CreateTripRequest
     {
         [Required]
-        public int DestinationOfficeId { get; set; }
+        public string DestinationOfficeId { get; set; }
 
         [Required]
         public DateTime DepartureDate { get; set; }
@@ -16,6 +16,6 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
         public DateTime ReturnDate { get; set; }
 
         [Required]
-        public List<int> UserIds { get; set; }
+        public List<string> UserIds { get; set; }
     }
 }
