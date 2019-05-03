@@ -25,5 +25,16 @@
                 Address = o.Address
             });
         }
+
+        public async Task<OfficeInfoResponse> GetOfficeById(string officeId)
+        {
+            var office = await _officeRepository.GetOfficeById(officeId);
+
+            return new OfficeInfoResponse
+            {
+                Id = office.ExternalOfficeId,
+                Address = office.Address
+            };
+        }
     }
 }
