@@ -30,10 +30,10 @@ namespace BackendApartmentReservation.Managers
 
             await _groupRepository.CreateGroup(group);
 
-            foreach (DbEmployee e in employees)
+            foreach (DbEmployee employee in employees)
             {
-                var employeeGroup = new DbEmployeeGroup{ DbEmployee = e, DbGroup = group };
-                employeeGroup.DbEmployee = e;
+                var employeeGroup = new DbEmployeeGroup{ DbEmployee = employee, DbGroup = group };
+                employeeGroup.DbEmployee = employee;
                 employeeGroup.DbGroup = group;
                 await _groupRepository.CreateEmployeeGroup(employeeGroup);
             }
@@ -41,13 +41,13 @@ namespace BackendApartmentReservation.Managers
             return groupId;
         }
 
-        public async Task AddEmployeeToGroup(string groupID, string emplID)
+        public async Task AddEmployeeToGroup(string groupID, string employeeID)
         {
             var group = await _groupRepository.GetGroupById(groupID);
-            var empl = await _employeeRepository.GetEmployeeByEmployeeId(emplID);
+            var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeID);
             var employeeGroup = new DbEmployeeGroup();
             employeeGroup.DbGroup = group;
-            employeeGroup.DbEmployee = empl;
+            employeeGroup.DbEmployee = employee;
 
             await _groupRepository.CreateEmployeeGroup(employeeGroup);
         }
