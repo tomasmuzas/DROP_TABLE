@@ -1,29 +1,29 @@
-﻿namespace BackendApartmentReservation.Tests.Repositories
+﻿using BackendApartmentReservation.Database.Entities.Amenities;
+using BackendApartmentReservation.Database.Entities.Reservations;
+
+namespace BackendApartmentReservation.Tests.Repositories
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
     using BackendApartmentReservation.Repositories.Checklist;
-    using Database.Entities.Reservations;
     using Xunit;
 
     public class FlightRepositoryTests : DatabaseTestBase
     {
         [Fact]
-        public async Task CreateCarRentAmenityFromCarNumber_CreatesReservationWhenNoneExists()
+        public async Task CreateEmptyFlight_CreatesFlightWithCorrectInformation()
         {
             using (var dbContext = GetNewDatabaseContext())
             {
-                var flightNumber = "FL1234";
                 var repository = new FlightRepository(dbContext);
 
-                var amenity = await repository.CreateFlightAmenityFromFlightNumber(flightNumber);
+                var amenity = await repository.CreateEmptyFlight();
                 Assert.NotNull(amenity);
                 Assert.True(amenity.BookedAt > new DateTimeOffset());
 
-                var reservation = dbContext.FlightReservations.FirstOrDefault(f => f.FlightNumber == flightNumber);
+                var reservation = dbContext.FlightReservations.Single();
                 Assert.NotNull(reservation);
-                Assert.Equal(reservation.FlightNumber, flightNumber);
 
                 Assert.NotEqual(0, reservation.Id);
                 Assert.NotEqual(0, amenity.FlightReservation.Id);
@@ -33,28 +33,54 @@
         }
 
         [Fact]
-        public async Task CreateCarRentAmenityFromCarNumber_UsesExistingReservation()
+        public async Task UpdateChecklist_Success()
         {
             using (var dbContext = GetNewDatabaseContext())
             {
-                var flightNumber = "FL1234";
-                dbContext.FlightReservations.Add(new DbFlightReservation
+                var oldFlight = new DbFlightAmenity
                 {
-                    FlightNumber = flightNumber
-                });
+                    Id = 1,
+                    FlightReservation = new DbFlightReservation()
+                };
+
+                dbContext.FlightAmenities.Add(oldFlight);
                 await dbContext.SaveChangesAsync();
 
                 var repository = new FlightRepository(dbContext);
 
-                var amenity = await repository.CreateFlightAmenityFromFlightNumber(flightNumber);
+                oldFlight.FlightReservation.AirportAddress = "airportAddress";
 
-                Assert.NotNull(amenity);
-                Assert.True(amenity.BookedAt > new DateTimeOffset());
+                await repository.UpdateFlight(oldFlight);
 
-                var reservation = dbContext.FlightReservations.Single(f => f.FlightNumber == flightNumber);
-                Assert.NotEqual(0, amenity.FlightReservation.Id);
+                var flightEntry = dbContext.FlightAmenities.Single();
 
-                Assert.Equal(amenity.FlightReservation.Id, reservation.Id);
+                Assert.Equal("airportAddress", flightEntry.FlightReservation.AirportAddress);
+            }
+        }
+
+        [Fact]
+        public async Task DeleteChecklist_RemovesEverything()
+        {
+            using (var dbContext = GetNewDatabaseContext())
+            {
+                var flight = new DbFlightAmenity
+                {
+                    Id = 1,
+                    FlightReservation = new DbFlightReservation()
+                };
+
+                dbContext.FlightAmenities.Add(flight);
+                await dbContext.SaveChangesAsync();
+
+                var repository = new FlightRepository(dbContext);
+
+                await repository.DeleteFlight(flight);
+
+                var flightEntry = dbContext.FlightAmenities.SingleOrDefault();
+                var flightReservationEntry = dbContext.FlightReservations.SingleOrDefault();
+
+                Assert.Null(flightEntry);
+                Assert.Null(flightReservationEntry);
             }
         }
     }

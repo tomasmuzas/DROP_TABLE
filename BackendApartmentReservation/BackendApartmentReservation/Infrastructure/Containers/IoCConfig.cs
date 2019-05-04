@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using BackendApartmentReservation.Managers;
 
 namespace BackendApartmentReservation.Infrastructure.Containers
@@ -18,6 +18,8 @@ namespace BackendApartmentReservation.Infrastructure.Containers
                 .As<IChecklistManager>();
             builder.RegisterType<OfficeManager>()
                 .As<IOfficeManager>();
+            builder.RegisterType<TripInformationManager>()
+                .As<ITripInformationManager>();
             builder.RegisterType<GroupManager>()
                 .As<IGroupManager>();
 
@@ -38,7 +40,8 @@ namespace BackendApartmentReservation.Infrastructure.Containers
                 .As<IHotelRepository>();
             builder.RegisterType<OfficeRepository>()
                 .As<IOfficeRepository>();
-
+            builder.RegisterType<TripRepository>()
+                .As<ITripRepository>();
             builder.RegisterType<GroupRepository>()
                 .As<IGroupRepository>();
         }

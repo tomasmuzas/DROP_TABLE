@@ -11,7 +11,6 @@ class UsersPage extends React.Component {
 
     render() {
         if (this.props.employees) {
-            console.log(this.props.employees)
             return (
                 <div>
                    <div>

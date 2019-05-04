@@ -107,7 +107,7 @@ class CreateTrip extends React.Component {
             <div className={`loginForm text-center jumbotron mx-auto col-12 pb-1 pt-4 row`}>
                 <form className={`form-signin col-6`} onSubmit={this.handleSubmit}>
                     <div className="row">
-                        <div className="col-6">
+                        <div className="col-lg-6 col-12 pb-3">
                             <TextField
                                 id="departureDate"
                                 label={t("DepartureDate")}
