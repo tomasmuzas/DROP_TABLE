@@ -6,6 +6,7 @@ namespace BackendApartmentReservation.Repositories
     using System.Linq;
     using Database;
     using Database.Entities;
+    using DataContracts.DataTransferObjects.Requests;
     using Microsoft.EntityFrameworkCore;
 
     public class TripRepository : ITripRepository
