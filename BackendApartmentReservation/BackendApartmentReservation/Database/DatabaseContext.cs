@@ -18,8 +18,6 @@ namespace BackendApartmentReservation.Database
 
         public DbSet<DbGroup> Groups { get; set; }
 
-        public DbSet<DbEmployeeGroup> DbEmployeeGroup { get; set; }
-
         public DbSet<DbTrip> Trips { get; set; }
 
         public DbSet<DbApartment> Apartments { get; set; }
@@ -48,5 +46,7 @@ namespace BackendApartmentReservation.Database
         public DbSet<DbHotelReservation> HotelReservations { get; set; }
 
         public DbSet<DbApartmentReservation> ApartmentReservations { get; set; }
+        
+
     }
 }
