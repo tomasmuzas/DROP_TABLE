@@ -1,7 +1,5 @@
-﻿using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
+﻿using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.Repositories;
-using BackendApartmentReservation.Repositories.Checklist;
 using System.Threading.Tasks;
 
 namespace BackendApartmentReservation.Managers
@@ -9,12 +7,13 @@ namespace BackendApartmentReservation.Managers
     public class TripManager : ITripManager
     {
         private readonly ITripRepository _tripRepository;
-        private readonly IChecklistRepository _checklistRepository;
+        private readonly IChecklistManager _checklistManager;
 
-        public TripManager(ITripRepository tripRepository, IChecklistRepository checklistRepository)
+        public TripManager(ITripRepository tripRepository, IChecklistManager checklistManager)
+
         {
             _tripRepository = tripRepository;
-            _checklistRepository = checklistRepository;
+            _checklistManager = checklistManager;
         }
 
         public async Task<string> CreateBasicTrip(CreateTripRequest tripRequest)
@@ -25,12 +24,7 @@ namespace BackendApartmentReservation.Managers
             {
                 group.Employees.ForEach(async e =>
                 {
-                    var checklist = new DbEmployeeAmenitiesChecklist
-                    {
-                        Employee = e,
-                        Trip = trip
-                    };
-                    await _checklistRepository.AddChecklist(checklist);
+                    await _checklistManager.CreateEmptyChecklistForEmployee(e.ExternalEmployeeId, trip.ExternalTripId);
                 });
             }
 
