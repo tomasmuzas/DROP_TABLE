@@ -18,12 +18,15 @@ namespace BackendApartmentReservation.Database
 
         public DbSet<DbGroup> Groups { get; set; }
 
+        public DbSet<DbEmployeeGroup> DbEmployeeGroup { get; set; }
+
         public DbSet<DbTrip> Trips { get; set; }
 
         public DbSet<DbApartment> Apartments { get; set; }
 
         public DbSet<DbOffice> Offices { get; set; }
 
+        // Amenities
         public DbSet<DbEmployeeAmenitiesChecklist> Checklists { get; set; }
 
         public DbSet<DbCarRentAmenity> CarRentAmenities { get; set; }

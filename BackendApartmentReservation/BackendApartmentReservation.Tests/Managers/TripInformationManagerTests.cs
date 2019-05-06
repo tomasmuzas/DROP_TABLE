@@ -24,12 +24,7 @@
             {
                 ExternalTripId = tripId,
                 DepartureDate = new DateTime(2019, 1, 1),
-                ReturnDate = new DateTime(2019, 1, 1),
-                DestinationOffice = new DbOffice
-                {
-                    ExternalOfficeId = "ExternalOfficeId",
-                    Address = "Address"
-                }
+                ReturnDate = new DateTime(2019, 1, 1)
             };
             callToTrip.Returns(trip);
 

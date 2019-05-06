@@ -12,8 +12,6 @@
 
         public DateTime EndTime { get; set; }
 
-        public OfficeInfoResponse DestinationOffice { get; set; }
-
         public List<BasicPersonalChecklistInfo> ChecklistInfos { get; set; }
     }
 }
