@@ -5,6 +5,7 @@
     using Database;
     using Database.Entities.Amenities;
     using Database.Entities.Reservations;
+    using Microsoft.EntityFrameworkCore;
 
     public class FlightRepository : IFlightRepository
     {
@@ -15,9 +16,19 @@
             _db = db;
         }
 
-        public async Task<DbFlightAmenity> CreateEmptyFlight()
+        public async Task<DbFlightAmenity> CreateFlightAmenityFromFlightNumber(string flightNumber)
         {
-            var flightReservation = new DbFlightReservation();
+            var flightReservation = await _db.FlightReservations.SingleOrDefaultAsync(r => r.FlightNumber == flightNumber);
+
+            if (flightReservation == default(DbFlightReservation))
+            {
+                flightReservation = new DbFlightReservation
+                {
+                    FlightNumber = flightNumber
+                };
+
+                await _db.FlightReservations.AddAsync(flightReservation);
+            }
 
             var flightAmenity = new DbFlightAmenity
             {
@@ -25,28 +36,11 @@
                 FlightReservation = flightReservation
             };
 
-            await _db.FlightReservations.AddAsync(flightReservation);
             await _db.FlightAmenities.AddAsync(flightAmenity);
 
             await _db.SaveChangesAsync();
 
             return flightAmenity;
-        }
-
-        public async Task UpdateFlight(DbFlightAmenity flight)
-        {
-            _db.Update(flight);
-            await _db.SaveChangesAsync();
-        }
-
-        public async Task DeleteFlight(DbFlightAmenity flight)
-        {
-            _db.FlightAmenities.Remove(flight);
-            await _db.SaveChangesAsync();
-
-            var flightReservation = flight.FlightReservation;
-            _db.FlightReservations.Remove(flightReservation);
-            await _db.SaveChangesAsync();
         }
     }
 }

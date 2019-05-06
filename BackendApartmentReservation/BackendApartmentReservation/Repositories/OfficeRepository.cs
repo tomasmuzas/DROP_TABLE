@@ -1,28 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database;
-using BackendApartmentReservation.Database.Entities;
-using Microsoft.EntityFrameworkCore;
-
-namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Repositories
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Database;
+    using Database.Entities;
+    using Microsoft.EntityFrameworkCore;
+
     public class OfficeRepository : IOfficeRepository
     {
-        private readonly DatabaseContext _context;
+        private readonly DatabaseContext _db;
 
-        public OfficeRepository(DatabaseContext context)
+        public OfficeRepository(DatabaseContext db)
         {
-            _context = context;
-        }
-
-        public async Task<DbOffice> GetOfficeById(int officeID)
-        {
-            return await _context.Offices.FindAsync(officeID);
+            _db = db;
         }
 
         public async Task<IEnumerable<DbOffice>> GetAllOffices()
         {
-            return await _context.Offices.ToListAsync();
+            return await _db.Offices.ToListAsync();
+        }
+
+        public async Task<DbOffice> GetOfficeById(string officeId)
+        {
+            return await _db.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == officeId);
         }
     }
 }
