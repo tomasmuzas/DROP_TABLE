@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Database;
 using BackendApartmentReservation.Database.Entities;
@@ -35,6 +36,11 @@ namespace BackendApartmentReservation.Repositories
         {
             await _context.DbEmployeeGroup.AddAsync(dbEmployeeGroup);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<DbEmployeeGroup>> GetEmployeeGroupById(string groupID)
+        {
+            return await _context.DbEmployeeGroup.Where(eg => eg.DbGroup.ExternalGroupId == groupID).ToListAsync();
         }
     }
 }

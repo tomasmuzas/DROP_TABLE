@@ -6,7 +6,7 @@ namespace BackendApartmentReservation.Managers
 {
     public interface IGroupManager
     {
-        Task<string> CreateGroup(int officeID, List<DbEmployee> employees);
+        Task<string> CreateGroup(string officeID, List<DbEmployee> employees);
         Task AddEmployeeToGroup(string groupID, string employeeID);
     }
 }

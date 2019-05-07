@@ -38,30 +38,44 @@ namespace BackendApartmentReservation.Repositories
 
         public async Task<DbTrip> CreateTrip (CreateTripRequest tripRequest)
         {
+            var tripGroups = new List<DbGroup>();
             var destinationOffice = await _db.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == tripRequest.DestinationOfficeId);
             var employees = await _db.Employees
                 .Include(e => e.Office)
                 .Where(e => tripRequest.UserIds.Contains(e.ExternalEmployeeId))
                 .ToListAsync();
 
-            var groups = (from employee in employees
-                          group employee by employee.Office.ExternalOfficeId into g
-                          join office in _db.Offices on g.FirstOrDefault().Office.ExternalOfficeId equals office.ExternalOfficeId
-                          select new DbGroup
-                          {
-                              Employees = g.ToList(),
-                              StartingOffice = g.FirstOrDefault().Office
-                          }).ToList();
+            var employeesGroups = employees.GroupBy(e => e.Office.ExternalOfficeId);
+            foreach (var employeesGroup in employeesGroups)
+            {
+                var tripGroup = new DbGroup
+                {
+                    StartingOffice = await _db.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == employeesGroup.Key)
+                };
+                tripGroups.Add(tripGroup);
+                await _db.Groups.AddAsync(tripGroup);
+                
+                var employeesInGroup = employeesGroup.Select(e => e.ExternalEmployeeId).ToList();
+                foreach (var employeeInGroup in employeesInGroup)
+                {
+                    var employeeGroup = new DbEmployeeGroup
+                    {
+                        DbEmployee = await _db.Employees.SingleOrDefaultAsync(e => e.ExternalEmployeeId == employeeInGroup),
+                        DbGroup = tripGroup
+                    };
+
+                    await _db.DbEmployeeGroup.AddAsync(employeeGroup);
+                }
+            }
 
             var newTrip = new DbTrip
             {
                 DepartureDate = tripRequest.DepartureDate,
                 DestinationOffice = destinationOffice,
                 ReturnDate = tripRequest.ReturnDate,
-                Groups = groups
+                Groups = tripGroups
             };
 
-            await _db.Groups.AddRangeAsync(groups);
             await _db.Trips.AddAsync(newTrip);
             await _db.SaveChangesAsync();
 

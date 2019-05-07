@@ -10,5 +10,6 @@ namespace BackendApartmentReservation.Repositories
         Task<DbGroup> GetGroupById(string groupID);
         Task CreateGroup(DbGroup dbGroup);
         Task CreateEmployeeGroup(DbEmployeeGroup dbEmployeeGroup);
+        Task<IEnumerable<DbEmployeeGroup>> GetEmployeeGroupById(string groupID);
     }
 }

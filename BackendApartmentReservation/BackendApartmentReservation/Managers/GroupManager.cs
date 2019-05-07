@@ -19,7 +19,7 @@ namespace BackendApartmentReservation.Managers
             _officeRepository = officeRepository;
         }
 
-        public async Task<string> CreateGroup(int officeID, List<DbEmployee> employees)
+        public async Task<string> CreateGroup(string officeID, List<DbEmployee> employees)
         {
             var group = new DbGroup();
             var groupId = Guid.NewGuid().ToString();

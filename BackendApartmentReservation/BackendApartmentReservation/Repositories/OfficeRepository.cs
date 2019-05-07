@@ -15,9 +15,9 @@ namespace BackendApartmentReservation.Repositories
             _context = context;
         }
 
-        public async Task<DbOffice> GetOfficeById(int officeID)
+        public async Task<DbOffice> GetOfficeById(string officeID)
         {
-            return await _context.Offices.FindAsync(officeID);
+            return await _context.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == officeID);
         }
 
         public async Task<IEnumerable<DbOffice>> GetAllOffices()

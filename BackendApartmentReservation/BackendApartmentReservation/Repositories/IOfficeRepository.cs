@@ -6,7 +6,7 @@ namespace BackendApartmentReservation.Repositories
 {
     public interface IOfficeRepository
     {
-        Task<DbOffice> GetOfficeById(int officeID);
+        Task<DbOffice> GetOfficeById(string officeID);
         Task<IEnumerable<DbOffice>> GetAllOffices();
     }
 }
