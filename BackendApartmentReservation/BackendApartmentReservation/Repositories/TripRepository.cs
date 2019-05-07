@@ -55,17 +55,13 @@ namespace BackendApartmentReservation.Repositories
                 tripGroups.Add(tripGroup);
                 await _db.Groups.AddAsync(tripGroup);
                 
-                var employeesInGroup = employeesGroup.Select(e => e.ExternalEmployeeId).ToList();
-                foreach (var employeeInGroup in employeesInGroup)
+                var employeeGroups = employeesGroup.Select(e => new DbEmployeeGroup
                 {
-                    var employeeGroup = new DbEmployeeGroup
-                    {
-                        DbEmployee = await _db.Employees.SingleOrDefaultAsync(e => e.ExternalEmployeeId == employeeInGroup),
-                        DbGroup = tripGroup
-                    };
+                    DbEmployee = _db.Employees.SingleOrDefault(x => x.ExternalEmployeeId == e.ExternalEmployeeId),
+                    DbGroup = tripGroup
+                }).ToList();
 
-                    await _db.DbEmployeeGroup.AddAsync(employeeGroup);
-                }
+                await _db.DbEmployeeGroup.AddRangeAsync(employeeGroups);
             }
 
             var newTrip = new DbTrip
