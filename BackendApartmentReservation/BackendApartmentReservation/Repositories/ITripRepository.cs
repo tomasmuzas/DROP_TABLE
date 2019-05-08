@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
     using Database.Entities;
+    using DataContracts.DataTransferObjects.Requests;
 
     public interface ITripRepository
     {
@@ -11,6 +11,6 @@
 
         Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetTripChecklistsWithEmployees(string tripId);
 
-        Task<DbTrip> CreateTrip(CreateTripRequest trip);
+        Task<DbTrip> CreateTrip(CreateTripRequest tripRequest);
     }
 }

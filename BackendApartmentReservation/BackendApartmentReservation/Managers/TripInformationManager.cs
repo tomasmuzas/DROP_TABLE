@@ -2,10 +2,10 @@
 
 namespace BackendApartmentReservation.Managers
 {
+    using System.Linq;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Responses;
     using Repositories;
-    using System.Linq;
 
     public class TripInformationManager : ITripInformationManager
     {
@@ -22,12 +22,6 @@ namespace BackendApartmentReservation.Managers
             var trip = await _tripRepository.GetTrip(tripId);
 
             var checklists = await _tripRepository.GetTripChecklistsWithEmployees(tripId);
-
-            var officeInfo = new OfficeInfoResponse
-            {
-                Id = trip.DestinationOffice.ExternalOfficeId,
-                Address = trip.DestinationOffice.Address
-            };
 
             var checklistInformations = checklists
                 .Select(c => new BasicPersonalChecklistInfo
@@ -50,7 +44,7 @@ namespace BackendApartmentReservation.Managers
                 TripId = tripId,
                 StartTime = trip.DepartureDate,
                 EndTime = trip.ReturnDate,
-                DestinationOffice = officeInfo,
+
                 ChecklistInfos = checklistInformations
             };
         }
