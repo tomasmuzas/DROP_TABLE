@@ -7,21 +7,21 @@ using NLog;
 
 namespace BackendApartmentReservation.Infrastructure.Logging
 {
+    using Exceptions;
+
     public class RequestValidationFilter : IAsyncActionFilter
     {
-        private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly Logger<> _logger = NLog.LogManager.GetCurrentClassLogger();
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             if (!context.ModelState.IsValid)
             { 
                 _logger.Error($"Validation failed. Errors: {context.ModelState}");
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                throw new HttpStatusException(HttpStatusCode.BadRequest);
             }
-            else
-            {
-                await next.Invoke();
-            }
+
+            await next.Invoke();
         }
     }
 }
