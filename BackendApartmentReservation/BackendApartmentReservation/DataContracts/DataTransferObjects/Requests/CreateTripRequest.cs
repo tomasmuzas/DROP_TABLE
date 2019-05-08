@@ -16,6 +16,6 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
         public DateTime ReturnDate { get; set; }
 
         [Required]
-        public List<string> UserIds { get; set; }
+        public List<string> EmployeeIds { get; set; }
     }
 }

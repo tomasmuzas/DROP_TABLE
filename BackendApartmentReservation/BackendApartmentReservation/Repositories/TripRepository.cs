@@ -42,7 +42,7 @@ namespace BackendApartmentReservation.Repositories
             var destinationOffice = await _db.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == tripRequest.DestinationOfficeId);
             var employees = await _db.Employees
                 .Include(e => e.Office)
-                .Where(e => tripRequest.UserIds.Contains(e.ExternalEmployeeId))
+                .Where(e => tripRequest.EmployeeIds.Contains(e.ExternalEmployeeId))
                 .ToListAsync();
 
             var employeesGroups = employees.GroupBy(e => e.Office.ExternalOfficeId);

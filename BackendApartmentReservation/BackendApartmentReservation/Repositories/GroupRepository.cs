@@ -38,7 +38,7 @@ namespace BackendApartmentReservation.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<DbEmployeeGroup>> GetEmployeeGroupById(string groupID)
+        public async Task<IEnumerable<DbEmployeeGroup>> GetEmployeeGroupsByGroupId(string groupID)
         {
             return await _context.DbEmployeeGroup.Where(eg => eg.DbGroup.ExternalGroupId == groupID).ToListAsync();
         }

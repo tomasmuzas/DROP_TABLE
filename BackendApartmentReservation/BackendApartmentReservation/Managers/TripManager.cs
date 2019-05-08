@@ -7,13 +7,13 @@ namespace BackendApartmentReservation.Managers
     public class TripManager : ITripManager
     {
         private readonly ITripRepository _tripRepository;
-        private readonly IGroupRepository _groupRepository;
+        private readonly IGroupManager _groupManager;
         private readonly IChecklistManager _checklistManager;
 
-        public TripManager(ITripRepository tripRepository, IGroupRepository groupRepository, IChecklistManager checklistManager)
+        public TripManager(ITripRepository tripRepository, IGroupManager groupManager, IChecklistManager checklistManager)
         {
             _tripRepository = tripRepository;
-            _groupRepository = groupRepository;
+            _groupManager = groupManager;
             _checklistManager = checklistManager;
         }
 
@@ -23,7 +23,7 @@ namespace BackendApartmentReservation.Managers
 
             foreach (var group in trip.Groups)
             {
-                var employeesGroup = await _groupRepository.GetEmployeeGroupById(group.ExternalGroupId);
+                var employeesGroup = await _groupManager.GetEmployeeGroupsByGroupId(group.ExternalGroupId);
                 foreach (var employeeGroup in employeesGroup)
                 {
                     await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId, trip.ExternalTripId);

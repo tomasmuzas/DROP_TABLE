@@ -51,5 +51,10 @@ namespace BackendApartmentReservation.Managers
 
             await _groupRepository.CreateEmployeeGroup(employeeGroup);
         }
+
+        public async Task<IEnumerable<DbEmployeeGroup>> GetEmployeeGroupsByGroupId(string groupID)
+        {
+            return await _groupRepository.GetEmployeeGroupsByGroupId(groupID);
+        }
     }
 }
