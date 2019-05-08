@@ -20,7 +20,9 @@
 
         [HttpGet]
         [Route("checklist")]
-        public async Task<ChecklistInformationResponse> GetEmployeeChecklistInformation(string tripId, string employeeId)
+        public async Task<ChecklistInformationResponse> GetEmployeeChecklistInformation(
+            string tripId,
+            string employeeId)
         {
             return await _checklistManager.GetFullChecklistInformation(employeeId, tripId);
         }

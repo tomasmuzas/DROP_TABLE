@@ -4,7 +4,7 @@
 
     public class BasicPersonalChecklistInfo
     {
-        public EmployeeInfo Employee{ get; set; }
+        public EmployeeInfo Employee { get; set; }
 
         public bool IsFlightRequired { get; set; }
 

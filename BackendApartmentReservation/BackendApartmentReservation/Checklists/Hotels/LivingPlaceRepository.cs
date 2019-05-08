@@ -14,30 +14,35 @@
         private readonly ApartmentRepository _apartmentRepository;
         private readonly HotelRepository _hotelRepository;
 
-        public LivingPlaceRepository(DatabaseContext db, ApartmentRepository apartmentRepository, HotelRepository hotelRepository)
+        public LivingPlaceRepository(
+            DatabaseContext db,
+            ApartmentRepository apartmentRepository,
+            HotelRepository hotelRepository)
         {
             _db = db;
             _apartmentRepository = apartmentRepository;
             _hotelRepository = hotelRepository;
         }
 
-        public async Task<DbLivingPlaceAmenity> CreateLivingPlaceAmenity(DbApartmentAmenity apartmentAmenity, DbHotelAmenity hotelAmenity)
+        public async Task<DbLivingPlaceAmenity> CreateLivingPlaceAmenity(
+            DbApartmentAmenity apartmentAmenity,
+            DbHotelAmenity hotelAmenity)
         {
             var apartmentReservationId = apartmentAmenity?.ApartmentReservation?.Id;
             var hotelReservationId = hotelAmenity?.HotelReservation?.Id;
             var livingPlaceReservation = await _db.LivingPlaceReservations.SingleOrDefaultAsync(r =>
                 r.ApartmentReservation.Id == apartmentReservationId && r.HotelReservation.Id == hotelReservationId);
 
-
             if (livingPlaceReservation == default(DbLivingPlaceReservation))
             {
-                livingPlaceReservation = new DbLivingPlaceReservation()
+                livingPlaceReservation = new DbLivingPlaceReservation
                 {
                     ApartmentReservation = apartmentAmenity?.ApartmentReservation,
                     HotelReservation = hotelAmenity?.HotelReservation
                 };
                 await _db.LivingPlaceReservations.AddAsync(livingPlaceReservation);
             }
+
             var livingPlaceAmenity = new DbLivingPlaceAmenity
             {
                 LivingPlaceReservation = livingPlaceReservation
@@ -53,7 +58,6 @@
         public async Task<DbApartmentAmenity> CreateApartmentAmenity(string address)
         {
             return await _apartmentRepository.CreateApartmentAmenity(address);
-
         }
 
         public async Task<DbHotelAmenity> CreateHotelAmenity(string address)

@@ -9,7 +9,7 @@ namespace BackendApartmentReservation.Infrastructure.Logging
 
     public class RequestValidationFilter : IAsyncActionFilter
     {
-        private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {

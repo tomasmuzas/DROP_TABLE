@@ -48,7 +48,9 @@
             };
         }
 
-        public async Task<DbEmployeeAmenitiesChecklist> CreateEmptyChecklistForEmployee(string employeeId, string tripId)
+        public async Task<DbEmployeeAmenitiesChecklist> CreateEmptyChecklistForEmployee(
+            string employeeId,
+            string tripId)
         {
             var existingChecklist = await _checklistRepository.GetChecklist(employeeId, tripId);
 
@@ -99,7 +101,8 @@
             flight.FlightReservation.FlightTime = info.FlightTime;
 
             await _flightRepository.UpdateFlight(flight);
-            _logger.LogInformation($"Updated flight information for the checklist for employee {employeeId} and trip {tripId}");
+            _logger.LogInformation(
+                $"Updated flight information for the checklist for employee {employeeId} and trip {tripId}");
         }
 
         public async Task<FlightReservationInfo> GetFlightInfo(string employeeId, string tripId)

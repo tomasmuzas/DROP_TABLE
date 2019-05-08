@@ -42,7 +42,7 @@
 
             var response = new RegisterResponse
             {
-               Id = employeeId
+                Id = employeeId
             };
             return Ok(response);
         }

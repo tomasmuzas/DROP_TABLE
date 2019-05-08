@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
+﻿namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class RegisterRequest
     {
         [Required(AllowEmptyStrings = false)]

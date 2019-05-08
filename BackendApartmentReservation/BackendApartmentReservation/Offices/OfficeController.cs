@@ -8,7 +8,7 @@
 
     [Route("api")]
     [ApiController]
-    public class OfficeController: ControllerBase
+    public class OfficeController : ControllerBase
     {
         private readonly IOfficeManager _officeManager;
 

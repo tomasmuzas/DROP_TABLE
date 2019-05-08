@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BackendApartmentReservation.Database.Entities
+﻿namespace BackendApartmentReservation.Database.Entities
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class DbOffice
     {
         [Key]

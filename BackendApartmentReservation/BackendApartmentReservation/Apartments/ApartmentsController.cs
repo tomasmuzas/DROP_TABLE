@@ -18,7 +18,6 @@
 
         [HttpGet]
         [Route("apartments")]
-        
         public async Task<IEnumerable<string>> Get()
         {
             _logger.LogInformation("Initial step");

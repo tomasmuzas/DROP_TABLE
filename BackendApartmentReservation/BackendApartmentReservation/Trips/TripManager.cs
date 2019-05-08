@@ -12,7 +12,10 @@
         private readonly IGroupManager _groupManager;
         private readonly IChecklistManager _checklistManager;
 
-        public TripManager(ITripRepository tripRepository, IGroupManager groupManager, IChecklistManager checklistManager)
+        public TripManager(
+            ITripRepository tripRepository,
+            IGroupManager groupManager,
+            IChecklistManager checklistManager)
         {
             _tripRepository = tripRepository;
             _groupManager = groupManager;
@@ -28,7 +31,8 @@
                 var employeesGroup = await _groupManager.GetEmployeeGroupsByGroupId(group.ExternalGroupId);
                 foreach (var employeeGroup in employeesGroup)
                 {
-                    await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId, trip.ExternalTripId);
+                    await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId,
+                        trip.ExternalTripId);
                 }
             }
 

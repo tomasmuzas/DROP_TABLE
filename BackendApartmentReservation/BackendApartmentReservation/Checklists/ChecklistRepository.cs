@@ -34,8 +34,8 @@
             return await _db.Checklists
                 .Include(c => c.Employee)
                 .Include(c => c.Trip)
-                .SingleOrDefaultAsync(c => c.Employee.ExternalEmployeeId == employeeId 
-                    && c.Trip.ExternalTripId == tripId);
+                .SingleOrDefaultAsync(c =>
+                    c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId);
         }
 
         public async Task<DbEmployeeAmenitiesChecklist> GetFullChecklist(string employeeId, string tripId)
@@ -44,13 +44,13 @@
                 .Include(c => c.Employee)
                 .Include(c => c.Trip)
                 .Include(c => c.Flight)
-                    .ThenInclude(f => f.FlightReservation)
+                .ThenInclude(f => f.FlightReservation)
                 .Include(c => c.Car)
-                    .ThenInclude(car => car.CarReservation)
+                .ThenInclude(car => car.CarReservation)
                 .Include(c => c.LivingPlace)
-                    .ThenInclude(l => l.LivingPlaceReservation)
-                .SingleOrDefaultAsync(c => c.Employee.ExternalEmployeeId == employeeId
-                    && c.Trip.ExternalTripId == tripId);
+                .ThenInclude(l => l.LivingPlaceReservation)
+                .SingleOrDefaultAsync(c =>
+                    c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId);
         }
 
         public async Task<DbFlightAmenity> GetChecklistFullFlight(string employeeId, string tripId)
@@ -58,10 +58,9 @@
             return await _db.Checklists
                 .Include(c => c.Employee)
                 .Include(c => c.Trip)
-                .Where(c => c.Employee.ExternalEmployeeId == employeeId
-                    && c.Trip.ExternalTripId == tripId)
+                .Where(c => c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId)
                 .Select(c => c.Flight)
-                    .Include(c => c.FlightReservation)
+                .Include(c => c.FlightReservation)
                 .SingleOrDefaultAsync();
         }
     }

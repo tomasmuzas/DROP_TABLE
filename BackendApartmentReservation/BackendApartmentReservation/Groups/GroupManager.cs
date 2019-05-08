@@ -14,7 +14,10 @@
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IOfficeRepository _officeRepository;
 
-        public GroupManager(IGroupRepository groupRepository, IEmployeeRepository employeeRepository, IOfficeRepository officeRepository)
+        public GroupManager(
+            IGroupRepository groupRepository,
+            IEmployeeRepository employeeRepository,
+            IOfficeRepository officeRepository)
         {
             _groupRepository = groupRepository;
             _employeeRepository = employeeRepository;
@@ -34,12 +37,12 @@
 
             foreach (DbEmployee employee in employees)
             {
-                var employeeGroup = new DbEmployeeGroup{ DbEmployee = employee, DbGroup = group };
+                var employeeGroup = new DbEmployeeGroup { DbEmployee = employee, DbGroup = group };
                 employeeGroup.DbEmployee = employee;
                 employeeGroup.DbGroup = group;
                 await _groupRepository.CreateEmployeeGroup(employeeGroup);
             }
-            
+
             return groupId;
         }
 

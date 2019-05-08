@@ -19,7 +19,7 @@
 
         public async Task<string> CreateEmployee(DbEmployee dbEmployee)
         {
-            var employeeId = Guid.NewGuid().ToString() ;
+            var employeeId = Guid.NewGuid().ToString();
             dbEmployee.ExternalEmployeeId = employeeId;
 
             await _employeeRepository.CreateEmployee(dbEmployee);
@@ -28,7 +28,7 @@
 
         public async Task<IEnumerable<EmployeeInfo>> GetAllEmployees()
         {
-            var employees = await  _employeeRepository.GetAllEmployees();
+            var employees = await _employeeRepository.GetAllEmployees();
             return employees.Select(e => new EmployeeInfo
             {
                 Id = e.ExternalEmployeeId,

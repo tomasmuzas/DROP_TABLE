@@ -1,24 +1,18 @@
-﻿using System.IO;
-
-using Autofac;
-
-using BackendApartmentReservation.Database;
-using BackendApartmentReservation.Infrastructure.Exceptions;
-using BackendApartmentReservation.Infrastructure.Logging;
-
-using Castle.Core.Internal;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace BackendApartmentReservation
+﻿namespace BackendApartmentReservation
 {
+    using System.IO;
+    using Autofac;
+    using Database;
+    using Infrastructure.Exceptions;
+    using Infrastructure.Logging;
     using IoCContainer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Internal;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class Startup
     {
@@ -32,13 +26,14 @@ namespace BackendApartmentReservation
 
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile(Path.Combine(rootFolder, "appsettings.json")) // Load default settings
-                .AddJsonFile(Path.Combine(rootFolder, $"appsettings.{envName}.json"), optional: true) // Override default settings with env specific settings 
+                .AddJsonFile(Path.Combine(rootFolder, $"appsettings.{envName}.json"),
+                    optional: true) // Override default settings with env specific settings 
                 .AddEnvironmentVariables() // Override appsettings with environment variables
                 .Build();
         }
 
         public IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
@@ -46,13 +41,12 @@ namespace BackendApartmentReservation
                 .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
                 .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_environment)))
                 .AddMvcOptions(options => options.Filters.Add(new RequestValidationFilter()));
-             
 
             var connectionString = Configuration.GetConnectionString("DatabaseContext");
-            services.AddDbContext<DatabaseContext>(options => 
+            services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(connectionString));
         }
-        
+
         public void Configure(IApplicationBuilder app)
         {
             app.UseHttpsRedirection();

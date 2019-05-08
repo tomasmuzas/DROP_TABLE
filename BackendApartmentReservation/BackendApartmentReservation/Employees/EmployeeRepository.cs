@@ -34,8 +34,7 @@
 
         public async Task CreateEmployee(DbEmployee dbEmployee)
         {
-            if (dbEmployee.FirstName != null && dbEmployee.LastName != null 
-                && dbEmployee.Email != null)
+            if (dbEmployee.FirstName != null && dbEmployee.LastName != null && dbEmployee.Email != null)
             {
                 await _context.Employees.AddAsync(dbEmployee);
                 await _context.SaveChangesAsync();

@@ -7,6 +7,5 @@
         public ApartmentReservationInfo ApartmentReservationInfo { get; set; }
 
         public HotelReservationInfo HotelReservationInfo { get; set; }
-
     }
 }

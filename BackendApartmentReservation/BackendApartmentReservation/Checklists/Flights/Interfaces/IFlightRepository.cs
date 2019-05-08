@@ -7,9 +7,7 @@
     {
         /// <summary>
         /// Creates flight amenity from a flight number.
-        /// Default flight reservation will be created if no reservation with given <paramref name="flightNumber"/> exists.
         /// </summary>
-        /// <param name="flightNumber"></param>
         /// <returns></returns>
         Task<DbFlightAmenity> CreateEmptyFlight();
 

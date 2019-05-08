@@ -10,7 +10,6 @@
 
     public class HotelRepository : IHotelRepository
     {
-
         private readonly DatabaseContext _db;
 
         public HotelRepository(DatabaseContext db)
@@ -42,6 +41,5 @@
 
             return hotelAmenity;
         }
-
     }
 }

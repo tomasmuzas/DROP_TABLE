@@ -7,7 +7,7 @@
 
     public interface ITripRepository
     {
-        Task<DbTrip> GetTrip (string tripId);
+        Task<DbTrip> GetTrip(string tripId);
 
         Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetTripChecklistsWithEmployees(string tripId);
 

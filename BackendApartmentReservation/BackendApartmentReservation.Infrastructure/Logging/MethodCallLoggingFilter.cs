@@ -10,17 +10,17 @@ namespace BackendApartmentReservation.Infrastructure.Logging
 
     public class MethodCallLoggingFilter : IAsyncActionFilter
     {
-        private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         // Called on async method execution
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var resultContext = await next().ConfigureAwait(false); // Execute method
-            
+
             if (resultContext.Exception == null)
             {
                 var result = resultContext.Result as ObjectResult;
-                var parameters = context.ActionDescriptor.Parameters;
+                //var parameters = context.ActionDescriptor.Parameters;
                 var fullActionName = context.ActionDescriptor.DisplayName;
                 var httpMethod = context.HttpContext?.Request.Method;
 
