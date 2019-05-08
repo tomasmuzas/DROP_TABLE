@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities.Amenities;
-
-namespace BackendApartmentReservation.Repositories.Checklist
+﻿namespace BackendApartmentReservation.Apartments.Interfaces
 {
+    using System.Threading.Tasks;
+    using Database.Entities.Amenities;
+
     public interface IApartmentRepository
     {
         Task<DbApartmentAmenity> CreateApartmentAmenity(string address);

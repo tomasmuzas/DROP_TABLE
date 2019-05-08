@@ -1,10 +1,10 @@
-﻿namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Offices
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Responses;
-    using Repositories;
+    using Interfaces;
 
     public class OfficeManager : IOfficeManager
     {

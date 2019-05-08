@@ -6,13 +6,15 @@ using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 namespace BackendApartmentReservation.Tests.Managers
 {
     using System.Threading.Tasks;
-    using BackendApartmentReservation.Managers;
-    using BackendApartmentReservation.Repositories;
-    using BackendApartmentReservation.Repositories.Checklist;
+    using Checklists;
+    using Checklists.Flights.Interfaces;
+    using Checklists.Interfaces;
     using Database.Entities;
+    using Employees.Interfaces;
     using FakeItEasy;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
+    using Trips.Interfaces;
     using Xunit;
 
     public class ChecklistManagerTests

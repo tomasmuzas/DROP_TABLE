@@ -1,8 +1,8 @@
-﻿using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
-using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Trips.Interfaces
 {
+    using System.Threading.Tasks;
+    using DataContracts.DataTransferObjects.Requests;
+
     public interface ITripManager
     {
         Task<string> CreateBasicTrip(CreateTripRequest tripRequest);

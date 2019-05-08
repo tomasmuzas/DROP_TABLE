@@ -1,14 +1,16 @@
-﻿using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.Repositories;
-
-namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Checklists
 {
     using System;
+    using System.Threading.Tasks;
+    using Database.Entities;
+    using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
+    using Employees.Interfaces;
+    using Flights.Interfaces;
+    using Interfaces;
     using Microsoft.Extensions.Logging;
-    using Repositories.Checklist;
+    using Trips.Interfaces;
 
     public class ChecklistManager : IChecklistManager
     {

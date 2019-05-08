@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database;
-using BackendApartmentReservation.Database.Entities;
-using Microsoft.EntityFrameworkCore;
-
-namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Employees
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Database;
+    using Database.Entities;
+    using Interfaces;
+    using Microsoft.EntityFrameworkCore;
+
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly DatabaseContext _context;

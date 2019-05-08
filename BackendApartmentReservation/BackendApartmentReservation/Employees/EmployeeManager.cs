@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.Repositories;
-
-namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Employees
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+    using Database.Entities;
     using DataContracts.DataTransferObjects.Responses;
+    using Interfaces;
 
     public class EmployeeManager : IEmployeeManager
     {

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.Managers;
-using BackendApartmentReservation.Repositories;
-
 using FakeItEasy;
 
 using Xunit;
@@ -12,6 +9,8 @@ namespace BackendApartmentReservation.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Employees;
+    using Employees.Interfaces;
 
     public class EmployeeManagerTests
     {

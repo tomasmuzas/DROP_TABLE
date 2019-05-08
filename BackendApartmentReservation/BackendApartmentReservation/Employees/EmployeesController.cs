@@ -1,17 +1,14 @@
-﻿using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
-using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
-using BackendApartmentReservation.Managers;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BackendApartmentReservation.Controllers
+﻿namespace BackendApartmentReservation.Employees
 {
-    using BackendApartmentReservation.Infrastructure.Exceptions;
-    using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Database.Entities;
+    using DataContracts.DataTransferObjects.Requests;
+    using DataContracts.DataTransferObjects.Responses;
+    using Infrastructure.Exceptions;
+    using Interfaces;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
     [Route("api")]
     [ApiController]

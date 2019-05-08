@@ -1,8 +1,8 @@
-﻿namespace BackendApartmentReservation.Controllers
+﻿namespace BackendApartmentReservation.Trips
 {
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Responses;
-    using Managers;
+    using Interfaces;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]

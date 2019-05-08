@@ -1,6 +1,6 @@
 ﻿namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Responses
 {
-    using Managers;
+    using IntermediaryDTOs;
 
     public class ChecklistInformationResponse
     {

@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Trips
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Database;
     using Database.Entities;
     using DataContracts.DataTransferObjects.Requests;
+    using Interfaces;
     using Microsoft.EntityFrameworkCore;
 
     public class TripRepository : ITripRepository

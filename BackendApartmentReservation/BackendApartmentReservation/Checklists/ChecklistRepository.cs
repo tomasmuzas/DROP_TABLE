@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.Repositories.Checklist
+﻿namespace BackendApartmentReservation.Checklists
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using Database;
     using Database.Entities;
     using Database.Entities.Amenities;
+    using Interfaces;
     using Microsoft.EntityFrameworkCore;
 
     public class ChecklistRepository : IChecklistRepository

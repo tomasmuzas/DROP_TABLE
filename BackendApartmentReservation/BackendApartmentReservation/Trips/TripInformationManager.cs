@@ -1,11 +1,10 @@
-﻿using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Trips
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Responses;
-    using Repositories;
+    using Interfaces;
 
     public class TripInformationManager : ITripInformationManager
     {

@@ -1,11 +1,24 @@
-using Autofac;
-using BackendApartmentReservation.Managers;
-
-namespace BackendApartmentReservation.Infrastructure.Containers
+namespace BackendApartmentReservation.IoCContainer
 {
-    using Repositories.Checklist;
-
-    using Repositories;
+    using Apartments;
+    using Apartments.Interfaces;
+    using Autofac;
+    using Checklists;
+    using Checklists.Cars;
+    using Checklists.Cars.Interfaces;
+    using Checklists.Flights;
+    using Checklists.Flights.Interfaces;
+    using Checklists.Hotels;
+    using Checklists.Hotels.Interfaces;
+    using Checklists.Interfaces;
+    using Employees;
+    using Employees.Interfaces;
+    using Groups;
+    using Groups.Interfaces;
+    using Offices;
+    using Offices.Interfaces;
+    using Trips;
+    using Trips.Interfaces;
 
     public class IoCConfig : Module
     {

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database;
-using BackendApartmentReservation.Database.Entities;
-using Microsoft.EntityFrameworkCore;
-
-namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Offices
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Database;
+    using Database.Entities;
+    using Interfaces;
+    using Microsoft.EntityFrameworkCore;
+
     public class OfficeRepository : IOfficeRepository
     {
         private readonly DatabaseContext _context;

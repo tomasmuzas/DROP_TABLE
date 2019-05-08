@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
-
-namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Checklists.Interfaces
 {
+    using System.Threading.Tasks;
+    using Database.Entities;
+    using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
 

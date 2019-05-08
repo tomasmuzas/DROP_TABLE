@@ -1,9 +1,11 @@
-﻿using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
-using BackendApartmentReservation.Repositories;
-using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Trips
 {
+    using System.Threading.Tasks;
+    using Checklists.Interfaces;
+    using DataContracts.DataTransferObjects.Requests;
+    using Groups.Interfaces;
+    using Interfaces;
+
     public class TripManager : ITripManager
     {
         private readonly ITripRepository _tripRepository;

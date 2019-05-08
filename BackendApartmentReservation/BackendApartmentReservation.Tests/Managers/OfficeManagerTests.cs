@@ -5,10 +5,10 @@ namespace BackendApartmentReservation.Tests.Managers
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BackendApartmentReservation.Managers;
-    using BackendApartmentReservation.Repositories;
     using Database.Entities;
     using FakeItEasy;
+    using Offices;
+    using Offices.Interfaces;
     using Xunit;
 
     public class OfficeManagerTests

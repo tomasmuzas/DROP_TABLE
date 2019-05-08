@@ -1,4 +1,4 @@
-﻿namespace BackendApartmentReservation.Repositories.Checklist
+﻿namespace BackendApartmentReservation.Checklists.Flights.Interfaces
 {
     using System.Threading.Tasks;
     using Database.Entities.Amenities;

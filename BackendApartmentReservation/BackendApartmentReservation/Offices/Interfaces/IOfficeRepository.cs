@@ -1,9 +1,9 @@
-﻿using BackendApartmentReservation.Database.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Offices.Interfaces
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Database.Entities;
+
     public interface IOfficeRepository
     {
         Task<DbOffice> GetOfficeById(string officeID);

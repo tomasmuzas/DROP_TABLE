@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BackendApartmentReservation.Controllers
+﻿namespace BackendApartmentReservation.Trips
 {
+    using System.Threading.Tasks;
+    using Checklists.Interfaces;
+    using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
-    using Managers;
+    using Microsoft.AspNetCore.Mvc;
 
     [Route("api/trips/{tripId}/employees/{employeeId}")]
     [ApiController]

@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.Repositories;
-
-namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Groups
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Database.Entities;
+    using Employees.Interfaces;
+    using Interfaces;
+    using Offices.Interfaces;
+
     public class GroupManager : IGroupManager
     {
         private readonly IGroupRepository _groupRepository;

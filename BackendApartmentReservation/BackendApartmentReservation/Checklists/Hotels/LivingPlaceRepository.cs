@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database;
-using BackendApartmentReservation.Database.Entities.Amenities;
-using BackendApartmentReservation.Database.Entities.Reservations;
-using Microsoft.EntityFrameworkCore;
-
-namespace BackendApartmentReservation.Repositories.Checklist
+﻿namespace BackendApartmentReservation.Checklists.Hotels
 {
+    using System.Threading.Tasks;
+    using Apartments;
+    using Database;
+    using Database.Entities.Amenities;
+    using Database.Entities.Reservations;
+    using Interfaces;
+    using Microsoft.EntityFrameworkCore;
+
     public class LivingPlaceRepository : ILivingPlaceRepository
     {
         private readonly DatabaseContext _db;

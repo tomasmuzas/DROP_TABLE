@@ -1,9 +1,9 @@
-﻿using BackendApartmentReservation.Database.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Employees.Interfaces
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Database.Entities;
+
     public interface IEmployeeRepository
     {
         Task<IEnumerable<DbEmployee>> GetAllEmployees();

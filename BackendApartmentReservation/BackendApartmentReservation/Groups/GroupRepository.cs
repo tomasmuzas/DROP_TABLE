@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database;
-using BackendApartmentReservation.Database.Entities;
-using Microsoft.EntityFrameworkCore;
-
-namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Groups
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Database;
+    using Database.Entities;
+    using Interfaces;
+    using Microsoft.EntityFrameworkCore;
+
     public class GroupRepository : IGroupRepository
     {
         private readonly DatabaseContext _context;

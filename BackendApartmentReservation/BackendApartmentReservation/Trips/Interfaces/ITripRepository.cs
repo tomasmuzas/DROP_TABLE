@@ -1,4 +1,4 @@
-﻿namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Trips.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

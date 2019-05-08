@@ -1,4 +1,4 @@
-﻿namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Trips.Interfaces
 {
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Responses;

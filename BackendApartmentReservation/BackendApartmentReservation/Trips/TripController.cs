@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.Controllers
+﻿namespace BackendApartmentReservation.Trips
 {
+    using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Requests;
-    using Managers;
+    using Interfaces;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api")]

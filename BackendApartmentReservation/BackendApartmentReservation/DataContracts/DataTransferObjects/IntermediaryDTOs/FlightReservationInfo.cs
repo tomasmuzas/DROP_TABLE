@@ -1,4 +1,4 @@
-﻿namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.DataContracts.DataTransferObjects.IntermediaryDTOs
 {
     using System;
 

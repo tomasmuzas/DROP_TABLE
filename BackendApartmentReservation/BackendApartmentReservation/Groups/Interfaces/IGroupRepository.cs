@@ -1,9 +1,9 @@
-﻿using BackendApartmentReservation.Database.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace BackendApartmentReservation.Repositories
+﻿namespace BackendApartmentReservation.Groups.Interfaces
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Database.Entities;
+
     public interface IGroupRepository
     {
         Task<IEnumerable<DbGroup>> GetAllGroups();

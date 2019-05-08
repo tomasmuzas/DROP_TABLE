@@ -3,7 +3,6 @@
 using Autofac;
 
 using BackendApartmentReservation.Database;
-using BackendApartmentReservation.Infrastructure.Containers;
 using BackendApartmentReservation.Infrastructure.Exceptions;
 using BackendApartmentReservation.Infrastructure.Logging;
 
@@ -19,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BackendApartmentReservation
 {
+    using IoCContainer;
+
     public class Startup
     {
         private readonly IHostingEnvironment _environment;

@@ -1,4 +1,4 @@
-﻿namespace BackendApartmentReservation.Managers
+﻿namespace BackendApartmentReservation.Offices.Interfaces
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

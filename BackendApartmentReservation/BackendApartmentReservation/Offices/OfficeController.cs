@@ -1,9 +1,9 @@
-﻿namespace BackendApartmentReservation.Controllers
+﻿namespace BackendApartmentReservation.Offices
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Responses;
-    using Managers;
+    using Interfaces;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api")]
