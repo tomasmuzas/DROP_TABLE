@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Responses
+﻿namespace BackendApartmentReservation.Infrastructure.Exceptions
 {
+    using System;
+
     public class ErrorResponse
     {
         public string ErrorCode { get; set; }

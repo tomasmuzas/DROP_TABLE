@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using BackendApartmentReservation.Extensions.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -7,6 +6,8 @@ using NLog;
 
 namespace BackendApartmentReservation.Infrastructure.Logging
 {
+    using Extensions.Json;
+
     public class MethodCallLoggingFilter : IAsyncActionFilter
     {
         private readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();

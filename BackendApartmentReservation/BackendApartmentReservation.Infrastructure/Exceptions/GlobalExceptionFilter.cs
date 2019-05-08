@@ -1,7 +1,4 @@
-﻿using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
-using BackendApartmentReservation.Extensions.Json;
-
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -9,6 +6,8 @@ using NLog;
 
 namespace BackendApartmentReservation.Infrastructure.Exceptions
 {
+    using Extensions.Json;
+
     public class GlobalExceptionFilter : IExceptionFilter
     {
         private readonly IHostingEnvironment _environment;
