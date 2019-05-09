@@ -50,5 +50,7 @@
         public DbSet<DbApartmentReservation> ApartmentReservations { get; set; }
 
         public DbSet<DbEmployeePlan> EmployeePlans { get; set; }
+
+        public DbSet<DbAuthorization> Authorizations { get; set; }
     }
 }

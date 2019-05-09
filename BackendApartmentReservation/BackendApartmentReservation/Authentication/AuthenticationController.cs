@@ -1,6 +1,9 @@
-﻿namespace BackendApartmentReservation.Authentication
+﻿using BackendApartmentReservation.Authentication.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+
+namespace BackendApartmentReservation.Authentication
 {
-    using System.Collections.Generic;
+    using DataContracts.DataTransferObjects.Requests;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +11,19 @@
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        [HttpGet]
-        [Route("authentication")]
-        public async Task<IEnumerable<string>> Get()
+        private readonly IAuthenticationManager _authenticationManager;
+
+        public AuthenticationController(IAuthenticationManager authenticationManager)
         {
-            return await Task.FromResult(new[] { "auth1", "auth2" });
+            _authenticationManager = authenticationManager;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("authentication")]
+        public async Task<EmployeeAuthenticationInfo> Authenticate([FromBody] AuthenticationRequest request)
+        {
+            return await _authenticationManager.Authenticate(request);
         }
     }
 }
