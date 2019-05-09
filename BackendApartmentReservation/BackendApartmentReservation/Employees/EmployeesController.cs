@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BackendApartmentReservation.Offices.Interfaces;
     using Database.Entities;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;

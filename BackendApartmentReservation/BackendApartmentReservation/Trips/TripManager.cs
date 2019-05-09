@@ -1,5 +1,6 @@
 ﻿namespace BackendApartmentReservation.Trips
 {
+    using System;
     using System.Threading.Tasks;
     using Checklists.Interfaces;
     using DataContracts.DataTransferObjects.Requests;
