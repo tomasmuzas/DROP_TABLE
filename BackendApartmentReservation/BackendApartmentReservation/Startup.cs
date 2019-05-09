@@ -87,6 +87,7 @@ namespace BackendApartmentReservation
                 {
                     context.Database.Migrate();
                 }
+                context.Seed();
             }
         }
 

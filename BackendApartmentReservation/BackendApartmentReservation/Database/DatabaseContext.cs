@@ -1,4 +1,7 @@
-﻿namespace BackendApartmentReservation.Database
+﻿using System.Linq;
+using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account.Manage;
+
+namespace BackendApartmentReservation.Database
 {
     using Entities;
     using Entities.Amenities;
