@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities.Amenities;
-
-namespace BackendApartmentReservation.Database.Entities.Reservations
+﻿namespace BackendApartmentReservation.Database.Entities.Reservations
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class DbApartmentReservation
     {
         [Key]

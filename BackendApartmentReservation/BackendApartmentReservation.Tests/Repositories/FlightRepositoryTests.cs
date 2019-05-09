@@ -6,7 +6,7 @@ namespace BackendApartmentReservation.Tests.Repositories
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using BackendApartmentReservation.Repositories.Checklist;
+    using Checklists.Flights;
     using Xunit;
 
     public class FlightRepositoryTests : DatabaseTestBase

@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Responses
+﻿namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Responses
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class RegisterResponse
     {
         [Required]

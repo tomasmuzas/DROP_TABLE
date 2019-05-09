@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BackendApartmentReservation.Repositories;
     using Database.Entities;
     using Database.Entities.Amenities;
+    using Trips;
     using Xunit;
 
     public class TripRepositoryTests : DatabaseTestBase
