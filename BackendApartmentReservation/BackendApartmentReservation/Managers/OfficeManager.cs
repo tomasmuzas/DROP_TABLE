@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using BackendApartmentReservation.Database.Entities;
     using DataContracts.DataTransferObjects.Responses;
     using Repositories;
 
@@ -26,15 +27,9 @@
             });
         }
 
-        public async Task<OfficeInfoResponse> GetOfficeById(string officeId)
+        public async Task<DbOffice> GetOfficeById(string officeId)
         {
-            var office = await _officeRepository.GetOfficeById(officeId);
-
-            return new OfficeInfoResponse
-            {
-                Id = office.ExternalOfficeId,
-                Address = office.Address
-            };
+            return await _officeRepository.GetOfficeById(officeId);
         }
     }
 }

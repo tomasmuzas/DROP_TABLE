@@ -18,10 +18,12 @@ namespace BackendApartmentReservation.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeManager _employeeManager;
+        private readonly IOfficeManager _officeManager;
 
-        public EmployeesController(IEmployeeManager employeeManager)
+        public EmployeesController(IEmployeeManager employeeManager, IOfficeManager officeManager)
         {
             _employeeManager = employeeManager;
+            _officeManager = officeManager;
         }
 
         [HttpGet]
@@ -40,6 +42,7 @@ namespace BackendApartmentReservation.Controllers
             dbEmployee.FirstName = model.FirstName;
             dbEmployee.LastName = model.LastName;
             dbEmployee.Email = model.Email;
+            dbEmployee.Office = await _officeManager.GetOfficeById(model.Office);
 
             var employeeId = await _employeeManager.CreateEmployee(dbEmployee);
 

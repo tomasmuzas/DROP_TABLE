@@ -1,5 +1,6 @@
 ﻿using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.Repositories;
+using System;
 using System.Threading.Tasks;
 
 namespace BackendApartmentReservation.Managers
@@ -20,6 +21,7 @@ namespace BackendApartmentReservation.Managers
         public async Task<string> CreateBasicTrip(CreateTripRequest tripRequest)
         {
             var trip = await _tripRepository.CreateTrip(tripRequest);
+            trip.ExternalTripId = Guid.NewGuid().ToString();
 
             foreach (var group in trip.Groups)
             {
