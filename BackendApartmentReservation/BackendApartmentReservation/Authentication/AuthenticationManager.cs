@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Authentication.Interfaces;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
-using Castle.Core.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BackendApartmentReservation.Authentication
@@ -26,11 +26,13 @@ namespace BackendApartmentReservation.Authentication
 
         public async Task<EmployeeAuthenticationInfo> Authenticate(AuthenticationRequest request)
         {
+            var hash = SecurityManager.GetPasswordHash(request.Password);
+
             var authorisation =
-                await _authenticationRepository.Authorize(request.Email, SecurityManager.GetPasswordHash(request.Password));
+                await _authenticationRepository.Authorize(request.Email, hash);
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration.Attributes.Get("JwtTokenSecret"));
+            var key = Encoding.ASCII.GetBytes(_configuration["JwtTokenSecret"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

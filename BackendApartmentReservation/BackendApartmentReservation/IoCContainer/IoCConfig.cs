@@ -1,3 +1,6 @@
+using BackendApartmentReservation.Authentication;
+using BackendApartmentReservation.Authentication.Interfaces;
+
 namespace BackendApartmentReservation.IoCContainer
 {
     using Apartments;
@@ -37,6 +40,8 @@ namespace BackendApartmentReservation.IoCContainer
                 .As<IGroupManager>();
             builder.RegisterType<TripManager>()
                 .As<ITripManager>();
+            builder.RegisterType<AuthenticationManager>()
+                .As<IAuthenticationManager>();
 
             // Repositories
             builder.RegisterType<CarRentRepository>()
@@ -59,6 +64,8 @@ namespace BackendApartmentReservation.IoCContainer
                 .As<ITripRepository>();
             builder.RegisterType<GroupRepository>()
                 .As<IGroupRepository>();
+            builder.RegisterType<AuthenticationRepository>()
+                .As<IAuthenticationRepository>();
         }
     }
 }
