@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BackendApartmentReservation.Offices.Interfaces;
     using Database.Entities;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
@@ -15,10 +16,12 @@
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeManager _employeeManager;
+        private readonly IOfficeManager _officeManager;
 
-        public EmployeesController(IEmployeeManager employeeManager)
+        public EmployeesController(IEmployeeManager employeeManager, IOfficeManager officeManager)
         {
             _employeeManager = employeeManager;
+            _officeManager = officeManager;
         }
 
         [HttpGet]
@@ -37,6 +40,7 @@
             dbEmployee.FirstName = model.FirstName;
             dbEmployee.LastName = model.LastName;
             dbEmployee.Email = model.Email;
+            dbEmployee.Office = await _officeManager.GetOfficeById(model.Office);
 
             var employeeId = await _employeeManager.CreateEmployee(dbEmployee);
 
