@@ -5,7 +5,7 @@ using BackendApartmentReservation.Infrastructure.Utilities;
 
 namespace BackendApartmentReservation.Authentication
 {
-    public class SecurityManager
+    public static class SecurityManager
     {
         public static string GetPasswordHash(Password password)
         {
