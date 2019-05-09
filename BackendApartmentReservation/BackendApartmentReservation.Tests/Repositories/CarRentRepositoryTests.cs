@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Tests.Repositories
+﻿using BackendApartmentReservation.Database.Entities.Amenities;
+
+namespace BackendApartmentReservation.Tests.Repositories
 {
     using System;
     using System.Linq;
@@ -10,20 +12,18 @@
     public class CarRentRepositoryTests : DatabaseTestBase
     {
         [Fact]
-        public async Task CreateCarRentAmenityFromCarNumber_CreatesReservationWhenNoneExists()
+        public async Task CreateEmptyCarRent_CreatesCarRentWithCorrectInformation()
         {
             using (var dbContext = GetNewDatabaseContext())
             {
-                var carNumber = "CAR123";
                 var repository = new CarRentRepository(dbContext);
 
-                var amenity = await repository.CreateCarRentAmenityFromCarNumber(carNumber);
+                var amenity = await repository.CreateEmptyCarRent();
                 Assert.NotNull(amenity);
                 Assert.True(amenity.BookedAt > new DateTimeOffset());
 
-                var reservation = dbContext.CarReservations.FirstOrDefault(c => c.CarNumber == carNumber);
+                var reservation = dbContext.CarReservations.Single();
                 Assert.NotNull(reservation);
-                Assert.Equal(reservation.CarNumber, carNumber);
 
                 Assert.NotEqual(0, reservation.Id);
                 Assert.NotEqual(0, amenity.CarReservation.Id);
@@ -33,29 +33,56 @@
         }
 
         [Fact]
-        public async Task CreateCarRentAmenityFromCarNumber_UsesExistingReservation()
+        public async Task UpdateChecklist_Success()
         {
             using (var dbContext = GetNewDatabaseContext())
             {
-                var carNumber = "CAR456";
-                dbContext.CarReservations.Add(new DbCarReservation
+                var oldCarRent = new DbCarRentAmenity
                 {
-                    CarNumber = carNumber
-                });
+                    Id = 1,
+                    CarReservation = new DbCarReservation()
+                };
+
+                dbContext.CarRentAmenities.Add(oldCarRent);
                 await dbContext.SaveChangesAsync();
 
                 var repository = new CarRentRepository(dbContext);
 
-                var amenity = await repository.CreateCarRentAmenityFromCarNumber(carNumber);
+                oldCarRent.CarReservation.CarNumber = "159753";
 
-                Assert.NotNull(amenity);
-                Assert.True(amenity.BookedAt > new DateTimeOffset());
+                await repository.UpdateCarRent(oldCarRent);
 
-                var reservation = dbContext.CarReservations.Single(c => c.CarNumber == carNumber);
-                Assert.NotEqual(0, amenity.CarReservation.Id);
+                var CarRentEntry = dbContext.CarRentAmenities.Single();
 
-                Assert.Equal(amenity.CarReservation.Id, reservation.Id);
+                Assert.Equal("159753", CarRentEntry.CarReservation.CarNumber);
             }
+        }
+
+        [Fact]
+        public async Task DeleteChecklist_RemovesEverything()
+        {
+            using (var dbContext = GetNewDatabaseContext())
+            {
+                var carRent = new DbCarRentAmenity
+                {
+                    Id = 1,
+                    CarReservation = new DbCarReservation()
+                };
+
+                dbContext.CarRentAmenities.Add(carRent);
+                await dbContext.SaveChangesAsync();
+
+                var repository = new CarRentRepository(dbContext);
+
+                await repository.DeleteCarRent(carRent);
+
+                var carRentEntry = dbContext.CarRentAmenities.SingleOrDefault();
+                var carReservationEntry = dbContext.CarReservations.SingleOrDefault();
+
+                Assert.Null(carRentEntry);
+                Assert.Null(carReservationEntry);
+            }
+
         }
     }
 }
