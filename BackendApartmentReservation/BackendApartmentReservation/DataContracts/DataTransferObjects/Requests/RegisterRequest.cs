@@ -16,7 +16,7 @@
         public string Email { get; set; }
 
         [Required(AllowEmptyStrings = false)]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$")]
+        [ValidPassword]
         public Password Password { get; set; }
 
         [Required(AllowEmptyStrings = false)]

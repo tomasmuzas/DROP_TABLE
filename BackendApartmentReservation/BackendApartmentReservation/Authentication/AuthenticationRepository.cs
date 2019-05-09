@@ -41,6 +41,7 @@ namespace BackendApartmentReservation.Authentication
             };
 
             await _db.Authorizations.AddAsync(authorization);
+            await _db.SaveChangesAsync();
         }
     }
 }
