@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace BackendApartmentReservation.Database.Entities
+﻿namespace BackendApartmentReservation.Database.Entities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class DbTrip
     {
         [Key]

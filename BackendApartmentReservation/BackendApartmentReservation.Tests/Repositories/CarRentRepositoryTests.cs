@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using BackendApartmentReservation.Repositories.Checklist;
+    using Checklists.Cars;
     using Database.Entities.Reservations;
     using Xunit;
 

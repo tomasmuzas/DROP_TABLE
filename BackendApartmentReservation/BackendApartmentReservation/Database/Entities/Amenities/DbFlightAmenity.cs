@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using BackendApartmentReservation.Database.Entities.Reservations;
-
-namespace BackendApartmentReservation.Database.Entities.Amenities
+﻿namespace BackendApartmentReservation.Database.Entities.Amenities
 {
+    using System.ComponentModel.DataAnnotations;
+    using Reservations;
+
     public class DbFlightAmenity : AmenityBase
     {
         [Key]

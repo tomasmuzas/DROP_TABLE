@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
+﻿namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class CreateTripRequest
     {
         [Required]

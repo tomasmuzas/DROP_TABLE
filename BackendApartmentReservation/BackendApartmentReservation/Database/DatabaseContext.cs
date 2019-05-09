@@ -1,11 +1,10 @@
-﻿using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.Database.Entities.Amenities;
-using BackendApartmentReservation.Database.Entities.Reservations;
-
-using Microsoft.EntityFrameworkCore;
-
-namespace BackendApartmentReservation.Database
+﻿namespace BackendApartmentReservation.Database
 {
+    using Entities;
+    using Entities.Amenities;
+    using Entities.Reservations;
+    using Microsoft.EntityFrameworkCore;
+
     public class DatabaseContext : DbContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
@@ -38,6 +37,7 @@ namespace BackendApartmentReservation.Database
         public DbSet<DbApartmentAmenity> ApartmentAmenities { get; set; }
 
         public DbSet<DbHotelAmenity> HotelAmenities { get; set; }
+
         // Reservations
         public DbSet<DbCarReservation> CarReservations { get; set; }
 
@@ -50,6 +50,5 @@ namespace BackendApartmentReservation.Database
         public DbSet<DbApartmentReservation> ApartmentReservations { get; set; }
 
         public DbSet<DbEmployeePlan> EmployeePlans { get; set; }
-
     }
 }

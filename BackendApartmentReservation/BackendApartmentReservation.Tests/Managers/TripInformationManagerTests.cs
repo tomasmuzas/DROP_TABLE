@@ -3,10 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BackendApartmentReservation.Managers;
-    using BackendApartmentReservation.Repositories;
     using Database.Entities;
     using FakeItEasy;
+    using Trips;
+    using Trips.Interfaces;
     using Xunit;
 
     public class TripInformationManagerTests

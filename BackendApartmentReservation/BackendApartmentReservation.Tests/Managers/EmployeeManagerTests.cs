@@ -1,17 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
-using BackendApartmentReservation.Managers;
-using BackendApartmentReservation.Repositories;
-
-using FakeItEasy;
-
-using Xunit;
-
-namespace BackendApartmentReservation.Tests
+﻿namespace BackendApartmentReservation.Tests.Managers
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
+    using Database.Entities;
+    using Employees;
+    using Employees.Interfaces;
+    using FakeItEasy;
+    using Xunit;
 
     public class EmployeeManagerTests
     {
