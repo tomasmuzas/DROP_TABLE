@@ -12,7 +12,7 @@ namespace BackendApartmentReservation.Authentication
             var hash = SHA256.Create();
             var passwordBytes = Encoding.UTF8.GetBytes(password);
             var hashedPasswordBytes = hash.ComputeHash(passwordBytes);
-            return BitConverter.ToString(hashedPasswordBytes);
+            return BitConverter.ToString(hashedPasswordBytes).Replace("-", string.Empty);
         }
     }
 }
