@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
+﻿using System.Linq;
 using BackendApartmentReservation.Offices;
-using Microsoft.EntityFrameworkCore;
 
 namespace BackendApartmentReservation.Database
 {
