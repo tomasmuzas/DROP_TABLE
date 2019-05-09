@@ -9,21 +9,6 @@ namespace BackendApartmentReservation.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "AirportAddress",
-                table: "FlightReservations",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Company",
-                table: "FlightReservations",
-                nullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "FlightTime",
-                table: "FlightReservations",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
                 name: "CarAddress",
                 table: "CarReservations",
                 nullable: true);
@@ -43,19 +28,6 @@ namespace BackendApartmentReservation.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-           
-            migrationBuilder.DropColumn(
-                name: "AirportAddress",
-                table: "FlightReservations");
-
-            migrationBuilder.DropColumn(
-                name: "Company",
-                table: "FlightReservations");
-
-            migrationBuilder.DropColumn(
-                name: "FlightTime",
-                table: "FlightReservations");
-
             migrationBuilder.DropColumn(
                 name: "CarAddress",
                 table: "CarReservations");
@@ -67,7 +39,6 @@ namespace BackendApartmentReservation.Migrations
             migrationBuilder.DropColumn(
                 name: "RentStartTime",
                 table: "CarReservations");
-
         }
     }
 }
