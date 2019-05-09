@@ -59,7 +59,6 @@ namespace BackendApartmentReservation.Authentication
         {
             var hashedPassword = SecurityManager.GetPasswordHash(password);
             await _authenticationRepository.CreateAuthenticationInfo(
-                dbEmployee.Email,
                 hashedPassword,
                 dbEmployee);
         }

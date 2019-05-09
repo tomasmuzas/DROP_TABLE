@@ -31,11 +31,11 @@ namespace BackendApartmentReservation.Authentication
             return authorization;
         }
 
-        public async Task CreateAuthenticationInfo(string email, string hashedPassword, DbEmployee employee)
+        public async Task CreateAuthenticationInfo(string hashedPassword, DbEmployee employee)
         {
             var authorization = new DbAuthorization
             {
-                Email = email,
+                Email = employee.Email,
                 Password = hashedPassword,
                 Employee = employee
             };
