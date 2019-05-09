@@ -19,6 +19,12 @@
             }
 
             var passwordString = (string)password;
+
+            if (string.IsNullOrEmpty(passwordString))
+            {
+                return new ValidationResult("Password cannot be empty");
+            }
+
             return base.IsValid(passwordString, validationContext);
         }
     }
