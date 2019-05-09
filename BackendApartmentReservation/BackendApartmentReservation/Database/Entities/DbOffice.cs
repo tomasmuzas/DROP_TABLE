@@ -12,5 +12,7 @@
         public string Address { get; set; }
 
         public DbApartment OfficeApartment { get; set; }
+
+        public int DbApartmentId { get; set; }
     }
 }
