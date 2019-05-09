@@ -1,6 +1,7 @@
 ﻿namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
 {
     using System.ComponentModel.DataAnnotations;
+    using Infrastructure.Utilities;
 
     public class RegisterRequest
     {
@@ -16,7 +17,7 @@
 
         [Required(AllowEmptyStrings = false)]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$")]
-        public string Password { get; set; }
+        public Password Password { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         public string Office { get; set; }

@@ -30,5 +30,17 @@ namespace BackendApartmentReservation.Authentication
 
             return authorization;
         }
+
+        public async Task CreateAuthenticationInfo(string email, string hashedPassword, DbEmployee employee)
+        {
+            var authorization = new DbAuthorization
+            {
+                Email = email,
+                Password = hashedPassword,
+                Employee = employee
+            };
+
+            await _db.Authorizations.AddAsync(authorization);
+        }
     }
 }
