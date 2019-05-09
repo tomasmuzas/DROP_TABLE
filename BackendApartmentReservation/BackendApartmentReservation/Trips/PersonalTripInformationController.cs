@@ -57,5 +57,36 @@
         {
             await _checklistManager.DeleteFlight(employeeId, tripId);
         }
+
+        [HttpGet]
+        [Route("car")]
+        public async Task<CarReservationInfo> GetCarRentInfo(string tripId, string employeeId)
+        {
+            return await _checklistManager.GetCarRentInfo(employeeId, tripId);
+        }
+
+        [HttpPost]
+        [Route("car")]
+        public async Task AddCarRent(string tripId, string employeeId)
+        {
+            await _checklistManager.AddCarRentForEmployee(employeeId, tripId);
+        }
+
+        [HttpPut]
+        [Route("car")]
+        public async Task UpdateCarRent(
+            string tripId,
+            string employeeId,
+            [FromBody] CarReservationRequest info)
+        {
+            await _checklistManager.UpdateCarRentForEmployee(employeeId, tripId, info);
+        }
+
+        [HttpDelete]
+        [Route("car")]
+        public async Task DeleteCarRent(string tripId, string employeeId)
+        {
+            await _checklistManager.DeleteCarRent(employeeId, tripId);
+        }
     }
 }

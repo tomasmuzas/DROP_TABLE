@@ -63,5 +63,16 @@
                 .Include(c => c.FlightReservation)
                 .SingleOrDefaultAsync();
         }
+
+        public async Task<DbCarRentAmenity> GetChecklistFullCarRent(string employeeId, string tripId)
+        {
+            return await _db.Checklists
+                .Include(c => c.Employee)
+                .Include(c => c.Trip)
+                .Where(c => c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId)
+                .Select(c => c.Car)
+                .Include(c => c.CarReservation)
+                .SingleOrDefaultAsync();
+        }
     }
 }

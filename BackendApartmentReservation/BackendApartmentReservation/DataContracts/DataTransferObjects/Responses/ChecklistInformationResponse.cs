@@ -5,5 +5,7 @@
     public class ChecklistInformationResponse
     {
         public FlightReservationInfo Flight { get; set; }
+
+        public CarReservationInfo Car { get; set; }
     }
 }

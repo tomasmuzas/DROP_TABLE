@@ -17,19 +17,9 @@
             _db = db;
         }
 
-        public async Task<DbCarRentAmenity> CreateCarRentAmenityFromCarNumber(string carNumber)
+        public async Task<DbCarRentAmenity> CreateEmptyCarRent()
         {
-            var carReservation = await _db.CarReservations.SingleOrDefaultAsync(r => r.CarNumber == carNumber);
-
-            if (carReservation == default(DbCarReservation))
-            {
-                carReservation = new DbCarReservation
-                {
-                    CarNumber = carNumber
-                };
-
-                await _db.CarReservations.AddAsync(carReservation);
-            }
+            var carReservation = new DbCarReservation();
 
             var carRentAmenity = new DbCarRentAmenity
             {
@@ -37,11 +27,29 @@
                 CarReservation = carReservation
             };
 
+            await _db.CarReservations.AddAsync(carReservation);
             await _db.CarRentAmenities.AddAsync(carRentAmenity);
 
             await _db.SaveChangesAsync();
 
             return carRentAmenity;
         }
+
+        public async Task UpdateCarRent(DbCarRentAmenity carRent)
+        {
+            _db.Update(carRent);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task DeleteCarRent(DbCarRentAmenity carRent)
+        {
+            _db.CarRentAmenities.Remove(carRent);
+            await _db.SaveChangesAsync();
+
+            var carReservation = carRent.CarReservation;
+            _db.CarReservations.Remove(carReservation);
+            await _db.SaveChangesAsync();
+        }
+
     }
 }

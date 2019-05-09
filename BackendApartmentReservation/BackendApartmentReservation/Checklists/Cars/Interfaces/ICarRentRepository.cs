@@ -5,6 +5,10 @@
 
     public interface ICarRentRepository
     {
-        Task<DbCarRentAmenity> CreateCarRentAmenityFromCarNumber(string carNumber);
+        Task<DbCarRentAmenity> CreateEmptyCarRent();
+
+        Task UpdateCarRent(DbCarRentAmenity carRent);
+
+        Task DeleteCarRent(DbCarRentAmenity carRent);
     }
 }

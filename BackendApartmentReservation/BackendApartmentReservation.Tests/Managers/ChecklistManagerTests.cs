@@ -1,4 +1,5 @@
 ﻿using System;
+using BackendApartmentReservation.Checklists.Cars.Interfaces;
 using BackendApartmentReservation.Database.Entities.Amenities;
 using BackendApartmentReservation.Database.Entities.Reservations;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
@@ -23,6 +24,7 @@ namespace BackendApartmentReservation.Tests.Managers
         private readonly ITripRepository _tripRepository;
         private readonly IChecklistRepository _checklistRepository;
         private readonly IFlightRepository _flightRepository;
+        private readonly ICarRentRepository _carRentRepository;
 
         private readonly ChecklistManager _manager;
 
@@ -31,6 +33,7 @@ namespace BackendApartmentReservation.Tests.Managers
             _employeeRepository = A.Fake<IEmployeeRepository>();
             _tripRepository = A.Fake<ITripRepository>();
             _flightRepository = A.Fake<IFlightRepository>();
+            _carRentRepository = A.Fake<ICarRentRepository>();
 
             _checklistRepository = A.Fake<IChecklistRepository>(o => o.Strict());
 
@@ -41,6 +44,7 @@ namespace BackendApartmentReservation.Tests.Managers
                 _checklistRepository,
                 _tripRepository,
                 _flightRepository,
+                _carRentRepository,
                 logger);
         }
 
@@ -365,5 +369,197 @@ namespace BackendApartmentReservation.Tests.Managers
             Assert.Equal("new flight number", info.Flight.FlightNumber);
             Assert.NotNull(info.Flight.FlightTime);
         }
+        [Fact]
+        public async Task AddCarRentForEmployee_CreatesCarRent()
+        {
+            var employee = new DbEmployee
+            {
+                ExternalEmployeeId = "ExternalEmployeeId"
+            };
+
+            var trip = new DbTrip
+            {
+                ExternalTripId = "ExternalTripId"
+            };
+
+            var getChecklistCall = A.CallTo(() =>
+                _checklistRepository.GetFullChecklist(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getChecklistCall.Returns(Task.FromResult(new DbEmployeeAmenitiesChecklist
+            {
+                Car = null
+            }));
+
+            var callToCreateCarRent = A.CallTo(() => _carRentRepository.CreateEmptyCarRent());
+
+            callToCreateCarRent.Returns(new DbCarRentAmenity()
+            {
+                CarReservation = new DbCarReservation()
+            });
+
+            var callToUpdateChecklist =
+                A.CallTo(() => _checklistRepository.UpdateChecklist(A<DbEmployeeAmenitiesChecklist>._));
+
+            callToUpdateChecklist.Returns(Task.CompletedTask);
+
+            await _manager.AddCarRentForEmployee(employee.ExternalEmployeeId, trip.ExternalTripId);
+
+            getChecklistCall.MustHaveHappenedOnceExactly();
+            callToCreateCarRent.MustHaveHappenedOnceExactly();
+            callToUpdateChecklist.MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task AddCarRentForEmployee_ThrowsIfCarRentExists()
+        {
+            var employee = new DbEmployee
+            {
+                ExternalEmployeeId = "ExternalEmployeeId"
+            };
+
+            var trip = new DbTrip
+            {
+                ExternalTripId = "ExternalTripId"
+            };
+
+            var getChecklistCall = A.CallTo(() =>
+                _checklistRepository.GetFullChecklist(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getChecklistCall.Returns(Task.FromResult(new DbEmployeeAmenitiesChecklist
+            {
+                Car = new DbCarRentAmenity()
+            }));
+
+            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            {
+                await _manager.AddCarRentForEmployee(
+                    employee.ExternalEmployeeId,
+                    trip.ExternalTripId);
+            });
+
+            getChecklistCall.MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task UpdateCarRentForEmployee_UpdatesCarRent()
+        {
+            var employee = new DbEmployee
+            {
+                ExternalEmployeeId = "ExternalEmployeeId"
+            };
+
+            var trip = new DbTrip
+            {
+                ExternalTripId = "ExternalTripId"
+            };
+
+            var getCarRentCall = A.CallTo(() =>
+                _checklistRepository.GetChecklistFullCarRent(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getCarRentCall.Returns(Task.FromResult(new DbCarRentAmenity
+            {
+               CarReservation = new DbCarReservation()
+            }));
+
+            var carReservationInfo = new CarReservationRequest()
+            {
+                CarNumber = "12345",
+                CarAddress = "Vilnius",
+                RentStartTime = new DateTime(),
+                RentEndTime = new DateTime()
+            };
+
+            var callToUpdateCarRent = A.CallTo(() => _carRentRepository.UpdateCarRent(A<DbCarRentAmenity>.That.Matches(c =>
+                c.CarReservation.CarNumber == carReservationInfo.CarNumber
+                && c.CarReservation.CarAddress == carReservationInfo.CarAddress
+                && c.CarReservation.RentStartTime != null
+                && c.CarReservation.RentEndTime != null)));
+
+            callToUpdateCarRent.Returns(Task.CompletedTask);
+
+            await _manager.UpdateCarRentForEmployee(employee.ExternalEmployeeId, trip.ExternalTripId, carReservationInfo);
+
+            getCarRentCall.MustHaveHappenedOnceExactly();
+            callToUpdateCarRent.MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task GetCarRentInfo_MapsCorrectly()
+        {
+            var employee = new DbEmployee
+            {
+                ExternalEmployeeId = "ExternalEmployeeId"
+            };
+
+            var trip = new DbTrip
+            {
+                ExternalTripId = "ExternalTripId"
+            };
+
+            var getCarRentCall = A.CallTo(() =>
+                _checklistRepository.GetChecklistFullCarRent(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getCarRentCall.Returns(Task.FromResult(new DbCarRentAmenity()
+            {
+                CarReservation = new DbCarReservation()
+                {
+                    CarNumber = "12345",
+                    CarAddress = "Vilnius",
+                    RentStartTime = new DateTime(),
+                    RentEndTime = new DateTime()
+                }
+            }));
+
+            var info = await _manager.GetCarRentInfo(employee.ExternalEmployeeId, trip.ExternalTripId);
+
+            getCarRentCall.MustHaveHappenedOnceExactly();
+
+            Assert.True(info.IsRequired);
+            Assert.Equal("12345", info.CarNumber);
+            Assert.Equal("Vilnius", info.CarAddress);
+            Assert.NotNull(info.RentStartTime);
+            Assert.NotNull(info.RentEndTime);
+        }
+
+        [Fact]
+        public async Task DeleteCarRentForEmployee_DeletesCarRent()
+        {
+            var employee = new DbEmployee
+            {
+                ExternalEmployeeId = "ExternalEmployeeId"
+            };
+
+            var trip = new DbTrip
+            {
+                ExternalTripId = "ExternalTripId"
+            };
+
+            var getChecklistCall = A.CallTo(() =>
+                _checklistRepository.GetFullChecklist(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getChecklistCall.Returns(Task.FromResult(new DbEmployeeAmenitiesChecklist
+            {
+                Car = new DbCarRentAmenity()
+                {
+                    Id = 45
+                }
+            }));
+
+            var callToUpdateChecklist = A.CallTo(() => _checklistRepository.UpdateChecklist(A<DbEmployeeAmenitiesChecklist>.That.Matches(c =>
+                c.Car == null)));
+
+            callToUpdateChecklist.Returns(Task.CompletedTask);
+
+            var callToDeleteCarRent = A.CallTo(() => _carRentRepository.DeleteCarRent(A<DbCarRentAmenity>._));
+
+            callToDeleteCarRent.Returns(Task.CompletedTask);
+
+            await _manager.DeleteCarRent(employee.ExternalEmployeeId, trip.ExternalTripId);
+
+            getChecklistCall.MustHaveHappenedOnceExactly();
+            callToUpdateChecklist.MustHaveHappenedOnceExactly();
+            callToDeleteCarRent.MustHaveHappenedOnceExactly();
+        }
+
     }
 }

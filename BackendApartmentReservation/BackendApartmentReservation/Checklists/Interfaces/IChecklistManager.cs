@@ -18,6 +18,14 @@
 
         Task DeleteFlight(string employeeId, string tripId);
 
+        Task AddCarRentForEmployee(string employeeId, string tripId);
+
+        Task UpdateCarRentForEmployee(string employeeId, string tripId, CarReservationRequest info);
+
+        Task<CarReservationInfo> GetCarRentInfo(string employeeId, string tripId);
+
+        Task DeleteCarRent(string employeeId, string tripId);
+
         Task<ChecklistInformationResponse> GetFullChecklistInformation(string employeeId, string tripId);
     }
 }

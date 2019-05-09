@@ -15,5 +15,7 @@
         Task<DbEmployeeAmenitiesChecklist> GetFullChecklist(string employeeId, string tripId);
 
         Task<DbFlightAmenity> GetChecklistFullFlight(string employeeId, string tripId);
+
+        Task<DbCarRentAmenity> GetChecklistFullCarRent(string employeeId, string tripId);
     }
 }
