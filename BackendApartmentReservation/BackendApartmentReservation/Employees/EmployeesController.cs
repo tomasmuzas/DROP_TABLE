@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Authentication.Interfaces;
     using BackendApartmentReservation.Offices.Interfaces;
     using Database.Entities;
     using DataContracts.DataTransferObjects.Requests;
@@ -17,11 +18,16 @@
     {
         private readonly IEmployeeManager _employeeManager;
         private readonly IOfficeManager _officeManager;
+        private readonly IAuthenticationManager _authenticationManager;
 
-        public EmployeesController(IEmployeeManager employeeManager, IOfficeManager officeManager)
+        public EmployeesController(
+            IEmployeeManager employeeManager,
+            IOfficeManager officeManager,
+            IAuthenticationManager authenticationManager)
         {
             _employeeManager = employeeManager;
             _officeManager = officeManager;
+            _authenticationManager = authenticationManager;
         }
 
         [HttpGet]
@@ -43,6 +49,8 @@
             dbEmployee.Office = await _officeManager.GetOfficeById(model.Office);
 
             var employeeId = await _employeeManager.CreateEmployee(dbEmployee);
+
+            await _authenticationManager.CreateAuthenticationInfo(dbEmployee, model.Password);
 
             var response = new RegisterResponse
             {

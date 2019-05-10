@@ -10,6 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BackendApartmentReservation.Authentication
 {
+    using Database.Entities;
+    using Infrastructure.Utilities;
+
     public class AuthenticationManager : IAuthenticationManager
     {
         private readonly IAuthenticationRepository _authenticationRepository;
@@ -50,6 +53,14 @@ namespace BackendApartmentReservation.Authentication
             {
                 JwtToken = tokenHandler.WriteToken(token)
             };
+        }
+
+        public async Task CreateAuthenticationInfo(DbEmployee dbEmployee, Password password)
+        {
+            var hashedPassword = SecurityManager.GetPasswordHash(password);
+            await _authenticationRepository.CreateAuthenticationInfo(
+                hashedPassword,
+                dbEmployee);
         }
     }
 }
