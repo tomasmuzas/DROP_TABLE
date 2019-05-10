@@ -1,4 +1,7 @@
-﻿namespace BackendApartmentReservation.Database.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using BackendApartmentReservation.Employees;
+
+namespace BackendApartmentReservation.Database.Entities
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -16,5 +19,8 @@
         public string Email { get; set; }
 
         public DbOffice Office { get; set; }
+
+        [Column(TypeName = "nvarchar(24)")]
+        public EmployeeRole Role { get; set; }
     }
 }
