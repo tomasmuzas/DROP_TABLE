@@ -155,7 +155,7 @@ export const getBasicTrip = (tripId) => (dispatch) => {
 }
 
 export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dispatch) => {
-    fetch(BACKEND_BASE_URI + "/api/users/profiles", {
+    fetch(BACKEND_BASE_URI + "/api/employees", {
         method: "POST",
         body: JSON.stringify({ FirstName, LastName, Email, Password, Office }),
         headers,
