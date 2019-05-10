@@ -52,5 +52,7 @@
         public DbSet<DbEmployeePlan> EmployeePlans { get; set; }
 
         public DbSet<DbAuthorization> Authorizations { get; set; }
+
+        public DbSet<DbApartmentReservationInfo> ApartmentReservationsInfo { get; set; }
     }
 }
