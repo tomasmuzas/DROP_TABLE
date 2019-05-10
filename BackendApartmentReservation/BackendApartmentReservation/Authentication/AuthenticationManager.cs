@@ -44,7 +44,7 @@ namespace BackendApartmentReservation.Authentication
                     new Claim(ClaimTypes.Name, authorisation.Employee.ExternalEmployeeId)
                 }),
 
-                Expires = DateTime.UtcNow.AddMinutes(30),
+                Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
