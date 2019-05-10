@@ -48,15 +48,17 @@
             dbEmployee.Email = model.Email;
             dbEmployee.Office = await _officeManager.GetOfficeById(model.Office);
 
-            var employeeId = await _employeeManager.CreateEmployee(dbEmployee);
+            await _employeeManager.CreateEmployee(dbEmployee);
 
             await _authenticationManager.CreateAuthenticationInfo(dbEmployee, model.Password);
 
-            var response = new RegisterResponse
+            var authenticationInfo = await _authenticationManager.Authenticate(new AuthenticationRequest
             {
-                Id = employeeId
-            };
-            return Ok(response);
+                Email = model.Email,
+                Password = model.Password
+            });
+
+            return Ok(authenticationInfo);
         }
 
         [HttpGet]
