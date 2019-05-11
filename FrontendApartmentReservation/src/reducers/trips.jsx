@@ -3,10 +3,7 @@ export default (state = 0, action) => {
         case 'GET_ALL_TRIPS':
             return action.payload;
         case 'CREATE_TRIP':
-            return [
-                ...state,
-                action.payload
-            ];
+            return action.payload;
         default:
             return state;
     }

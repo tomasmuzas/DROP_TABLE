@@ -11,24 +11,22 @@ class TripCheckList extends React.Component {
         super(props);
         this.state = {
             checkListInfo: [],
-            id: 'eec7080a05c04819b776039cda553d44'
         }
     }
 
-
     componentWillMount() {
-        this.props.getBasicTrip(this.state.id);
+        this.props.clearFlightInfo();
+        this.props.getBasicTrip(this.props.match.params.tripId);
     }
 
     render() {
         const { t } = this.props;
-        if (this.props.tripbasic && this.props.tripbasic.checklistInfos) {
-            console.log(this.props.tripbasic.checklistInfos);
+        if (this.props.tripbasic && this.props.tripbasic.checklistInfos && this.props.tripbasic.tripId === this.props.match.params.tripId) {
             return (
                 <div>
                     <div>
-                        {this.props.tripbasic.checklistInfos.map(checkListInfo =>
-                            <CheckListCard checkListInfo={checkListInfo} tripId={this.props.tripbasic.tripId} key={this.props.tripbasic.tripId} />)}
+                        {this.props.tripbasic.checklistInfos.map((checkListInfo, index) =>
+                            <CheckListCard checkListInfo={checkListInfo} index={index} tripId={this.props.tripbasic.tripId} key={checkListInfo.employee.id} />)}
                     </div>
                     <div className="pt-5 justify-content-md-center" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
                     <Link className={`btn btn-lg btn-primary btn-block`} style={{ width: '30%' }} to={''} type="submit">{t("FinishCreation")}</Link>
@@ -51,7 +49,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        tripbasic: state.tripbasic
+        tripbasic: state.tripbasic,
+        tripId: state.trips.tripId,
     };
 }
 

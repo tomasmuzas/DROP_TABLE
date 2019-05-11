@@ -20,8 +20,8 @@ function TripCard(props) {
         <Link to={'/trip/' + trip.tripId}style={{ textDecoration: 'none', color:'black' }}>
             <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
                 <div className="col justify-content-md-center nameDiv pl-5">
-                    <h5>{t("DestinationOffice")}: {trip.DestinationOffice}</h5>
-                    <h6>{t("DepartureDate")}: {trip.DepartureDate} {t("ReturnDate")}: {trip.ReturnDate}</h6>
+                    <h5>{t("DestinationOffice")}: {trip.destinationOffice}</h5>
+                    <h6>{t("DepartureDate")}: {trip.startTime} {t("ReturnDate")}: {trip.endTime}</h6>
                 </div>
                 <div className="col pr-5">
                     <div style={{ float: "right" }}>

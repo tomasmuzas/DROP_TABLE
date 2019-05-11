@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actionCreators from '../../../actions';
 import { withStyles } from '@material-ui/core/styles';
 import { withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -19,9 +22,8 @@ class CheckListCard extends React.Component {
         super(props);
         this.state = {
             showDetails: false,
-            flightInfo: { IsRequired: true, FlightNumber: 12342, FlightTime: '2019-05-01T11:11', AirportAddress: 'Didlaukio g. 59', FlightCompany: 'SAS' },
-            carInfo: { IsRequired: true, carNumber: 12342, PickUpPoint: 'Didlaukio g. 59'},
-            apartmentsInfo: { IsRequired: true, AppartmentsAddress:'Didlaukio g. 59'},
+            carInfo: { IsRequired: true, carNumber: 12342, PickUpPoint: 'Didlaukio g. 59' },
+            apartmentsInfo: { IsRequired: true, AppartmentsAddress: 'Didlaukio g. 59' },
         }
 
         this.handleShowDetailsChange = this.handleShowDetailsChange.bind(this);
@@ -34,9 +36,27 @@ class CheckListCard extends React.Component {
     }
 
     componentWillMount() {
-        //this.props.employeeId;
-        //this.props.tripId;
-        //getchecklistinfo
+        this.props.getFlightInfo(this.props.checkListInfo.employee.id, this.props.tripId);
+    }
+
+    showFlight(flightInfo) {
+        const {t} = this.props;
+        if (flightInfo){
+            return (
+                <div className="col-12 col-lg-4" hidden={!flightInfo.isRequired}>
+                <h6> {t("FlightNumber")}: {flightInfo.flightNumber}</h6>
+                <h6> {t("FlightCompany")}:  {flightInfo.company}</h6>
+                <h6> {t("AirportAddress")}:  {flightInfo.airportAddress}</h6>
+                <h6> {t("FlightTime")}: {flightInfo.flightTime}</h6>
+            </div>
+            )}
+        else{
+            return(
+                <div>
+                    loading
+                </div>
+            )
+        }
     }
 
     render() {
@@ -72,16 +92,11 @@ class CheckListCard extends React.Component {
                 </div>
                 <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
                     <div className="pl-4 pb-4">
-                        <img src={this.state.showDetails? arrowUp: arrowDown} alt="lalal" style={{ height: '32px', width: '32px' }} onClick={this.handleShowDetailsChange} />
+                        <img src={this.state.showDetails ? arrowUp : arrowDown} alt="lalal" style={{ height: '32px', width: '32px' }} onClick={this.handleShowDetailsChange} />
                     </div>
                 </div>
                 <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }} hidden={!this.state.showDetails}>
-                    <div className="col-12 col-lg-4" hidden={!this.state.flightInfo.IsRequired}>
-                        <h6> {t("FlightNumber")}: {this.state.flightInfo.FlightNumber}</h6>
-                        <h6> {t("FlightCompany")}:  {this.state.flightInfo.FlightCompany}</h6>
-                        <h6> {t("AirportAddress")}:  {this.state.flightInfo.AirportAddress}</h6>
-                        <h6> {t("FlightTime")}: {this.state.flightInfo.FlightTime}</h6>
-                    </div>
+                    {this.showFlight(this.props.flightInfo[this.props.index])}
                     <div className="col-12 col-lg-4" hidden={!this.state.carInfo.IsRequired}>
                         <h6> {t("CarNumber")}: {this.state.carInfo.carNumber}</h6>
                     </div>
@@ -94,4 +109,14 @@ class CheckListCard extends React.Component {
         )
     }
 }
-export default withTranslation()(CheckListCard);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators(actionCreators, dispatch);
+}
+
+const mapStateToProps = (state) => {
+    return {
+        flightInfo: state.flightInfo
+    };
+}
+
+export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(CheckListCard));

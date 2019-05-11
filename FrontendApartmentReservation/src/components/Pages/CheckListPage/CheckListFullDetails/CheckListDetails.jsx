@@ -12,7 +12,6 @@ class CheckListDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            flightInfo: { IsRequired: true, FlightNumber: 12342, FlightTime: '1997-07-24', AirportAddress: 'Didlaukio g. 59' },
             carInfo: { IsRequired: true, CarNumber: 1234 },
             apartmentsInfo: { IsRequired: true, Address: 1234 },
 
@@ -21,7 +20,7 @@ class CheckListDetails extends React.Component {
 
 
     componentWillMount() {
-        console.log(this.props);
+        this.props.getSingleFlightInfo(this.props.match.params.employeeId, this.props.match.params.tripId);
         //url turim trip id ir employee id
         //get 1api
         //get 2 api
@@ -30,12 +29,12 @@ class CheckListDetails extends React.Component {
 
     render() {
         const { t } = this.props;
-        if (this.state.flightInfo && this.state.carInfo && this.state.apartmentsInfo) {
+        if (this.props.singleFlightInfo && this.state.carInfo && this.state.apartmentsInfo) {
             return (
                 <div>
 
                     <div className="p-5">
-                        <FlightCheckList flightInfo ={this.state.flightInfo} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
+                        <FlightCheckList singleFlightInfo ={this.props.singleFlightInfo} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                     <div className="p-5">
                         <CarCheckList carInfo ={this.state.carInfo} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
@@ -61,7 +60,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        tripbasic: state.tripbasic
+        tripbasic: state.tripbasic,
+        singleFlightInfo : state.singleFlightInfo
     };
 }
 

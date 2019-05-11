@@ -147,7 +147,7 @@ class CreateTrip extends React.Component {
                                 required
                             />
                         </div>
-                        <Link className={`btn btn-lg btn-primary btn-block`} to={'/trip/' + this.props.trips.id} type="submit">{t("CreateTrip")}</Link>
+                        <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("CreateTrip")}</button>
                     </div>
                 </form>
             </div>

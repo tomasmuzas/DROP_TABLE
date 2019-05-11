@@ -9,20 +9,20 @@ class TripsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            trips: [{ tripId: 1, DestinationOffice: "Didlaukis", DepartureDate: "2019-04-23", ReturnDate:"2019-05-24" }]
+            trips: [{ tripId: "f55fb047-3865-4e5d-a9ab-0b1f15db2975", DestinationOffice: "Didlaukis", DepartureDate: "2019-04-23", ReturnDate:"2019-05-24" }]
         }
     }
 
-
     componentWillMount() {
+        this.props.getAllTrips();
     }
 
     render() {
-        if (this.state.trips) {
+        if (this.props.trips) {
             return (
                 <div>
                     <div>
-                        {this.state.trips.map(trip => <TripCard trip={trip} />)}
+                        {this.props.trips.map(trip => <TripCard trip={trip} />)}
                     </div>
                 </div>
             );
