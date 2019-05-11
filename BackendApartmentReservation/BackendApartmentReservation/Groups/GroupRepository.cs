@@ -41,7 +41,9 @@
 
         public async Task<IEnumerable<DbEmployeeGroup>> GetEmployeeGroupsByGroupId(string groupID)
         {
-            return await _context.DbEmployeeGroup.Where(eg => eg.DbGroup.ExternalGroupId == groupID).ToListAsync();
+            return await _context.DbEmployeeGroup
+                .Where(eg => eg.DbGroup.ExternalGroupId == groupID)
+                .ToListAsync();
         }
     }
 }

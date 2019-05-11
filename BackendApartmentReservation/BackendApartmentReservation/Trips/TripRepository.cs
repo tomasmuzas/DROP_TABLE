@@ -1,5 +1,6 @@
 ﻿namespace BackendApartmentReservation.Trips
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -52,7 +53,8 @@
                 var tripGroup = new DbGroup
                 {
                     StartingOffice =
-                        await _db.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == employeesGroup.Key)
+                        await _db.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == employeesGroup.Key),
+                    ExternalGroupId = Guid.NewGuid().ToString()
                 };
                 tripGroups.Add(tripGroup);
                 await _db.Groups.AddAsync(tripGroup);
@@ -72,7 +74,8 @@
                 DepartureDate = tripRequest.DepartureDate,
                 DestinationOffice = destinationOffice,
                 ReturnDate = tripRequest.ReturnDate,
-                Groups = tripGroups
+                Groups = tripGroups,
+                ExternalTripId = Guid.NewGuid().ToString()
             };
 
             await _db.Trips.AddAsync(newTrip);
