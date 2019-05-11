@@ -25,7 +25,7 @@
         }
 
         [HttpGet]
-        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation(string tripId)
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation()
         {
             return await _tripInformationManager.GetAllTripsInformation();
         }
