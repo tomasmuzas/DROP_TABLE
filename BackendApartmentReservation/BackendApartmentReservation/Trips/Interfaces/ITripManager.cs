@@ -2,9 +2,10 @@
 {
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Requests;
+    using DataContracts.DataTransferObjects.Responses;
 
     public interface ITripManager
     {
-        Task<string> CreateBasicTrip(CreateTripRequest tripRequest);
+        Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest);
     }
 }

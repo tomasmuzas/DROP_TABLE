@@ -1,9 +1,9 @@
 ﻿namespace BackendApartmentReservation.Trips
 {
-    using System;
     using System.Threading.Tasks;
     using Checklists.Interfaces;
     using DataContracts.DataTransferObjects.Requests;
+    using DataContracts.DataTransferObjects.Responses;
     using Groups.Interfaces;
     using Interfaces;
 
@@ -23,10 +23,9 @@
             _checklistManager = checklistManager;
         }
 
-        public async Task<string> CreateBasicTrip(CreateTripRequest tripRequest)
+        public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest)
         {
             var trip = await _tripRepository.CreateTrip(tripRequest);
-            trip.ExternalTripId = Guid.NewGuid().ToString();
 
             foreach (var group in trip.Groups)
             {
@@ -38,7 +37,10 @@
                 }
             }
 
-            return trip.ExternalTripId;
+            return new TripCreatedResponse
+            {
+                TripId = trip.ExternalTripId
+            };
         }
     }
 }
