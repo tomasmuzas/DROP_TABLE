@@ -1,5 +1,6 @@
 ﻿namespace BackendApartmentReservation.Trips
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
@@ -46,6 +47,17 @@
 
                 ChecklistInfos = checklistInformations
             };
+        }
+
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation()
+        {
+            var trips = await _tripRepository.GetAllTrips();
+            return trips.Select(t => new BasicTripInformationResponse
+            {
+                StartTime = t.DepartureDate,
+                EndTime = t.ReturnDate,
+                TripId = t.ExternalTripId
+            });
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace BackendApartmentReservation.Trips
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Responses;
     using Interfaces;
@@ -21,6 +22,12 @@
         public async Task<BasicTripInformationResponse> GetBasicTripInformation(string tripId)
         {
             return await _tripInformationManager.GetBasicTripInformation(tripId);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation(string tripId)
+        {
+            return await _tripInformationManager.GetAllTripsInformation();
         }
     }
 }

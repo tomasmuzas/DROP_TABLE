@@ -83,5 +83,10 @@
 
             return newTrip;
         }
+
+        public async Task<IEnumerable<DbTrip>> GetAllTrips()
+        {
+            return await _db.Trips.ToListAsync();
+        }
     }
 }
