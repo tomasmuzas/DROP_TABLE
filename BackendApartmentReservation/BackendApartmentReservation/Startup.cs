@@ -75,6 +75,10 @@ namespace BackendApartmentReservation
                 options.AddPolicy(PolicyNames.EmployeeOnly, employeeOnlyPolicy);
             });
 
+            var connectionString = Configuration.GetConnectionString("DatabaseContext");
+            services.AddDbContext<DatabaseContext>(options =>
+                options.UseSqlServer(connectionString));
+
             services.AddMvc(options =>
                 {
                     options.Filters.Add(new AuthorizeFilter(employeeOnlyPolicy));
@@ -83,10 +87,6 @@ namespace BackendApartmentReservation
                 .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
                 .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_environment)))
                 .AddMvcOptions(options => options.Filters.Add(new RequestValidationFilter()));
-
-            var connectionString = Configuration.GetConnectionString("DatabaseContext");
-            services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(connectionString));
         }
 
         public void Configure(IApplicationBuilder app)
@@ -100,14 +100,12 @@ namespace BackendApartmentReservation
             app.UseAuthentication();
             app.UseMvc();
 
-            using (var context = app.ApplicationServices.GetService<DatabaseContext>())
+            var context = app.ApplicationServices.GetRequiredService<DatabaseContext>();
+            if (context.Database.GetPendingMigrations().Any())
             {
-                if (context.Database.GetPendingMigrations().Any())
-                {
-                    context.Database.Migrate();
-                }
-                context.Seed();
+                context.Database.Migrate();
             }
+            context.Seed();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
