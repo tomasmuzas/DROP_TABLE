@@ -88,7 +88,8 @@ namespace BackendApartmentReservation
 
             services.AddMvc(options =>
                 {
-                    options.Filters.Add(new AuthorizeFilter(employeeOnlyPolicy));
+                    // TODO: @tomu. Uncomment when JWT login is implemented
+                    //options.Filters.Add(new AuthorizeFilter(employeeOnlyPolicy));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
