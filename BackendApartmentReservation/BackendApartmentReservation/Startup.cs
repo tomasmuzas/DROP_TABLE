@@ -48,14 +48,15 @@ namespace BackendApartmentReservation
                 })
                 .AddJwtBearer(options =>
                 {
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateIssuer = true,
+                        ValidIssuer = Configuration["JwtTokenIssuer"],
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["JwtTokenIssuer"],
+                        ValidateLifetime = true
                     };
                 });
 
