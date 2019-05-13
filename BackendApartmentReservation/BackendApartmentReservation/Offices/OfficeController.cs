@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Offices
+﻿using BackendApartmentReservation.Infrastructure.Authorization;
+
+namespace BackendApartmentReservation.Offices
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,7 +10,7 @@
 
     [Route("api")]
     [ApiController]
-    public class OfficeController : ControllerBase
+    public class OfficeController : AuthorizedController
     {
         private readonly IOfficeManager _officeManager;
 

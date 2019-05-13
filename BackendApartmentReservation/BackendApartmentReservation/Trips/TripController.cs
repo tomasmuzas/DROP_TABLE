@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Trips
+﻿using BackendApartmentReservation.Infrastructure.Authorization;
+
+namespace BackendApartmentReservation.Trips
 {
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Requests;
@@ -6,7 +8,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api")]
-    public class TripController : ControllerBase
+    public class TripController : AuthorizedController
     {
         private readonly ITripManager _tripManager;
 

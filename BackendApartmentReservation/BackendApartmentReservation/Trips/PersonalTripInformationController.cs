@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Trips
+﻿using BackendApartmentReservation.Infrastructure.Authorization;
+
+namespace BackendApartmentReservation.Trips
 {
     using System.Threading.Tasks;
     using Checklists.Interfaces;
@@ -9,7 +11,7 @@
 
     [Route("api/trips/{tripId}/employees/{employeeId}")]
     [ApiController]
-    public class PersonalTripInformationController : ControllerBase
+    public class PersonalTripInformationController : AuthorizedController
     {
         private readonly IChecklistManager _checklistManager;
 

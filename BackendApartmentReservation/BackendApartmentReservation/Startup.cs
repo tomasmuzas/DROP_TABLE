@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BackendApartmentReservation
@@ -43,11 +44,7 @@ namespace BackendApartmentReservation
         public void ConfigureServices(IServiceCollection services)
         {
             var key = Encoding.ASCII.GetBytes(Configuration["JwtTokenSecret"]);
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -61,16 +58,15 @@ namespace BackendApartmentReservation
                     };
                 });
 
-            services.AddAuthorization(options =>
-            {
-                options.DefaultPolicy = new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes("Bearer")
-                    .RequireAuthenticatedUser()
-                    .RequireClaim(ClaimTypes.Name)
-                    .Build();
-            });
-
-            services.AddMvc()
+            services.AddMvc(options =>
+                {
+                    var policy = new AuthorizationPolicyBuilder()
+                        .AddAuthenticationSchemes("Bearer")
+                        .RequireAuthenticatedUser()
+                        .RequireClaim(ClaimTypes.Name)
+                        .Build();
+                    options.Filters.Add(new AuthorizeFilter(policy));
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
                 .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_environment)))
@@ -89,6 +85,7 @@ namespace BackendApartmentReservation
                     .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .WithMethods("GET", "POST", "PUT", "DELETE"));
+            app.UseAuthentication();
             app.UseMvc();
 
             using (var context = app.ApplicationServices.GetService<DatabaseContext>())
