@@ -34,24 +34,21 @@ namespace BackendApartmentReservation.Authentication
             var authorisation =
                 await _authenticationRepository.Authorize(request.Email, hash);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["JwtTokenSecret"]);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
+            var token = new JwtSecurityToken(
+                claims: new []
                 {
                     new Claim(ClaimTypes.Name, authorisation.Employee.ExternalEmployeeId)
-                }),
+                },
+                issuer: _configuration["JwtTokenIssuer"],
+                audience: _configuration["JwtTokenIssuer"],
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                expires: DateTime.UtcNow.AddMinutes(60));
 
-                Expires = DateTime.UtcNow.AddMinutes(60),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
             return new EmployeeAuthenticationInfo
             {
-                JwtToken = tokenHandler.WriteToken(token)
+                JwtToken = new JwtSecurityTokenHandler().WriteToken(token)
             };
         }
 
