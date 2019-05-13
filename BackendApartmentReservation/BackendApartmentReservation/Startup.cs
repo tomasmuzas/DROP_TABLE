@@ -61,7 +61,7 @@ namespace BackendApartmentReservation
                     };
                 });
 
-//            services.AddSingleton<IAuthorizationHandler, AdminOnlyHandler>();
+            services.AddSingleton<IAuthorizationHandler, AdminOnlyHandler>();
             services.AddSingleton<IAuthorizationHandler, EmployeeOnlyHandler>();
 
             var employeeOnlyPolicy = new AuthorizationPolicyBuilder()
@@ -70,9 +70,16 @@ namespace BackendApartmentReservation
                 .AddRequirements(new EmployeeOnlyRequirement())
                 .Build();
 
+            var adminOnlyPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes("Bearer")
+                .RequireAuthenticatedUser()
+                .AddRequirements(new AdminOnlyRequirement())
+                .Build();
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(PolicyNames.EmployeeOnly, employeeOnlyPolicy);
+                options.AddPolicy(PolicyNames.AdminOnly, adminOnlyPolicy);
             });
 
             var connectionString = Configuration.GetConnectionString("DatabaseContext");
