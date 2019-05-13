@@ -31,12 +31,7 @@ namespace BackendApartmentReservation.Authentication.AuthorizationRequirements.E
 
             try
             {
-                var employee = await _authenticationManager.GetAndVerifyEmployee(employeeId);
-                if (employee.Role != EmployeeRole.Admin)
-                {
-                    context.Fail();
-                    return;
-                }
+                await _authenticationManager.GetAndVerifyEmployee(employeeId);
             }
             catch (ArgumentException)
             {

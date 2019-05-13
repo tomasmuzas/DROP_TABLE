@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Authentication.Interfaces;
+using BackendApartmentReservation.Employees;
 using Microsoft.AspNetCore.Authorization;
 
 namespace BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly
@@ -29,7 +30,12 @@ namespace BackendApartmentReservation.Authentication.AuthorizationRequirements.A
 
             try
             {
-                await _authenticationManager.GetAndVerifyEmployee(employeeId);
+                var employee = await _authenticationManager.GetAndVerifyEmployee(employeeId);
+                if (employee.Role != EmployeeRole.Admin)
+                {
+                    context.Fail();
+                    return;
+                }
             }
             catch (ArgumentException)
             {
