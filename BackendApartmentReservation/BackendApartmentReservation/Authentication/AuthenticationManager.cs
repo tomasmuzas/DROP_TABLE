@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Authentication.Interfaces;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
+using BackendApartmentReservation.Employees.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,15 +17,18 @@ namespace BackendApartmentReservation.Authentication
     public class AuthenticationManager : IAuthenticationManager
     {
         private readonly IAuthenticationRepository _authenticationRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
         private readonly IConfiguration _configuration;
 
         public AuthenticationManager(
             IConfiguration configuration,
-            IAuthenticationRepository authenticationRepository)
+            IAuthenticationRepository authenticationRepository,
+            IEmployeeRepository employeeRepository)
         {
             _configuration = configuration;
             _authenticationRepository = authenticationRepository;
+            _employeeRepository = employeeRepository;
         }
 
         public async Task<EmployeeAuthenticationInfo> Authenticate(AuthenticationRequest request)
@@ -58,6 +62,17 @@ namespace BackendApartmentReservation.Authentication
             await _authenticationRepository.CreateAuthenticationInfo(
                 hashedPassword,
                 dbEmployee);
+        }
+
+        public async Task<DbEmployee> GetAndVerifyEmployee(string employeeId)
+        {
+            var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeId);
+            if (employee == null)
+            {
+                throw new ArgumentException("Employee does not exist");
+            }
+
+            return employee;
         }
     }
 }

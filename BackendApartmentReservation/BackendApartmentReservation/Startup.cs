@@ -1,5 +1,8 @@
 ﻿using System.Security.Claims;
 using System.Text;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.EmployeeOnly;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -58,14 +61,23 @@ namespace BackendApartmentReservation
                     };
                 });
 
+//            services.AddSingleton<IAuthorizationHandler, AdminOnlyHandler>();
+            services.AddSingleton<IAuthorizationHandler, EmployeeOnlyHandler>();
+
+            var employeeOnlyPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes("Bearer")
+                .RequireAuthenticatedUser()
+                .AddRequirements(new EmployeeOnlyRequirement())
+                .Build();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyNames.EmployeeOnly, employeeOnlyPolicy);
+            });
+
             services.AddMvc(options =>
                 {
-                    var policy = new AuthorizationPolicyBuilder()
-                        .AddAuthenticationSchemes("Bearer")
-                        .RequireAuthenticatedUser()
-                        .RequireClaim(ClaimTypes.Name)
-                        .Build();
-                    options.Filters.Add(new AuthorizeFilter(policy));
+                    options.Filters.Add(new AuthorizeFilter(employeeOnlyPolicy));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
