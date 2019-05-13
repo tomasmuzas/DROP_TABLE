@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BackendApartmentReservation
@@ -55,11 +57,18 @@ namespace BackendApartmentReservation
                         ValidateIssuer = true,
                         ValidIssuer = Configuration["JwtTokenIssuer"],
                         ValidateAudience = true,
-                        ValidAudience = Configuration["JwtTokenIssuer"],
-                        ValidateLifetime = true
+                        ValidAudience = Configuration["JwtTokenIssuer"]
                     };
                 });
 
+            services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes("Bearer")
+                    .RequireAuthenticatedUser()
+                    .RequireClaim(ClaimTypes.Name)
+                    .Build();
+            });
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
