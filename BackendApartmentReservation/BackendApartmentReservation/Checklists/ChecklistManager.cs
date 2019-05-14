@@ -47,10 +47,12 @@ namespace BackendApartmentReservation.Checklists
         public async Task<ChecklistInformationResponse> GetFullChecklistInformation(string employeeId, string tripId)
         {
             var flightInfo = await GetFlightInfo(employeeId, tripId);
+            var carInfo = await GetCarRentInfo(employeeId, tripId);
 
             return new ChecklistInformationResponse
             {
-                Flight = flightInfo
+                Flight = flightInfo,
+                Car = carInfo
             };
         }
 
