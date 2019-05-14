@@ -3,6 +3,7 @@ using BackendApartmentReservation.Checklists.Cars.Interfaces;
 using BackendApartmentReservation.Database.Entities.Amenities;
 using BackendApartmentReservation.Database.Entities.Reservations;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
+using BackendApartmentReservation.Infrastructure.Exceptions;
 
 namespace BackendApartmentReservation.Tests.Managers
 {
@@ -122,12 +123,14 @@ namespace BackendApartmentReservation.Tests.Managers
             //var flightLogCall = A.CallTo(
             //    () => _logger.LogInformation($"Created flight amenity for employee {employee.Id}."));
 
-            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            var exception = await Assert.ThrowsAsync<ErrorCodeException>(async () =>
             {
                 await _manager.CreateEmptyChecklistForEmployee(
                     employee.ExternalEmployeeId,
                     trip.ExternalTripId);
             });
+
+            Assert.Equal(ErrorCodes.ChecklistAlreadyExists, exception.ErrorCode);
 
             getChecklistCall.MustHaveHappenedOnceExactly();
         }
@@ -200,12 +203,14 @@ namespace BackendApartmentReservation.Tests.Managers
             //var flightLogCall = A.CallTo(
             //    () => _logger.LogInformation($"Created flight amenity for employee {employee.Id}."));
 
-            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            var exception = await Assert.ThrowsAsync<ErrorCodeException>(async () =>
             {
                 await _manager.AddFlightForEmployee(
                     employee.ExternalEmployeeId,
                     trip.ExternalTripId);
             });
+
+            Assert.Equal(ErrorCodes.ChecklistFlightAlreadyExists, exception.ErrorCode);
 
             getChecklistCall.MustHaveHappenedOnceExactly();
         }
@@ -430,12 +435,14 @@ namespace BackendApartmentReservation.Tests.Managers
                 Car = new DbCarRentAmenity()
             }));
 
-            await Assert.ThrowsAsync<ArgumentException>(async () =>
+            var exception = await Assert.ThrowsAsync<ErrorCodeException>(async () =>
             {
                 await _manager.AddCarRentForEmployee(
                     employee.ExternalEmployeeId,
                     trip.ExternalTripId);
             });
+
+            Assert.Equal(ErrorCodes.ChecklistCarAlreadyExists, exception.ErrorCode);
 
             getChecklistCall.MustHaveHappenedOnceExactly();
         }

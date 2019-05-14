@@ -1,4 +1,5 @@
 ﻿using BackendApartmentReservation.Checklists.Cars.Interfaces;
+using BackendApartmentReservation.Infrastructure.Exceptions;
 
 namespace BackendApartmentReservation.Checklists
 {
@@ -62,7 +63,7 @@ namespace BackendApartmentReservation.Checklists
             if (existingChecklist != null)
             {
                 _logger.LogError($"Checklist for employee {employeeId} and trip {tripId} already exists.");
-                throw new ArgumentException("");
+                throw new ErrorCodeException(ErrorCodes.ChecklistAlreadyExists);
             }
 
             var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeId);
@@ -86,7 +87,7 @@ namespace BackendApartmentReservation.Checklists
             if (checklist.Flight != null)
             {
                 _logger.LogError($"Checklist for employee {employeeId} and trip {tripId} already has a flight.");
-                throw new ArgumentException("");
+                throw new ErrorCodeException(ErrorCodes.ChecklistFlightAlreadyExists);
             }
 
             var flight = await _flightRepository.CreateEmptyFlight();
@@ -150,7 +151,7 @@ namespace BackendApartmentReservation.Checklists
             if (checklist.Car != null)
             {
                 _logger.LogError($"Checklist for employee {employeeId} and trip {tripId} already has a car rent.");
-                throw new ArgumentException("");
+                throw new ErrorCodeException(ErrorCodes.ChecklistCarAlreadyExists);
             }
 
             var carRent = await _carRentRepository.CreateEmptyCarRent();
