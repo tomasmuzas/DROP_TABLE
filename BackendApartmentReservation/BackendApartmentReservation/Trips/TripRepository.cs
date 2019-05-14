@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Trips
+﻿using BackendApartmentReservation.Infrastructure.Exceptions;
+
+namespace BackendApartmentReservation.Trips
 {
     using System;
     using System.Collections.Generic;
@@ -21,9 +23,16 @@
 
         public async Task<DbTrip> GetTrip(string tripId)
         {
-            return await _db.Trips
-                .Where(t => t.ExternalTripId == tripId)
-                .SingleAsync();
+            try
+            {
+                return await _db.Trips
+                    .Where(t => t.ExternalTripId == tripId)
+                    .SingleAsync();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripNotFound);
+            }
         }
 
         public async Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetTripChecklistsWithEmployees(string tripId)
