@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Apartments
+﻿using BackendApartmentReservation.Infrastructure.Authorization;
+
+namespace BackendApartmentReservation.Apartments
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -7,7 +9,7 @@
 
     [Route("api")]
     [ApiController]
-    public class ApartmentsController : ControllerBase
+    public class ApartmentsController : AuthorizedController
     {
         private readonly ILogger<ApartmentsController> _logger;
 

@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Employees
+﻿using BackendApartmentReservation.Infrastructure.Authorization;
+
+namespace BackendApartmentReservation.Employees
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -14,7 +16,7 @@
 
     [Route("api")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class EmployeesController : AuthorizedController
     {
         private readonly IEmployeeManager _employeeManager;
         private readonly IOfficeManager _officeManager;

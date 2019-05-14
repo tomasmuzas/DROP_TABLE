@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Trips
+﻿using BackendApartmentReservation.Infrastructure.Authorization;
+
+namespace BackendApartmentReservation.Trips
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,7 +10,7 @@
 
     [ApiController]
     [Route("api/tripinfo")]
-    public class TripInformationController : ControllerBase
+    public class TripInformationController : AuthorizedController
     {
         private readonly ITripInformationManager _tripInformationManager;
 

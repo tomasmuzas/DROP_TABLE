@@ -1,5 +1,11 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.EmployeeOnly;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BackendApartmentReservation
@@ -41,34 +47,54 @@ namespace BackendApartmentReservation
         public void ConfigureServices(IServiceCollection services)
         {
             var key = Encoding.ASCII.GetBytes(Configuration["JwtTokenSecret"]);
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateIssuer = true,
+                        ValidIssuer = Configuration["JwtTokenIssuer"],
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["JwtTokenIssuer"]
                     };
                 });
 
+            services.AddSingleton<IAuthorizationHandler, AdminOnlyHandler>();
+            services.AddSingleton<IAuthorizationHandler, EmployeeOnlyHandler>();
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
-                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_environment)))
-                .AddMvcOptions(options => options.Filters.Add(new RequestValidationFilter()));
+            var employeeOnlyPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes("Bearer")
+                .RequireAuthenticatedUser()
+                .AddRequirements(new EmployeeOnlyRequirement())
+                .Build();
+
+            var adminOnlyPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes("Bearer")
+                .RequireAuthenticatedUser()
+                .AddRequirements(new AdminOnlyRequirement())
+                .Build();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyNames.EmployeeOnly, employeeOnlyPolicy);
+                options.AddPolicy(PolicyNames.AdminOnly, adminOnlyPolicy);
+            });
 
             var connectionString = Configuration.GetConnectionString("DatabaseContext");
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            services.AddMvc(options =>
+                {
+                    // TODO: @tomu. Uncomment when JWT login is implemented
+                    //options.Filters.Add(new AuthorizeFilter(employeeOnlyPolicy));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))
+                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_environment)))
+                .AddMvcOptions(options => options.Filters.Add(new RequestValidationFilter()));
         }
 
         public void Configure(IApplicationBuilder app)
@@ -79,16 +105,15 @@ namespace BackendApartmentReservation
                     .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .WithMethods("GET", "POST", "PUT", "DELETE"));
+            app.UseAuthentication();
             app.UseMvc();
 
-            using (var context = app.ApplicationServices.GetService<DatabaseContext>())
+            var context = app.ApplicationServices.GetRequiredService<DatabaseContext>();
+            if (context.Database.GetPendingMigrations().Any())
             {
-                if (context.Database.GetPendingMigrations().Any())
-                {
-                    context.Database.Migrate();
-                }
-                context.Seed();
+                context.Database.Migrate();
             }
+            context.Seed();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

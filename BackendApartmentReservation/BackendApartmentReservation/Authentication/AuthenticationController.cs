@@ -1,4 +1,5 @@
 ﻿using BackendApartmentReservation.Authentication.Interfaces;
+using BackendApartmentReservation.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
 namespace BackendApartmentReservation.Authentication
@@ -9,7 +10,7 @@ namespace BackendApartmentReservation.Authentication
 
     [Route("api")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : AuthorizedController
     {
         private readonly IAuthenticationManager _authenticationManager;
 
