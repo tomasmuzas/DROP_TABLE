@@ -12,32 +12,28 @@ class CheckListDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            carInfo: { IsRequired: true, CarNumber: 1234 },
             apartmentsInfo: { IsRequired: true, Address: 1234 },
-
         }
     }
 
-
     componentWillMount() {
-        this.props.getSingleFlightInfo(this.props.match.params.employeeId, this.props.match.params.tripId);
-        //url turim trip id ir employee id
-        //get 1api
-        //get 2 api
-        //get 3 api
+        this.props.getSingleChecklist(this.props.match.params.employeeId, this.props.match.params.tripId);
     }
 
     render() {
         const { t } = this.props;
-        if (this.props.singleFlightInfo && this.state.carInfo && this.state.apartmentsInfo) {
+        console.log(this.props.singleChecklist);
+        if (this.props.singleChecklist) {
             return (
                 <div>
-
+                    <Link to={'/trip/' + this.props.match.params.tripId }style={{ textDecoration: 'none', color:'black' }}>
+                    <button className={`btn btn-lg btn-primary btn-block`}>{t("GoBack")}</button>
+                    </Link>
                     <div className="p-5">
-                        <FlightCheckList singleFlightInfo ={this.props.singleFlightInfo} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
+                        <FlightCheckList singleFlightInfo ={this.props.singleChecklist.flight} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                     <div className="p-5">
-                        <CarCheckList carInfo ={this.state.carInfo} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
+                        <CarCheckList carInfo ={this.props.singleChecklist.car} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                     <div className="p-5">
                         <ApartmentsCheckList apartmentsInfo ={this.state.apartmentsInfo} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
@@ -61,7 +57,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
     return {
         tripbasic: state.tripbasic,
-        singleFlightInfo : state.singleFlightInfo
+        singleChecklist : state.singleChecklist
     };
 }
 

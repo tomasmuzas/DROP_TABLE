@@ -117,7 +117,7 @@ class CreateTrip extends React.Component {
                                     shrink: true,
                                 }} />
                         </div>
-                        <div className="form-group col-6">
+                        <div className="col-lg-6 col-12 pb-3">
                             <TextField
                                 id="ReturnDate"
                                 label={t("ReturnDate")}

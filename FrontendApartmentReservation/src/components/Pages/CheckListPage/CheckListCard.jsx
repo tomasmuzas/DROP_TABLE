@@ -36,22 +36,47 @@ class CheckListCard extends React.Component {
     }
 
     componentWillMount() {
-        this.props.getFlightInfo(this.props.checkListInfo.employee.id, this.props.tripId);
+        this.props.getChecklist(this.props.checkListInfo.employee.id, this.props.tripId);
     }
 
-    showFlight(flightInfo) {
-        const {t} = this.props;
-        if (flightInfo){
+    showFlight(checklist) {
+        const { t } = this.props;
+        if (checklist) {
+            var flightDate = new Date(checklist.flight.flightTime);
             return (
-                <div className="col-12 col-lg-4" hidden={!flightInfo.isRequired}>
-                <h6> {t("FlightNumber")}: {flightInfo.flightNumber}</h6>
-                <h6> {t("FlightCompany")}:  {flightInfo.company}</h6>
-                <h6> {t("AirportAddress")}:  {flightInfo.airportAddress}</h6>
-                <h6> {t("FlightTime")}: {flightInfo.flightTime}</h6>
-            </div>
-            )}
-        else{
-            return(
+                <div className="col-12 col-lg-4" hidden={!checklist.flight.isRequired}>
+                    <h6> {t("FlightNumber")}: {checklist.flight.flightNumber}</h6>
+                    <h6> {t("FlightCompany")}:  {checklist.flight.company}</h6>
+                    <h6> {t("AirportAddress")}:  {checklist.flight.airportAddress}</h6>
+                    <h6> {t("FlightTime")}: {flightDate.toLocaleDateString('lt-LT') + " " + flightDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} </h6>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div>
+                    loading
+                </div>
+            )
+        }
+    }
+
+    showCar(checklist) {
+        const { t } = this.props;
+        if (checklist) {
+            var rentStartTime = new Date(checklist.car.rentStartTime);
+            var rentEndTime = new Date(checklist.car.rentEndTime);
+            return (
+                <div className="col-12 col-lg-4" hidden={!checklist.car.isRequired}>
+                    <h6> {t("CarNumber")}: {checklist.car.carNumber}</h6>
+                    <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
+                    <h6> {t("RentStartTime")}: {rentStartTime.toLocaleDateString('lt-LT') + " " + rentStartTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</h6>
+                    <h6> {t("RentEndTime")}: {rentEndTime.toLocaleDateString('lt-LT') + " " + rentEndTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</h6>
+                </div>
+            )
+        }
+        else {
+            return (
                 <div>
                     loading
                 </div>
@@ -64,7 +89,7 @@ class CheckListCard extends React.Component {
         return (
             <div>
                 <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
-                    <div className="col justify-content-md-center nameDiv pl-5">
+                    <div className="col justify-content-md-center nameDiv pl-5 pb-lg-0 pb-5">
                         <h5>{checkListInfo.employee.firstName} {checkListInfo.employee.lastName}</h5>
                     </div>
                     <div className="col pr-5">
@@ -96,10 +121,8 @@ class CheckListCard extends React.Component {
                     </div>
                 </div>
                 <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }} hidden={!this.state.showDetails}>
-                    {this.showFlight(this.props.flightInfo[this.props.index])}
-                    <div className="col-12 col-lg-4" hidden={!this.state.carInfo.IsRequired}>
-                        <h6> {t("CarNumber")}: {this.state.carInfo.carNumber}</h6>
-                    </div>
+                    {this.showFlight(this.props.checklist[this.props.index])}
+                    {this.showCar(this.props.checklist[this.props.index])}
                     <div className="col-12 col-lg-4" hidden={!this.state.apartmentsInfo.IsRequired}>
                         <h6> {t("ApartmentsAddres")}: {this.state.apartmentsInfo.AppartmentsAddress}</h6>
 
@@ -115,7 +138,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        flightInfo: state.flightInfo
+        checklist: state.checklist
     };
 }
 

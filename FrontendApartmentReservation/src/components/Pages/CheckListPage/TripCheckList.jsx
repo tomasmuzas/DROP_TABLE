@@ -15,7 +15,7 @@ class TripCheckList extends React.Component {
     }
 
     componentWillMount() {
-        this.props.clearFlightInfo();
+        this.props.clearChecklist();
         this.props.getBasicTrip(this.props.match.params.tripId);
     }
 

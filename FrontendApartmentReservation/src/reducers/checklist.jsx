@@ -1,8 +1,8 @@
 export default function reducer(state = [], action = {}) {
     switch (action.type) {
-        case 'CLEAR_FLIGHT_INFO': 
+        case 'CLEAR_CHECKLIST': 
             return [];
-        case 'GET_FLIGHT_INFO':
+        case 'GET_CHECKLIST':
             return [
                 ...state,
                 action.payload
