@@ -4,9 +4,7 @@
     using Apartments;
     using Database;
     using Database.Entities.Amenities;
-    using Database.Entities.Reservations;
     using Interfaces;
-    using Microsoft.EntityFrameworkCore;
 
     public class LivingPlaceRepository : ILivingPlaceRepository
     {
@@ -55,14 +53,14 @@
 //            return livingPlaceAmenity;
 //        }
 
-        public async Task<DbApartmentAmenity> CreateApartmentAmenity(string address)
-        {
-            return await _apartmentRepository.CreateApartmentAmenity(address);
-        }
-
-        public async Task<DbHotelAmenity> CreateHotelAmenity(string address)
-        {
-            return await _hotelRepository.CreateHotelAmenity(address);
-        }
+//        public async Task<DbApartmentAmenity> CreateApartmentAmenity(string address)
+//        {
+//            return await _apartmentRepository.CreateApartmentAmenity(address);
+//        }
+//
+//        public async Task<DbHotelAmenity> CreateHotelAmenity(string address)
+//        {
+//            return await _hotelRepository.CreateHotelAmenity(address);
+//        }
     }
 }

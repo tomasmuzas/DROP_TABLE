@@ -9,8 +9,8 @@
 //            DbApartmentAmenity apartmentAmenity,
 //            DbHotelAmenity hotelAmenity);
 
-        Task<DbApartmentAmenity> CreateApartmentAmenity(string address);
-
-        Task<DbHotelAmenity> CreateHotelAmenity(string address);
+//        Task<DbApartmentAmenity> CreateApartmentAmenity(string address);
+//
+//        Task<DbHotelAmenity> CreateHotelAmenity(string address);
     }
 }

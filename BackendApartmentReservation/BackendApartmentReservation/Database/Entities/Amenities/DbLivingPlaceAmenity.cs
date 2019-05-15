@@ -8,6 +8,8 @@
         [Key]
         public int Id { get; set; }
 
-        public DbLivingPlaceReservation LivingPlaceReservation { get; set; }
+        public DbHotelReservation HotelReservation { get; set; }
+
+        public DbRoomReservation ApartmentRoomReservation { get; set; }
     }
 }

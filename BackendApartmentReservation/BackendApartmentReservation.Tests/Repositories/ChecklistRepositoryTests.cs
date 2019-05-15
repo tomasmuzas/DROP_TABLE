@@ -103,7 +103,6 @@ namespace BackendApartmentReservation.Tests.Repositories
                     },
                     LivingPlace = new DbLivingPlaceAmenity
                     {
-                        LivingPlaceReservation = new DbLivingPlaceReservation()
                     },
                     Employee = new DbEmployee
                     {
@@ -130,7 +129,6 @@ namespace BackendApartmentReservation.Tests.Repositories
                 Assert.NotNull(checklistResult.Flight);
                 Assert.NotNull(checklistResult.Flight.FlightReservation);
                 Assert.NotNull(checklistResult.LivingPlace);
-                Assert.NotNull(checklistResult.LivingPlace.LivingPlaceReservation);
             }
         }
 
@@ -152,7 +150,6 @@ namespace BackendApartmentReservation.Tests.Repositories
                     },
                     LivingPlace = new DbLivingPlaceAmenity
                     {
-                        LivingPlaceReservation = new DbLivingPlaceReservation()
                     },
                     Employee = new DbEmployee
                     {
@@ -194,7 +191,6 @@ namespace BackendApartmentReservation.Tests.Repositories
                     },
                     LivingPlace = new DbLivingPlaceAmenity
                     {
-                        LivingPlaceReservation = new DbLivingPlaceReservation()
                     },
                     Employee = new DbEmployee
                     {

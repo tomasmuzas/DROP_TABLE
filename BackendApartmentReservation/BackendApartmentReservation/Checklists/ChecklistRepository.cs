@@ -48,7 +48,7 @@
                 .Include(c => c.Car)
                 .ThenInclude(car => car.CarReservation)
                 .Include(c => c.LivingPlace)
-                .ThenInclude(l => l.LivingPlaceReservation)
+//                .ThenInclude(l => l.LivingPlaceReservation)
                 .SingleOrDefaultAsync(c =>
                     c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId);
         }
