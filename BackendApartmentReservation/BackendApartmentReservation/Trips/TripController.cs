@@ -4,6 +4,7 @@
     using DataContracts.DataTransferObjects.Requests;
     using Infrastructure.Authorization;
     using Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api")]
@@ -18,6 +19,7 @@
 
         [HttpPost]
         [Route("trips")]
+        [Authorize("EmployeeOnly")]
         public async Task<IActionResult> CreateBasicTrip([FromBody] CreateTripRequest tripRequest)
         {
             var employeeId = GetEmployeeId();
