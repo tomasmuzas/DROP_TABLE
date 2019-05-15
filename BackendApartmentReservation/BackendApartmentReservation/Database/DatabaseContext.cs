@@ -23,6 +23,8 @@
 
         public DbSet<DbApartment> Apartments { get; set; }
 
+        public DbSet<DbApartmentRoom> ApartmentRooms { get; set; }
+
         public DbSet<DbOffice> Offices { get; set; }
 
         // Amenities
