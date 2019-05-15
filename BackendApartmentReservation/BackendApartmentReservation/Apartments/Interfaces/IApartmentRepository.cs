@@ -5,6 +5,6 @@
 
     public interface IApartmentRepository
     {
-        Task<DbApartmentAmenity> CreateApartmentAmenity(string address);
+        //Task<DbApartmentAmenity> CreateApartmentAmenity(string address);
     }
 }

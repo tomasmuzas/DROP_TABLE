@@ -17,17 +17,17 @@
             _db = db;
         }
 
-        public async Task<DbApartmentAmenity> CreateApartmentAmenity(string address)
-        {
-            var apartmentAmenity = new DbApartmentAmenity
-            {
-                BookedAt = DateTimeOffset.Now
-            };
-            //await _db.ApartmentAmenities.AddAsync(apartmentAmenity);
-
-            await _db.SaveChangesAsync();
-
-            return apartmentAmenity;
-        }
+//        public async Task<DbApartmentAmenity> CreateApartmentAmenity(string address)
+//        {
+//            var apartmentAmenity = new DbApartmentAmenity
+//            {
+//                BookedAt = DateTimeOffset.Now
+//            };
+//            //await _db.ApartmentAmenities.AddAsync(apartmentAmenity);
+//
+//            await _db.SaveChangesAsync();
+//
+//            return apartmentAmenity;
+//        }
     }
 }
