@@ -5,9 +5,9 @@
 
     public interface ILivingPlaceRepository
     {
-        Task<DbLivingPlaceAmenity> CreateLivingPlaceAmenity(
-            DbApartmentAmenity apartmentAmenity,
-            DbHotelAmenity hotelAmenity);
+//        Task<DbLivingPlaceAmenity> CreateLivingPlaceAmenity(
+//            DbApartmentAmenity apartmentAmenity,
+//            DbHotelAmenity hotelAmenity);
 
         Task<DbApartmentAmenity> CreateApartmentAmenity(string address);
 

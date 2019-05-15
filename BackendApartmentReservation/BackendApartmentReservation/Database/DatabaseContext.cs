@@ -1,4 +1,4 @@
-﻿namespace BackendApartmentReservation.Database
+namespace BackendApartmentReservation.Database
 {
     using Entities;
     using Entities.Amenities;
@@ -25,6 +25,8 @@
 
         public DbSet<DbApartmentRoom> ApartmentRooms { get; set; }
 
+        public DbSet<DbRoomReservation> DbRoomReservations { get; set; }
+
         public DbSet<DbOffice> Offices { get; set; }
 
         // Amenities
@@ -49,12 +51,8 @@
 
         public DbSet<DbHotelReservation> HotelReservations { get; set; }
 
-        public DbSet<DbApartmentReservation> ApartmentReservations { get; set; }
-
         public DbSet<DbEmployeePlan> EmployeePlans { get; set; }
 
         public DbSet<DbAuthorization> Authorizations { get; set; }
-
-        public DbSet<DbRoomReservation> DbRoomReservations { get; set; }
     }
 }

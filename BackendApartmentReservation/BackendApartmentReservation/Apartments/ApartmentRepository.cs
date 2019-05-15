@@ -19,23 +19,11 @@
 
         public async Task<DbApartmentAmenity> CreateApartmentAmenity(string address)
         {
-            var apartmentReservation = await _db.ApartmentReservations.SingleOrDefaultAsync(r => r.Address == address);
-
-            if (apartmentReservation == default(DbApartmentReservation))
-            {
-                apartmentReservation = new DbApartmentReservation
-                {
-                    Address = address
-                };
-                await _db.ApartmentReservations.AddAsync(apartmentReservation);
-            }
-
             var apartmentAmenity = new DbApartmentAmenity
             {
-                BookedAt = DateTimeOffset.Now,
-                ApartmentReservation = apartmentReservation
+                BookedAt = DateTimeOffset.Now
             };
-            await _db.ApartmentAmenities.AddAsync(apartmentAmenity);
+            //await _db.ApartmentAmenities.AddAsync(apartmentAmenity);
 
             await _db.SaveChangesAsync();
 

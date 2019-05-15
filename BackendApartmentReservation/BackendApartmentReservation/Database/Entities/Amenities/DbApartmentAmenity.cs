@@ -7,7 +7,5 @@
     {
         [Key]
         public int Id { get; set; }
-
-        public DbApartmentReservation ApartmentReservation { get; set; }
     }
 }

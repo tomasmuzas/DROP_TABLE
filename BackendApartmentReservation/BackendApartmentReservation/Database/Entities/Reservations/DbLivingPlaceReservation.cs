@@ -7,7 +7,7 @@
         [Key]
         public int Id { get; set; }
 
-        public DbApartmentReservation ApartmentReservation { get; set; }
+        //TODO add RoomReservation
 
         public DbHotelReservation HotelReservation { get; set; }
     }

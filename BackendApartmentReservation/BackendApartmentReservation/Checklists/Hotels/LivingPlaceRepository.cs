@@ -24,36 +24,36 @@
             _hotelRepository = hotelRepository;
         }
 
-        public async Task<DbLivingPlaceAmenity> CreateLivingPlaceAmenity(
-            DbApartmentAmenity apartmentAmenity,
-            DbHotelAmenity hotelAmenity)
-        {
-            var apartmentReservationId = apartmentAmenity?.ApartmentReservation?.Id;
-            var hotelReservationId = hotelAmenity?.HotelReservation?.Id;
-            var livingPlaceReservation = await _db.LivingPlaceReservations.SingleOrDefaultAsync(r =>
-                r.ApartmentReservation.Id == apartmentReservationId && r.HotelReservation.Id == hotelReservationId);
-
-            if (livingPlaceReservation == default(DbLivingPlaceReservation))
-            {
-                livingPlaceReservation = new DbLivingPlaceReservation
-                {
-                    ApartmentReservation = apartmentAmenity?.ApartmentReservation,
-                    HotelReservation = hotelAmenity?.HotelReservation
-                };
-                await _db.LivingPlaceReservations.AddAsync(livingPlaceReservation);
-            }
-
-            var livingPlaceAmenity = new DbLivingPlaceAmenity
-            {
-                LivingPlaceReservation = livingPlaceReservation
-            };
-
-            await _db.LivingPlaceAmenities.AddAsync(livingPlaceAmenity);
-
-            await _db.SaveChangesAsync();
-
-            return livingPlaceAmenity;
-        }
+//        public async Task<DbLivingPlaceAmenity> CreateLivingPlaceAmenity(
+//            DbApartmentAmenity apartmentAmenity,
+//            DbHotelAmenity hotelAmenity)
+//        {
+//            var apartmentReservationId = apartmentAmenity?.ApartmentReservation?.Id;
+//            var hotelReservationId = hotelAmenity?.HotelReservation?.Id;
+//            var livingPlaceReservation = await _db.LivingPlaceReservations.SingleOrDefaultAsync(r =>
+//                r.ApartmentReservation.Id == apartmentReservationId && r.HotelReservation.Id == hotelReservationId);
+//
+//            if (livingPlaceReservation == default(DbLivingPlaceReservation))
+//            {
+//                livingPlaceReservation = new DbLivingPlaceReservation
+//                {
+//                    //ApartmentReservation = apartmentAmenity?.ApartmentReservation,
+//                    HotelReservation = hotelAmenity?.HotelReservation
+//                };
+//                await _db.LivingPlaceReservations.AddAsync(livingPlaceReservation);
+//            }
+//
+//            var livingPlaceAmenity = new DbLivingPlaceAmenity
+//            {
+//                LivingPlaceReservation = livingPlaceReservation
+//            };
+//
+//            await _db.LivingPlaceAmenities.AddAsync(livingPlaceAmenity);
+//
+//            await _db.SaveChangesAsync();
+//
+//            return livingPlaceAmenity;
+//        }
 
         public async Task<DbApartmentAmenity> CreateApartmentAmenity(string address)
         {
