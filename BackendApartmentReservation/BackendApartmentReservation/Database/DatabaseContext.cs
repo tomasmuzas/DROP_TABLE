@@ -55,6 +55,6 @@
 
         public DbSet<DbAuthorization> Authorizations { get; set; }
 
-        public DbSet<DbRoomReservation> ApartmentReservationsInfo { get; set; }
+        public DbSet<DbRoomReservation> DbRoomReservations { get; set; }
     }
 }
