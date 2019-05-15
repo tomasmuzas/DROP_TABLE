@@ -1,11 +1,11 @@
-﻿namespace BackendApartmentReservation.Checklists.Hotels
+﻿namespace BackendApartmentReservation.Checklists
 {
     using System.Threading.Tasks;
     using Apartments;
     using Database;
-    using Database.Entities;
     using Database.Entities.Amenities;
-    using Interfaces;
+    using Hotels;
+    using Hotels.Interfaces;
 
     public class LivingPlaceRepository : ILivingPlaceRepository
     {
