@@ -4,20 +4,39 @@ using BackendApartmentReservation.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendApartmentReservation.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190515174251_RenameApartmentReservationInfoToRoomReservation")]
+    partial class RenameApartmentReservationInfoToRoomReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbApartmentAmenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ApartmentReservationId");
+
+                    b.Property<DateTimeOffset?>("BookedAt");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApartmentReservationId");
+
+                    b.ToTable("ApartmentAmenities");
+                });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbCarRentAmenity", b =>
                 {
@@ -53,13 +72,11 @@ namespace BackendApartmentReservation.Migrations
                     b.ToTable("FlightAmenities");
                 });
 
-            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", b =>
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbHotelAmenity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ApartmentRoomReservationId");
 
                     b.Property<DateTimeOffset?>("BookedAt");
 
@@ -67,9 +84,24 @@ namespace BackendApartmentReservation.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApartmentRoomReservationId");
-
                     b.HasIndex("HotelReservationId");
+
+                    b.ToTable("HotelAmenities");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTimeOffset?>("BookedAt");
+
+                    b.Property<int?>("LivingPlaceReservationId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LivingPlaceReservationId");
 
                     b.ToTable("LivingPlaceAmenities");
                 });
@@ -311,6 +343,19 @@ namespace BackendApartmentReservation.Migrations
                     b.ToTable("Trips");
                 });
 
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Reservations.DbApartmentReservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApartmentReservations");
+                });
+
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Reservations.DbCarReservation", b =>
                 {
                     b.Property<int>("Id")
@@ -362,6 +407,32 @@ namespace BackendApartmentReservation.Migrations
                     b.ToTable("HotelReservations");
                 });
 
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Reservations.DbLivingPlaceReservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ApartmentReservationId");
+
+                    b.Property<int?>("HotelReservationId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApartmentReservationId");
+
+                    b.HasIndex("HotelReservationId");
+
+                    b.ToTable("LivingPlaceReservations");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbApartmentAmenity", b =>
+                {
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbApartmentReservation", "ApartmentReservation")
+                        .WithMany()
+                        .HasForeignKey("ApartmentReservationId");
+                });
+
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbCarRentAmenity", b =>
                 {
                     b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbCarReservation", "CarReservation")
@@ -376,15 +447,18 @@ namespace BackendApartmentReservation.Migrations
                         .HasForeignKey("FlightReservationId");
                 });
 
-            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", b =>
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbHotelAmenity", b =>
                 {
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbRoomReservation", "ApartmentRoomReservation")
-                        .WithMany()
-                        .HasForeignKey("ApartmentRoomReservationId");
-
                     b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbHotelReservation", "HotelReservation")
                         .WithMany()
                         .HasForeignKey("HotelReservationId");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", b =>
+                {
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbLivingPlaceReservation", "LivingPlaceReservation")
+                        .WithMany()
+                        .HasForeignKey("LivingPlaceReservationId");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbApartmentRoom", b =>
@@ -488,6 +562,17 @@ namespace BackendApartmentReservation.Migrations
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbOffice", "DestinationOffice")
                         .WithMany()
                         .HasForeignKey("DestinationOfficeId");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Reservations.DbLivingPlaceReservation", b =>
+                {
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbApartmentReservation", "ApartmentReservation")
+                        .WithMany()
+                        .HasForeignKey("ApartmentReservationId");
+
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbHotelReservation", "HotelReservation")
+                        .WithMany()
+                        .HasForeignKey("HotelReservationId");
                 });
 #pragma warning restore 612, 618
         }

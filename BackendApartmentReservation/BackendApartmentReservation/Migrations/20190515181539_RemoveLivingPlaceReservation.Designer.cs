@@ -4,14 +4,16 @@ using BackendApartmentReservation.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendApartmentReservation.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190515181539_RemoveLivingPlaceReservation")]
+    partial class RemoveLivingPlaceReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,6 +53,23 @@ namespace BackendApartmentReservation.Migrations
                     b.HasIndex("FlightReservationId");
 
                     b.ToTable("FlightAmenities");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbHotelAmenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTimeOffset?>("BookedAt");
+
+                    b.Property<int?>("HotelReservationId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelReservationId");
+
+                    b.ToTable("HotelAmenities");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", b =>
@@ -374,6 +393,13 @@ namespace BackendApartmentReservation.Migrations
                     b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbFlightReservation", "FlightReservation")
                         .WithMany()
                         .HasForeignKey("FlightReservationId");
+                });
+
+            modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbHotelAmenity", b =>
+                {
+                    b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbHotelReservation", "HotelReservation")
+                        .WithMany()
+                        .HasForeignKey("HotelReservationId");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbLivingPlaceAmenity", b =>
