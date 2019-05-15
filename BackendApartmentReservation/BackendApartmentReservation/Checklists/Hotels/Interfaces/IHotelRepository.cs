@@ -5,6 +5,5 @@
 
     public interface IHotelRepository
     {
-        Task<DbHotelAmenity> CreateHotelAmenity(string address);
     }
 }

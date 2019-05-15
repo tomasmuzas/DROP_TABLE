@@ -38,8 +38,6 @@
 
         public DbSet<DbLivingPlaceAmenity> LivingPlaceAmenities { get; set; }
 
-        public DbSet<DbHotelAmenity> HotelAmenities { get; set; }
-
         // Reservations
         public DbSet<DbCarReservation> CarReservations { get; set; }
 

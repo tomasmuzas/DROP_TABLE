@@ -16,30 +16,5 @@
         {
             _db = db;
         }
-
-        public async Task<DbHotelAmenity> CreateHotelAmenity(string address)
-        {
-            var hotelReservation = await _db.HotelReservations.SingleOrDefaultAsync(r => r.Address == address);
-
-            if (hotelReservation == default(DbHotelReservation))
-            {
-                hotelReservation = new DbHotelReservation
-                {
-                    Address = address
-                };
-                await _db.HotelReservations.AddAsync(hotelReservation);
-            }
-
-            var hotelAmenity = new DbHotelAmenity
-            {
-                BookedAt = DateTimeOffset.Now,
-                HotelReservation = hotelReservation
-            };
-            await _db.HotelAmenities.AddAsync(hotelAmenity);
-
-            await _db.SaveChangesAsync();
-
-            return hotelAmenity;
-        }
     }
 }
