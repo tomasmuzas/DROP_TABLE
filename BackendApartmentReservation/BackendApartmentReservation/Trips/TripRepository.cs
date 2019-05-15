@@ -46,7 +46,7 @@ namespace BackendApartmentReservation.Trips
                 .ToListAsync();
         }
 
-        public async Task<DbTrip> CreateTrip(CreateTripRequest tripRequest)
+        public async Task<DbTrip> CreateTrip(CreateTripRequest tripRequest, string managerId)
         {
             var tripGroups = new List<DbGroup>();
             var destinationOffice =

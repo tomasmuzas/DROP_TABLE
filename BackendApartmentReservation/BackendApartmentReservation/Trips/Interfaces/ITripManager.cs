@@ -6,6 +6,6 @@
 
     public interface ITripManager
     {
-        Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest);
+        Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId);
     }
 }
