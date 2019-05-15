@@ -49,8 +49,18 @@ namespace BackendApartmentReservation.Trips
         public async Task<DbTrip> CreateTrip(CreateTripRequest tripRequest, string managerId)
         {
             var tripGroups = new List<DbGroup>();
-            var destinationOffice =
-                await _db.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == tripRequest.DestinationOfficeId);
+
+            DbOffice destinationOffice;
+            try
+            {
+                destinationOffice =
+                    await _db.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == tripRequest.DestinationOfficeId);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripOfficeNotFound);
+            }
+
             var employees = await _db.Employees
                 .Include(e => e.Office)
                 .Where(e => tripRequest.EmployeeIds.Contains(e.ExternalEmployeeId))
@@ -78,12 +88,15 @@ namespace BackendApartmentReservation.Trips
                 await _db.DbEmployeeGroup.AddRangeAsync(employeeGroups);
             }
 
+            var tripCreator = await _db.Employees.SingleAsync(e => e.ExternalEmployeeId == managerId);
+
             var newTrip = new DbTrip
             {
                 DepartureDate = tripRequest.DepartureDate,
                 DestinationOffice = destinationOffice,
                 ReturnDate = tripRequest.ReturnDate,
                 Groups = tripGroups,
+                TripCreator = tripCreator,
                 ExternalTripId = Guid.NewGuid().ToString()
             };
 

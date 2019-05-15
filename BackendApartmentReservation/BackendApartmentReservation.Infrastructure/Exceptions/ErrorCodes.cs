@@ -8,6 +8,7 @@
 
         // Trip
         public const string TripNotFound = "trip.trip_not_found";
+        public const string TripOfficeNotFound = "trip.office_not_found";
 
         // Checklist
         public const string ChecklistAlreadyExists = "checklist.checklist_already_exists";
