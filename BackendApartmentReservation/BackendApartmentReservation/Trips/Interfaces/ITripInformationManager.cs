@@ -8,6 +8,6 @@
     {
         Task<BasicTripInformationResponse> GetBasicTripInformation(string tripId);
 
-        Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation();
+        Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation(string employeeId);
     }
 }

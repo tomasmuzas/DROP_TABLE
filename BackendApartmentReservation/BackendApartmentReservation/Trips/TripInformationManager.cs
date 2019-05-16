@@ -49,9 +49,9 @@
             };
         }
 
-        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation()
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation(string employeeId)
         {
-            var trips = await _tripRepository.GetAllTrips();
+            var trips = await _tripRepository.GetAllTrips(employeeId);
             return trips.Select(t => new BasicTripInformationResponse
             {
                 StartTime = t.DepartureDate,
