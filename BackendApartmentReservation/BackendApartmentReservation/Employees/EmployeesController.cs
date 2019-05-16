@@ -5,6 +5,7 @@ namespace BackendApartmentReservation.Employees
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Authentication.Interfaces;
+    using BackendApartmentReservation.DataContracts.DataTransferObjects.IntermediaryDTOs;
     using BackendApartmentReservation.Offices.Interfaces;
     using Database.Entities;
     using DataContracts.DataTransferObjects.Requests;
@@ -75,6 +76,13 @@ namespace BackendApartmentReservation.Employees
             }
 
             return Ok(employee);
+        }
+
+        [HttpPost]
+        [Route("employees/plans")]
+        public async Task<IEnumerable<EmployeePlanInfo>> GetEmployeePlans(IEnumerable<string> employeeIds)
+        {
+            return await _employeeManager.GetEmployeePlans(employeeIds);
         }
     }
 }
