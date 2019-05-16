@@ -33,5 +33,18 @@
 
             return livingPlaceAmenity;
         }
+
+        public async Task<DbLivingPlaceAmenity> CreateHotelLivingPlaceAmenity(int hotelReservationId)
+        {
+            var hotelReservation = await _hotelRepository.GetHotelReservationById(hotelReservationId);
+            var livingPlaceAmenity = new DbLivingPlaceAmenity()
+            {
+                HotelReservation = hotelReservation
+            };
+
+            await _db.LivingPlaceAmenities.AddAsync(livingPlaceAmenity);
+            await _db.SaveChangesAsync();
+            return livingPlaceAmenity;
+        }
     }
 }

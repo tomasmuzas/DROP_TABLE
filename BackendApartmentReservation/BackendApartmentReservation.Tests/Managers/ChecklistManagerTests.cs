@@ -8,6 +8,7 @@ using BackendApartmentReservation.Infrastructure.Exceptions;
 namespace BackendApartmentReservation.Tests.Managers
 {
     using System.Threading.Tasks;
+    using Checklists.Hotels.Interfaces;
     using Checklists;
     using Checklists.Flights.Interfaces;
     using Checklists.Interfaces;
@@ -26,6 +27,8 @@ namespace BackendApartmentReservation.Tests.Managers
         private readonly IChecklistRepository _checklistRepository;
         private readonly IFlightRepository _flightRepository;
         private readonly ICarRentRepository _carRentRepository;
+        private readonly ILivingPlaceRepository _livingPlaceRepository;
+        private readonly IHotelRepository _hotelRepository;
 
         private readonly ChecklistManager _manager;
 
@@ -35,6 +38,8 @@ namespace BackendApartmentReservation.Tests.Managers
             _tripRepository = A.Fake<ITripRepository>();
             _flightRepository = A.Fake<IFlightRepository>();
             _carRentRepository = A.Fake<ICarRentRepository>();
+            _livingPlaceRepository = A.Fake<ILivingPlaceRepository>();
+            _hotelRepository = A.Fake<IHotelRepository>();
 
             _checklistRepository = A.Fake<IChecklistRepository>(o => o.Strict());
 
@@ -46,6 +51,8 @@ namespace BackendApartmentReservation.Tests.Managers
                 _tripRepository,
                 _flightRepository,
                 _carRentRepository,
+                _livingPlaceRepository,
+                _hotelRepository,
                 logger);
         }
 

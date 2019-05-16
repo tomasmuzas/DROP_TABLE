@@ -4,6 +4,8 @@
     using Database;
     using Interfaces;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using System.Collections.Generic;
 
     public class HotelRepository : IHotelRepository
     {
@@ -34,6 +36,16 @@
         {
             _db.HotelReservations.Remove(hotelReservation);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<DbHotelReservation>> GetAllHotelReservations()
+        {
+            return await _db.HotelReservations.ToListAsync();
+        }
+
+        public async Task<DbHotelReservation> GetHotelReservationById(int hotelReservationId)
+        {
+            return await _db.HotelReservations.FindAsync(hotelReservationId);
         }
     }
 }
