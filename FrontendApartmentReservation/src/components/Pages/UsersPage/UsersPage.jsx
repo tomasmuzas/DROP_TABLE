@@ -15,7 +15,7 @@ class UsersPage extends React.Component {
                 <div>
                    <div>
                         This is UsersPage
-                        {this.props.employees.map(employee => <div> {employee} </div>)}
+                        {this.props.employees.map(employee => <div> {employee.firstName} </div>)}
                     </div>
                 </div>
             );

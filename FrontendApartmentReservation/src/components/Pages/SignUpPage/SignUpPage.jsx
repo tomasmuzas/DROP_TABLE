@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../../actions';
+import Select from 'react-select';
 
 class SignUpPage extends React.Component {
     constructor(props) {
@@ -13,7 +14,8 @@ class SignUpPage extends React.Component {
             inputSurname: '',
             inputEmail: '',
             inputPassword: '',
-            inputOffice: '',
+            selectedOffice: '',
+            officesOptions: [],
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,13 +27,31 @@ class SignUpPage extends React.Component {
 
     }
 
+    componentWillMount() {
+        this.props.getAllOffices();
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setOfficesArray(newProps.offices);
+    }
+
+    setOfficesArray(officesList) {
+        var officesOptions = [];
+        officesList.forEach(function (office) {
+            var obj = { value: office.id, label: office.address };
+            officesOptions.push(obj);
+        });
+        this.setState({
+            officesOptions: officesOptions
+        })
+    }
+
     handleSubmit(e) {
         e.preventDefault();
-        const { inputName, inputSurname, inputEmail, inputPassword, inputOffice } = this.state;
-        const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,15}$");
-        var regexTest = regex.test(inputPassword);
-        if (regexTest) {
-            this.props.signUpUser(inputName, inputSurname, inputEmail, inputPassword, inputOffice);
+        const { inputName, inputSurname, inputEmail, inputPassword, selectedOffice } = this.state;
+        const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*d).{8,}$', 'i');
+        if (regex.test(inputPassword)) {
+            this.props.signUpUser(inputName, inputSurname, inputEmail, inputPassword, selectedOffice);
         } else {
             alert(this.props.t("PasswordError"));
         }
@@ -63,8 +83,8 @@ class SignUpPage extends React.Component {
 
     handleOfficeChange(e) {
         this.setState({
-            inputOffice: e.target.value
-        });
+            selectedOffice: e.value
+        })
     }
 
     render() {
@@ -93,11 +113,15 @@ class SignUpPage extends React.Component {
                             required name="inputPassword" value={inputPassword}
                             onChange={this.handlePasswordChange} />
                     </div>
-                    <div className="form-group">
-                        <input type="text" id="inputOffice" className={`form-control`} placeholder={t("Office")}
-                            required name="inputOffice" value={inputOffice}
-                            onChange={this.handleOfficeChange} />
-                    </div>
+                    <div className="form-group mb-2">
+                            <Select
+                                options={this.state.officesOptions}
+                                className="basic-multi-select"
+                                placeholder="Select office"
+                                onChange={this.handleOfficeChange}
+                                required
+                            />
+                        </div>
                     <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SignUp")}</button>
                 </form>
             </div>
@@ -111,7 +135,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        employees: state.employees,
+        offices: state.offices,
     }
 }
 

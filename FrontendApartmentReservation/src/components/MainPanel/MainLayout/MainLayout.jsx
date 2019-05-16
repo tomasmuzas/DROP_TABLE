@@ -10,6 +10,7 @@ import PageHeader from './PageHeader';
 import SignUpPage from '../../Pages/SignUpPage/SignUpPage';
 import CreateTrip from '../../Pages/TripsPage/CreateTrip';
 import TripCheckList from '../../Pages/CheckListPage/TripCheckList';
+import CheckListDetails from '../../Pages/CheckListPage/CheckListFullDetails/CheckListDetails'
 
 export default class MainLayout extends React.Component {
     render() {
@@ -27,6 +28,7 @@ export default class MainLayout extends React.Component {
                     <Route path="/signup" component={SignUpPage}/>
                     <Route path="/createTrip" component={CreateTrip}/>
                     <Route path="/trip/:tripId" component={TripCheckList}/>
+                    <Route path="/:tripId/checklist/:employeeId" component={CheckListDetails}/>
                     <Route path="*" component={PageNotFound}/>
                 </Switch>
             </div>

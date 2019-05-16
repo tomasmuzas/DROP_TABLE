@@ -6,20 +6,26 @@ export const GET_ALL_AUTHENTICATIONS = 'GET_ALL_AUTHENTICATIONS';
 export const GET_ALL_EMPLOYEES = 'GET_ALL_EMPLOYEES';
 export const GET_AVAILABLE_EMPLOYEES = 'GET_AVAILABLE_EMPLOYEES';
 export const GET_ALL_TRIPS = 'GET_ALL_TRIPS';
-export const SIGN_UP_USER = 'SIGN_UP_USER';
+export const SIGN_UP_EMPLOYEE = 'SIGN_UP_EMPLOYEE';
 export const GET_ALL_OFFICES = 'GET_ALL_OFFICES';
 export const CREATE_TRIP = 'CREATE_TRIP';
 export const GET_TRIP_BASIC = 'GET_TRIP_BASIC';
+export const GET_CHECKLIST = "GET_CHECKLIST";
+export const GET_SINGLE_CHECKLIST = "GET_SINGLE_CHECKLIST";
+export const POST_SINGLE_FLIGHT_INFO = "POST_SINGLE_FLIGHT_INFO";
+export const DELETE_SINGLE_FLIGHT_INFO = "DELETE_SINGLE_FLIGHT_INFO";
+export const POST_SINGLE_CAR_INFO = "POST_SINGLE_CAR_INFO";
+export const DELETE_SINGLE_CAR_INFO = "DELETE_SINGLE_CAR_INFO";
+export const CLEAR_CHECKLIST = "CLEAR_CHECKLIST";
 
 
 var BACKEND_BASE_URI;
-if (process.env.NODE_ENV === 'production'){
-     BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
+if (process.env.NODE_ENV === 'production') {
+    BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
 }
-else{
+else {
     BACKEND_BASE_URI = process.env.REACT_APP_DEV_BASE_URI;
 }
-console.log(BACKEND_BASE_URI);
 
 var headers = {
     "Content-Type": "application/json",
@@ -82,7 +88,7 @@ export const getAllAuthentication = () => (dispatch) => {
 }
 
 export const getAllEmployees = () => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/profiles`, {
+    return fetch(BACKEND_BASE_URI + `/api/employees`, {
         method: "GET",
         headers: headers
     }).then(response => {
@@ -119,7 +125,7 @@ export const getAvailableEmployees = (departureDate, returnDate) => (dispatch) =
 }
 
 export const getAllTrips = () => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/travels`, {
+    return fetch(BACKEND_BASE_URI + `/api/tripinfo`, {
         method: "GET",
         headers: headers
     }).then(response => {
@@ -137,7 +143,7 @@ export const getAllTrips = () => (dispatch) => {
 }
 
 export const getBasicTrip = (tripId) => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/tripinfo/` + tripId +'/basic', {
+    return fetch(BACKEND_BASE_URI + `/api/tripinfo/` + tripId + '/basic', {
         method: "GET",
         headers: headers
     }).then(response => {
@@ -154,6 +160,143 @@ export const getBasicTrip = (tripId) => (dispatch) => {
     }).catch((error) => console.warn(error));
 }
 
+export const getChecklist = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
+        method: "GET",
+        headers: headers
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error("Bad response");
+        }
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_CHECKLIST,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.warn(error));
+}
+
+export const getSingleChecklist = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
+        method: "GET",
+        headers: headers
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error("Bad response");
+        }
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_SINGLE_CHECKLIST,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.warn(error));
+}
+
+export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
+        method: "PUT",
+        body: JSON.stringify({
+            isRequired: flightInfo.isRequired,
+            flightNumber: flightInfo.flightNumber,
+            company: flightInfo.company,
+            flightTime: flightInfo.flightTime,
+            airportAddress: flightInfo.airportAddress
+        }),
+        headers: headers
+    }).then(response => {
+        if (response.status === 200) {
+            alert(i18n.t("FlightInfoUpdate") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+
+export const createFlightInfo = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
+        method: "POST",
+        headers: headers
+    }).then(response => {
+        if (response.status === 200) {
+            alert(i18n.t("FlightInfoCreate") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+
+export const deleteFlightInfo = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
+        method: "DELETE",
+        headers: headers
+    }).then(response => {
+        if (response.status === 200) {
+            alert(i18n.t("FlightInfoDelete") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
+        method: "PUT",
+        body: JSON.stringify({
+            isRequired: carInfo.isRequired,
+            carNumber: carInfo.carNumber,
+            carAddress: carInfo.carAddress,
+            rentEndTime: carInfo.rentEndTime,
+            rentStartTime: carInfo.rentStartTime
+        }),
+        headers: headers
+    }).then(response => {
+        if (response.status === 200) {
+            alert(i18n.t("CarInfoUpdate") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+
+export const createCarInfo = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
+        method: "POST",
+        headers: headers
+    }).then(response => {
+        if (response.status === 200) {
+            alert(i18n.t("CarInfoCreate") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const deleteCarInfo = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
+        method: "DELETE",
+        headers: headers
+    }).then(response => {
+        if (response.status === 200) {
+            alert(i18n.t("CarInfoDelete") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
 export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dispatch) => {
     fetch(BACKEND_BASE_URI + "/api/employees", {
         method: "POST",
@@ -163,11 +306,10 @@ export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dis
         if (response.status === 200) {
             response.json().then(data => {
                 dispatch({
-                    type: SIGN_UP_USER,
+                    type: SIGN_UP_EMPLOYEE,
                     payload: data
-                }).then(() => {
-                    dispatch(push('/'))
-                });
+                })
+                dispatch(push('/'))
             });
         }
         else {
@@ -177,10 +319,10 @@ export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dis
 }
 
 
-export const createTrip = (UsersId, OfficeId, DepartureDate, ReturnDate) => (dispatch) => {
-    fetch(BACKEND_BASE_URI + "/api/trip", {
+export const createTrip = (employeeIds, destinationOfficeId, departureDate, returnDate) => (dispatch) => {
+    fetch(BACKEND_BASE_URI + "/api/trips", {
         method: "POST",
-        body: JSON.stringify({ UsersId, OfficeId, DepartureDate, ReturnDate }),
+        body: JSON.stringify({ employeeIds, destinationOfficeId, departureDate, returnDate }),
         headers,
     }).then(response => {
         if (response.status === 200) {
@@ -188,13 +330,18 @@ export const createTrip = (UsersId, OfficeId, DepartureDate, ReturnDate) => (dis
                 dispatch({
                     type: CREATE_TRIP,
                     payload: data
-                }).then(() => {
-                    dispatch(push('/'))
-                });
+                })
+                dispatch(push('/trip/' + data.tripId))
             });
         }
         else {
             alert(i18n.t("SignUpError") + response.status);
         }
     }).catch((error) => console.warn(error));
+}
+
+export const clearChecklist = () => (dispatch) => {
+    dispatch({
+        type: CLEAR_CHECKLIST
+    });
 }
