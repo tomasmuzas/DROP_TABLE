@@ -1,10 +1,10 @@
-﻿using BackendApartmentReservation.Infrastructure.Authorization;
-
-namespace BackendApartmentReservation.Trips
+﻿namespace BackendApartmentReservation.Trips
 {
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Requests;
+    using Infrastructure.Authorization;
     using Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api")]
@@ -19,9 +19,11 @@ namespace BackendApartmentReservation.Trips
 
         [HttpPost]
         [Route("trips")]
+        [Authorize("EmployeeOnly")]
         public async Task<IActionResult> CreateBasicTrip([FromBody] CreateTripRequest tripRequest)
         {
-            return Ok(await _tripManager.CreateBasicTrip(tripRequest));
+            var employeeId = GetEmployeeId();
+            return Ok(await _tripManager.CreateBasicTrip(tripRequest, employeeId));
         }
     }
 }

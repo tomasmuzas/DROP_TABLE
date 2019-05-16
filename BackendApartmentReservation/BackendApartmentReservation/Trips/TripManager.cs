@@ -23,9 +23,9 @@
             _checklistManager = checklistManager;
         }
 
-        public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest)
+        public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId)
         {
-            var trip = await _tripRepository.CreateTrip(tripRequest);
+            var trip = await _tripRepository.CreateTrip(tripRequest, managerId);
 
             foreach (var group in trip.Groups)
             {

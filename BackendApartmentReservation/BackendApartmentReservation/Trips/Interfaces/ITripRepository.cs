@@ -11,7 +11,7 @@
 
         Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetTripChecklistsWithEmployees(string tripId);
 
-        Task<DbTrip> CreateTrip(CreateTripRequest tripRequest);
+        Task<DbTrip> CreateTrip(CreateTripRequest tripRequest, string managerId);
 
         Task<IEnumerable<DbTrip>> GetAllTrips();
     }

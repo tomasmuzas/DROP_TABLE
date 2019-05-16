@@ -9,6 +9,8 @@
         [Key]
         public int Id { get; set; }
 
+        public DbEmployee TripCreator { get; set; }
+
         public DbOffice DestinationOffice { get; set; }
 
         public DateTime DepartureDate { get; set; }
