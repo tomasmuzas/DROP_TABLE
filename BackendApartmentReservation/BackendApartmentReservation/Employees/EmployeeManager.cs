@@ -56,8 +56,8 @@
             var employeePlans = await _employeeRepository.GetEmployeePlans(employeeIds);
             return employeePlans.Select(p => new EmployeePlanInfo
             {
-                From = p.StartDate.DateTime,
-                To = p.EndDate.DateTime
+                Start = p.StartDate.DateTime,
+                End = p.EndDate.DateTime
             });
         }
     }

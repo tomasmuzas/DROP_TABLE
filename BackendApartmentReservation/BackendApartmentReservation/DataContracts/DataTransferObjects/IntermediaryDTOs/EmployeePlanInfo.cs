@@ -4,8 +4,8 @@
 
     public class EmployeePlanInfo
     {
-        public DateTime From { get; set; }
+        public DateTime Start { get; set; }
 
-        public DateTime To { get; set; }
+        public DateTime End { get; set; }
     }
 }
