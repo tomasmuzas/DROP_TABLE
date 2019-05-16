@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Database;
     using Database.Entities;
@@ -55,6 +56,14 @@
         {
             _context.Employees.Remove(dbEmployee);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<DbEmployeePlan>> GetEmployeePlans(IEnumerable<string> employeeIds)
+        {
+            return await _context.EmployeePlans
+                .Include(p => p.Employee)
+                .Where(p => employeeIds.Contains(p.Employee.ExternalEmployeeId))
+                .ToListAsync();
         }
     }
 }
