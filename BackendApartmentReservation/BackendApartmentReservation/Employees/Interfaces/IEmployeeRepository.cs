@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Database.Entities;
+    using DataContracts.DataTransferObjects.IntermediaryDTOs;
 
     public interface IEmployeeRepository
     {
@@ -17,5 +18,7 @@
         Task UpdateEmployee(DbEmployee dbEmployee);
 
         Task DeleteEmployee(DbEmployee dbEmployee);
+
+        Task<IEnumerable<DbEmployeePlan>> GetEmployeePlans(IEnumerable<string> employeeIds);
     }
 }
