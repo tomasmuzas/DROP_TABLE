@@ -106,12 +106,28 @@ namespace BackendApartmentReservation.Trips
             return newTrip;
         }
 
-        public async Task<IEnumerable<DbTrip>> GetAllTripsOfEmployee(string employeeId)
+        public async Task<IEnumerable<DbTrip>> GetAllOrganizedTripsOfEmployee(string employeeId)
         {
             return await _db.Trips
                 .Where(t => t.TripCreator.ExternalEmployeeId == employeeId)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<DbTrip>> GetAllParticipatingTripsOfEmployee(string employeeId)
+        {
+            var groups = await _db.DbEmployeeGroup
+                .Include(eg => eg.DbEmployee)
+                .Include(eg => eg.DbGroup)
+                .Where(eg => eg.DbEmployee.ExternalEmployeeId == employeeId)
+                .Select(eg => eg.DbGroup)
+                .ToListAsync();
+
+            return await _db.Trips
+                .Where(t => t.Groups
+                    .Any(g => groups.Contains(g)))
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<DbTrip>> GetAllTrips()
         {
             return await _db.Trips
