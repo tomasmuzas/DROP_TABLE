@@ -29,16 +29,16 @@
         [HttpGet]
         [Route("mergeCheck")]
         [Authorize("EmployeeOnly")]
-        public async Task<IActionResult> CheckIfMergeTripPossible([FromBody] string firstTripId,
-            [FromBody] string secondTripId)
+        public async Task<IActionResult> CheckIfMergeTripPossible([FromQuery] string firstId,
+            [FromQuery] string secondId)
         {
-            return Ok(await _tripManager.IsPossibleToMergeTrips(firstTripId, secondTripId));
+            return Ok(await _tripManager.IsPossibleToMergeTrips(firstId, secondId));
         }
 
         [HttpGet]
         [Route("mergeableTrips")]
         [Authorize("EmployeeOnly")]
-        public async Task<IActionResult> ReturnAllMergeableTrips([FromBody] string firstTripId)
+        public async Task<IActionResult> ReturnAllMergeableTrips([FromQuery] string firstTripId)
         {
             return Ok(await _tripManager.GetAllMergeableTrips(firstTripId));
         }
