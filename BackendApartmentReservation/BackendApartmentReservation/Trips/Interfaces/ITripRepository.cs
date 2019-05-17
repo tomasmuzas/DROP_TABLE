@@ -13,6 +13,8 @@
 
         Task<DbTrip> CreateTrip(CreateTripRequest tripRequest, string managerId);
 
-        Task<IEnumerable<DbTrip>> GetAllTrips(string employeeId);
+        Task<IEnumerable<DbTrip>> GetAllTripsOfEmployee(string employeeId);
+
+        Task<IEnumerable<DbTrip>> GetAllTrips();
     }
 }

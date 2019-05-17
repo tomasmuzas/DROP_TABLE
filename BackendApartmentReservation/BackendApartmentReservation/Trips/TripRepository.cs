@@ -106,10 +106,15 @@ namespace BackendApartmentReservation.Trips
             return newTrip;
         }
 
-        public async Task<IEnumerable<DbTrip>> GetAllTrips(string employeeId)
+        public async Task<IEnumerable<DbTrip>> GetAllTripsOfEmployee(string employeeId)
         {
             return await _db.Trips
                 .Where(t => t.TripCreator.ExternalEmployeeId == employeeId)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<DbTrip>> GetAllTrips()
+        {
+            return await _db.Trips
                 .ToListAsync();
         }
     }

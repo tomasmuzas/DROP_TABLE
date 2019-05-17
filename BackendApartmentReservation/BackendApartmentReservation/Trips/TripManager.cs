@@ -1,4 +1,9 @@
-﻿namespace BackendApartmentReservation.Trips
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BackendApartmentReservation.Infrastructure.Exceptions;
+
+namespace BackendApartmentReservation.Trips
 {
     using System.Threading.Tasks;
     using Checklists.Interfaces;
@@ -41,6 +46,36 @@
             {
                 TripId = trip.ExternalTripId
             };
+        }
+
+        public async Task<bool> IsPossibleToMergeTrips(string firstTripId, string secondTripId)
+        {
+            var firstTrip = await _tripRepository.GetTrip(firstTripId);
+            var secondTrip = await _tripRepository.GetTrip(secondTripId);
+            if (firstTrip == null || secondTrip == null)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripNotFound);
+            }
+
+            var timeSpanDays = (firstTrip.DepartureDate - secondTrip.DepartureDate).TotalDays;
+            return timeSpanDays <= 1 && firstTrip.DestinationOffice.ExternalOfficeId.Equals(secondTrip.DestinationOffice.ExternalOfficeId);
+        }
+
+        public async Task<IEnumerable<string>> GetAllMergeableTrips(string tripId)
+        {
+
+            var trip = await _tripRepository.GetTrip(tripId);
+
+            if (trip == null)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripNotFound);
+            }
+
+            var allTrips = await _tripRepository.GetAllTrips();
+
+            var mergeableTripsIds = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result).Select(t => t.ExternalTripId);
+
+            return mergeableTripsIds;
         }
     }
 }
