@@ -10,6 +10,6 @@ namespace BackendApartmentReservation.Trips.Interfaces
     {
         Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId);
         Task<bool> IsPossibleToMergeTrips(string firstTripId, string secondTripId);
-        Task<List<string>> GetAllMergeableTrips(string tripId);
+        Task<IEnumerable<string>> GetAllMergeableTrips(string tripId);
     }
 }
