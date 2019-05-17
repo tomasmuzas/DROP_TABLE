@@ -27,5 +27,13 @@
         Task DeleteCarRent(string employeeId, string tripId);
 
         Task<ChecklistInformationResponse> GetFullChecklistInformation(string employeeId, string tripId);
+
+        Task AddHotelReservationForEmployee(string employeeId, string tripId);
+
+        Task UpdateHotelReservationForEmployee(string employeeId, string tripId, HotelReservationRequest info);
+
+        Task<HotelReservationInfo> GetHotelReservationInfo(string employeeId, string tripId);
+
+        Task DeleteHotelReservation(string employeeId, string tripId);
     }
 }

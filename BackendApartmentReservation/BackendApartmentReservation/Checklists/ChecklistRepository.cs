@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using BackendApartmentReservation.Database.Entities.Reservations;
     using Database;
     using Database.Entities;
     using Database.Entities.Amenities;
@@ -73,6 +74,19 @@
                 .Select(c => c.Car)
                 .Include(c => c.CarReservation)
                 .SingleOrDefaultAsync();
+        }
+
+        public async Task<DbHotelReservation> GetChecklistFullHotelReservation(string employeeId, string tripId)
+        {
+            var livingPlace = await _db.Checklists
+                .Include(c => c.Employee)
+                .Include(c => c.Trip)
+                .Where(c => c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId)
+                .Select(c => c.LivingPlace)
+                .Include(c => c.HotelReservation)
+                .SingleOrDefaultAsync();
+
+            return livingPlace.HotelReservation;
         }
     }
 }

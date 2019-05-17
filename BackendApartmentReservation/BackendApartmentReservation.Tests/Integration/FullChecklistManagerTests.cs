@@ -4,6 +4,7 @@ using BackendApartmentReservation.Checklists.Cars.Interfaces;
 namespace BackendApartmentReservation.Tests.Integration
 {
     using System.Threading.Tasks;
+    using Checklists.Hotels.Interfaces;
     using Checklists;
     using Checklists.Flights.Interfaces;
     using Database.Entities;
@@ -24,6 +25,8 @@ namespace BackendApartmentReservation.Tests.Integration
                 var tripRepository = A.Fake<ITripRepository>(o => o.Strict());
                 var flightRepository = A.Fake<IFlightRepository>(o => o.Strict());
                 var carRentRepository = A.Fake<ICarRentRepository>(o => o.Strict());
+                var livingPlaceRepository = A.Fake<ILivingPlaceRepository>(o => o.Strict());
+                var hotelRepository = A.Fake <IHotelRepository>(o => o.Strict());
                 var checklistRepository = new ChecklistRepository(dbContext);
 
                 var checklistManager = new ChecklistManager(
@@ -32,6 +35,8 @@ namespace BackendApartmentReservation.Tests.Integration
                     tripRepository,
                     flightRepository,
                     carRentRepository,
+                    livingPlaceRepository,
+                    hotelRepository,
                     new NullLogger<ChecklistManager>());
 
                 var employee = new DbEmployee

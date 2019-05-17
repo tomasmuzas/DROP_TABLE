@@ -213,5 +213,46 @@ namespace BackendApartmentReservation.Tests.Repositories
                 Assert.NotNull(carRent.CarReservation);
             }
         }
+
+        [Fact]
+        public async Task GetChecklistFullHotelReservation_HasAllData()
+        {
+            using (var dbContext = GetNewDatabaseContext())
+            {
+                var checklist = new DbEmployeeAmenitiesChecklist
+                {
+                    Id = 1,
+                    Flight = new DbFlightAmenity
+                    {
+                        FlightReservation = new DbFlightReservation()
+                    },
+                    Car = new DbCarRentAmenity
+                    {
+                        CarReservation = new DbCarReservation()
+                    },
+                    LivingPlace = new DbLivingPlaceAmenity
+                    {
+                        HotelReservation = new DbHotelReservation()
+                    },
+                    Employee = new DbEmployee
+                    {
+                        ExternalEmployeeId = "ExternalEmployeeId"
+                    },
+                    Trip = new DbTrip
+                    {
+                        ExternalTripId = "ExternalTripId"
+                    }
+                };
+
+                dbContext.Checklists.Add(checklist);
+                await dbContext.SaveChangesAsync();
+
+                var repository = new ChecklistRepository(dbContext);
+
+                var hotelReservation = await repository.GetChecklistFullHotelReservation("ExternalEmployeeId", "ExternalTripId");
+
+                Assert.NotNull(hotelReservation);
+            }
+        }
     }
 }

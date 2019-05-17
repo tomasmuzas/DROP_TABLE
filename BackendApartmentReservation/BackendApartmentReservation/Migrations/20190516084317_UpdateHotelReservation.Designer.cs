@@ -4,14 +4,16 @@ using BackendApartmentReservation.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendApartmentReservation.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190516084317_UpdateHotelReservation")]
+    partial class UpdateHotelReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -304,13 +306,9 @@ namespace BackendApartmentReservation.Migrations
 
                     b.Property<DateTime>("ReturnDate");
 
-                    b.Property<int?>("TripCreatorId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DestinationOfficeId");
-
-                    b.HasIndex("TripCreatorId");
 
                     b.ToTable("Trips");
                 });
@@ -496,10 +494,6 @@ namespace BackendApartmentReservation.Migrations
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbOffice", "DestinationOffice")
                         .WithMany()
                         .HasForeignKey("DestinationOfficeId");
-
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbEmployee", "TripCreator")
-                        .WithMany()
-                        .HasForeignKey("TripCreatorId");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Database.Entities;
+    using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Responses;
     using Interfaces;
 
@@ -48,6 +49,16 @@
                 FirstName = employee.FirstName,
                 LastName = employee.LastName
             };
+        }
+
+        public async Task<IEnumerable<EmployeePlanInfo>> GetEmployeePlans(IEnumerable<string> employeeIds)
+        {
+            var employeePlans = await _employeeRepository.GetEmployeePlans(employeeIds);
+            return employeePlans.Select(p => new EmployeePlanInfo
+            {
+                Start = p.StartDate.DateTime,
+                End = p.EndDate.DateTime
+            });
         }
     }
 }
