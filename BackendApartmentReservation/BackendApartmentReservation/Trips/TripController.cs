@@ -25,5 +25,22 @@
             var employeeId = GetEmployeeId();
             return Ok(await _tripManager.CreateBasicTrip(tripRequest, employeeId));
         }
+
+        [HttpGet]
+        [Route("mergeCheck")]
+        [Authorize("EmployeeOnly")]
+        public async Task<IActionResult> CheckIfMergeTripPossible([FromBody] string firstTripId,
+            [FromBody] string secondTripId)
+        {
+            return Ok(await _tripManager.IsPossibleToMergeTrips(firstTripId, secondTripId));
+        }
+
+        [HttpGet]
+        [Route("mergeableTrips")]
+        [Authorize("EmployeeOnly")]
+        public async Task<IActionResult> ReturnAllMergeableTrips([FromBody] string firstTripId)
+        {
+            return Ok(await _tripManager.GetAllMergeableTrips(firstTripId));
+        }
     }
 }
