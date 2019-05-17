@@ -7,6 +7,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Linq;
+    using BackendApartmentReservation.Infrastructure.Exceptions;
 
     public class ApartmentRepository : IApartmentRepository
     {
@@ -27,16 +28,21 @@
             var availableRooms = new List<DbApartmentRoom>();
             foreach (DbApartmentRoom room in _db.ApartmentRooms)
             {
-                var isAvailable = _db.DbRoomReservations
-                    .Where(e => e.Room.Id == room.Id)
-                    .All(e => e.DateFrom.Date > dateTo.Date || e.DateTo.Date < dateFrom.Date);
+                var isAvailable = !_db.DbRoomReservations
+                    .Where(r => r.Room.Id == room.Id)
+                    .Any(r => Math.Max(dateFrom.Date.Ticks, r.DateFrom.Date.Ticks) <=
+                    Math.Min(dateTo.Date.Ticks, r.DateTo.Date.Ticks));
                 if (isAvailable)
+                {
                     availableRooms.Add(room);
+                }
             }
 
             roomReservation.Room = availableRooms.FirstOrDefault();
             if (roomReservation.Room == null)
-                throw new ArgumentNullException();
+            {
+                throw new ErrorCodeException(ErrorCodes.NoMoreApartmentRoomsLeft);
+            }
 
             await _db.DbRoomReservations.AddAsync(roomReservation);
             await _db.SaveChangesAsync();
