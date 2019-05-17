@@ -49,9 +49,20 @@
             };
         }
 
-        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation(string employeeId)
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllOrganizedTripsInformation(string employeeId)
         {
-            var trips = await _tripRepository.GetAllTripsOfEmployee(employeeId);
+            var trips = await _tripRepository.GetAllOrganizedTripsOfEmployee(employeeId);
+            return trips.Select(t => new BasicTripInformationResponse
+            {
+                StartTime = t.DepartureDate,
+                EndTime = t.ReturnDate,
+                TripId = t.ExternalTripId
+            });
+        }
+
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllParticipatingTripsInformation(string employeeId)
+        {
+            var trips = await _tripRepository.GetAllParticipatingTripsOfEmployee(employeeId);
             return trips.Select(t => new BasicTripInformationResponse
             {
                 StartTime = t.DepartureDate,

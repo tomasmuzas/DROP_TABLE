@@ -29,10 +29,19 @@ namespace BackendApartmentReservation.Trips
 
         [HttpGet]
         [Authorize("EmployeeOnly")]
-        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation()
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllOrganizedTripsInformation()
         {
             var employeeId = GetEmployeeId();
-            return await _tripInformationManager.GetAllTripsInformation(employeeId);
+            return await _tripInformationManager.GetAllOrganizedTripsInformation(employeeId);
+        }
+
+        [HttpGet]
+        [Route("participating")]
+        [Authorize("EmployeeOnly")]
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllParticipatingTripsInformation()
+        {
+            var employeeId = GetEmployeeId();
+            return await _tripInformationManager.GetAllParticipatingTripsInformation(employeeId);
         }
     }
 }

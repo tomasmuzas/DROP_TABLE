@@ -13,7 +13,9 @@
 
         Task<DbTrip> CreateTrip(CreateTripRequest tripRequest, string managerId);
 
-        Task<IEnumerable<DbTrip>> GetAllTripsOfEmployee(string employeeId);
+        Task<IEnumerable<DbTrip>> GetAllOrganizedTripsOfEmployee(string employeeId);
+
+        Task<IEnumerable<DbTrip>> GetAllParticipatingTripsOfEmployee(string employeeId);
 
         Task<IEnumerable<DbTrip>> GetAllTrips();
     }
