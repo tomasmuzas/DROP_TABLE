@@ -7,8 +7,8 @@
     {
         Task<DbLivingPlaceAmenity> CreateEmptyLivingPlaceAmenity();
 
-//        Task<DbApartmentAmenity> CreateApartmentAmenity(string address);
-//
-//        Task<DbHotelAmenity> CreateHotelAmenity(string address);
+        //Task<DbLivingPlaceAmenity> CreateApartmentAmenity(string address);
+
+        Task<DbLivingPlaceAmenity> CreateHotelLivingPlaceAmenity(int hotelReservationId);
     }
 }

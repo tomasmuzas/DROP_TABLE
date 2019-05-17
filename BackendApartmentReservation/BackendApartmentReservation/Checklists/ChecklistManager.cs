@@ -5,6 +5,7 @@ namespace BackendApartmentReservation.Checklists
 {
     using System;
     using System.Threading.Tasks;
+    using Hotels.Interfaces;
     using Database.Entities;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
@@ -20,9 +21,11 @@ namespace BackendApartmentReservation.Checklists
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ITripRepository _tripRepository;
         private readonly IChecklistRepository _checklistRepository;
+        private readonly ILivingPlaceRepository _livingPlaceRepository;
 
         private readonly IFlightRepository _flightRepository;
         private readonly ICarRentRepository _carRentRepository;
+        private readonly IHotelRepository _hotelRepository;
 
         private readonly ILogger<ChecklistManager> _logger;
 
@@ -32,14 +35,18 @@ namespace BackendApartmentReservation.Checklists
             ITripRepository tripRepository,
             IFlightRepository flightRepository,
             ICarRentRepository carRentRepository,
+            ILivingPlaceRepository livingPlaceRepository,
+            IHotelRepository hotelRepository,
             ILogger<ChecklistManager> logger)
         {
             _employeeRepository = employeeRepository;
             _tripRepository = tripRepository;
             _checklistRepository = checklistRepository;
+            _livingPlaceRepository = livingPlaceRepository;
 
             _flightRepository = flightRepository;
             _carRentRepository = carRentRepository;
+            _hotelRepository = hotelRepository;
 
             _logger = logger;
         }
@@ -208,6 +215,67 @@ namespace BackendApartmentReservation.Checklists
 
             await _carRentRepository.DeleteCarRent(carRent);
             _logger.LogInformation($"Deleted car rent for the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task AddHotelReservationForEmployee(string employeeId, string tripId)
+        {
+            var checklist = await _checklistRepository.GetFullChecklist(employeeId, tripId);
+            if (checklist.LivingPlace != null)
+            {
+                _logger.LogError($"Checklist for employee {employeeId} and trip {tripId} already has a living place");
+                throw new ErrorCodeException(ErrorCodes.ChecklistLivingPlaceAlreadyExists);
+            }
+
+            var hotelReservation = await _hotelRepository.CreateEmptyHotelReservation();
+            var livingPlace = await _livingPlaceRepository.CreateHotelLivingPlaceAmenity(hotelReservation.Id);
+            checklist.LivingPlace = livingPlace;
+
+            await _checklistRepository.UpdateChecklist(checklist);
+            _logger.LogInformation($"Added empty hotel reservation as living place to the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task DeleteHotelReservation(string employeeId, string tripId)
+        {
+            var checklist = await _checklistRepository.GetFullChecklist(employeeId, tripId);
+            var hotelReservation = checklist.LivingPlace.HotelReservation;
+
+            checklist.LivingPlace = null;
+            await _checklistRepository.UpdateChecklist(checklist);
+
+            await _hotelRepository.DeleteHotelReservation(hotelReservation);
+            _logger.LogInformation($"Deleted hotel reservation as living place for the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task<HotelReservationInfo> GetHotelReservationInfo(string employeeId, string tripId)
+        {
+            var hotelReservation = await _checklistRepository.GetChecklistFullHotelReservation(employeeId, tripId);
+
+            var hotelReservationInfo = new HotelReservationInfo();
+
+            if (hotelReservation == null)
+            {
+                hotelReservationInfo.Required = false;
+                return hotelReservationInfo;
+            }
+
+            hotelReservationInfo.Required = true;
+            hotelReservationInfo.HotelName = hotelReservation.HotelName;
+            hotelReservationInfo.DateFrom = hotelReservation.DateFrom;
+            hotelReservationInfo.DateTo = hotelReservation.DateTo;
+
+            return hotelReservationInfo;
+        }
+
+        public async Task UpdateHotelReservationForEmployee(string employeeId, string tripId, HotelReservationRequest info)
+        {
+            var hotelReservation = await _checklistRepository.GetChecklistFullHotelReservation(employeeId, tripId);
+
+            hotelReservation.HotelName = info.HotelName;
+            hotelReservation.DateTo = info.DateTo;
+            hotelReservation.DateFrom = info.DateFrom;
+
+            await _hotelRepository.UpdateHotelReservation(hotelReservation);
+            _logger.LogInformation($"Updated hotel reservation information for the checklist for employee {employeeId} and trip {tripId}");
         }
     }
 }

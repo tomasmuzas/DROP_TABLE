@@ -1,6 +1,7 @@
 ﻿namespace BackendApartmentReservation.Checklists.Interfaces
 {
     using System.Threading.Tasks;
+    using Database.Entities.Reservations;
     using Database.Entities;
     using Database.Entities.Amenities;
 
@@ -17,5 +18,7 @@
         Task<DbFlightAmenity> GetChecklistFullFlight(string employeeId, string tripId);
 
         Task<DbCarRentAmenity> GetChecklistFullCarRent(string employeeId, string tripId);
+
+        Task<DbHotelReservation> GetChecklistFullHotelReservation(string employeeId, string tripId);
     }
 }

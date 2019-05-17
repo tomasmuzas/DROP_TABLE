@@ -90,5 +90,36 @@ namespace BackendApartmentReservation.Trips
         {
             await _checklistManager.DeleteCarRent(employeeId, tripId);
         }
+
+        [HttpGet]
+        [Route("hotel")]
+        public async Task<HotelReservationInfo> GetHotelReservationInfo(string tripId, string employeeId)
+        {
+            return await _checklistManager.GetHotelReservationInfo(employeeId, tripId);
+        }
+
+        [HttpPost]
+        [Route("hotel")]
+        public async Task AddHotelReservation(string tripId, string employeeId)
+        {
+            await _checklistManager.AddHotelReservationForEmployee(employeeId, tripId);
+        }
+
+        [HttpPut]
+        [Route("hotel")]
+        public async Task UpdateHotelReservation(
+            string tripId,
+            string employeeId,
+            [FromBody] HotelReservationRequest info)
+        {
+            await _checklistManager.UpdateHotelReservationForEmployee(employeeId, tripId, info);
+        }
+
+        [HttpDelete]
+        [Route("hotel")]
+        public async Task DeleteHotelReservationt(string tripId, string employeeId)
+        {
+            await _checklistManager.DeleteHotelReservation(employeeId, tripId);
+        }
     }
 }
