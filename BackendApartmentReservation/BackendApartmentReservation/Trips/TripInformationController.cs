@@ -6,6 +6,7 @@ namespace BackendApartmentReservation.Trips
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Responses;
     using Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -27,9 +28,11 @@ namespace BackendApartmentReservation.Trips
         }
 
         [HttpGet]
+        [Authorize("EmployeeOnly")]
         public async Task<IEnumerable<BasicTripInformationResponse>> GetAllTripsInformation()
         {
-            return await _tripInformationManager.GetAllTripsInformation();
+            var employeeId = GetEmployeeId();
+            return await _tripInformationManager.GetAllTripsInformation(employeeId);
         }
     }
 }
