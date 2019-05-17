@@ -595,5 +595,166 @@ namespace BackendApartmentReservation.Tests.Managers
             callToDeleteCarRent.MustHaveHappenedOnceExactly();
         }
 
+        [Fact]
+        public async Task AddHotelReservationForEmployee_CreatesHotelReservation()
+        {
+            var employee = new DbEmployee
+            {
+                ExternalEmployeeId = "ExternalEmployeeId"
+            };
+
+            var trip = new DbTrip
+            {
+                ExternalTripId = "ExternalTripId"
+            };
+
+            var getChecklistCall = A.CallTo(() =>
+                _checklistRepository.GetFullChecklist(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getChecklistCall.Returns(Task.FromResult(new DbEmployeeAmenitiesChecklist
+            {
+                LivingPlace = null
+            }));
+
+            var callToCreateHotelReservation = A.CallTo(() => _hotelRepository.CreateEmptyHotelReservation());
+            var reservation = await Task.FromResult(new DbHotelReservation());
+
+            var callToCreateLivingPlace = A.CallTo(() => _livingPlaceRepository.CreateHotelLivingPlaceAmenity(reservation.Id));
+            callToCreateLivingPlace.Returns(Task.FromResult(new DbLivingPlaceAmenity()
+            {
+                HotelReservation = new DbHotelReservation()
+            }));
+
+            var callToUpdateChecklist =
+                A.CallTo(() => _checklistRepository.UpdateChecklist(A<DbEmployeeAmenitiesChecklist>._));
+
+            callToUpdateChecklist.Returns(Task.CompletedTask);
+
+            await _manager.AddHotelReservationForEmployee(employee.ExternalEmployeeId, trip.ExternalTripId);
+
+            getChecklistCall.MustHaveHappenedOnceExactly();
+            callToCreateHotelReservation.MustHaveHappenedOnceExactly();
+            callToCreateLivingPlace.MustHaveHappenedOnceExactly();
+            callToUpdateChecklist.MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task AddHotelReservationForEmployee_ThrowsIfLivingPlaceExists()
+        {
+            var employee = new DbEmployee
+            {
+                ExternalEmployeeId = "ExternalEmployeeId"
+            };
+
+            var trip = new DbTrip
+            {
+                ExternalTripId = "ExternalTripId"
+            };
+
+            var getChecklistCall = A.CallTo(() =>
+                _checklistRepository.GetFullChecklist(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getChecklistCall.Returns(Task.FromResult(new DbEmployeeAmenitiesChecklist
+            {
+                LivingPlace = new DbLivingPlaceAmenity()
+            }));
+
+            var reservation = new DbHotelReservation
+            {
+                Id = 1
+            };
+
+            var exception = await Assert.ThrowsAsync<ErrorCodeException>(async () =>
+            {
+                await _manager.AddHotelReservationForEmployee(
+                    employee.ExternalEmployeeId,
+                    trip.ExternalTripId);
+            });
+
+            Assert.Equal(ErrorCodes.ChecklistLivingPlaceAlreadyExists, exception.ErrorCode);
+
+            getChecklistCall.MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task UpdateHotelReservationForEmployee_UpdatesHotelReservation()
+        {
+            var employee = new DbEmployee
+            {
+                ExternalEmployeeId = "ExternalEmployeeId"
+            };
+
+            var trip = new DbTrip
+            {
+                ExternalTripId = "ExternalTripId"
+            };
+
+            var getHotelReservationCall = A.CallTo(() =>
+                _checklistRepository.GetChecklistFullHotelReservation(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getHotelReservationCall.Returns(Task.FromResult(new DbHotelReservation()));
+
+            var hotelReservationInfo = new HotelReservationRequest()
+            {
+                HotelName = "Hotel",
+                DateFrom = new DateTime(),
+                DateTo = new DateTime()
+            };
+
+            var callToUpdateHotelReservation = A.CallTo(() => _hotelRepository.UpdateHotelReservation(A<DbHotelReservation>.That.Matches(c =>
+                c.HotelName == hotelReservationInfo.HotelName
+                && c.DateFrom != null
+                && c.DateTo != null)));
+
+            callToUpdateHotelReservation.Returns(Task.CompletedTask);
+
+            await _manager.UpdateHotelReservationForEmployee(employee.ExternalEmployeeId, trip.ExternalTripId, hotelReservationInfo);
+
+            getHotelReservationCall.MustHaveHappenedOnceExactly();
+            callToUpdateHotelReservation.MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task DeleteHotelReservationForEmployee_DeletesHotelReservation()
+        {
+            var employee = new DbEmployee
+            {
+                ExternalEmployeeId = "ExternalEmployeeId"
+            };
+
+            var trip = new DbTrip
+            {
+                ExternalTripId = "ExternalTripId"
+            };
+
+            var getChecklistCall = A.CallTo(() =>
+                _checklistRepository.GetFullChecklist(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getChecklistCall.Returns(Task.FromResult(new DbEmployeeAmenitiesChecklist
+            {
+                LivingPlace = new DbLivingPlaceAmenity()
+                {
+                    HotelReservation = new DbHotelReservation
+                    {
+                        Id = 22
+                    }
+                }
+            }));
+
+            var callToUpdateChecklist = A.CallTo(() => _checklistRepository.UpdateChecklist(A<DbEmployeeAmenitiesChecklist>.That.Matches(c =>
+                c.LivingPlace == null)));
+
+            callToUpdateChecklist.Returns(Task.CompletedTask);
+
+            var callToDeleteHotelReservation = A.CallTo(() => _hotelRepository.DeleteHotelReservation(A<DbHotelReservation>._));
+
+            callToDeleteHotelReservation.Returns(Task.CompletedTask);
+
+            await _manager.DeleteHotelReservation(employee.ExternalEmployeeId, trip.ExternalTripId);
+
+            getChecklistCall.MustHaveHappenedOnceExactly();
+            callToUpdateChecklist.MustHaveHappenedOnceExactly();
+            callToDeleteHotelReservation.MustHaveHappenedOnceExactly();
+        }
     }
 }
