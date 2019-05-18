@@ -13,9 +13,9 @@
 
         public DbOffice DestinationOffice { get; set; }
 
-        public DateTime DepartureDate { get; set; }
+        public DateTimeOffset DepartureDate { get; set; }
 
-        public DateTime ReturnDate { get; set; }
+        public DateTimeOffset ReturnDate { get; set; }
 
         public List<DbGroup> Groups { get; set; }
 

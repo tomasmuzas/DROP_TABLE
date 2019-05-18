@@ -23,8 +23,8 @@
             var trip = new DbTrip
             {
                 ExternalTripId = tripId,
-                DepartureDate = new DateTime(2019, 1, 1),
-                ReturnDate = new DateTime(2019, 1, 1),
+                DepartureDate = new DateTimeOffset(new DateTime(2019, 1, 1)),
+                ReturnDate = new DateTimeOffset(new DateTime(2019, 1, 1)),
                 DestinationOffice = new DbOffice
                 {
                     ExternalOfficeId = "ExternalOfficeId",

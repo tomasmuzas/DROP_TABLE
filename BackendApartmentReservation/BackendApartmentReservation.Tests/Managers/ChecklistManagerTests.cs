@@ -248,7 +248,7 @@ namespace BackendApartmentReservation.Tests.Managers
                 AirportAddress = "new airport address",
                 Company = "new company",
                 FlightNumber = "new flight number",
-                FlightTime = new DateTime()
+                FlightTime = new DateTimeOffset()
             };
 
             var callToUpdateFlight = A.CallTo(() => _flightRepository.UpdateFlight(A<DbFlightAmenity>.That.Matches(f => 
@@ -288,7 +288,7 @@ namespace BackendApartmentReservation.Tests.Managers
                     AirportAddress = "new airport address",
                     Company = "new company",
                     FlightNumber = "new flight number",
-                    FlightTime = new DateTime()
+                    FlightTime = new DateTimeOffset()
                 }
             }));
 
@@ -367,7 +367,7 @@ namespace BackendApartmentReservation.Tests.Managers
                     AirportAddress = "new airport address",
                     Company = "new company",
                     FlightNumber = "new flight number",
-                    FlightTime = new DateTime()
+                    FlightTime = new DateTimeOffset()
                 }
             }));
 
@@ -380,8 +380,8 @@ namespace BackendApartmentReservation.Tests.Managers
                 {
                     CarAddress = "new car address",
                     CarNumber = "CAR123",
-                    RentStartTime = new DateTime(),
-                    RentEndTime= new DateTime()
+                    RentStartTime = new DateTimeOffset(),
+                    RentEndTime= new DateTimeOffset()
                 }
             }));
 
@@ -499,8 +499,8 @@ namespace BackendApartmentReservation.Tests.Managers
             {
                 CarNumber = "12345",
                 CarAddress = "Vilnius",
-                RentStartTime = new DateTime(),
-                RentEndTime = new DateTime()
+                RentStartTime = new DateTimeOffset(),
+                RentEndTime = new DateTimeOffset()
             };
 
             var callToUpdateCarRent = A.CallTo(() => _carRentRepository.UpdateCarRent(A<DbCarRentAmenity>.That.Matches(c =>
@@ -539,8 +539,8 @@ namespace BackendApartmentReservation.Tests.Managers
                 {
                     CarNumber = "12345",
                     CarAddress = "Vilnius",
-                    RentStartTime = new DateTime(),
-                    RentEndTime = new DateTime()
+                    RentStartTime = new DateTimeOffset(),
+                    RentEndTime = new DateTimeOffset()
                 }
             }));
 
@@ -697,8 +697,8 @@ namespace BackendApartmentReservation.Tests.Managers
             var hotelReservationInfo = new HotelReservationRequest()
             {
                 HotelName = "Hotel",
-                DateFrom = new DateTime(),
-                DateTo = new DateTime()
+                DateFrom = new DateTimeOffset(),
+                DateTo = new DateTimeOffset()
             };
 
             var callToUpdateHotelReservation = A.CallTo(() => _hotelRepository.UpdateHotelReservation(A<DbHotelReservation>.That.Matches(c =>
