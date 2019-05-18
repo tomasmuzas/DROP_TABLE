@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import * as actionCreators from '../../../actions';
+import { bindActionCreators } from 'redux';
 import Switch from '@material-ui/core/Switch';
 
 
@@ -11,9 +14,10 @@ class PageHeader extends React.Component {
             checked: true,
             collapsedButton: 'collapsed',
             collapsedAria: 'false',
-            collapseDiv: ''
+            collapseDiv: '',
         }
         this.handleCollapsed = this.handleCollapsed.bind(this);
+        this.logoutClick = this.logoutClick.bind(this);
     }
 
     handleCollapsed() {
@@ -35,8 +39,16 @@ class PageHeader extends React.Component {
         }
     };
 
+    logoutClick(){
+        this.props.logoutUser();
+        this.setState({
+
+        });
+    }
+
     render() {
         const { t, i18n } = this.props;
+        const isLoggedIn = sessionStorage.getItem("token") === null? false: true;
         return (
             <div>
                 <nav className="navbar navbar-collapse navbar-expand-lg navbar-dark bg-dark">
@@ -51,23 +63,23 @@ class PageHeader extends React.Component {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className={" navbar-collapse collapse" + this.state.collapseDiv} id="navbarColor01">
-                        <ul className="pr-2 navbar-nav mr-auto">
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/apartments" name={t("Apartments")} /></li>
                         </ul>
-                        <ul className="pr-2 navbar-nav mr-auto">
-                            <li className="nav-item pt-1 robot "> <LinkButton link="/authentication" name={t("Authentication")} /></li>
-                        </ul>
-                        <ul className="pr-2 navbar-nav mr-auto">
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/trips" name={t("Trips")} /></li>
                         </ul>
-                        <ul className="pr-2 navbar-nav mr-auto">
-                            <li className="nav-item pt-1 robot "> <LinkButton link="/users" name={t("Users")} /></li>
-                        </ul>
-                        <ul className="pr-2 navbar-nav mr-auto">
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {isLoggedIn}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/signUp" name={t("SignUp")} /></li>
                         </ul>
-                        <ul className="pr-2 navbar-nav mr-auto">
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {isLoggedIn}>
+                            <li className="nav-item pt-1 robot "> <LinkButton link="/login" name={t("Login")} /></li>
+                        </ul>
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/createTrip" name={t("CreateTrip")} /></li>
+                        </ul>
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
+                            <li className="nav-item pt-1 robot text-white nav-link"> <a className="nav-link text-white" href="#" onClick={this.logoutClick}> {t("Logout")}</a> </li>
                         </ul>
                         <ul className="pr-2 navbar-nav mr-auto">
                             <li className="nav-item pt-1 robot "> <label style={{ color: 'white' }}> LT </label> <Switch
@@ -87,4 +99,8 @@ const LinkButton = (props) => {
     return <Link className={"nav-link text-white"} to={link}>{name}</Link>;
 };
 
-export default withTranslation()(PageHeader);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators(actionCreators, dispatch);
+}
+
+export default withTranslation()(connect(mapDispatchToProps, mapDispatchToProps)(PageHeader));
