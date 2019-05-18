@@ -7,7 +7,6 @@ import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-r
 import { Route, Switch } from 'react-router-dom';
 import reducers from './reducers/index';
 import thunk from 'redux-thunk';
-import AdminDashboardLayout from './components/AdminPanel/AdminDashboardLayout/AdminDashboardLayout';
 import MainLayout from './components/MainPanel/MainLayout/MainLayout';
 import NotFoundPage from './components/Pages/PageNotFound/PageNotFound';
 import LoginPage from './components/Pages/LoginPage/LoginPage';
@@ -38,8 +37,6 @@ const Application = () => (
             <ConnectedRouter history={historyObj} >
             
                 <Switch>
-                    <Route path="/login" component={LoginPage} />
-                    <Route path="/admin" component={AdminDashboardLayout} />
                     <Route exact path="" component={MainLayout}/>
                     <Route path ="*" component={NotFoundPage}/>
                 </Switch>

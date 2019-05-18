@@ -1,4 +1,5 @@
 import React from 'react';
+import i18next from 'i18next';
 
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
@@ -7,7 +8,7 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select'
 import * as actionCreators from '../../../actions';
 import TextField from '@material-ui/core/TextField';
-
+import SimpleReactCalendar from 'simple-react-calendar'
 
 class CreateTrip extends React.Component {
     constructor(props) {
@@ -22,14 +23,14 @@ class CreateTrip extends React.Component {
             selectedOffice: ''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleDepartureDateChange = this.handleDepartureDateChange.bind(this);
-        this.handleReturnDateChange = this.handleReturnDateChange.bind(this);
         this.handleEmployeesChange = this.handleEmployeesChange.bind(this);
         this.handleOfficeChange = this.handleOfficeChange.bind(this);
+        this.handleDateSelect = this.handleDateSelect.bind(this);
     }
 
     componentWillMount() {
         this.props.getAllOffices();
+        this.props.getEmployees();
     }
 
     componentWillReceiveProps(newProps) {
@@ -78,6 +79,7 @@ class CreateTrip extends React.Component {
         this.setState({
             selectedEmployees: employeesIdArray
         })
+        this.props.getPlans(employeesIdArray);
     }
 
     handleOfficeChange(e) {
@@ -86,69 +88,77 @@ class CreateTrip extends React.Component {
         })
     }
 
-    handleDepartureDateChange = date => {
-        this.setState({ departureDate: date.target.value });
-        if (this.state.returnDate !== '' && date.target.value !== '') {
-            this.props.getAvailableEmployees(date.target.value, this.state.departureDate);
-        }
-    };
+    handleDateSelect(e) {
+        this.setState({
+            departureDate: e.start,
+            returnDate: e.end
+        })
+    }
 
-    handleReturnDateChange = date => {
-        this.setState({ returnDate: date.target.value });
-        if (this.state.departureDate !== '' && date.target.value !== '') {
-            this.props.getAvailableEmployees(this.state.departureDate, date.target.value);
+    getErrorMessage() {
+        return (
+            <div className="date_picker-notice">
+                {i18next.t("ErrorDateMessage")}
+            </div>
+        )
+    }
+
+    getCalendar() {
+        if (this.props.plans && this.state.selectedEmployees.length > 0) {
+            return (
+                <SimpleReactCalendar blockClassName="date_picker" activeMonth={new Date()}
+                    NoticeComponent={this.getErrorMessage}
+                    mode="range"
+                    onSelect={this.handleDateSelect}
+                    selected = {{"start": this.state.departureDate, "end": this.state.returnDate}}
+                    disabledIntervals={this.props.plans}
+                    daysOfWeek={[i18next.t("Monday"), i18next.t("Tuesday"), i18next.t("Wednesday"),
+                    i18next.t("Thursday"), i18next.t("Friday"), i18next.t("Saturday"), i18next.t("Sunday")]}
+                />
+            )
         }
-    };
+        else if (this.state.selectedEmployees.length <= 0) {
+            return (
+                <div>
+                    <h5> {i18next.t("SelectEmployees")} </h5>
+                </div>
+            )
+        }
+        else if (!this.props.plans && this.state.selectedEmployees.length > 0) {
+            return (
+                <div>
+                    loading
+                </div>
+            )
+        }
+    }
 
     render() {
-        const { employeesPulled } = this.state;
         const { t } = this.props;
+
         return (
-            <div className={`loginForm text-center jumbotron mx-auto col-12 pb-1 pt-4 row`}>
-                <form className={`form-signin col-6`} onSubmit={this.handleSubmit}>
-                    <div className="row">
-                        <div className="col-lg-6 col-12 pb-3">
-                            <TextField
-                                id="departureDate"
-                                label={t("DepartureDate")}
-                                type="date"
-                                onChange={this.handleDepartureDateChange}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }} />
-                        </div>
-                        <div className="col-lg-6 col-12 pb-3">
-                            <TextField
-                                id="ReturnDate"
-                                label={t("ReturnDate")}
-                                type="date"
-                                onChange={this.handleReturnDateChange}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }} />
-                        </div>
+            <div className={`mx-auto pb-1 pt-4`} >
+                <form className={`row`} onSubmit={this.handleSubmit}>
+                    <div className="mb-2 p-5 col-12 col-lg-6">
+                        <Select
+                            isMulti
+                            options={this.state.employeesOptions}
+                            className="basic-multi- p-4"
+                            placeholder={t("SelectEmployees")}
+                            onChange={this.handleEmployeesChange}
+                            required />
+                        <Select
+                            options={this.state.officesOptions}
+                            className="basic-multi-select p-4"
+                            placeholder={t("SelectOffice")}
+                            onChange={this.handleOfficeChange}
+                            required
+                        />
                     </div>
-                    <div hidden={!employeesPulled}>
-                        <div className="form-group mb-2">
-                            <Select
-                                isMulti
-                                options={this.state.employeesOptions}
-                                className="basic-multi-select"
-                                placeholder="Select employees"
-                                onChange={this.handleEmployeesChange}
-                                required />
-                        </div>
-                        <div className="form-group mb-2">
-                            <Select
-                                options={this.state.officesOptions}
-                                className="basic-multi-select"
-                                placeholder="Select office"
-                                onChange={this.handleOfficeChange}
-                                required
-                            />
-                        </div>
-                        <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("CreateTrip")}</button>
+                    <div className="col-12 col-lg-6" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        {this.getCalendar()}
                     </div>
+                    <button className={`btn btn-lg btn-primary btn-block mx-auto m-5`} style={{ width: '30vh' }} type="submit">{t("CreateTrip")}</button>
                 </form>
             </div>
         );
@@ -163,7 +173,8 @@ const mapStateToProps = (state) => {
     return {
         employees: state.employees,
         offices: state.offices,
-        trips: state.trips
+        trips: state.trips,
+        plans: state.plans
     }
 }
 

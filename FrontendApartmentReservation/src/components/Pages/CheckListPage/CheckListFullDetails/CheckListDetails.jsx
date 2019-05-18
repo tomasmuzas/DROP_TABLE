@@ -22,7 +22,6 @@ class CheckListDetails extends React.Component {
 
     render() {
         const { t } = this.props;
-        console.log(this.props.singleChecklist);
         if (this.props.singleChecklist) {
             return (
                 <div>
