@@ -6,7 +6,7 @@
 
     public interface IApartmentRepository
     {
-        Task<DbRoomReservation> CreateRoomReservation(DbEmployee employee, DateTime dateFrom, DateTime dateTo);
+        Task<DbRoomReservation> CreateRoomReservation(DbEmployee employee, DateTimeOffset dateFrom, DateTimeOffset dateTo);
 
         Task UpdateRoomReservation(DbRoomReservation roomReservation);
 

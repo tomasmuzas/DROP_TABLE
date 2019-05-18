@@ -10,10 +10,10 @@
         public string DestinationOfficeId { get; set; }
 
         [Required]
-        public DateTime DepartureDate { get; set; }
+        public DateTimeOffset DepartureDate { get; set; }
 
         [Required]
-        public DateTime ReturnDate { get; set; }
+        public DateTimeOffset ReturnDate { get; set; }
 
         [Required]
         public List<string> EmployeeIds { get; set; }

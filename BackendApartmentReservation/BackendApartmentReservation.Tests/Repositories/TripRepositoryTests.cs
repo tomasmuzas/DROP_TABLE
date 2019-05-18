@@ -17,8 +17,8 @@
             {
                 var trip = new DbTrip
                 {
-                    DepartureDate = new DateTime(2019,1,1),
-                    ReturnDate = new DateTime(2019,1,1),
+                    DepartureDate = new DateTimeOffset(new DateTime(2019,1,1)),
+                    ReturnDate = new DateTimeOffset(new DateTime(2019,1,1)),
                     ExternalTripId = "ExternalTripId",
                     Id = 1,
                     Groups = new List<DbGroup>(),

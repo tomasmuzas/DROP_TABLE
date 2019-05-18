@@ -18,7 +18,7 @@
             _db = db;
         }
 
-        public async Task<DbRoomReservation> CreateRoomReservation(DbEmployee employee, DateTime dateFrom, DateTime dateTo)
+        public async Task<DbRoomReservation> CreateRoomReservation(DbEmployee employee, DateTimeOffset dateFrom, DateTimeOffset dateTo)
         {
             var roomReservation = new DbRoomReservation();
             roomReservation.Employee = employee;
