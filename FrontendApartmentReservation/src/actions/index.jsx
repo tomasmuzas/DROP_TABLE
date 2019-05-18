@@ -30,6 +30,8 @@ export const getAllApartments = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/apartments`, {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -52,6 +54,8 @@ export const getAllOffices = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/offices`, {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -74,6 +78,8 @@ export const getAllEmployees = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees`, {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -97,6 +103,8 @@ export const getEmployees = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees`, {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -119,6 +127,8 @@ export const getAllTrips = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/tripinfo`, {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -142,6 +152,8 @@ export const getBasicTrip = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/tripinfo/` + tripId + '/basic', {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -165,6 +177,8 @@ export const getPlans = (employeeIds) => (dispatch) => {
         method: "POST",
         body: JSON.stringify(employeeIds),
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -187,6 +201,8 @@ export const getChecklist = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -209,6 +225,8 @@ export const getSingleChecklist = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
         method: "GET",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -238,6 +256,8 @@ export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) =
             airportAddress: flightInfo.airportAddress
         }),
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -260,6 +280,8 @@ export const createFlightInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
         method: "POST",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -282,6 +304,8 @@ export const deleteFlightInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
         method: "DELETE",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -310,6 +334,8 @@ export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
             rentStartTime: carInfo.rentStartTime
         }),
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -332,6 +358,8 @@ export const createCarInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
         method: "POST",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -353,6 +381,8 @@ export const deleteCarInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
         method: "DELETE",
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -375,6 +405,8 @@ export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dis
         method: "POST",
         body: JSON.stringify({ FirstName, LastName, Email, Password, Office }),
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
@@ -394,6 +426,10 @@ export const login = (Email, Password) => (dispatch) => {
     fetch(BACKEND_BASE_URI + "/api/authentication", {
         method: "POST",
         body: JSON.stringify({ Email, Password }),
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
     }).then(response => {
         if (response.status === 200) {
             response.json().then(data => {
@@ -407,12 +443,13 @@ export const login = (Email, Password) => (dispatch) => {
     }).catch((error) => console.warn(error));
 }
 
-
 export const createTrip = (employeeIds, destinationOfficeId, departureDate, returnDate) => (dispatch) => {
     fetch(BACKEND_BASE_URI + "/api/trips", {
         method: "POST",
         body: JSON.stringify({ employeeIds, destinationOfficeId, departureDate, returnDate }),
         headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
