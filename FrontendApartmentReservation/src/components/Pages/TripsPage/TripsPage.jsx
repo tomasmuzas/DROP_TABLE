@@ -5,20 +5,12 @@ import * as actionCreators from '../../../actions';
 import TripCard from './TripCard'
 
 class TripsPage extends React.Component {
-    constructor(props){
-        super(props)
-
-        this.state = {
-            success: false
-        }
-    }
-
     componentWillMount() {
         this.props.getAllTrips();
     }
 
     render() {
-        if (this.props.trips) {
+        if (this.props.trips.length >=1) {
             return (
                 <div>
                     <div>

@@ -57,7 +57,7 @@ class LoginPage extends React.Component {
                             onChange={this.handlePasswordChange} />
                     </div>
 
-                    <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SignUp")}</button>
+                    <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("Login")}</button>
                 </form>
             </div>
         );
