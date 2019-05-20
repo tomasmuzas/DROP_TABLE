@@ -1,4 +1,6 @@
-﻿using BackendApartmentReservation.Infrastructure.Authorization;
+﻿using BackendApartmentReservation.Authentication.AuthorizationRequirements;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
+using BackendApartmentReservation.Infrastructure.Authorization;
 
 namespace BackendApartmentReservation.Trips
 {
@@ -22,13 +24,14 @@ namespace BackendApartmentReservation.Trips
 
         [HttpGet]
         [Route("{tripId}/basic")]
+        [OrganizerOnly]
         public async Task<BasicTripInformationResponse> GetBasicTripInformation(string tripId)
         {
             return await _tripInformationManager.GetBasicTripInformation(tripId);
         }
 
         [HttpGet]
-        [Authorize("EmployeeOnly")]
+        [OrganizerOnly]
         public async Task<IEnumerable<BasicTripInformationResponse>> GetAllOrganizedTripsInformation()
         {
             var employeeId = GetEmployeeId();
@@ -37,7 +40,6 @@ namespace BackendApartmentReservation.Trips
 
         [HttpGet]
         [Route("participating")]
-        [Authorize("EmployeeOnly")]
         public async Task<IEnumerable<BasicTripInformationResponse>> GetAllParticipatingTripsInformation()
         {
             var employeeId = GetEmployeeId();

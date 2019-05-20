@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Trips
+﻿using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
+
+namespace BackendApartmentReservation.Trips
 {
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Requests;
@@ -19,7 +21,7 @@
 
         [HttpPost]
         [Route("trips")]
-        [Authorize("EmployeeOnly")]
+        [OrganizerOnly]
         public async Task<IActionResult> CreateBasicTrip([FromBody] CreateTripRequest tripRequest)
         {
             var employeeId = GetEmployeeId();
@@ -28,7 +30,7 @@
 
         [HttpGet]
         [Route("mergeCheck")]
-        [Authorize("EmployeeOnly")]
+        [OrganizerOnly]
         public async Task<IActionResult> CheckIfMergeTripPossible([FromQuery] string firstId,
             [FromQuery] string secondId)
         {
@@ -37,7 +39,7 @@
 
         [HttpGet]
         [Route("mergeableTrips")]
-        [Authorize("EmployeeOnly")]
+        [OrganizerOnly]
         public async Task<IActionResult> ReturnAllMergeableTrips([FromQuery] string firstTripId)
         {
             return Ok(await _tripManager.GetAllMergeableTrips(firstTripId));

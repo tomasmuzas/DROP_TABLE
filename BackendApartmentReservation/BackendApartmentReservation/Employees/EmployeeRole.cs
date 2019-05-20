@@ -3,6 +3,7 @@
     public enum EmployeeRole
     {
         Regular,
+        Organizer,
         Admin
     }
 }

@@ -43,7 +43,8 @@ namespace BackendApartmentReservation.Authentication
             var token = new JwtSecurityToken(
                 claims: new []
                 {
-                    new Claim(ClaimTypes.Name, authorisation.Employee.ExternalEmployeeId)
+                    new Claim(ClaimTypes.Name, authorisation.Employee.ExternalEmployeeId),
+                    new Claim("Role", authorisation.Employee.Role.ToString())
                 },
                 issuer: _configuration["JwtTokenIssuer"],
                 audience: _configuration["JwtTokenIssuer"],
