@@ -66,6 +66,8 @@ namespace BackendApartmentReservation.IoCContainer
                 .As<IGroupRepository>();
             builder.RegisterType<AuthenticationRepository>()
                 .As<IAuthenticationRepository>();
+            builder.RegisterType<EmployeePlanRepository>()
+                .As<IEmployeePlanRepository>();
         }
     }
 }
