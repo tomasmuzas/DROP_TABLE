@@ -19,18 +19,18 @@ namespace BackendApartmentReservation.Trips
         private readonly ITripRepository _tripRepository;
         private readonly IGroupManager _groupManager;
         private readonly IChecklistManager _checklistManager;
-        private readonly IEmployeePlanRepository _employeePlanRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
         public TripManager(
             ITripRepository tripRepository,
             IGroupManager groupManager,
             IChecklistManager checklistManager,
-            IEmployeePlanRepository employeePlanRepository)
+            IEmployeeRepository employeeRepository)
         {
             _tripRepository = tripRepository;
             _groupManager = groupManager;
             _checklistManager = checklistManager;
-            _employeePlanRepository = employeePlanRepository;
+            _employeeRepository = employeeRepository;
         }
 
         public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId)
@@ -49,7 +49,7 @@ namespace BackendApartmentReservation.Trips
                     employeePlan.StartDate = trip.DepartureDate;
                     employeePlan.EndDate = trip.ReturnDate;
                     employeePlan.Employee = employeeGroup.DbEmployee;
-                    await _employeePlanRepository.CreateEmployeePlan(employeePlan);
+                    await _employeeRepository.CreateEmployeePlan(employeePlan);
                 }
             }
 

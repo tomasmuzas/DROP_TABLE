@@ -20,5 +20,7 @@
         Task DeleteEmployee(DbEmployee dbEmployee);
 
         Task<IEnumerable<DbEmployeePlan>> GetEmployeePlans(IEnumerable<string> employeeIds);
+
+        Task<DbEmployeePlan> CreateEmployeePlan(DbEmployeePlan dbEmployeePlan);
     }
 }
