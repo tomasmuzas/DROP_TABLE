@@ -65,5 +65,12 @@
                 .Where(p => employeeIds.Contains(p.Employee.ExternalEmployeeId))
                 .ToListAsync();
         }
+
+        public async Task<DbEmployeePlan> CreateEmployeePlan(DbEmployeePlan dbEmployeePlan)
+        {
+            await _context.EmployeePlans.AddAsync(dbEmployeePlan);
+            await _context.SaveChangesAsync();
+            return dbEmployeePlan;
+        }
     }
 }
