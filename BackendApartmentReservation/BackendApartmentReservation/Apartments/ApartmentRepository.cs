@@ -61,5 +61,17 @@
             _db.DbRoomReservations.Remove(roomReservation);
             await _db.SaveChangesAsync();
         }
+
+        public async Task<int> GetNumberOfAvailableApartmentsRooms(DateTimeOffset dateFrom, DateTimeOffset dateTo)
+        {
+            var availableRooms = (from room in _db.ApartmentRooms
+                let isAvailable = !_db.DbRoomReservations.Where(r => r.Room.Id == room.Id)
+                    .Any(r => Math.Max(dateFrom.Date.Ticks, r.DateFrom.Date.Ticks) <= Math.Min(dateTo.Date.Ticks, r.DateTo.Date.Ticks))
+                where isAvailable
+                select room).ToList();
+
+            return availableRooms.Count;
+        }
+        
     }
 }

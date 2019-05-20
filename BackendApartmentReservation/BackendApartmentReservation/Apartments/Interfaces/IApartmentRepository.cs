@@ -11,5 +11,7 @@
         Task UpdateRoomReservation(DbRoomReservation roomReservation);
 
         Task DeleteRoomReservation(DbRoomReservation roomReservation);
+
+        Task<int> GetNumberOfAvailableApartmentsRooms(DateTimeOffset dateFrom, DateTimeOffset dateTo);
     }
 }
