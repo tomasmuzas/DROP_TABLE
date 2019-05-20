@@ -6,6 +6,8 @@
     {
         public EmployeeInfo Employee { get; set; }
 
+        public bool HasAcceptedTripConfirmation { get; set; }
+
         public bool IsFlightRequired { get; set; }
 
         public bool IsApartmentRequired { get; set; }
