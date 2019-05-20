@@ -17,6 +17,8 @@
 
         public DateTimeOffset? AcceptedAt { get; set; }
 
+        public DbTrip Trip { get; set; }
+
         [Column(TypeName = "nvarchar(40)")]
         public DateTimeOffset? DeclinedAt { get; set; }
     }
