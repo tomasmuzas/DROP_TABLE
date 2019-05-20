@@ -15,6 +15,8 @@
         // Employees
         public DbSet<DbEmployee> Employees { get; set; }
 
+        //Confirmations
+        public DbSet<DbConfirmation> Confirmations { get; set; }
 
         // Employee groups
         public DbSet<DbGroup> Groups { get; set; }
