@@ -62,9 +62,9 @@ namespace BackendApartmentReservation
                     };
                 });
 
-            services.AddSingleton<IAuthorizationHandler, AdminOnlyHandler>();
-            services.AddSingleton<IAuthorizationHandler, EmployeeOnlyHandler>();
-            services.AddSingleton<IAuthorizationHandler, OrganizerOnlyHandler>();
+            services.AddTransient<IAuthorizationHandler, AdminOnlyHandler>();
+            services.AddTransient<IAuthorizationHandler, OrganizerOnlyHandler>();
+            services.AddTransient<IAuthorizationHandler, EmployeeOnlyHandler>();
 
             var employeeOnlyPolicy = new AuthorizationPolicyBuilder()
                 .AddAuthenticationSchemes("Bearer")
