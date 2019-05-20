@@ -3,6 +3,7 @@ using System.Text;
 using BackendApartmentReservation.Authentication.AuthorizationRequirements;
 using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
 using BackendApartmentReservation.Authentication.AuthorizationRequirements.EmployeeOnly;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -63,11 +64,18 @@ namespace BackendApartmentReservation
 
             services.AddSingleton<IAuthorizationHandler, AdminOnlyHandler>();
             services.AddSingleton<IAuthorizationHandler, EmployeeOnlyHandler>();
+            services.AddSingleton<IAuthorizationHandler, OrganizerOnlyHandler>();
 
             var employeeOnlyPolicy = new AuthorizationPolicyBuilder()
                 .AddAuthenticationSchemes("Bearer")
                 .RequireAuthenticatedUser()
                 .AddRequirements(new EmployeeOnlyRequirement())
+                .Build();
+
+            var organizerOnlyPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes("Bearer")
+                .RequireAuthenticatedUser()
+                .AddRequirements(new OrganizerOnlyRequirement())
                 .Build();
 
             var adminOnlyPolicy = new AuthorizationPolicyBuilder()
@@ -79,6 +87,7 @@ namespace BackendApartmentReservation
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(PolicyNames.EmployeeOnly, employeeOnlyPolicy);
+                options.AddPolicy(PolicyNames.OrganizerOnly, organizerOnlyPolicy);
                 options.AddPolicy(PolicyNames.AdminOnly, adminOnlyPolicy);
             });
 
@@ -88,8 +97,7 @@ namespace BackendApartmentReservation
 
             services.AddMvc(options =>
                 {
-                    // TODO: @tomu. Uncomment when JWT login is implemented
-                    //options.Filters.Add(new AuthorizeFilter(employeeOnlyPolicy));
+                    options.Filters.Add(new AuthorizeFilter(employeeOnlyPolicy));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddMvcOptions(options => options.Filters.Add(new MethodCallLoggingFilter()))

@@ -1,18 +1,19 @@
-﻿using BackendApartmentReservation.Infrastructure.Authorization;
+﻿using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
+using BackendApartmentReservation.Infrastructure.Authorization;
 
 namespace BackendApartmentReservation.Employees
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Authentication.Interfaces;
-    using BackendApartmentReservation.DataContracts.DataTransferObjects.IntermediaryDTOs;
+    using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using BackendApartmentReservation.Offices.Interfaces;
     using Database.Entities;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
     using Infrastructure.Exceptions;
     using Interfaces;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api")]
@@ -35,13 +36,14 @@ namespace BackendApartmentReservation.Employees
 
         [HttpGet]
         [Route("employees")]
+        [OrganizerOnly]
         public async Task<IEnumerable<EmployeeInfo>> GetAllEmployees()
         {
             return await _employeeManager.GetAllEmployees();
         }
 
         [HttpPost]
-        [AllowAnonymous]
+        [AdminOnly] // Comment out when working locally
         [Route("employees")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
@@ -79,6 +81,7 @@ namespace BackendApartmentReservation.Employees
         }
 
         [HttpPost]
+        [OrganizerOnly]
         [Route("employees/plans")]
         public async Task<IEnumerable<EmployeePlanInfo>> GetEmployeePlans(IEnumerable<string> employeeIds)
         {

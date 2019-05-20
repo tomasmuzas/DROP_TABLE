@@ -4,6 +4,8 @@
     {
         public const string EmployeeOnly = "EmployeeOnly";
 
+        public const string OrganizerOnly = "OrganizerOnly";
+
         public const string AdminOnly = "AdminOnly";
     }
 }
