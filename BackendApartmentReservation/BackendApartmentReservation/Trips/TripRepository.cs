@@ -27,6 +27,8 @@ namespace BackendApartmentReservation.Trips
             {
                 return await _db.Trips
                     .Where(t => t.ExternalTripId == tripId)
+                    .Include(t => t.DestinationOffice)
+                    .Include(t => t.Groups)
                     .SingleAsync();
             }
             catch (InvalidOperationException)
@@ -132,6 +134,65 @@ namespace BackendApartmentReservation.Trips
         {
             return await _db.Trips
                 .ToListAsync();
+        }
+
+        public async Task DeleteTrip(string tripId)
+        {
+            var trip = await _db.Trips.Where(t => t.ExternalTripId == tripId).SingleOrDefaultAsync();
+            if (trip == null)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripNotFound);
+            }
+
+            var checklists = await _db.Checklists.Where(c => c.Trip.ExternalTripId == tripId)
+                .Include(c => c.Car)
+                    .ThenInclude(x => x.CarReservation)
+                .Include(c => c.Flight)
+                    .ThenInclude(x => x.FlightReservation)
+                .Include(c => c.LivingPlace)
+                .Include(c => c.LivingPlace.ApartmentRoomReservation)
+                .Include(a => a.LivingPlace.HotelReservation)
+                .ToListAsync();
+
+            foreach (var checklist in checklists)
+            {
+                if (checklist.Car != null)
+                {
+                    _db.CarReservations.Remove(checklist.Car.CarReservation);
+                    _db.CarRentAmenities.Remove(checklist.Car);
+                }
+
+                if (checklist.Flight != null)
+                {
+                    _db.FlightReservations.Remove(checklist.Flight.FlightReservation);
+                    _db.FlightAmenities.Remove(checklist.Flight);
+                }
+
+                if (checklist.LivingPlace != null)
+                {
+                    if (checklist.LivingPlace.ApartmentRoomReservation != null)
+                        _db.DbRoomReservations.Remove(checklist.LivingPlace.ApartmentRoomReservation);
+
+                    if (checklist.LivingPlace.HotelReservation != null)
+                        _db.HotelReservations.Remove(checklist.LivingPlace.HotelReservation);
+
+                    _db.LivingPlaceAmenities.Remove(checklist.LivingPlace);
+                }
+
+                _db.Checklists.Remove(checklist);
+            }
+
+            var groups = await _db.Groups.Where(g => trip.Groups.Any(tg => tg.ExternalGroupId == g.ExternalGroupId)).ToListAsync();
+            foreach (var group in groups)
+            {
+                var employeeGroups = _db.DbEmployeeGroup.Where(eg => eg.DbGroup.ExternalGroupId == group.ExternalGroupId);
+                _db.DbEmployeeGroup.RemoveRange(employeeGroups);
+            }
+
+            _db.Groups.RemoveRange(groups);
+
+            _db.Trips.Remove(trip);
+            await _db.SaveChangesAsync();
         }
     }
 }

@@ -88,5 +88,48 @@ namespace BackendApartmentReservation.Trips
 
             return mergeableTripsIds;
         }
+
+        public async Task<TripCreatedResponse> MergeTrips(MergeTripsRequest mergeTripsRequest, string managerId)
+        {
+            var isMergeable = await IsPossibleToMergeTrips(mergeTripsRequest.FirstTripId, mergeTripsRequest.SecondTripId);
+            if (!isMergeable)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripsNotMergeable);
+            }
+
+            var firstTrip = await _tripRepository.GetTrip(mergeTripsRequest.FirstTripId);
+            var secondTrip = await _tripRepository.GetTrip(mergeTripsRequest.SecondTripId);
+
+            var departureDate = firstTrip.DepartureDate <= secondTrip.DepartureDate ? firstTrip.DepartureDate : secondTrip.DepartureDate;
+            var returnDate = firstTrip.ReturnDate >= secondTrip.ReturnDate ? firstTrip.ReturnDate : secondTrip.ReturnDate;
+
+            var employeeIds = new List<string>();
+            var groups = firstTrip.Groups;
+            groups.AddRange(secondTrip.Groups);
+
+            foreach (var group in groups)
+            {
+                var employeeGroups = (await _groupManager.GetEmployeeGroupsByGroupId(group.ExternalGroupId)).ToList();
+                employeeGroups.ForEach(eg => employeeIds.Add(eg.DbEmployee.ExternalEmployeeId));
+            }
+
+            var tripRequest = new CreateTripRequest
+            {
+                DepartureDate = departureDate,
+                DestinationOfficeId = firstTrip.DestinationOffice.ExternalOfficeId,
+                EmployeeIds = employeeIds,
+                ReturnDate = returnDate
+            };
+
+            var mergedTrip = await _tripRepository.CreateTrip(tripRequest, managerId);
+
+            await _tripRepository.DeleteTrip(mergeTripsRequest.FirstTripId);
+            await _tripRepository.DeleteTrip(mergeTripsRequest.SecondTripId);
+
+            return new TripCreatedResponse
+            {
+                TripId = mergedTrip.ExternalTripId
+            };
+        }
     }
 }

@@ -43,6 +43,8 @@
         {
             return await _context.DbEmployeeGroup
                 .Where(eg => eg.DbGroup.ExternalGroupId == groupID)
+                .Include(eg => eg.DbGroup)
+                .Include(eg => eg.DbEmployee)
                 .ToListAsync();
         }
     }
