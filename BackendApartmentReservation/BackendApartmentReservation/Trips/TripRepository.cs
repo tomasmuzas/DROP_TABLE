@@ -27,6 +27,8 @@ namespace BackendApartmentReservation.Trips
             {
                 return await _db.Trips
                     .Where(t => t.ExternalTripId == tripId)
+                    .Include(t => t.DestinationOffice)
+                    .Include(t => t.Groups)
                     .SingleAsync();
             }
             catch (InvalidOperationException)
@@ -142,7 +144,16 @@ namespace BackendApartmentReservation.Trips
                 throw new ErrorCodeException(ErrorCodes.TripNotFound);
             }
 
-            var checklists = await _db.Checklists.Where(c => c.Trip.ExternalTripId == tripId).ToListAsync();
+            var checklists = await _db.Checklists.Where(c => c.Trip.ExternalTripId == tripId)
+                .Include(c => c.Car)
+                    .ThenInclude(x => x.CarReservation)
+                .Include(c => c.Flight)
+                    .ThenInclude(x => x.FlightReservation)
+                .Include(c => c.LivingPlace)
+                .Include(c => c.LivingPlace.ApartmentRoomReservation)
+                .Include(a => a.LivingPlace.HotelReservation)
+                .ToListAsync();
+
             foreach (var checklist in checklists)
             {
                 if (checklist.Car != null)
@@ -157,13 +168,17 @@ namespace BackendApartmentReservation.Trips
                     _db.FlightAmenities.Remove(checklist.Flight);
                 }
 
-                if (checklist.LivingPlace.ApartmentRoomReservation != null)
-                    _db.DbRoomReservations.Remove(checklist.LivingPlace.ApartmentRoomReservation);
+                if (checklist.LivingPlace != null)
+                {
+                    if (checklist.LivingPlace.ApartmentRoomReservation != null)
+                        _db.DbRoomReservations.Remove(checklist.LivingPlace.ApartmentRoomReservation);
 
-                if (checklist.LivingPlace.HotelReservation != null)
-                    _db.HotelReservations.Remove(checklist.LivingPlace.HotelReservation);
+                    if (checklist.LivingPlace.HotelReservation != null)
+                        _db.HotelReservations.Remove(checklist.LivingPlace.HotelReservation);
 
-                _db.LivingPlaceAmenities.Remove(checklist.LivingPlace);
+                    _db.LivingPlaceAmenities.Remove(checklist.LivingPlace);
+                }
+
                 _db.Checklists.Remove(checklist);
             }
 
