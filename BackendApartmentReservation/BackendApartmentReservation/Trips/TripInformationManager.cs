@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Confirmations;
+    using Confirmations.Interfaces;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Responses;
     using Interfaces;
@@ -10,11 +12,14 @@
     public class TripInformationManager : ITripInformationManager
     {
         private readonly ITripRepository _tripRepository;
+        private readonly IConfirmationRepository _confirmationRepository;
 
         public TripInformationManager(
-            ITripRepository tripRepository)
+            ITripRepository tripRepository,
+            IConfirmationRepository confirmationRepository)
         {
             _tripRepository = tripRepository;
+            _confirmationRepository = confirmationRepository;
         }
 
         public async Task<BasicTripInformationResponse> GetBasicTripInformation(string tripId)
@@ -33,6 +38,7 @@
                         FirstName = c.Employee.FirstName,
                         LastName = c.Employee.LastName
                     },
+                    HasAcceptedTripConfirmation = _confirmationRepository.HasAcceptedTripParticipation(c.Employee.ExternalEmployeeId, tripId),
                     IsApartmentRequired = c.LivingPlace != null,
                     IsFlightRequired = c.Flight != null,
                     IsCarRentRequired = c.Car != null

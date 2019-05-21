@@ -14,6 +14,8 @@ namespace BackendApartmentReservation.IoCContainer
     using Checklists.Hotels;
     using Checklists.Hotels.Interfaces;
     using Checklists.Interfaces;
+    using Confirmations;
+    using Confirmations.Interfaces;
     using Employees;
     using Employees.Interfaces;
     using Groups;
@@ -66,6 +68,8 @@ namespace BackendApartmentReservation.IoCContainer
                 .As<IGroupRepository>();
             builder.RegisterType<AuthenticationRepository>()
                 .As<IAuthenticationRepository>();
+            builder.RegisterType<ConfirmationRepository>()
+                .As<IConfirmationRepository>();
         }
     }
 }
