@@ -4,14 +4,16 @@ using BackendApartmentReservation.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendApartmentReservation.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190520213022_AddConfirmationsTable")]
+    partial class AddConfirmationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,15 +143,11 @@ namespace BackendApartmentReservation.Migrations
 
                     b.Property<string>("ExternalConfirmationId");
 
-                    b.Property<int?>("TripId");
-
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("TripId");
 
                     b.ToTable("Confirmations");
                 });
@@ -443,10 +441,6 @@ namespace BackendApartmentReservation.Migrations
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbEmployee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
-
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbTrip", "Trip")
-                        .WithMany()
-                        .HasForeignKey("TripId");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployee", b =>

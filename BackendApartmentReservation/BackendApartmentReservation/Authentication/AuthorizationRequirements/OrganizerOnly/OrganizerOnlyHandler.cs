@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly
 {
     public class OrganizerOnlyHandler :
-        AuthorizationHandler<AdminOnlyRequirement>
+        AuthorizationHandler<OrganizerOnlyRequirement>
     {
         private readonly IAuthenticationManager _authenticationManager;
 
@@ -20,7 +20,7 @@ namespace BackendApartmentReservation.Authentication.AuthorizationRequirements.O
             _authenticationManager = authenticationManager;
         }
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AdminOnlyRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, OrganizerOnlyRequirement requirement)
         {
             var employeeId = context.User?.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
@@ -33,7 +33,7 @@ namespace BackendApartmentReservation.Authentication.AuthorizationRequirements.O
             try
             {
                 var employee = await _authenticationManager.GetAndVerifyEmployee(employeeId);
-                if (employee.Role != EmployeeRole.Admin || employee.Role != EmployeeRole.Organizer)
+                if (employee.Role != EmployeeRole.Admin && employee.Role != EmployeeRole.Organizer)
                 {
                     context.Fail();
                     return;

@@ -6,6 +6,8 @@ using BackendApartmentReservation.Infrastructure.Exceptions;
 namespace BackendApartmentReservation.Trips
 {
     using System.Threading.Tasks;
+    using BackendApartmentReservation.Database.Entities;
+    using BackendApartmentReservation.Employees.Interfaces;
     using Checklists.Interfaces;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
@@ -17,15 +19,18 @@ namespace BackendApartmentReservation.Trips
         private readonly ITripRepository _tripRepository;
         private readonly IGroupManager _groupManager;
         private readonly IChecklistManager _checklistManager;
+        private readonly IEmployeeRepository _employeeRepository;
 
         public TripManager(
             ITripRepository tripRepository,
             IGroupManager groupManager,
-            IChecklistManager checklistManager)
+            IChecklistManager checklistManager,
+            IEmployeeRepository employeeRepository)
         {
             _tripRepository = tripRepository;
             _groupManager = groupManager;
             _checklistManager = checklistManager;
+            _employeeRepository = employeeRepository;
         }
 
         public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId)
@@ -39,6 +44,12 @@ namespace BackendApartmentReservation.Trips
                 {
                     await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId,
                         trip.ExternalTripId);
+
+                    var employeePlan = new DbEmployeePlan();
+                    employeePlan.StartDate = trip.DepartureDate;
+                    employeePlan.EndDate = trip.ReturnDate;
+                    employeePlan.Employee = employeeGroup.DbEmployee;
+                    await _employeeRepository.CreateEmployeePlan(employeePlan);
                 }
             }
 
@@ -76,6 +87,49 @@ namespace BackendApartmentReservation.Trips
             var mergeableTripsIds = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result).Select(t => t.ExternalTripId);
 
             return mergeableTripsIds;
+        }
+
+        public async Task<TripCreatedResponse> MergeTrips(MergeTripsRequest mergeTripsRequest, string managerId)
+        {
+            var isMergeable = await IsPossibleToMergeTrips(mergeTripsRequest.FirstTripId, mergeTripsRequest.SecondTripId);
+            if (!isMergeable)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripsNotMergeable);
+            }
+
+            var firstTrip = await _tripRepository.GetTrip(mergeTripsRequest.FirstTripId);
+            var secondTrip = await _tripRepository.GetTrip(mergeTripsRequest.SecondTripId);
+
+            var departureDate = firstTrip.DepartureDate <= secondTrip.DepartureDate ? firstTrip.DepartureDate : secondTrip.DepartureDate;
+            var returnDate = firstTrip.ReturnDate >= secondTrip.ReturnDate ? firstTrip.ReturnDate : secondTrip.ReturnDate;
+
+            var employeeIds = new List<string>();
+            var groups = firstTrip.Groups;
+            groups.AddRange(secondTrip.Groups);
+
+            foreach (var group in groups)
+            {
+                var employeeGroups = (await _groupManager.GetEmployeeGroupsByGroupId(group.ExternalGroupId)).ToList();
+                employeeGroups.ForEach(eg => employeeIds.Add(eg.DbEmployee.ExternalEmployeeId));
+            }
+
+            var tripRequest = new CreateTripRequest
+            {
+                DepartureDate = departureDate,
+                DestinationOfficeId = firstTrip.DestinationOffice.ExternalOfficeId,
+                EmployeeIds = employeeIds,
+                ReturnDate = returnDate
+            };
+
+            var mergedTrip = await _tripRepository.CreateTrip(tripRequest, managerId);
+
+            await _tripRepository.DeleteTrip(mergeTripsRequest.FirstTripId);
+            await _tripRepository.DeleteTrip(mergeTripsRequest.SecondTripId);
+
+            return new TripCreatedResponse
+            {
+                TripId = mergedTrip.ExternalTripId
+            };
         }
     }
 }

@@ -44,5 +44,14 @@ namespace BackendApartmentReservation.Trips
         {
             return Ok(await _tripManager.GetAllMergeableTrips(firstTripId));
         }
+
+        [HttpPost]
+        [Route("mergeTrips")]
+        [OrganizerOnly]
+        public async Task<IActionResult> MergeTrips([FromBody] MergeTripsRequest mergeTripsRequest)
+        {
+            var employeeId = GetEmployeeId();
+            return Ok(await _tripManager.MergeTrips(mergeTripsRequest, employeeId));
+        }
     }
 }

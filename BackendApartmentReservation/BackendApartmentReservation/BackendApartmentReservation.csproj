@@ -18,6 +18,8 @@
     <Compile Remove="Migrations\20190515174016_RenameApartmentReservationInfoToRoomReservation.Designer.cs" />
     <Compile Remove="Migrations\20190515182156_RemoveApartmentAmenity.cs" />
     <Compile Remove="Migrations\20190515182156_RemoveApartmentAmenity.Designer.cs" />
+    <Compile Remove="Migrations\20190520212919_AddConfirmationsTable.cs" />
+    <Compile Remove="Migrations\20190520212919_AddConfirmationsTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
