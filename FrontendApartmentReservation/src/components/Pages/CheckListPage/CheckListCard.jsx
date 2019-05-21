@@ -91,6 +91,10 @@ class CheckListCard extends React.Component {
                 <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
                     <div className="col justify-content-md-center nameDiv pl-5 pb-lg-0 pb-5">
                         <h5>{checkListInfo.employee.firstName} {checkListInfo.employee.lastName}</h5>
+                        {checkListInfo.HasAcceptedTripConfirmation ? 
+                            <h5 style={{ color: "#81c784"}}>({t("TripAccepted")})</h5> :
+                            <h5 style={{ color: "#f50057"}}>({t("TripNotYetAccepted")})</h5>
+                        }
                     </div>
                     <div className="col pr-5">
                         <div style={{ float: "right" }}>
