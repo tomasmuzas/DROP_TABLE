@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Tests.Managers
+﻿using BackendApartmentReservation.Confirmations.Interfaces;
+
+namespace BackendApartmentReservation.Tests.Managers
 {
     using System;
     using System.Collections.Generic;
@@ -17,6 +19,7 @@
         {
             var tripId = "tripId";
             var fakeTripRepository = A.Fake<ITripRepository>();
+            var fakeConfirmationRepository = A.Fake<IConfirmationRepository>();
 
             var callToTrip = A.CallTo(() => fakeTripRepository.GetTrip(tripId));
 
@@ -54,12 +57,18 @@
             };
             callToChecklist.Returns(checklists);
 
-            var manager = new TripInformationManager(fakeTripRepository);
+            var callToConfirmations = A.CallTo(() => fakeConfirmationRepository
+                .HasAcceptedTripMerge(employee.ExternalEmployeeId, tripId));
+
+            callToConfirmations.Returns(true);
+
+            var manager = new TripInformationManager(fakeTripRepository, fakeConfirmationRepository);
 
             var result = await manager.GetBasicTripInformation(tripId);
 
             callToTrip.MustHaveHappenedOnceExactly();
             callToChecklist.MustHaveHappenedOnceExactly();
+            callToConfirmations.MustHaveHappenedOnceExactly();
 
             Assert.NotNull(result);
             Assert.Equal(tripId, result.TripId);
@@ -71,6 +80,7 @@
             Assert.Equal(checklistInfo.Employee.FirstName, employee.FirstName);
             Assert.Equal(checklistInfo.Employee.LastName, employee.LastName);
             Assert.Equal(checklistInfo.Employee.Email, employee.Email);
+            Assert.True(checklistInfo.HasAcceptedTripConfirmation);
             Assert.False(checklistInfo.IsApartmentRequired);
             Assert.False(checklistInfo.IsFlightRequired);
             Assert.False(checklistInfo.IsCarRentRequired);
