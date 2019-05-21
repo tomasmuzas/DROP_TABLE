@@ -51,7 +51,7 @@
             await _db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<DbApartmentRoom>> GetAvailableRooms(DateTimeOffset dateFrom, DateTimeOffset dateTo)
+        public async Task<IEnumerable<DbApartmentRoom>> GetAvailableRooms(string tripId, DateTimeOffset dateFrom, DateTimeOffset dateTo)
         {
             var availableRooms = new List<DbApartmentRoom>();
             foreach (DbApartmentRoom room in _db.ApartmentRooms)

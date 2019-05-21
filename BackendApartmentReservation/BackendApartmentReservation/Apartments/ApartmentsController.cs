@@ -33,12 +33,12 @@ namespace BackendApartmentReservation.Apartments
         }
 
         [HttpGet]
-        [Route("availableApartmentsRooms")]
+        [Route("trips/{tripId}/apartment/rooms/available")]
         [OrganizerOnly]
-        public async Task<int> GetNumberOfAvailableApartmentsRooms([FromQuery] DateTimeOffset dateFrom,
+        public async Task<int> GetNumberOfAvailableApartmentsRooms(string tripId, [FromQuery] DateTimeOffset dateFrom,
             [FromQuery] DateTimeOffset dateTo)
         {
-            return await _livingPlaceManager.GetNumberOfAvailableApartmentRooms(dateFrom, dateTo);
+            return await _livingPlaceManager.GetNumberOfAvailableApartmentRooms(tripId, dateFrom, dateTo);
         }
 
     }

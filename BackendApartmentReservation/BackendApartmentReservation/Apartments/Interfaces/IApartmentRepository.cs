@@ -14,6 +14,6 @@ namespace BackendApartmentReservation.Apartments.Interfaces
 
         Task DeleteRoomReservation(DbRoomReservation roomReservation);
 
-        Task<IEnumerable<DbApartmentRoom>> GetAvailableRooms(DateTimeOffset dateFrom, DateTimeOffset dateTo);
+        Task<IEnumerable<DbApartmentRoom>> GetAvailableRooms(string tripId, DateTimeOffset dateFrom, DateTimeOffset dateTo);
     }
 }
