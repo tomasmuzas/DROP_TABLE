@@ -1,4 +1,6 @@
-﻿namespace BackendApartmentReservation.Apartments.Interfaces
+﻿using System.Collections.Generic;
+
+namespace BackendApartmentReservation.Apartments.Interfaces
 {
     using BackendApartmentReservation.Database.Entities;
     using System;
@@ -12,6 +14,6 @@
 
         Task DeleteRoomReservation(DbRoomReservation roomReservation);
 
-        Task<int> GetNumberOfAvailableApartmentsRooms(DateTimeOffset dateFrom, DateTimeOffset dateTo);
+        Task<IEnumerable<DbApartmentRoom>> GetAvailableRooms(DateTimeOffset dateFrom, DateTimeOffset dateTo);
     }
 }

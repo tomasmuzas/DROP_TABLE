@@ -1,6 +1,7 @@
 ﻿using BackendApartmentReservation.Apartments.Interfaces;
 using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
 using BackendApartmentReservation.Infrastructure.Authorization;
+using BackendApartmentReservation.LivingPlace.Interfaces;
 
 namespace BackendApartmentReservation.Apartments
 {
@@ -14,12 +15,12 @@ namespace BackendApartmentReservation.Apartments
     public class ApartmentsController : AuthorizedController
     {
         private readonly ILogger<ApartmentsController> _logger;
-        private readonly IApartmentsManager _apartmentsManager;
+        private readonly ILivingPlaceManager _livingPlaceManager;
         public ApartmentsController(ILogger<ApartmentsController> logger,
-            IApartmentsManager apartmentsManager)
+            ILivingPlaceManager livingPlaceManager)
         {
             _logger = logger;
-            _apartmentsManager = apartmentsManager;
+            _livingPlaceManager = livingPlaceManager;
         }
 
         [HttpGet]
@@ -36,7 +37,7 @@ namespace BackendApartmentReservation.Apartments
         public async Task<int> GetNumberOfAvailableApartmentsRooms([FromQuery] string dateFrom,
             [FromQuery] string dateTo)
         {
-            return await _apartmentsManager.GetNumberOfAvailableApartmentsRooms(dateFrom, dateTo);
+            return await _livingPlaceManager.GetNumberOfAvailableApartmentRooms(dateFrom, dateTo);
         }
 
     }

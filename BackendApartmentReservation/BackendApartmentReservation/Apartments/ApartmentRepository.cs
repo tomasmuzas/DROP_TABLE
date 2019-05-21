@@ -25,18 +25,7 @@
             roomReservation.DateFrom = dateFrom;
             roomReservation.DateTo = dateTo;
 
-            var availableRooms = new List<DbApartmentRoom>();
-            foreach (DbApartmentRoom room in _db.ApartmentRooms)
-            {
-                var isAvailable = !_db.DbRoomReservations
-                    .Where(r => r.Room.Id == room.Id)
-                    .Any(r => Math.Max(dateFrom.Date.Ticks, r.DateFrom.Date.Ticks) <=
-                    Math.Min(dateTo.Date.Ticks, r.DateTo.Date.Ticks));
-                if (isAvailable)
-                {
-                    availableRooms.Add(room);
-                }
-            }
+            var availableRooms = await GetAvailableRooms(dateFrom, dateTo);
 
             roomReservation.Room = availableRooms.FirstOrDefault();
             if (roomReservation.Room == null)
@@ -62,16 +51,24 @@
             await _db.SaveChangesAsync();
         }
 
-        public async Task<int> GetNumberOfAvailableApartmentsRooms(DateTimeOffset dateFrom, DateTimeOffset dateTo)
+        public async Task<IEnumerable<DbApartmentRoom>> GetAvailableRooms(DateTimeOffset dateFrom, DateTimeOffset dateTo)
         {
-            var availableRooms = (from room in _db.ApartmentRooms
-                let isAvailable = !_db.DbRoomReservations.Where(r => r.Room.Id == room.Id)
-                    .Any(r => Math.Max(dateFrom.Date.Ticks, r.DateFrom.Date.Ticks) <= Math.Min(dateTo.Date.Ticks, r.DateTo.Date.Ticks))
-                where isAvailable
-                select room).ToList();
+            var availableRooms = new List<DbApartmentRoom>();
+            foreach (DbApartmentRoom room in _db.ApartmentRooms)
+            {
+                var isAvailable = !_db.DbRoomReservations
+                    .Where(r => r.Room.Id == room.Id)
+                    .Any(r => Math.Max(dateFrom.Date.Ticks, r.DateFrom.Date.Ticks) <=
+                              Math.Min(dateTo.Date.Ticks, r.DateTo.Date.Ticks));
+                if (isAvailable)
+                {
+                    availableRooms.Add(room);
+                }
+            }
 
-            return availableRooms.Count;
+            return availableRooms;
         }
-        
+
+
     }
 }
