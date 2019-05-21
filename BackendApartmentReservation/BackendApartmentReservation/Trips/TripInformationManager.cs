@@ -1,4 +1,4 @@
-﻿namespace BackendApartmentReservation.Trips
+namespace BackendApartmentReservation.Trips
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -50,6 +50,11 @@
                 TripId = tripId,
                 StartTime = trip.DepartureDate,
                 EndTime = trip.ReturnDate,
+                AvailableApartments = 6, // TODO: @tomu integrate real API
+                Office = new OfficeInfoResponse
+                {
+                    Address = trip.DestinationOffice.Address
+                },
 
                 ChecklistInfos = checklistInformations
             };
