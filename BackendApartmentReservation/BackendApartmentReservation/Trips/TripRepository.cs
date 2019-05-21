@@ -142,6 +142,40 @@ namespace BackendApartmentReservation.Trips
                 throw new ErrorCodeException(ErrorCodes.TripNotFound);
             }
 
+            var checklists = await _db.Checklists.Where(c => c.Trip.ExternalTripId == tripId).ToListAsync();
+            foreach (var checklist in checklists)
+            {
+                if (checklist.Car != null)
+                {
+                    _db.CarReservations.Remove(checklist.Car.CarReservation);
+                    _db.CarRentAmenities.Remove(checklist.Car);
+                }
+
+                if (checklist.Flight != null)
+                {
+                    _db.FlightReservations.Remove(checklist.Flight.FlightReservation);
+                    _db.FlightAmenities.Remove(checklist.Flight);
+                }
+
+                if (checklist.LivingPlace.ApartmentRoomReservation != null)
+                    _db.DbRoomReservations.Remove(checklist.LivingPlace.ApartmentRoomReservation);
+
+                if (checklist.LivingPlace.HotelReservation != null)
+                    _db.HotelReservations.Remove(checklist.LivingPlace.HotelReservation);
+
+                _db.LivingPlaceAmenities.Remove(checklist.LivingPlace);
+                _db.Checklists.Remove(checklist);
+            }
+
+            var groups = await _db.Groups.Where(g => trip.Groups.Any(tg => tg.ExternalGroupId == g.ExternalGroupId)).ToListAsync();
+            foreach (var group in groups)
+            {
+                var employeeGroups = _db.DbEmployeeGroup.Where(eg => eg.DbGroup.ExternalGroupId == group.ExternalGroupId);
+                _db.DbEmployeeGroup.RemoveRange(employeeGroups);
+            }
+
+            _db.Groups.RemoveRange(groups);
+
             _db.Trips.Remove(trip);
             await _db.SaveChangesAsync();
         }
