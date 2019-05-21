@@ -29,7 +29,7 @@ class TripCheckList extends React.Component {
                     { this.props.tripbasic.availableApartments >= this.props.tripbasic.checklistInfos.length &&
                         <span className="row mt-5 mx-5" style={{"display": "inline-block"}}> 
                             {t("TripEnoughApartments")} 
-                            <Link className={`btn btn-primary mx-3`} to={''} type="submit">Reserve for all</Link>
+                            <Link className={`btn btn-primary mx-3`} to={''}>{t("ReserveApartmentForAll")}</Link>
                         </span> 
                     }
                     <div>
