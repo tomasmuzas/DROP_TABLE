@@ -123,6 +123,9 @@ namespace BackendApartmentReservation.Trips
 
             var mergedTrip = await _tripRepository.CreateTrip(tripRequest, managerId);
 
+            await _tripRepository.DeleteTrip(mergeTripsRequest.FirstTripId);
+            await _tripRepository.DeleteTrip(mergeTripsRequest.SecondTripId);
+
             return new TripCreatedResponse
             {
                 TripId = mergedTrip.ExternalTripId

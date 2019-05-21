@@ -18,5 +18,7 @@
         Task<IEnumerable<DbTrip>> GetAllParticipatingTripsOfEmployee(string employeeId);
 
         Task<IEnumerable<DbTrip>> GetAllTrips();
+
+        Task DeleteTrip(string tripId);
     }
 }

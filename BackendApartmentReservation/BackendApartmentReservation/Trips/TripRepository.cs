@@ -133,5 +133,17 @@ namespace BackendApartmentReservation.Trips
             return await _db.Trips
                 .ToListAsync();
         }
+
+        public async Task DeleteTrip(string tripId)
+        {
+            var trip = await _db.Trips.Where(t => t.ExternalTripId == tripId).SingleOrDefaultAsync();
+            if (trip == null)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripNotFound);
+            }
+
+            _db.Trips.Remove(trip);
+            await _db.SaveChangesAsync();
+        }
     }
 }
