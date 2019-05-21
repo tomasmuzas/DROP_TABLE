@@ -1,4 +1,4 @@
-﻿namespace BackendApartmentReservation.Trips
+namespace BackendApartmentReservation.Trips
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -58,6 +58,10 @@
                 StartTime = trip.DepartureDate,
                 EndTime = trip.ReturnDate,
                 AvailableApartments = availableRooms,
+                Office = new OfficeInfoResponse
+                {
+                    Address = trip.DestinationOffice.Address
+                },
                 ChecklistInfos = checklistInformations
             };
         }

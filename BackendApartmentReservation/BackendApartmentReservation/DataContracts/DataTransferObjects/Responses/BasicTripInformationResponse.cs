@@ -12,6 +12,11 @@
 
         public DateTimeOffset EndTime { get; set; }
 
+        public OfficeInfoResponse Office { get; set; }
+
+        public int AvailableApartments { get; set; }
+
+
         public List<BasicPersonalChecklistInfo> ChecklistInfos { get; set; }
     }
 }
