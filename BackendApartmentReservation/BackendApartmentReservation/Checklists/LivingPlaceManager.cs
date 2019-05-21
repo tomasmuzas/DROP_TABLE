@@ -16,9 +16,10 @@ namespace BackendApartmentReservation.LivingPlace
             _apartmentRepository = apartmentRepository;
         }
 
-        public async Task<int> GetNumberOfAvailableApartmentRooms(string dateFrom, string dateTo)
+        public async Task<int> GetNumberOfAvailableApartmentRooms(DateTimeOffset dateFrom, DateTimeOffset dateTo)
         {
-            return  _apartmentRepository.GetAvailableRooms(DateTimeOffset.Parse(dateFrom), DateTimeOffset.Parse(dateTo)).Result.Count();
+            var availableRooms = await _apartmentRepository.GetAvailableRooms(dateFrom, dateTo);
+            return availableRooms.Count();
         }
     }
 }

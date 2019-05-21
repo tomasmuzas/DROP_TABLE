@@ -1,4 +1,5 @@
-﻿using BackendApartmentReservation.Apartments.Interfaces;
+﻿using System;
+using BackendApartmentReservation.Apartments.Interfaces;
 using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
 using BackendApartmentReservation.Infrastructure.Authorization;
 using BackendApartmentReservation.LivingPlace.Interfaces;
@@ -34,8 +35,8 @@ namespace BackendApartmentReservation.Apartments
         [HttpGet]
         [Route("availableApartmentsRooms")]
         [OrganizerOnly]
-        public async Task<int> GetNumberOfAvailableApartmentsRooms([FromQuery] string dateFrom,
-            [FromQuery] string dateTo)
+        public async Task<int> GetNumberOfAvailableApartmentsRooms([FromQuery] DateTimeOffset dateFrom,
+            [FromQuery] DateTimeOffset dateTo)
         {
             return await _livingPlaceManager.GetNumberOfAvailableApartmentRooms(dateFrom, dateTo);
         }
