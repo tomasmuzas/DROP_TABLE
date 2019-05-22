@@ -112,6 +112,7 @@ namespace BackendApartmentReservation.Trips
         {
             return await _db.Trips
                 .Where(t => t.TripCreator.ExternalEmployeeId == employeeId)
+                .Include(t => t.DestinationOffice)
                 .ToListAsync();
         }
 
@@ -125,6 +126,7 @@ namespace BackendApartmentReservation.Trips
                 .ToListAsync();
 
             return await _db.Trips
+                .Include(t => t.DestinationOffice)
                 .Where(t => t.Groups
                     .Any(g => groups.Contains(g)))
                 .ToListAsync();

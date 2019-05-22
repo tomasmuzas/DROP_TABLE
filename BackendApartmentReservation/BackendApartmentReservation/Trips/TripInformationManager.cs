@@ -73,7 +73,11 @@ namespace BackendApartmentReservation.Trips
             {
                 StartTime = t.DepartureDate,
                 EndTime = t.ReturnDate,
-                TripId = t.ExternalTripId
+                TripId = t.ExternalTripId,
+                Office = new OfficeInfoResponse
+                {
+                    Address = t.DestinationOffice.Address
+                }
             });
         }
 
@@ -84,7 +88,11 @@ namespace BackendApartmentReservation.Trips
             {
                 StartTime = t.DepartureDate,
                 EndTime = t.ReturnDate,
-                TripId = t.ExternalTripId
+                TripId = t.ExternalTripId,
+                Office = new OfficeInfoResponse
+                {
+                    Address = t.DestinationOffice.Address
+                }
             });
         }
     }
