@@ -1,5 +1,6 @@
 ﻿using System;
 using BackendApartmentReservation.Apartments.Interfaces;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
 using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
 using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.Infrastructure.Authorization;
@@ -35,7 +36,7 @@ namespace BackendApartmentReservation.Apartments
 
         [HttpPost]
         [Route("apartments")]
-        [OrganizerOnly]
+        [AdminOnly]
         public async Task<IActionResult> CreateApartment([FromBody] CreateApartmentRequest apartmentRequest)
         {
             return Ok(await _livingPlaceManager.CreateApartment(apartmentRequest));
