@@ -4,6 +4,7 @@
     using Database.Entities.Reservations;
     using Database.Entities;
     using Database.Entities.Amenities;
+    using System.Collections.Generic;
 
     public interface IChecklistRepository
     {
@@ -20,5 +21,7 @@
         Task<DbCarRentAmenity> GetChecklistFullCarRent(string employeeId, string tripId);
 
         Task<DbHotelReservation> GetChecklistFullHotelReservation(string employeeId, string tripId);
+
+        Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetAllTripChecklists(string tripId);
     }
 }

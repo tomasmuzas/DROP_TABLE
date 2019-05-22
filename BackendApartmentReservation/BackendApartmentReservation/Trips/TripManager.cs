@@ -134,6 +134,14 @@ namespace BackendApartmentReservation.Trips
 
             var mergedTrip = await _tripRepository.CreateTrip(tripRequest, managerId);
 
+            var checklists = (await _checklistManager.GetAllTripChecklists(mergeTripsRequest.FirstTripId)).ToList();
+            checklists.AddRange((await _checklistManager.GetAllTripChecklists(mergeTripsRequest.SecondTripId)).ToList());
+
+            foreach (var checklist in checklists)
+            {
+                await _checklistManager.UpdateChecklistTrip(checklist, mergedTrip.ExternalTripId);
+            }
+
             await _tripRepository.DeleteTrip(mergeTripsRequest.FirstTripId);
             await _tripRepository.DeleteTrip(mergeTripsRequest.SecondTripId);
 
