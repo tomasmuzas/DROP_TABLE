@@ -133,6 +133,7 @@ namespace BackendApartmentReservation.Trips
         public async Task<IEnumerable<DbTrip>> GetAllTrips()
         {
             return await _db.Trips
+                .Include(trip => trip.DestinationOffice)
                 .ToListAsync();
         }
 
