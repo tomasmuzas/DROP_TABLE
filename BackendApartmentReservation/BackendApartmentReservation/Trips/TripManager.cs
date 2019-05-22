@@ -72,7 +72,7 @@ namespace BackendApartmentReservation.Trips
             return timeSpanDays <= 1 && firstTrip.DestinationOffice.ExternalOfficeId.Equals(secondTrip.DestinationOffice.ExternalOfficeId);
         }
 
-        public async Task<IEnumerable<string>> GetAllMergeableTrips(string tripId)
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllMergeableTrips(string tripId)
         {
 
             var trip = await _tripRepository.GetTrip(tripId);
@@ -84,9 +84,20 @@ namespace BackendApartmentReservation.Trips
 
             var allTrips = await _tripRepository.GetAllTrips();
 
-            var mergeableTripsIds = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result).Select(t => t.ExternalTripId);
+            var basicTripInformationResponses = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result)
+                .Select(t => new BasicTripInformationResponse
+            {
+                TripId = t.ExternalTripId,
+                StartTime = t.DepartureDate,
+                EndTime = t.ReturnDate,
+                Office = new OfficeInfoResponse
+                {
+                    Id = t.DestinationOffice.ExternalOfficeId,
+                    Address = t.DestinationOffice.Address
+                }
+            });
 
-            return mergeableTripsIds;
+            return basicTripInformationResponses;
         }
 
         public async Task<TripCreatedResponse> MergeTrips(MergeTripsRequest mergeTripsRequest, string managerId)
