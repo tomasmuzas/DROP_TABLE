@@ -3,6 +3,7 @@
 namespace BackendApartmentReservation.Confirmations
 {
     using System.Linq;
+    using System.Threading.Tasks;
     using Database;
     using Database.Entities;
     using Interfaces;
@@ -25,6 +26,19 @@ namespace BackendApartmentReservation.Confirmations
         public bool HasAcceptedTripMerge(string employeeId, string tripId)
         {
             return HasAccepted(ConfirmationType.TripMerge, employeeId, tripId);
+        }
+
+        public async Task CreateConfirmation(DbEmployee employee, DbTrip trip, ConfirmationType type)
+        {
+            var confirmation = new DbConfirmation
+            {
+                Employee = employee,
+                Trip = trip,
+                ExternalConfirmationId = Guid.NewGuid().ToString(),
+                Type = type
+            };
+
+            await _db.Confirmations.AddAsync(confirmation);
         }
 
         private bool HasAccepted(ConfirmationType type, string employeeId, string tripId)
