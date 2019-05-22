@@ -1,4 +1,7 @@
-﻿namespace BackendApartmentReservation.Apartments
+﻿using System.Net.Sockets;
+using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
+
+namespace BackendApartmentReservation.Apartments
 {
     using BackendApartmentReservation.Database.Entities;
     using Database;
@@ -17,6 +20,19 @@
         public ApartmentRepository(DatabaseContext db)
         {
             _db = db;
+        }
+
+        public async Task<DbApartment> CreateApartment(string address, List<DbApartmentRoom> apartmentRooms)
+        {
+            var apartment = new DbApartment
+            {
+                Address = address,
+                Rooms = apartmentRooms
+            };
+
+            await _db.Apartments.AddAsync(apartment);
+            await _db.SaveChangesAsync();
+            return apartment;
         }
 
         public async Task<DbRoomReservation> CreateRoomReservation(string tripId, DbEmployee employee, DateTimeOffset dateFrom, DateTimeOffset dateTo)

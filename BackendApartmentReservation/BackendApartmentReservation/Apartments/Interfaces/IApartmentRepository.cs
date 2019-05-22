@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
 
 namespace BackendApartmentReservation.Apartments.Interfaces
 {
@@ -8,6 +9,8 @@ namespace BackendApartmentReservation.Apartments.Interfaces
 
     public interface IApartmentRepository
     {
+        Task<DbApartment> CreateApartment(string address, List<DbApartmentRoom> apartmentRooms);
+
         Task<DbRoomReservation> CreateRoomReservation(string tripId, DbEmployee employee, DateTimeOffset dateFrom, DateTimeOffset dateTo);
 
         Task UpdateRoomReservation(DbRoomReservation roomReservation);
