@@ -9,8 +9,9 @@ import PageHeader from './PageHeader';
 import SignUpPage from '../../Pages/SignUpPage/SignUpPage';
 import CreateTrip from '../../Pages/TripsPage/CreateTrip';
 import TripCheckList from '../../Pages/CheckListPage/TripCheckList';
-import CheckListDetails from '../../Pages/CheckListPage/CheckListFullDetails/CheckListDetails'
-import LoginPage from '../../Pages/SignUpPage/LoginPage'
+import CheckListDetails from '../../Pages/CheckListPage/CheckListFullDetails/CheckListDetails';
+import LoginPage from '../../Pages/SignUpPage/LoginPage';
+import MergeTrips from '../../Pages/TripsPage/MergeTrips';
 
 export default class MainLayout extends React.Component {
     render() {
@@ -27,6 +28,7 @@ export default class MainLayout extends React.Component {
                     <Route path="/signup" component={SignUpPage}/>
                     <Route path="/login" component={LoginPage}/>
                     <Route path="/createTrip" component={CreateTrip}/>
+                    <Route path="/trip/:tripId/merge" component={MergeTrips}/>
                     <Route path="/trip/:tripId" component={TripCheckList}/>
                     <Route path="/:tripId/checklist/:employeeId" component={CheckListDetails}/>
                     <Route path="*" component={PageNotFound}/>

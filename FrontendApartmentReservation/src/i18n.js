@@ -74,6 +74,11 @@ i18n.use(LanguageDetector).init({
         "Gruodis" : "December",
         "Login": "Login",
         "Logout": "Logout",
+        "Merge": "Merge",
+        "TripInformation": "Trip information",
+        "MyTripToMerge" : "My trip to merge",
+        "TripsPossibleToMerge" : "Trips possible to merge",
+        "TripMerged": "Trips merged",
       }
     },
     lt: {
@@ -146,7 +151,11 @@ i18n.use(LanguageDetector).init({
         "December" : "Gruodis",
         "Login": "Prisijungti",
         "Logout": "Atsijungti",
-
+        "Merge": "Sujungti",
+        "TripInformation": "Kelionės informacija",
+        "MyTripToMerge" : "Mano kelionė kurią noriu sujungti",
+        "TripsPossibleToMerge" : "Kelionės su kuriomis galima sujungti",
+        "TripMerged": "Kelionės sujungtos",
       }
     }
   },

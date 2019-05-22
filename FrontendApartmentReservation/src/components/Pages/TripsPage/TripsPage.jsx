@@ -7,6 +7,7 @@ import TripCard from './TripCard'
 class TripsPage extends React.Component {
     componentWillMount() {
         this.props.getAllTrips();
+        this.props.clearMergableTrips();
     }
 
     render() {
@@ -14,7 +15,7 @@ class TripsPage extends React.Component {
             return (
                 <div>
                     <div>
-                        {this.props.trips.map(trip =><TripCard key={trip.tripId} trip={trip} />)}
+                        {this.props.trips.map(trip =><TripCard key={trip.tripId} trip={trip} mergeable={false} />)}
                     </div>
                 </div>
             );
