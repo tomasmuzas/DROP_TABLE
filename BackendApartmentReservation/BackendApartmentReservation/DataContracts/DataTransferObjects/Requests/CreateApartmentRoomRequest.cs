@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using BackendApartmentReservation.Database.Entities;
 
 namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
 {
-    public class CreateApartmentRequest
+    public class CreateApartmentRoomRequest
     {
         [Required]
-        public string Address { get; set; }
-
-        [Required]
-        public List<CreateApartmentRoomRequest> Rooms { get; set; }
-
+        public int RoomNumber { get; set; }
     }
 }

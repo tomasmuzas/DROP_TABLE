@@ -37,9 +37,10 @@ namespace BackendApartmentReservation.Apartments
         [HttpPost]
         [Route("apartments")]
         [AdminOnly]
-        public async Task<IActionResult> CreateApartment([FromBody] CreateApartmentRequest apartmentRequest)
+        public async Task CreateApartment([FromBody] CreateApartmentRequest apartmentRequest)
         {
-            return Ok(await _livingPlaceManager.CreateApartment(apartmentRequest));
+            await _livingPlaceManager.CreateApartment(apartmentRequest);
+
         }
 
         [HttpGet]
