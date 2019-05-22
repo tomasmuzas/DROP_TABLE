@@ -9,6 +9,7 @@ namespace BackendApartmentReservation.Trips
     using BackendApartmentReservation.Database.Entities;
     using BackendApartmentReservation.Employees.Interfaces;
     using Checklists.Interfaces;
+    using Confirmations.Interfaces;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
     using Groups.Interfaces;
@@ -20,17 +21,20 @@ namespace BackendApartmentReservation.Trips
         private readonly IGroupManager _groupManager;
         private readonly IChecklistManager _checklistManager;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IConfirmationRepository _confirmationRepository;
 
         public TripManager(
             ITripRepository tripRepository,
             IGroupManager groupManager,
             IChecklistManager checklistManager,
-            IEmployeeRepository employeeRepository)
+            IEmployeeRepository employeeRepository,
+            IConfirmationRepository confirmationRepository)
         {
             _tripRepository = tripRepository;
             _groupManager = groupManager;
             _checklistManager = checklistManager;
             _employeeRepository = employeeRepository;
+            _confirmationRepository = confirmationRepository;
         }
 
         public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId)
@@ -44,6 +48,11 @@ namespace BackendApartmentReservation.Trips
                 {
                     await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId,
                         trip.ExternalTripId);
+
+                    await _confirmationRepository.CreateConfirmation(
+                        employeeGroup.DbEmployee,
+                        trip,
+                        ConfirmationType.TripParticipation);
 
                     var employeePlan = new DbEmployeePlan();
                     employeePlan.StartDate = trip.DepartureDate;
