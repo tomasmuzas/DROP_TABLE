@@ -8,18 +8,22 @@ namespace BackendApartmentReservation.Trips
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Responses;
     using Interfaces;
+    using LivingPlace.Interfaces;
 
     public class TripInformationManager : ITripInformationManager
     {
         private readonly ITripRepository _tripRepository;
         private readonly IConfirmationRepository _confirmationRepository;
+        private readonly ILivingPlaceManager _livingPlaceManager;
 
         public TripInformationManager(
             ITripRepository tripRepository,
-            IConfirmationRepository confirmationRepository)
+            IConfirmationRepository confirmationRepository,
+            ILivingPlaceManager livingPlaceManager)
         {
             _tripRepository = tripRepository;
             _confirmationRepository = confirmationRepository;
+            _livingPlaceManager = livingPlaceManager;
         }
 
         public async Task<BasicTripInformationResponse> GetBasicTripInformation(string tripId)
@@ -45,17 +49,19 @@ namespace BackendApartmentReservation.Trips
                 })
                 .ToList();
 
+            var availableRooms = await
+                _livingPlaceManager.GetNumberOfAvailableApartmentRooms(tripId, trip.DepartureDate, trip.ReturnDate);
+
             return new BasicTripInformationResponse
             {
                 TripId = tripId,
                 StartTime = trip.DepartureDate,
                 EndTime = trip.ReturnDate,
-                AvailableApartments = 6, // TODO: @tomu integrate real API
+                AvailableApartments = availableRooms,
                 Office = new OfficeInfoResponse
                 {
                     Address = trip.DestinationOffice.Address
                 },
-
                 ChecklistInfos = checklistInformations
             };
         }

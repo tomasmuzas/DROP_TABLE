@@ -1,4 +1,8 @@
-﻿using BackendApartmentReservation.Infrastructure.Authorization;
+﻿using System;
+using BackendApartmentReservation.Apartments.Interfaces;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
+using BackendApartmentReservation.Infrastructure.Authorization;
+using BackendApartmentReservation.LivingPlace.Interfaces;
 
 namespace BackendApartmentReservation.Apartments
 {
@@ -12,10 +16,12 @@ namespace BackendApartmentReservation.Apartments
     public class ApartmentsController : AuthorizedController
     {
         private readonly ILogger<ApartmentsController> _logger;
-
-        public ApartmentsController(ILogger<ApartmentsController> logger)
+        private readonly ILivingPlaceManager _livingPlaceManager;
+        public ApartmentsController(ILogger<ApartmentsController> logger,
+            ILivingPlaceManager livingPlaceManager)
         {
             _logger = logger;
+            _livingPlaceManager = livingPlaceManager;
         }
 
         [HttpGet]
@@ -25,5 +31,15 @@ namespace BackendApartmentReservation.Apartments
             _logger.LogInformation("Initial step");
             return await Task.FromResult(new[] { "flat1", "flat2" });
         }
+
+        [HttpGet]
+        [Route("trips/{tripId}/apartment/rooms/available")]
+        [OrganizerOnly]
+        public async Task<int> GetNumberOfAvailableApartmentsRooms(string tripId, [FromQuery] DateTimeOffset dateFrom,
+            [FromQuery] DateTimeOffset dateTo)
+        {
+            return await _livingPlaceManager.GetNumberOfAvailableApartmentRooms(tripId, dateFrom, dateTo);
+        }
+
     }
 }

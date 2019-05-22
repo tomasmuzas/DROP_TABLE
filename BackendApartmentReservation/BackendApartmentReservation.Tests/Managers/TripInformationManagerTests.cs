@@ -7,6 +7,7 @@ namespace BackendApartmentReservation.Tests.Managers
     using System.Threading.Tasks;
     using Database.Entities;
     using FakeItEasy;
+    using LivingPlace.Interfaces;
     using Trips;
     using Trips.Interfaces;
     using Xunit;
@@ -20,6 +21,7 @@ namespace BackendApartmentReservation.Tests.Managers
             var tripId = "tripId";
             var fakeTripRepository = A.Fake<ITripRepository>();
             var fakeConfirmationRepository = A.Fake<IConfirmationRepository>();
+            var fakeLivingPlaceManger = A.Fake<ILivingPlaceManager>();
 
             var callToTrip = A.CallTo(() => fakeTripRepository.GetTrip(tripId));
 
@@ -62,7 +64,12 @@ namespace BackendApartmentReservation.Tests.Managers
 
             callToConfirmations.Returns(true);
 
-            var manager = new TripInformationManager(fakeTripRepository, fakeConfirmationRepository);
+            var callToLivingPlace = A.CallTo(() => fakeLivingPlaceManger
+                .GetNumberOfAvailableApartmentRooms(tripId, A<DateTimeOffset>._, A<DateTimeOffset>._));
+
+            callToLivingPlace.Returns(1);
+
+            var manager = new TripInformationManager(fakeTripRepository, fakeConfirmationRepository, fakeLivingPlaceManger);
 
             var result = await manager.GetBasicTripInformation(tripId);
 
@@ -74,6 +81,7 @@ namespace BackendApartmentReservation.Tests.Managers
             Assert.Equal(tripId, result.TripId);
             Assert.Equal(trip.DepartureDate, result.StartTime);
             Assert.Equal(trip.ReturnDate, result.EndTime);
+            Assert.Equal(1, result.AvailableApartments);
             Assert.NotEmpty(result.ChecklistInfos);
             var checklistInfo = result.ChecklistInfos[0];
             Assert.Equal(checklistInfo.Employee.Id, employee.ExternalEmployeeId);
