@@ -10,6 +10,6 @@ namespace BackendApartmentReservation.LivingPlace.Interfaces
     public interface ILivingPlaceManager
     {
      Task<int> GetNumberOfAvailableApartmentRooms(string tripId, DateTimeOffset dateFrom, DateTimeOffset dateTo);
-     Task<ApartmentCreatedResponse> CreateApartment(CreateApartmentRequest apartmentRequest);
+     Task CreateApartment(CreateApartmentRequest apartmentRequest);
     }
 }

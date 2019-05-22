@@ -18,15 +18,9 @@ namespace BackendApartmentReservation.LivingPlace
             _apartmentRepository = apartmentRepository;
         }
 
-        public async Task<ApartmentCreatedResponse> CreateApartment(CreateApartmentRequest apartmentRequest)
+        public async Task CreateApartment(CreateApartmentRequest apartmentRequest)
         {
-            var apartment =
                 await _apartmentRepository.CreateApartment(apartmentRequest.Address, apartmentRequest.Rooms);
-
-            return new ApartmentCreatedResponse
-            {
-                ApartmentId = apartment.Id.ToString()
-            };
         }
 
         public async Task<int> GetNumberOfAvailableApartmentRooms(string tripId,DateTimeOffset dateFrom, DateTimeOffset dateTo)
