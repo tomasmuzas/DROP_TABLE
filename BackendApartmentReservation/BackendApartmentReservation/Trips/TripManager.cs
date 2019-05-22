@@ -9,6 +9,7 @@ namespace BackendApartmentReservation.Trips
     using BackendApartmentReservation.Database.Entities;
     using BackendApartmentReservation.Employees.Interfaces;
     using Checklists.Interfaces;
+    using Confirmations.Interfaces;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
     using Groups.Interfaces;
@@ -20,17 +21,20 @@ namespace BackendApartmentReservation.Trips
         private readonly IGroupManager _groupManager;
         private readonly IChecklistManager _checklistManager;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IConfirmationRepository _confirmationRepository;
 
         public TripManager(
             ITripRepository tripRepository,
             IGroupManager groupManager,
             IChecklistManager checklistManager,
-            IEmployeeRepository employeeRepository)
+            IEmployeeRepository employeeRepository,
+            IConfirmationRepository confirmationRepository)
         {
             _tripRepository = tripRepository;
             _groupManager = groupManager;
             _checklistManager = checklistManager;
             _employeeRepository = employeeRepository;
+            _confirmationRepository = confirmationRepository;
         }
 
         public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId)
@@ -44,6 +48,11 @@ namespace BackendApartmentReservation.Trips
                 {
                     await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId,
                         trip.ExternalTripId);
+
+                    await _confirmationRepository.CreateConfirmation(
+                        employeeGroup.DbEmployee,
+                        trip,
+                        ConfirmationType.TripParticipation);
 
                     var employeePlan = new DbEmployeePlan();
                     employeePlan.StartDate = trip.DepartureDate;
@@ -72,7 +81,7 @@ namespace BackendApartmentReservation.Trips
             return timeSpanDays <= 1 && firstTrip.DestinationOffice.ExternalOfficeId.Equals(secondTrip.DestinationOffice.ExternalOfficeId);
         }
 
-        public async Task<IEnumerable<string>> GetAllMergeableTrips(string tripId)
+        public async Task<IEnumerable<BasicTripInformationResponse>> GetAllMergeableTrips(string tripId)
         {
 
             var trip = await _tripRepository.GetTrip(tripId);
@@ -84,9 +93,20 @@ namespace BackendApartmentReservation.Trips
 
             var allTrips = await _tripRepository.GetAllTrips();
 
-            var mergeableTripsIds = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result).Select(t => t.ExternalTripId);
+            var basicTripInformationResponses = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result)
+                .Select(t => new BasicTripInformationResponse
+            {
+                TripId = t.ExternalTripId,
+                StartTime = t.DepartureDate,
+                EndTime = t.ReturnDate,
+                Office = new OfficeInfoResponse
+                {
+                    Id = t.DestinationOffice.ExternalOfficeId,
+                    Address = t.DestinationOffice.Address
+                }
+            });
 
-            return mergeableTripsIds;
+            return basicTripInformationResponses;
         }
 
         public async Task<TripCreatedResponse> MergeTrips(MergeTripsRequest mergeTripsRequest, string managerId)
@@ -122,6 +142,14 @@ namespace BackendApartmentReservation.Trips
             };
 
             var mergedTrip = await _tripRepository.CreateTrip(tripRequest, managerId);
+
+            var checklists = (await _checklistManager.GetAllTripChecklists(mergeTripsRequest.FirstTripId)).ToList();
+            checklists.AddRange((await _checklistManager.GetAllTripChecklists(mergeTripsRequest.SecondTripId)).ToList());
+
+            foreach (var checklist in checklists)
+            {
+                await _checklistManager.UpdateChecklistTrip(checklist, mergedTrip.ExternalTripId);
+            }
 
             await _tripRepository.DeleteTrip(mergeTripsRequest.FirstTripId);
             await _tripRepository.DeleteTrip(mergeTripsRequest.SecondTripId);

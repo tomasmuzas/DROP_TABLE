@@ -1,4 +1,7 @@
-﻿namespace BackendApartmentReservation.Apartments
+﻿using System.Net.Sockets;
+using BackendApartmentReservation.DataContracts.DataTransferObjects.Responses;
+
+namespace BackendApartmentReservation.Apartments
 {
     using BackendApartmentReservation.Database.Entities;
     using Database;
@@ -8,6 +11,7 @@
     using System.Threading.Tasks;
     using System.Linq;
     using BackendApartmentReservation.Infrastructure.Exceptions;
+    using Microsoft.EntityFrameworkCore;
 
     public class ApartmentRepository : IApartmentRepository
     {
@@ -18,25 +22,27 @@
             _db = db;
         }
 
-        public async Task<DbRoomReservation> CreateRoomReservation(DbEmployee employee, DateTimeOffset dateFrom, DateTimeOffset dateTo)
+        public async Task<DbApartment> CreateApartment(string address, List<DbApartmentRoom> apartmentRooms)
+        {
+            var apartment = new DbApartment
+            {
+                Address = address,
+                Rooms = apartmentRooms
+            };
+
+            await _db.Apartments.AddAsync(apartment);
+            await _db.SaveChangesAsync();
+            return apartment;
+        }
+
+        public async Task<DbRoomReservation> CreateRoomReservation(string tripId, DbEmployee employee, DateTimeOffset dateFrom, DateTimeOffset dateTo)
         {
             var roomReservation = new DbRoomReservation();
             roomReservation.Employee = employee;
             roomReservation.DateFrom = dateFrom;
             roomReservation.DateTo = dateTo;
 
-            var availableRooms = new List<DbApartmentRoom>();
-            foreach (DbApartmentRoom room in _db.ApartmentRooms)
-            {
-                var isAvailable = !_db.DbRoomReservations
-                    .Where(r => r.Room.Id == room.Id)
-                    .Any(r => Math.Max(dateFrom.Date.Ticks, r.DateFrom.Date.Ticks) <=
-                    Math.Min(dateTo.Date.Ticks, r.DateTo.Date.Ticks));
-                if (isAvailable)
-                {
-                    availableRooms.Add(room);
-                }
-            }
+            var availableRooms = await GetAvailableRooms(tripId, dateFrom, dateTo);
 
             roomReservation.Room = availableRooms.FirstOrDefault();
             if (roomReservation.Room == null)
@@ -60,6 +66,35 @@
         {
             _db.DbRoomReservations.Remove(roomReservation);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<DbApartmentRoom>> GetAvailableRooms(string tripId, DateTimeOffset dateFrom, DateTimeOffset dateTo)
+        {
+            var trip = await _db.Trips
+                .Where(t => t.ExternalTripId == tripId)
+                .Include(t => t.DestinationOffice)
+                    .ThenInclude(o => o.OfficeApartment)
+                        .ThenInclude(a => a.Rooms)
+                .SingleOrDefaultAsync();
+
+            var office = trip.DestinationOffice;
+
+            var rooms = office.OfficeApartment.Rooms;
+
+            var availableRooms = new List<DbApartmentRoom>();
+            foreach (var room in rooms)
+            {
+                var isAvailable = !_db.DbRoomReservations
+                    .Where(r => r.Room.Id == room.Id)
+                    .Any(r => Math.Max(dateFrom.Date.Ticks, r.DateFrom.Date.Ticks) <=
+                              Math.Min(dateTo.Date.Ticks, r.DateTo.Date.Ticks));
+                if (isAvailable)
+                {
+                    availableRooms.Add(room);
+                }
+            }
+
+            return availableRooms;
         }
     }
 }

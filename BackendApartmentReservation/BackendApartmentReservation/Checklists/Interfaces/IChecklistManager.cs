@@ -1,5 +1,6 @@
 ﻿namespace BackendApartmentReservation.Checklists.Interfaces
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Database.Entities;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
@@ -35,5 +36,9 @@
         Task<HotelReservationInfo> GetHotelReservationInfo(string employeeId, string tripId);
 
         Task DeleteHotelReservation(string employeeId, string tripId);
+
+        Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetAllTripChecklists(string tripId);
+
+        Task UpdateChecklistTrip(DbEmployeeAmenitiesChecklist checklist, string newTripId);
     }
 }

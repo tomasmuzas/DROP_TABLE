@@ -15,6 +15,7 @@ namespace BackendApartmentReservation.Checklists
     using Interfaces;
     using Microsoft.Extensions.Logging;
     using Trips.Interfaces;
+    using System.Collections.Generic;
 
     public class ChecklistManager : IChecklistManager
     {
@@ -276,6 +277,18 @@ namespace BackendApartmentReservation.Checklists
 
             await _hotelRepository.UpdateHotelReservation(hotelReservation);
             _logger.LogInformation($"Updated hotel reservation information for the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetAllTripChecklists(string tripId)
+        {
+            return await _checklistRepository.GetAllTripChecklists(tripId);
+        }
+
+        public async Task UpdateChecklistTrip(DbEmployeeAmenitiesChecklist checklist, string newTripId)
+        {
+            var trip = await _tripRepository.GetTrip(newTripId);
+            checklist.Trip = trip;
+            await _checklistRepository.UpdateChecklist(checklist);
         }
     }
 }

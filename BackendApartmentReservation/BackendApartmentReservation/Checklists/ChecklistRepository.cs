@@ -1,5 +1,6 @@
 ﻿namespace BackendApartmentReservation.Checklists
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using BackendApartmentReservation.Database.Entities.Reservations;
@@ -87,6 +88,15 @@
                 .SingleOrDefaultAsync();
 
             return livingPlace.HotelReservation;
+        }
+
+        public async Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetAllTripChecklists(string tripId)
+        {
+            return await _db.Checklists
+                .Include(c => c.Trip)
+                .Where(c => c.Trip.ExternalTripId == tripId)
+                .Include(c => c.Employee)
+                .ToListAsync();
         }
     }
 }

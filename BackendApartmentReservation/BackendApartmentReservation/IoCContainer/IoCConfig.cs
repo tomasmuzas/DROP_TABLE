@@ -20,6 +20,8 @@ namespace BackendApartmentReservation.IoCContainer
     using Employees.Interfaces;
     using Groups;
     using Groups.Interfaces;
+    using LivingPlace;
+    using LivingPlace.Interfaces;
     using Offices;
     using Offices.Interfaces;
     using Trips;
@@ -44,6 +46,8 @@ namespace BackendApartmentReservation.IoCContainer
                 .As<ITripManager>();
             builder.RegisterType<AuthenticationManager>()
                 .As<IAuthenticationManager>();
+            builder.RegisterType<LivingPlaceManager>()
+                .As<ILivingPlaceManager>();
 
             // Repositories
             builder.RegisterType<CarRentRepository>()
