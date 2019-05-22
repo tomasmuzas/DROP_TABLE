@@ -31,6 +31,7 @@ namespace BackendApartmentReservation.Trips
         }
 
         [HttpGet]
+        [Route("organized")]
         [OrganizerOnly]
         public async Task<IEnumerable<BasicTripInformationResponse>> GetAllOrganizedTripsInformation()
         {
