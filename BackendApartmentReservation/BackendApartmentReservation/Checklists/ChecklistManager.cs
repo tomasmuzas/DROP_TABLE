@@ -16,6 +16,7 @@ namespace BackendApartmentReservation.Checklists
     using Microsoft.Extensions.Logging;
     using Trips.Interfaces;
     using System.Collections.Generic;
+    using BackendApartmentReservation.Apartments.Interfaces;
 
     public class ChecklistManager : IChecklistManager
     {
@@ -27,6 +28,7 @@ namespace BackendApartmentReservation.Checklists
         private readonly IFlightRepository _flightRepository;
         private readonly ICarRentRepository _carRentRepository;
         private readonly IHotelRepository _hotelRepository;
+        private readonly IApartmentRepository _apartmentRepository;
 
         private readonly ILogger<ChecklistManager> _logger;
 
@@ -38,6 +40,7 @@ namespace BackendApartmentReservation.Checklists
             ICarRentRepository carRentRepository,
             ILivingPlaceRepository livingPlaceRepository,
             IHotelRepository hotelRepository,
+            IApartmentRepository apartmentRepository,
             ILogger<ChecklistManager> logger)
         {
             _employeeRepository = employeeRepository;
@@ -48,6 +51,7 @@ namespace BackendApartmentReservation.Checklists
             _flightRepository = flightRepository;
             _carRentRepository = carRentRepository;
             _hotelRepository = hotelRepository;
+            _apartmentRepository = apartmentRepository;
 
             _logger = logger;
         }
@@ -276,6 +280,70 @@ namespace BackendApartmentReservation.Checklists
             hotelReservation.DateFrom = info.DateFrom;
 
             await _hotelRepository.UpdateHotelReservation(hotelReservation);
+            _logger.LogInformation($"Updated hotel reservation information for the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task AddApartmentReservationForEmployee(string employeeId, string tripId)
+        {
+            var checklist = await _checklistRepository.GetFullChecklist(employeeId, tripId);
+            if (checklist.LivingPlace != null)
+            {
+                _logger.LogError($"Checklist for employee {employeeId} and trip {tripId} already has a living place");
+                throw new ErrorCodeException(ErrorCodes.ChecklistLivingPlaceAlreadyExists);
+            }
+
+            var apartmentReservation = await _apartmentRepository.CreateRoomReservation(checklist.Trip.ExternalTripId, 
+                checklist.Employee, checklist.Trip.DepartureDate, checklist.Trip.ReturnDate);
+            var livingPlace = await _livingPlaceRepository.CreateApartmentLivingPlaceAmenity(apartmentReservation.Id);
+            checklist.LivingPlace = livingPlace;
+
+            await _checklistRepository.UpdateChecklist(checklist);
+            _logger.LogInformation($"Added apartment room reservation as living place to the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task DeleteApartmentReservation(string employeeId, string tripId)
+        {
+            var checklist = await _checklistRepository.GetFullChecklist(employeeId, tripId);
+            var apartmentReservation = checklist.LivingPlace.ApartmentRoomReservation;
+
+            checklist.LivingPlace = null;
+            await _checklistRepository.UpdateChecklist(checklist);
+
+            await _apartmentRepository.DeleteRoomReservation(apartmentReservation);
+            _logger.LogInformation($"Deleted apartment room reservation as living place for the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task<ApartmentReservationInfo> GetApartmentReservationInfo(string employeeId, string tripId)
+        {
+            var trip = await _tripRepository.GetTrip(tripId);
+            var apartmentReservation = await _checklistRepository.GetChecklistFullApartmentRoomReservation(employeeId, tripId);
+
+            var apartmentReservationInfo = new ApartmentReservationInfo();
+
+            if (apartmentReservation == null)
+            {
+                apartmentReservationInfo.Required = false;
+                return apartmentReservationInfo;
+            }
+
+            apartmentReservationInfo.Required = true;
+            apartmentReservationInfo.ApartmentAddress = trip.DestinationOffice.OfficeApartment.Address;
+            apartmentReservationInfo.RoomNumber = apartmentReservation.Room.RoomNumber;
+            apartmentReservationInfo.DateFrom = apartmentReservation.DateFrom;
+            apartmentReservationInfo.DateTo = apartmentReservation.DateTo;
+
+            return apartmentReservationInfo;
+        }
+
+        public async Task UpdateApartmentReservationForEmployee(string employeeId, string tripId, ApartmentReservationRequest info)
+        {
+            var apartmentReservation = await _checklistRepository.GetChecklistFullApartmentRoomReservation(employeeId, tripId);
+
+            apartmentReservation.Room = info.Room;
+            apartmentReservation.DateTo = info.DateTo;
+            apartmentReservation.DateFrom = info.DateFrom;
+
+            await _apartmentRepository.UpdateRoomReservation(apartmentReservation);
             _logger.LogInformation($"Updated hotel reservation information for the checklist for employee {employeeId} and trip {tripId}");
         }
 

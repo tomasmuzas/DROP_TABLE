@@ -37,6 +37,14 @@
 
         Task DeleteHotelReservation(string employeeId, string tripId);
 
+        Task AddApartmentReservationForEmployee(string employeeId, string tripId);
+
+        Task UpdateApartmentReservationForEmployee(string employeeId, string tripId, ApartmentReservationRequest info);
+
+        Task<ApartmentReservationInfo> GetApartmentReservationInfo(string employeeId, string tripId);
+
+        Task DeleteApartmentReservation(string employeeId, string tripId);
+
         Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetAllTripChecklists(string tripId);
 
         Task UpdateChecklistTrip(DbEmployeeAmenitiesChecklist checklist, string newTripId);

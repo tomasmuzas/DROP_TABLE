@@ -90,6 +90,20 @@
             return livingPlace.HotelReservation;
         }
 
+        public async Task<DbRoomReservation> GetChecklistFullApartmentRoomReservation(string employeeId, string tripId)
+        {
+            var livingPlace = await _db.Checklists
+                .Include(c => c.Employee)
+                .Include(c => c.Trip)
+                .Where(c => c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId)
+                .Select(c => c.LivingPlace)
+                .Include(c => c.ApartmentRoomReservation)
+                    .ThenInclude(a => a.Room)
+                .SingleOrDefaultAsync();
+
+            return livingPlace.ApartmentRoomReservation;
+        }
+
         public async Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetAllTripChecklists(string tripId)
         {
             return await _db.Checklists

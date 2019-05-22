@@ -28,6 +28,7 @@ namespace BackendApartmentReservation.Trips
                 return await _db.Trips
                     .Where(t => t.ExternalTripId == tripId)
                     .Include(t => t.DestinationOffice)
+                        .ThenInclude(o => o.OfficeApartment)
                     .Include(t => t.Groups)
                     .SingleAsync();
             }

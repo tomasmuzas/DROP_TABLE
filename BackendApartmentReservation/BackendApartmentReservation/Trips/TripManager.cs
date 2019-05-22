@@ -6,6 +6,7 @@ using BackendApartmentReservation.Infrastructure.Exceptions;
 namespace BackendApartmentReservation.Trips
 {
     using System.Threading.Tasks;
+    using BackendApartmentReservation.Apartments.Interfaces;
     using BackendApartmentReservation.Database.Entities;
     using BackendApartmentReservation.Employees.Interfaces;
     using Checklists.Interfaces;
@@ -20,17 +21,20 @@ namespace BackendApartmentReservation.Trips
         private readonly IGroupManager _groupManager;
         private readonly IChecklistManager _checklistManager;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IApartmentRepository _apartmentRepository;
 
         public TripManager(
             ITripRepository tripRepository,
             IGroupManager groupManager,
             IChecklistManager checklistManager,
-            IEmployeeRepository employeeRepository)
+            IEmployeeRepository employeeRepository,
+            IApartmentRepository apartmentRepository)
         {
             _tripRepository = tripRepository;
             _groupManager = groupManager;
             _checklistManager = checklistManager;
             _employeeRepository = employeeRepository;
+            _apartmentRepository = apartmentRepository;
         }
 
         public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId)
@@ -42,8 +46,12 @@ namespace BackendApartmentReservation.Trips
                 var employeesGroup = await _groupManager.GetEmployeeGroupsByGroupId(group.ExternalGroupId);
                 foreach (var employeeGroup in employeesGroup)
                 {
-                    await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId,
+                    var checklist = await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId,
                         trip.ExternalTripId);
+
+                    var availableRooms = await _apartmentRepository.GetAvailableRooms(trip.ExternalTripId, trip.DepartureDate, trip.ReturnDate);
+                    if (availableRooms.Count() > 0)
+                        await _checklistManager.AddApartmentReservationForEmployee(checklist.Employee.ExternalEmployeeId, trip.ExternalTripId);
 
                     var employeePlan = new DbEmployeePlan();
                     employeePlan.StartDate = trip.DepartureDate;
