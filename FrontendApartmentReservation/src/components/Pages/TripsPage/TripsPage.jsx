@@ -8,6 +8,7 @@ import { withTranslation } from "react-i18next";
 class TripsPage extends React.Component {
     componentWillMount() {
         this.props.getAllTrips();
+        this.props.clearMergableTrips();
     }
 
     render() {
@@ -17,7 +18,7 @@ class TripsPage extends React.Component {
                 <div>
                     <h1 className="row justify-content-md-center mt-5">{t("MyOrganizedTrips")}</h1>
                     <div>
-                        {this.props.trips.map(trip =><TripCard key={trip.tripId} trip={trip} />)}
+                        {this.props.trips.map(trip =><TripCard key={trip.tripId} trip={trip} mergeable={false} />)}
                     </div>
                 </div>
             );

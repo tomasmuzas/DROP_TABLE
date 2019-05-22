@@ -17,6 +17,9 @@ export const POST_SINGLE_CAR_INFO = "POST_SINGLE_CAR_INFO";
 export const DELETE_SINGLE_CAR_INFO = "DELETE_SINGLE_CAR_INFO";
 export const CLEAR_CHECKLIST = "CLEAR_CHECKLIST";
 export const GET_PLANS = "GET_PLANS";
+export const CLEAR_TRIPS = "CLEAR_TRIPS";
+export const CLEAR_MERGEABLE_TRIPS = "CLEAR_MERGEABLE_TRIPS";
+export const GET_MERGEABLE_TRIPS = "GET_MERGEABLE_TRIPS";
 
 var BACKEND_BASE_URI;
 if (process.env.NODE_ENV === 'production') {
@@ -124,7 +127,7 @@ export const getEmployees = () => (dispatch) => {
 }
 
 export const getAllTrips = () => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/tripinfo`, {
+    return fetch(BACKEND_BASE_URI + `/api/tripinfo/organized`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -144,6 +147,57 @@ export const getAllTrips = () => (dispatch) => {
                         payload: data
                     });
                 });
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const getMergeableTrips = (tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/mergeableTrips/?firstTripId=` + tripId, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+        }
+        else {
+            response.json()
+                .then(data => {
+                    dispatch({
+                        type: GET_MERGEABLE_TRIPS,
+                        payload: data
+                    });
+                });
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const mergeTrips = (FirstTripId, SecondTripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/mergeTrips` , {
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            FirstTripId,
+            SecondTripId
+        }),
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if(response.status === 200){
+            clearTrips();
+            dispatch(push('/trips'));
+            alert(i18n.t("TripMerged") + response.status);
         }
     }).catch((error) => console.warn(error));
 }
@@ -476,6 +530,18 @@ export const createTrip = (employeeIds, destinationOfficeId, departureDate, retu
 export const clearChecklist = () => (dispatch) => {
     dispatch({
         type: CLEAR_CHECKLIST
+    });
+}
+
+export const clearTrips = () => (dispatch) => {
+    dispatch({
+        type: CLEAR_TRIPS
+    });
+}
+
+export const clearMergableTrips = () => (dispatch) => {
+    dispatch({
+        type: CLEAR_MERGEABLE_TRIPS
     });
 }
 
