@@ -10,6 +10,7 @@ namespace BackendApartmentReservation.Trips
     using BackendApartmentReservation.Database.Entities;
     using BackendApartmentReservation.Employees.Interfaces;
     using Checklists.Interfaces;
+    using Confirmations.Interfaces;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
     using Groups.Interfaces;
@@ -22,6 +23,7 @@ namespace BackendApartmentReservation.Trips
         private readonly IChecklistManager _checklistManager;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IApartmentRepository _apartmentRepository;
+        private readonly IConfirmationRepository _confirmationRepository;
 
         public TripManager(
             ITripRepository tripRepository,
@@ -29,12 +31,15 @@ namespace BackendApartmentReservation.Trips
             IChecklistManager checklistManager,
             IEmployeeRepository employeeRepository,
             IApartmentRepository apartmentRepository)
+            IConfirmationRepository confirmationRepository)
         {
             _tripRepository = tripRepository;
             _groupManager = groupManager;
             _checklistManager = checklistManager;
             _employeeRepository = employeeRepository;
             _apartmentRepository = apartmentRepository;
+            _confirmationRepository = confirmationRepository;
+
         }
 
         public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId)
@@ -52,6 +57,11 @@ namespace BackendApartmentReservation.Trips
                     var availableRooms = await _apartmentRepository.GetAvailableRooms(trip.ExternalTripId, trip.DepartureDate, trip.ReturnDate);
                     if (availableRooms.Count() > 0)
                         await _checklistManager.AddApartmentReservationForEmployee(checklist.Employee.ExternalEmployeeId, trip.ExternalTripId);
+
+                    await _confirmationRepository.CreateConfirmation(
+                        employeeGroup.DbEmployee,
+                        trip,
+                        ConfirmationType.TripParticipation);
 
                     var employeePlan = new DbEmployeePlan();
                     employeePlan.StartDate = trip.DepartureDate;
