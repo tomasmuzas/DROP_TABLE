@@ -192,7 +192,12 @@ namespace BackendApartmentReservation.Trips
                 _db.DbEmployeeGroup.RemoveRange(employeeGroups);
             }
 
+            var confirmations = _db.Confirmations
+                .Include(c => c.Trip)
+                .Where(c => c.Trip.ExternalTripId == tripId);
+
             _db.Groups.RemoveRange(groups);
+            _db.Confirmations.RemoveRange(confirmations);
 
             _db.Trips.Remove(trip);
             await _db.SaveChangesAsync();
