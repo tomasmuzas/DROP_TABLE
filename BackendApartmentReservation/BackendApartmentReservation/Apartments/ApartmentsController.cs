@@ -1,6 +1,8 @@
 ﻿using System;
 using BackendApartmentReservation.Apartments.Interfaces;
+using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
 using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
+using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.Infrastructure.Authorization;
 using BackendApartmentReservation.LivingPlace.Interfaces;
 
@@ -30,6 +32,15 @@ namespace BackendApartmentReservation.Apartments
         {
             _logger.LogInformation("Initial step");
             return await Task.FromResult(new[] { "flat1", "flat2" });
+        }
+
+        [HttpPost]
+        [Route("apartments")]
+        [AdminOnly]
+        public async Task CreateApartment([FromBody] CreateApartmentRequest apartmentRequest)
+        {
+            await _livingPlaceManager.CreateApartment(apartmentRequest);
+
         }
 
         [HttpGet]
