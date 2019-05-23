@@ -9,6 +9,7 @@ import Select from 'react-select'
 import * as actionCreators from '../../../actions';
 import TextField from '@material-ui/core/TextField';
 import SimpleReactCalendar from 'simple-react-calendar'
+import { GridLoader } from 'react-spinners';
 
 class CreateTrip extends React.Component {
     constructor(props) {
@@ -126,8 +127,12 @@ class CreateTrip extends React.Component {
         }
         else if (!this.props.plans && this.state.selectedEmployees.length > 0) {
             return (
-                <div>
-                    loading
+                <div className='center-div'>
+                    <GridLoader
+                        sizeUnit={"px"}
+                        size={50}
+                        color={'red'}
+                    />
                 </div>
             )
         }

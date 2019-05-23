@@ -9,8 +9,6 @@ import { Link } from 'react-router-dom';
 import i18n from "../../../i18n";
 import Button from '@material-ui/core/Button';
 
-
-
 class TripCard extends React.Component {
     constructor(props) {
         super(props);

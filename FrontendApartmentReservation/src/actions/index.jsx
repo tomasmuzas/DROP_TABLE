@@ -20,6 +20,7 @@ export const GET_PLANS = "GET_PLANS";
 export const CLEAR_TRIPS = "CLEAR_TRIPS";
 export const CLEAR_MERGEABLE_TRIPS = "CLEAR_MERGEABLE_TRIPS";
 export const GET_MERGEABLE_TRIPS = "GET_MERGEABLE_TRIPS";
+export const GET_MY_TRIPS = "GET_MY_TRIPS";
 
 var BACKEND_BASE_URI;
 if (process.env.NODE_ENV === 'production') {
@@ -165,6 +166,31 @@ export const getAllTrips = () => (dispatch) => {
                 .then(data => {
                     dispatch({
                         type: GET_ALL_TRIPS,
+                        payload: data
+                    });
+                });
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const getMyTrips = () => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/tripinfo/participating`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+        }
+        else {
+            response.json()
+                .then(data => {
+                    dispatch({
+                        type: GET_MY_TRIPS,
                         payload: data
                     });
                 });

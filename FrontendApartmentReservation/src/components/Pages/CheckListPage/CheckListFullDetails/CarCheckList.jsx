@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
+import { GridLoader } from 'react-spinners';
 
 class CarCheckList extends React.Component {
     constructor(props) {
@@ -131,8 +132,12 @@ class CarCheckList extends React.Component {
         }
         else {
             return (
-                <div>
-                    loading
+                <div className='center-div'>
+                    <GridLoader
+                        sizeUnit={"px"}
+                        size={50}
+                        color={'red'}
+                    />
                 </div>
             )
         }

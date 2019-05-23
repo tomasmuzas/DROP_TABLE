@@ -14,11 +14,11 @@ import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import i18n from "../../../i18n"
-import arrowUp from './up-arrow.png';
-import arrowDown from './down-arrow.png';
+import arrowUp from '../CheckListPage/up-arrow.png';
+import arrowDown from '../CheckListPage/down-arrow.png';
 import { GridLoader } from 'react-spinners';
 
-class CheckListCard extends React.Component {
+class MyTripCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -37,7 +37,9 @@ class CheckListCard extends React.Component {
     }
 
     componentWillMount() {
-        this.props.getChecklist(this.props.checkListInfo.employee.id, this.props.tripId);
+        //bus participating
+        //trip pareis ar need
+        this.props.getChecklist(this.props.myId, this.props.trip.tripId);
     }
 
     showFlight(checklist) {
@@ -94,37 +96,37 @@ class CheckListCard extends React.Component {
     }
 
     render() {
-        const { checkListInfo, t, tripId } = this.props;
+        const { checkListInfo, t, trip } = this.props;
+        var tripStartTime = new Date(trip.startTime);
+        var tripEndTime = new Date(trip.endTime);
         return (
             <div>
                 <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
                     <div className="col justify-content-md-center nameDiv pl-5 pb-lg-0 pb-5">
-                        <h5>{checkListInfo.employee.firstName} {checkListInfo.employee.lastName} &nbsp;
-                        {checkListInfo.hasAcceptedTripConfirmation ? 
-                            <span style={{ color: "#81c784"}}>({t("TripAccepted")})</span> :
-                            <span style={{ color: "#f50057"}}>({t("TripNotYetAccepted")})</span>
-                        }
+                        <h5 >{t("TripDestination")}: {trip.office.address}</h5>
+                        <h6 >{t("DepartureDate")}:  {tripStartTime.toLocaleDateString('lt-LT')}</h6>
+                        <h6 >{t("ReturnDate")}:  {tripEndTime.toLocaleDateString('lt-LT')}</h6>
+                        <h5>
+                            {trip.checklistInfos.hasAcceptedTripConfirmation ?
+                                <span style={{ color: "#81c784" }}>({t("TripAccepted")})</span> :
+                                <span style={{ color: "#f50057" }}>({t("TripNotYetAccepted")})</span>
+                            }
                         </h5>
                     </div>
                     <div className="col pr-5">
                         <div style={{ float: "right" }}>
                             <FormControlLabel
-                                control={<Checkbox checked={checkListInfo.isApartmentRequired} />}
+                                control={<Checkbox checked={trip.checklistInfos.isApartmentRequired} />}
                                 label={t("ApartmentRequired")}
                             />
                             <FormControlLabel
-                                control={<Checkbox checked={checkListInfo.isFlightRequired} />}
+                                control={<Checkbox checked={trip.checklistInfos.isFlightRequired} />}
                                 label={t("FlightRequired")}
                             />
                             <FormControlLabel
-                                control={<Checkbox checked={checkListInfo.isCarRentRequired} />}
+                                control={<Checkbox checked={trip.checklistInfos.isCarRentRequired} />}
                                 label={t("CarRequired")}
                             />
-                            <Link to={'/' + tripId + '/checklist/' + checkListInfo.employee.id}>
-                                <IconButton className="EditIconButton">
-                                    <Icon>edit_icon</Icon>
-                                </IconButton>
-                            </Link>
                         </div>
                     </div>
 
@@ -156,4 +158,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(CheckListCard));
+export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(MyTripCard));

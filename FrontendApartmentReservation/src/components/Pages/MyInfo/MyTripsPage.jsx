@@ -2,21 +2,24 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../../actions';
+import MyTripCard from './MyTripCard'
+import { withTranslation } from "react-i18next";
 import { GridLoader } from "react-spinners";
 
-class UsersPage extends React.Component {
-
+class MyTripsPage extends React.Component {
     componentWillMount() {
-        this.props.getAllEmployees();
+        this.props.getMyTrips();
     }
 
     render() {
-        if (this.props.employees) {
+        const { t } = this.props; 
+        
+        if (this.props.myTrips) {
             return (
                 <div>
-                   <div>
-                        This is UsersPage
-                        {this.props.employees.map(employee => <div> {employee.firstName} </div>)}
+                    <h1 className="row justify-content-md-center mt-5">{t("MyTrips")}</h1>
+                    <div>
+                        {this.props.myTrips.map(trip =><MyTripCard key={trip.tripId} trip={trip} myId='4779ff4e-fc1d-41d4-8e9a-264ebf3b559b' />)}
                     </div>
                 </div>
             );
@@ -40,8 +43,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        employees: state.employees
+        myTrips: state.myTrips
     };
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(UsersPage));
+export default (connect(mapStateToProps, mapDispatchToProps)(withTranslation()(MyTripsPage)));

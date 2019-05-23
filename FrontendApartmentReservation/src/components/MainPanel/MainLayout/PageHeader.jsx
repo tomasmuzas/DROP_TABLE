@@ -69,6 +69,9 @@ class PageHeader extends React.Component {
                         <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/trips" name={t("Trips")} /></li>
                         </ul>
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
+                            <li className="nav-item pt-1 robot "> <LinkButton link="/myInfo/myTrips" name={t("MyTrips")} /></li>
+                        </ul>
                         <ul className="pr-2 navbar-nav mr-auto" hidden = {isLoggedIn}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/signUp" name={t("SignUp")} /></li>
                         </ul>
