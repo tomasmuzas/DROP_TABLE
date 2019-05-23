@@ -67,10 +67,22 @@ namespace BackendApartmentReservation.Trips
             };
         }
 
+        private bool IsPossibleToMergeTrips(DbTrip firstTrip, DbTrip secondTrip)
+        {
+            if (firstTrip == null || secondTrip == null)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripNotFound);
+            }
+
+            var timeSpanDays = (firstTrip.DepartureDate - secondTrip.DepartureDate).TotalDays;
+            return timeSpanDays <= 1 && firstTrip.DestinationOffice.ExternalOfficeId.Equals(secondTrip.DestinationOffice.ExternalOfficeId);
+        }
+
         public async Task<bool> IsPossibleToMergeTrips(string firstTripId, string secondTripId)
         {
             var firstTrip = await _tripRepository.GetTrip(firstTripId);
             var secondTrip = await _tripRepository.GetTrip(secondTripId);
+
             if (firstTrip == null || secondTrip == null)
             {
                 throw new ErrorCodeException(ErrorCodes.TripNotFound);
@@ -92,7 +104,7 @@ namespace BackendApartmentReservation.Trips
 
             var allTrips = await _tripRepository.GetAllTrips();
 
-            var basicTripInformationResponses = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result && t.ExternalTripId != tripId)
+            var basicTripInformationResponses = allTrips.Where(t => IsPossibleToMergeTrips(trip, t) && t.ExternalTripId != tripId)
                 .Select(t => new BasicTripInformationResponse
                 {
                     TripId = t.ExternalTripId,
@@ -110,7 +122,9 @@ namespace BackendApartmentReservation.Trips
 
         public async Task<TripCreatedResponse> MergeTrips(MergeTripsRequest mergeTripsRequest, string managerId)
         {
-            var isMergeable = await IsPossibleToMergeTrips(mergeTripsRequest.FirstTripId, mergeTripsRequest.SecondTripId);
+            var firstTripToMerge = await _tripRepository.GetTrip(mergeTripsRequest.FirstTripId);
+            var secondTripToMerge = await _tripRepository.GetTrip(mergeTripsRequest.SecondTripId);
+            var isMergeable = IsPossibleToMergeTrips(firstTripToMerge, secondTripToMerge);
             if (!isMergeable)
             {
                 throw new ErrorCodeException(ErrorCodes.TripsNotMergeable);
