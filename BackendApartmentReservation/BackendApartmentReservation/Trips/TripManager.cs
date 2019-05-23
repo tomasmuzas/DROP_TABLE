@@ -30,7 +30,7 @@ namespace BackendApartmentReservation.Trips
             IGroupManager groupManager,
             IChecklistManager checklistManager,
             IEmployeeRepository employeeRepository,
-            IApartmentRepository apartmentRepository)
+            IApartmentRepository apartmentRepository,
             IConfirmationRepository confirmationRepository)
         {
             _tripRepository = tripRepository;
@@ -39,7 +39,6 @@ namespace BackendApartmentReservation.Trips
             _employeeRepository = employeeRepository;
             _apartmentRepository = apartmentRepository;
             _confirmationRepository = confirmationRepository;
-
         }
 
         public async Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId)
@@ -104,16 +103,16 @@ namespace BackendApartmentReservation.Trips
 
             var basicTripInformationResponses = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result)
                 .Select(t => new BasicTripInformationResponse
-            {
-                TripId = t.ExternalTripId,
-                StartTime = t.DepartureDate,
-                EndTime = t.ReturnDate,
-                Office = new OfficeInfoResponse
                 {
-                    Id = t.DestinationOffice.ExternalOfficeId,
-                    Address = t.DestinationOffice.Address
-                }
-            });
+                    TripId = t.ExternalTripId,
+                    StartTime = t.DepartureDate,
+                    EndTime = t.ReturnDate,
+                    Office = new OfficeInfoResponse
+                    {
+                        Id = t.DestinationOffice.ExternalOfficeId,
+                        Address = t.DestinationOffice.Address
+                    }
+                });
 
             return basicTripInformationResponses;
         }
