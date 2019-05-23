@@ -12,6 +12,8 @@ class TripCheckList extends React.Component {
         this.state = {
             checkListInfo: [],
         }
+
+        this.reserveApartments = this.reserveApartments.bind(this);
     }
 
     componentWillMount() {
@@ -19,17 +21,27 @@ class TripCheckList extends React.Component {
         this.props.getBasicTrip(this.props.match.params.tripId);
     }
 
+    reserveApartments() {
+        this.props.reserveApartmentsForAll(this.props.tripbasic.tripId)
+    }
+
     render() {
         const { t } = this.props;
+
         if (this.props.tripbasic && this.props.tripbasic.checklistInfos && this.props.tripbasic.tripId === this.props.match.params.tripId) {
             return (
                 <div>
                     <h2 className="row mt-5 mx-5">{t("TripDestination")} {this.props.tripbasic.office.address}</h2>
                     <h5 className="row mt-2 mx-5">{t("TripStart")} {new Date(this.props.tripbasic.startTime).toLocaleDateString("lt-LT")} {t("TripEnd")} {new Date(this.props.tripbasic.endTime).toLocaleDateString("lt-LT")}</h5>
-                    { this.props.tripbasic.availableApartments >= this.props.tripbasic.checklistInfos.length &&
+                    {
+                        // everyone doesnt have apartments requested
+                        this.props.tripbasic.checklistInfos.filter(c => !c.isApartmentRequired).length === this.props.tripbasic.checklistInfos.length &&
+                        // there are enough available apartments
+                        this.props.tripbasic.availableApartments >= this.props.tripbasic.checklistInfos.filter(c => !c.isApartmentRequired).length &&
+
                         <span className="row mt-5 mx-5" style={{"display": "inline-block"}}> 
                             {t("TripEnoughApartments")} 
-                            <Link className={`btn btn-primary mx-3`} to={''}>{t("ReserveApartmentForAll")}</Link>
+                            <Link className={`btn btn-primary mx-3`} to={''} onClick= {this.reserveApartments}>{t("ReserveApartmentForAll")}</Link>
                         </span> 
                     }
                     <div>
