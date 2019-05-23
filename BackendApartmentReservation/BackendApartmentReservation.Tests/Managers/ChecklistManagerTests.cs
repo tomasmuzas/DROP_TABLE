@@ -19,6 +19,7 @@ namespace BackendApartmentReservation.Tests.Managers
     using Microsoft.Extensions.Logging.Abstractions;
     using Trips.Interfaces;
     using Xunit;
+    using BackendApartmentReservation.Apartments.Interfaces;
 
     public class ChecklistManagerTests
     {
@@ -29,6 +30,7 @@ namespace BackendApartmentReservation.Tests.Managers
         private readonly ICarRentRepository _carRentRepository;
         private readonly ILivingPlaceRepository _livingPlaceRepository;
         private readonly IHotelRepository _hotelRepository;
+        private readonly IApartmentRepository _apartmentRepository;
 
         private readonly ChecklistManager _manager;
 
@@ -40,6 +42,7 @@ namespace BackendApartmentReservation.Tests.Managers
             _carRentRepository = A.Fake<ICarRentRepository>();
             _livingPlaceRepository = A.Fake<ILivingPlaceRepository>();
             _hotelRepository = A.Fake<IHotelRepository>();
+            _apartmentRepository = A.Fake<IApartmentRepository>();
 
             _checklistRepository = A.Fake<IChecklistRepository>(o => o.Strict());
 
@@ -53,6 +56,7 @@ namespace BackendApartmentReservation.Tests.Managers
                 _carRentRepository,
                 _livingPlaceRepository,
                 _hotelRepository,
+                _apartmentRepository,
                 logger);
         }
 

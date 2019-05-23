@@ -13,6 +13,7 @@ namespace BackendApartmentReservation.Tests.Integration
     using Microsoft.Extensions.Logging.Abstractions;
     using Trips.Interfaces;
     using Xunit;
+    using BackendApartmentReservation.Apartments.Interfaces;
 
     public class FullChecklistManagerTests : DatabaseTestBase
     {
@@ -27,6 +28,7 @@ namespace BackendApartmentReservation.Tests.Integration
                 var carRentRepository = A.Fake<ICarRentRepository>(o => o.Strict());
                 var livingPlaceRepository = A.Fake<ILivingPlaceRepository>(o => o.Strict());
                 var hotelRepository = A.Fake <IHotelRepository>(o => o.Strict());
+                var apartmentRepository = A.Fake<IApartmentRepository>(o => o.Strict());
                 var checklistRepository = new ChecklistRepository(dbContext);
 
                 var checklistManager = new ChecklistManager(
@@ -37,6 +39,7 @@ namespace BackendApartmentReservation.Tests.Integration
                     carRentRepository,
                     livingPlaceRepository,
                     hotelRepository,
+                    apartmentRepository,
                     new NullLogger<ChecklistManager>());
 
                 var employee = new DbEmployee
