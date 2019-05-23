@@ -20,11 +20,13 @@ namespace BackendApartmentReservation.Tests.Managers
     using Trips.Interfaces;
     using Xunit;
     using BackendApartmentReservation.Apartments.Interfaces;
+    using BackendApartmentReservation.Groups.Interfaces;
 
     public class ChecklistManagerTests
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ITripRepository _tripRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly IChecklistRepository _checklistRepository;
         private readonly IFlightRepository _flightRepository;
         private readonly ICarRentRepository _carRentRepository;
@@ -38,6 +40,7 @@ namespace BackendApartmentReservation.Tests.Managers
         {
             _employeeRepository = A.Fake<IEmployeeRepository>();
             _tripRepository = A.Fake<ITripRepository>();
+            _groupRepository = A.Fake<IGroupRepository>();
             _flightRepository = A.Fake<IFlightRepository>();
             _carRentRepository = A.Fake<ICarRentRepository>();
             _livingPlaceRepository = A.Fake<ILivingPlaceRepository>();
@@ -52,6 +55,7 @@ namespace BackendApartmentReservation.Tests.Managers
                 _employeeRepository,
                 _checklistRepository,
                 _tripRepository,
+                _groupRepository,
                 _flightRepository,
                 _carRentRepository,
                 _livingPlaceRepository,

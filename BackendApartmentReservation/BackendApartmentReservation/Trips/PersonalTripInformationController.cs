@@ -7,6 +7,7 @@ namespace BackendApartmentReservation.Trips
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/trips/{tripId}/employees/{employeeId}")]
@@ -92,6 +93,44 @@ namespace BackendApartmentReservation.Trips
         }
 
         [HttpGet]
+        [Route("apartment")]
+        public async Task<ApartmentReservationInfo> GetApartmentReservationInfo(string tripId, string employeeId)
+        {
+            return await _checklistManager.GetApartmentReservationInfo(employeeId, tripId);
+        }
+
+        [HttpPost]
+        [Route("apartment")]
+        public async Task AddApartmentReservation(string tripId, string employeeId)
+        {
+            await _checklistManager.AddApartmentReservationForEmployee(employeeId, tripId);
+        }
+
+        [HttpPost]
+        [Route("~/api/trips/{tripId}/apartment")]
+        public async Task AddApartmentReservationForAllEmployees(string tripId)
+        {
+            await _checklistManager.AddApartmentReservationForAllEmployees(tripId);
+        }
+
+        [HttpPut]
+        [Route("apartment")]
+        public async Task UpdateApartmentReservation(
+            string tripId,
+            string employeeId,
+            [FromBody] ApartmentReservationRequest info)
+        {
+            await _checklistManager.UpdateApartmentReservationForEmployee(employeeId, tripId, info);
+        }
+
+        [HttpDelete]
+        [Route("apartment")]
+        public async Task DeleteApartmentReservation(string tripId, string employeeId)
+        {
+            await _checklistManager.DeleteApartmentReservation(employeeId, tripId);
+        }
+
+        [HttpGet]
         [Route("hotel")]
         public async Task<HotelReservationInfo> GetHotelReservationInfo(string tripId, string employeeId)
         {
@@ -117,7 +156,7 @@ namespace BackendApartmentReservation.Trips
 
         [HttpDelete]
         [Route("hotel")]
-        public async Task DeleteHotelReservationt(string tripId, string employeeId)
+        public async Task DeleteHotelReservation(string tripId, string employeeId)
         {
             await _checklistManager.DeleteHotelReservation(employeeId, tripId);
         }

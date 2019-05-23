@@ -17,11 +17,13 @@ namespace BackendApartmentReservation.Checklists
     using Trips.Interfaces;
     using System.Collections.Generic;
     using BackendApartmentReservation.Apartments.Interfaces;
+    using BackendApartmentReservation.Groups.Interfaces;
 
     public class ChecklistManager : IChecklistManager
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ITripRepository _tripRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly IChecklistRepository _checklistRepository;
         private readonly ILivingPlaceRepository _livingPlaceRepository;
 
@@ -36,6 +38,7 @@ namespace BackendApartmentReservation.Checklists
             IEmployeeRepository employeeRepository,
             IChecklistRepository checklistRepository,
             ITripRepository tripRepository,
+            IGroupRepository groupRepository,
             IFlightRepository flightRepository,
             ICarRentRepository carRentRepository,
             ILivingPlaceRepository livingPlaceRepository,
@@ -45,6 +48,7 @@ namespace BackendApartmentReservation.Checklists
         {
             _employeeRepository = employeeRepository;
             _tripRepository = tripRepository;
+            _groupRepository = groupRepository;
             _checklistRepository = checklistRepository;
             _livingPlaceRepository = livingPlaceRepository;
 
@@ -299,6 +303,19 @@ namespace BackendApartmentReservation.Checklists
 
             await _checklistRepository.UpdateChecklist(checklist);
             _logger.LogInformation($"Added apartment room reservation as living place to the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task AddApartmentReservationForAllEmployees(string tripId)
+        {
+            var trip = await _tripRepository.GetTrip(tripId);
+            foreach (var group in trip.Groups)
+            {
+                var employeesGroup = await _groupRepository.GetEmployeeGroupsByGroupId(group.ExternalGroupId);
+                foreach (var employeeGroup in employeesGroup)
+                {
+                    await AddApartmentReservationForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId, trip.ExternalTripId);
+                }
+            }
         }
 
         public async Task DeleteApartmentReservation(string employeeId, string tripId)

@@ -37,6 +37,8 @@
 
         Task DeleteHotelReservation(string employeeId, string tripId);
 
+        Task AddApartmentReservationForAllEmployees(string tripId);
+
         Task AddApartmentReservationForEmployee(string employeeId, string tripId);
 
         Task UpdateApartmentReservationForEmployee(string employeeId, string tripId, ApartmentReservationRequest info);
