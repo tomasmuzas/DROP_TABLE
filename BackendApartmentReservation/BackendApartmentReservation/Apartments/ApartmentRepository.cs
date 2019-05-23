@@ -96,5 +96,10 @@ namespace BackendApartmentReservation.Apartments
 
             return availableRooms;
         }
+
+        public async Task<DbRoomReservation> GetRoomReservation(int reservationId)
+        {
+            return await _db.DbRoomReservations.FindAsync(reservationId);
+        }
     }
 }

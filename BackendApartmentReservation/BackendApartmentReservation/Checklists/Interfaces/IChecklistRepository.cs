@@ -22,6 +22,8 @@
 
         Task<DbHotelReservation> GetChecklistFullHotelReservation(string employeeId, string tripId);
 
+        Task<DbRoomReservation> GetChecklistFullApartmentRoomReservation(string employeeId, string tripId);
+
         Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetAllTripChecklists(string tripId);
     }
 }

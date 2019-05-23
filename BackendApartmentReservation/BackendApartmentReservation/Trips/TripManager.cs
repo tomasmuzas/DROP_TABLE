@@ -1,11 +1,9 @@
-﻿using System;
+﻿using BackendApartmentReservation.Infrastructure.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
-using BackendApartmentReservation.Infrastructure.Exceptions;
 
 namespace BackendApartmentReservation.Trips
 {
-    using System.Threading.Tasks;
     using BackendApartmentReservation.Database.Entities;
     using BackendApartmentReservation.Employees.Interfaces;
     using Checklists.Interfaces;
@@ -14,6 +12,7 @@ namespace BackendApartmentReservation.Trips
     using DataContracts.DataTransferObjects.Responses;
     using Groups.Interfaces;
     using Interfaces;
+    using System.Threading.Tasks;
 
     public class TripManager : ITripManager
     {
@@ -46,7 +45,7 @@ namespace BackendApartmentReservation.Trips
                 var employeesGroup = await _groupManager.GetEmployeeGroupsByGroupId(group.ExternalGroupId);
                 foreach (var employeeGroup in employeesGroup)
                 {
-                    await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId,
+                    var checklist = await _checklistManager.CreateEmptyChecklistForEmployee(employeeGroup.DbEmployee.ExternalEmployeeId,
                         trip.ExternalTripId);
 
                     await _confirmationRepository.CreateConfirmation(
@@ -95,16 +94,16 @@ namespace BackendApartmentReservation.Trips
 
             var basicTripInformationResponses = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result && t.ExternalTripId != tripId)
                 .Select(t => new BasicTripInformationResponse
-            {
-                TripId = t.ExternalTripId,
-                StartTime = t.DepartureDate,
-                EndTime = t.ReturnDate,
-                Office = new OfficeInfoResponse
                 {
-                    Id = t.DestinationOffice.ExternalOfficeId,
-                    Address = t.DestinationOffice.Address
-                }
-            });
+                    TripId = t.ExternalTripId,
+                    StartTime = t.DepartureDate,
+                    EndTime = t.ReturnDate,
+                    Office = new OfficeInfoResponse
+                    {
+                        Id = t.DestinationOffice.ExternalOfficeId,
+                        Address = t.DestinationOffice.Address
+                    }
+                });
 
             return basicTripInformationResponses;
         }

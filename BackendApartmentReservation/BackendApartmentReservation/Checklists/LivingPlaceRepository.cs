@@ -45,5 +45,18 @@
             await _db.SaveChangesAsync();
             return livingPlaceAmenity;
         }
+
+        public async Task<DbLivingPlaceAmenity> CreateApartmentLivingPlaceAmenity(int apartmentReservationId)
+        {
+            var roomReservation = await _apartmentRepository.GetRoomReservation(apartmentReservationId);
+            var livingPlaceAmenity = new DbLivingPlaceAmenity()
+            {
+                ApartmentRoomReservation = roomReservation
+            };
+
+            await _db.LivingPlaceAmenities.AddAsync(livingPlaceAmenity);
+            await _db.SaveChangesAsync();
+            return livingPlaceAmenity;
+        }
     }
 }

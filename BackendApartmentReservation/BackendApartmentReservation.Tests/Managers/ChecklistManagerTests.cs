@@ -19,16 +19,20 @@ namespace BackendApartmentReservation.Tests.Managers
     using Microsoft.Extensions.Logging.Abstractions;
     using Trips.Interfaces;
     using Xunit;
+    using BackendApartmentReservation.Apartments.Interfaces;
+    using BackendApartmentReservation.Groups.Interfaces;
 
     public class ChecklistManagerTests
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly ITripRepository _tripRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly IChecklistRepository _checklistRepository;
         private readonly IFlightRepository _flightRepository;
         private readonly ICarRentRepository _carRentRepository;
         private readonly ILivingPlaceRepository _livingPlaceRepository;
         private readonly IHotelRepository _hotelRepository;
+        private readonly IApartmentRepository _apartmentRepository;
 
         private readonly ChecklistManager _manager;
 
@@ -36,10 +40,12 @@ namespace BackendApartmentReservation.Tests.Managers
         {
             _employeeRepository = A.Fake<IEmployeeRepository>();
             _tripRepository = A.Fake<ITripRepository>();
+            _groupRepository = A.Fake<IGroupRepository>();
             _flightRepository = A.Fake<IFlightRepository>();
             _carRentRepository = A.Fake<ICarRentRepository>();
             _livingPlaceRepository = A.Fake<ILivingPlaceRepository>();
             _hotelRepository = A.Fake<IHotelRepository>();
+            _apartmentRepository = A.Fake<IApartmentRepository>();
 
             _checklistRepository = A.Fake<IChecklistRepository>(o => o.Strict());
 
@@ -49,10 +55,12 @@ namespace BackendApartmentReservation.Tests.Managers
                 _employeeRepository,
                 _checklistRepository,
                 _tripRepository,
+                _groupRepository,
                 _flightRepository,
                 _carRentRepository,
                 _livingPlaceRepository,
                 _hotelRepository,
+                _apartmentRepository,
                 logger);
         }
 
