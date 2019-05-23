@@ -84,16 +84,15 @@ namespace BackendApartmentReservation.Trips
         public async Task<IEnumerable<BasicTripInformationResponse>> GetAllParticipatingTripsInformation(string employeeId)
         {
             var trips = await _tripRepository.GetAllParticipatingTripsOfEmployee(employeeId);
-            return trips.Select(t => new BasicTripInformationResponse
+
+            var infos = new List<BasicTripInformationResponse>();
+            foreach (var trip in trips)
             {
-                StartTime = t.DepartureDate,
-                EndTime = t.ReturnDate,
-                TripId = t.ExternalTripId,
-                Office = new OfficeInfoResponse
-                {
-                    Address = t.DestinationOffice.Address
-                }
-            });
+                var info = await GetBasicTripInformation(trip.ExternalTripId);
+                infos.Add(info);
+            }
+
+            return infos;
         }
     }
 }
