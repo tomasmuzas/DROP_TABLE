@@ -93,7 +93,7 @@ namespace BackendApartmentReservation.Trips
 
             var allTrips = await _tripRepository.GetAllTrips();
 
-            var basicTripInformationResponses = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result)
+            var basicTripInformationResponses = allTrips.Where(t => IsPossibleToMergeTrips(tripId, t.ExternalTripId).Result && t.ExternalTripId != tripId)
                 .Select(t => new BasicTripInformationResponse
             {
                 TripId = t.ExternalTripId,
