@@ -53,6 +53,27 @@ export const getAllApartments = () => (dispatch) => {
     }).catch((error) => console.warn(error));
 }
 
+export const reserveApartmentsForAll = (tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + `/apartment` , {
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if(response.status === 200){
+            clearTrips();
+            dispatch(push('/trip/'+ tripId));
+        }
+    }).catch((error) => console.warn(error));
+}
+
 export const getAllOffices = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/offices`, {
         method: "GET",
