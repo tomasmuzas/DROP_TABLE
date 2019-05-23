@@ -76,7 +76,7 @@ namespace BackendApartmentReservation.Trips
             }
 
             var timeSpanDays = (firstTrip.DepartureDate - secondTrip.DepartureDate).TotalDays;
-            return timeSpanDays <= 1 && firstTrip.DestinationOffice.ExternalOfficeId.Equals(secondTrip.DestinationOffice.ExternalOfficeId);
+            return Math.Abs(timeSpanDays) <= 1 && firstTrip.DestinationOffice.ExternalOfficeId.Equals(secondTrip.DestinationOffice.ExternalOfficeId));
         }
 
         public async Task<bool> IsPossibleToMergeTrips(string firstTripId, string secondTripId)
