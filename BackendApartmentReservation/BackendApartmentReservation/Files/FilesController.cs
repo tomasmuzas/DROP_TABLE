@@ -58,8 +58,8 @@ namespace BackendApartmentReservation.Employees
         public async Task<IActionResult> GetFileById(int fileID)
         {
             var file = await _fileRepository.GetFileById(fileID);
-
-            return Ok(File(file.File, "application/pdf"));
+            
+            return File(file.File, "application/pdf", "newFile.pdf");
         }
 
     }
