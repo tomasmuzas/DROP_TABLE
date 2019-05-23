@@ -68,7 +68,7 @@ namespace BackendApartmentReservation.Trips
             };
         }
 
-        private static bool IsPossibleToMergeTrips(DbTrip firstTrip, DbTrip secondTrip)
+        public bool IsPossibleToMergeTrips(DbTrip firstTrip, DbTrip secondTrip)
         {
             if (firstTrip == null || secondTrip == null)
             {
@@ -76,7 +76,7 @@ namespace BackendApartmentReservation.Trips
             }
 
             var timeSpanDays = (firstTrip.DepartureDate - secondTrip.DepartureDate).TotalDays;
-            return Math.Abs(timeSpanDays) <= 1 && firstTrip.DestinationOffice.ExternalOfficeId.Equals(secondTrip.DestinationOffice.ExternalOfficeId));
+            return Math.Abs(timeSpanDays) <= 1 && firstTrip.DestinationOffice.ExternalOfficeId.Equals(secondTrip.DestinationOffice.ExternalOfficeId);
         }
 
         public async Task<bool> IsPossibleToMergeTrips(string firstTripId, string secondTripId)
