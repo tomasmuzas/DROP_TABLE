@@ -68,7 +68,7 @@ namespace BackendApartmentReservation.Trips
             };
         }
 
-        private bool IsPossibleToMergeTrips(DbTrip firstTrip, DbTrip secondTrip)
+        private static bool IsPossibleToMergeTrips(DbTrip firstTrip, DbTrip secondTrip)
         {
             if (firstTrip == null || secondTrip == null)
             {
@@ -83,14 +83,7 @@ namespace BackendApartmentReservation.Trips
         {
             var firstTrip = await _tripRepository.GetTrip(firstTripId);
             var secondTrip = await _tripRepository.GetTrip(secondTripId);
-
-            if (firstTrip == null || secondTrip == null)
-            {
-                throw new ErrorCodeException(ErrorCodes.TripNotFound);
-            }
-
-            var timeSpanDays = (firstTrip.DepartureDate - secondTrip.DepartureDate).TotalDays;
-            return timeSpanDays <= 1 && firstTrip.DestinationOffice.ExternalOfficeId.Equals(secondTrip.DestinationOffice.ExternalOfficeId);
+            return IsPossibleToMergeTrips(firstTrip, secondTrip);
         }
 
         public async Task<IEnumerable<BasicTripInformationResponse>> GetAllMergeableTrips(string tripId)
