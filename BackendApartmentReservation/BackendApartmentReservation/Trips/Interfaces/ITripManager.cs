@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BackendApartmentReservation.Database.Entities;
 
 namespace BackendApartmentReservation.Trips.Interfaces
 {
@@ -10,6 +11,7 @@ namespace BackendApartmentReservation.Trips.Interfaces
     {
         Task<TripCreatedResponse> CreateBasicTrip(CreateTripRequest tripRequest, string managerId);
         Task<bool> IsPossibleToMergeTrips(string firstTripId, string secondTripId);
+        bool IsPossibleToMergeTrips(DbTrip firstTrip, DbTrip secondTrip);
         Task<IEnumerable<BasicTripInformationResponse>> GetAllMergeableTrips(string tripId);
         Task<TripCreatedResponse> MergeTrips(MergeTripsRequest mergeTripsRequest, string managerId);
     }
