@@ -74,6 +74,8 @@ namespace BackendApartmentReservation.IoCContainer
                 .As<IAuthenticationRepository>();
             builder.RegisterType<ConfirmationRepository>()
                 .As<IConfirmationRepository>();
+            builder.RegisterType<FileRepository>()
+                .As<IFileRepository>();
         }
     }
 }
