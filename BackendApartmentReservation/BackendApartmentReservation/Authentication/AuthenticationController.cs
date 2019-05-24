@@ -1,4 +1,5 @@
-﻿using BackendApartmentReservation.Authentication.Interfaces;
+﻿using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
+using BackendApartmentReservation.Authentication.Interfaces;
 using BackendApartmentReservation.Infrastructure.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
@@ -25,6 +26,15 @@ namespace BackendApartmentReservation.Authentication
         public async Task<EmployeeAuthenticationInfo> Authenticate([FromBody] AuthenticationRequest request)
         {
             return await _authenticationManager.Authenticate(request);
+        }
+
+
+        [HttpPost]
+        [AdminOnly]
+        [Route("employees/role")]
+        public async Task ChangeEmployeeRole(ChangeUserRoleRequest changeUserRoleRequest)
+        {
+            await _authenticationManager.ChangeUserRole(changeUserRoleRequest);
         }
     }
 }

@@ -13,5 +13,7 @@ namespace BackendApartmentReservation.Authentication.Interfaces
         Task CreateAuthenticationInfo(DbEmployee dbEmployee, Password password);
 
         Task<DbEmployee> GetAndVerifyEmployee(string employeeId);
+
+        Task ChangeUserRole(ChangeUserRoleRequest changeUserRoleRequest);
     }
 }
