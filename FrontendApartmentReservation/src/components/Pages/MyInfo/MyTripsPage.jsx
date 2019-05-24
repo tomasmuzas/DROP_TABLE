@@ -7,31 +7,37 @@ import { withTranslation } from "react-i18next";
 import { GridLoader } from "react-spinners";
 
 class MyTripsPage extends React.Component {
+
     componentWillMount() {
+        this.props.clearMyTrips()
         this.props.getMyTrips();
     }
 
     render() {
-        const { t } = this.props; 
-        
+        const { t } = this.props;
+
         if (this.props.myTrips) {
             return (
-                <div>
-                    <h1 className="row justify-content-md-center mt-5">{t("MyTrips")}</h1>
-                    <div>
-                        {this.props.myTrips.map(trip =><MyTripCard key={trip.tripId} trip={trip} myId='4779ff4e-fc1d-41d4-8e9a-264ebf3b559b' />)}
+                <div className="row mt-5">
+                    <div className="col-12">
+                        <h1 style={{textAlign:'center'}}>{t("MyTrips")}</h1>
+                        <div>
+                            {this.props.myTrips.map((trip, index) => <MyTripCard key={trip.tripId} index={index} trip={trip}/>)}
+                        </div>
                     </div>
                 </div>
             );
         }
         else {
             return (
-                <div className='center-div'>
-                    <GridLoader
-                        sizeUnit={"px"}
-                        size={50}
-                        color={'red'}
-                    />
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }

@@ -1,5 +1,6 @@
 import { push } from 'react-router-redux';
 import i18n from "../i18n";
+import { Router } from 'react-router';
 
 export const GET_ALL_APARTMENTS = 'GET_ALL_APARTMENTS';
 export const GET_ALL_AUTHENTICATIONS = 'GET_ALL_AUTHENTICATIONS';
@@ -21,9 +22,11 @@ export const CLEAR_TRIPS = "CLEAR_TRIPS";
 export const CLEAR_MERGEABLE_TRIPS = "CLEAR_MERGEABLE_TRIPS";
 export const GET_MERGEABLE_TRIPS = "GET_MERGEABLE_TRIPS";
 export const GET_MY_TRIPS = "GET_MY_TRIPS";
+export const CLEAR_MY_TRIPS = "CLEAR_MY_TRIPS";
+export const UPDATE_MY_TRIPS = "UPDATE_MY_TRIPS";
 
 var BACKEND_BASE_URI;
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
     BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
 }
 else {
@@ -55,7 +58,7 @@ export const getAllApartments = () => (dispatch) => {
 }
 
 export const reserveApartmentsForAll = (tripId) => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + `/apartment` , {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + `/apartment`, {
         method: "Post",
         headers: {
             "Content-Type": "application/json",
@@ -68,9 +71,9 @@ export const reserveApartmentsForAll = (tripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
-        if(response.status === 200){
+        if (response.status === 200) {
             clearTrips();
-            dispatch(push('/trip/'+ tripId));
+            dispatch(push('/trip/' + tripId));
         }
     }).catch((error) => console.warn(error));
 }
@@ -224,7 +227,7 @@ export const getMergeableTrips = (tripId) => (dispatch) => {
 }
 
 export const mergeTrips = (FirstTripId, SecondTripId) => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/mergeTrips` , {
+    return fetch(BACKEND_BASE_URI + `/api/mergeTrips`, {
         method: "Post",
         headers: {
             "Content-Type": "application/json",
@@ -241,7 +244,7 @@ export const mergeTrips = (FirstTripId, SecondTripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
-        if(response.status === 200){
+        if (response.status === 200) {
             clearTrips();
             dispatch(push('/trips'));
             alert(i18n.t("TripMerged") + response.status);
@@ -299,7 +302,7 @@ export const getPlans = (employeeIds) => (dispatch) => {
 }
 
 export const getChecklist = (employeeId, tripId) => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist/personal', {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -455,6 +458,33 @@ export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
 }
 
 
+export const acceptTrip = (tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/participation/accept', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            dispatch({
+                type: UPDATE_MY_TRIPS,
+                payload: tripId
+            })
+            return;
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
 export const createCarInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
         method: "POST",
@@ -583,6 +613,12 @@ export const clearChecklist = () => (dispatch) => {
 export const clearTrips = () => (dispatch) => {
     dispatch({
         type: CLEAR_TRIPS
+    });
+}
+
+export const clearMyTrips = () => (dispatch) => {
+    dispatch({
+        type: CLEAR_MY_TRIPS
     });
 }
 

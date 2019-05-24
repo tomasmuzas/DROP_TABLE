@@ -16,22 +16,26 @@ class TripsPage extends React.Component {
         const { t } = this.props;
         if (this.props.trips.length >= 1) {
             return (
-                <div>
-                    <h1 className="row justify-content-md-center mt-5">{t("MyOrganizedTrips")}</h1>
-                    <div>
-                        {this.props.trips.map(trip => <TripCard key={trip.tripId} trip={trip} mergeable={false} />)}
+                <div className="row mt-5">
+                    <div className="col-12">
+                        <h1 style={{ textAlign: 'center' }}>{t("MyOrganizedTrips")}</h1>
+                        <div>
+                            {this.props.trips.map(trip => <TripCard key={trip.tripId} trip={trip} mergeable={false} />)}
+                        </div>
                     </div>
                 </div>
             );
         }
         else {
             return (
-                <div className='center-div'>
-                    <GridLoader
-                        sizeUnit={"px"}
-                        size={50}
-                        color={'red'}
-                    />
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }

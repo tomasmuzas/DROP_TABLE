@@ -44,12 +44,14 @@ class MergeTrips extends React.Component {
         }
         else {
             return (
-                <div className='center-div'>
-                    <GridLoader
-                        sizeUnit={"px"}
-                        size={50}
-                        color={'red'}
-                    />
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }
@@ -75,12 +77,14 @@ class MergeTrips extends React.Component {
         }
         else {
             return (
-                <div className='center-div'>
-                    <GridLoader
-                        sizeUnit={"px"}
-                        size={50}
-                        color={'red'}
-                    />
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }

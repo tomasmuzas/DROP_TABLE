@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import * as actionCreators from '../../../../actions';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
-import { bindActionCreators } from 'redux';import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux'; import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { GridLoader } from 'react-spinners';
 
@@ -30,7 +30,7 @@ class CarCheckList extends React.Component {
 
     }
 
-    componentWillReceiveProps(newProps){
+    componentWillReceiveProps(newProps) {
         this.setState({
             carInfo: newProps.carInfo
         })
@@ -43,10 +43,10 @@ class CarCheckList extends React.Component {
     }
 
     handleIsRequiredChange(e) {
-        if(e.target.checked){
+        if (e.target.checked) {
             this.props.createCarInfo(this.props.employeeId, this.props.tripId);
         }
-        else{
+        else {
             this.props.deleteCarInfo(this.props.employeeId, this.props.tripId);
         }
         var carInfo = this.state.carInfo;
@@ -132,12 +132,14 @@ class CarCheckList extends React.Component {
         }
         else {
             return (
-                <div className='center-div'>
-                    <GridLoader
-                        sizeUnit={"px"}
-                        size={50}
-                        color={'red'}
-                    />
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }

@@ -127,12 +127,14 @@ class CreateTrip extends React.Component {
         }
         else if (!this.props.plans && this.state.selectedEmployees.length > 0) {
             return (
-                <div className='center-div'>
-                    <GridLoader
-                        sizeUnit={"px"}
-                        size={50}
-                        color={'red'}
-                    />
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }

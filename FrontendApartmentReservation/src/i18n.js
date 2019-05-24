@@ -87,6 +87,7 @@ i18n.use(LanguageDetector).init({
         "TripMerged": "Trips merged",
         "MyTrips": "My trips",
         "NoTripsToMerge": "There are no trips possible to merge",
+        "Accept": "Accept",
       }
     },
     lt: {
@@ -171,7 +172,8 @@ i18n.use(LanguageDetector).init({
         "TripsPossibleToMerge" : "Kelionės su kuriomis galima sujungti",
         "TripMerged": "Kelionės sujungtos",
         "MyTrips": "Mano kelionės",
-        "NoTripsToMerge" : "Nėra kelionių kurias galite sujungti"
+        "NoTripsToMerge" : "Nėra kelionių kurias galite sujungti",
+        "Accept" :"Patvirtinti",
       }
     }
   },

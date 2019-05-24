@@ -36,7 +36,6 @@ class TripCard extends React.Component {
                         <Button className="justify-content-center" variant="outlined" color="secondary">
                             {t("Merge")}
                         </Button>
-
                     </Link>
                 </div>
                 <div className="col-lg-3 col-12 pt-5 pl-5" hidden={mergeable}>
