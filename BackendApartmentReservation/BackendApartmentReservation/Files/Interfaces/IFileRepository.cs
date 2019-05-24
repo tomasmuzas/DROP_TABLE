@@ -1,12 +1,11 @@
 ﻿namespace BackendApartmentReservation.Employees.Interfaces
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Database.Entities;
 
     public interface IFileRepository
     {
-        Task<DbFile> GetFileById(int fileID);
+        Task<DbFile> GetFileById(string fileID);
 
         Task CreateFile(DbFile dbFile);
 

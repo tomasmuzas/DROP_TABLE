@@ -3,61 +3,54 @@ using BackendApartmentReservation.Infrastructure.Authorization;
 
 namespace BackendApartmentReservation.Employees
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Database.Entities;
     using Interfaces;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
-    using System.Linq;
     using System.IO;
     using Microsoft.AspNetCore.Authorization;
-
-    [Route("api")]
+    
     [ApiController]
-    public class FilesController : ControllerBase
+    public class FilesController : AuthorizedController
     {
-        private readonly IFileRepository _fileRepository;
+        private readonly IFileManager _fileManager;
 
 
-        public FilesController(IFileRepository fileRepository)
+        public FilesController(IFileManager fileManager)
         {
-            _fileRepository = fileRepository;
+            _fileManager = fileManager;
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        //[OrganizerOnly] // Comment out when working locally
+        [OrganizerOnly]
         [Route("files")]
-        public async Task<IActionResult> Create(List<IFormFile> files)
+        public async Task<IActionResult> Create(IFormFile file)
         {
-            long size = files.Sum(f => f.Length);
+            long size = file.Length;
             var filePath = Path.GetTempFileName();
 
-            foreach (var formFile in files)
-            {
-                var file = new DbFile();
+            var newFile = new DbFile();
 
-                if (formFile.Length > 0)
+            if (file.Length > 0)
+            {
+                using (var stream = new MemoryStream())
                 {
-                    using (var stream = new MemoryStream())
-                    {
-                        await formFile.CopyToAsync(stream);
-                        file.File = stream.ToArray();
-                        await _fileRepository.CreateFile(file);
-                    }
+                    await file.CopyToAsync(stream);
+                    newFile.File = stream.ToArray();
+                    await _fileManager.UploadFile(newFile);
                 }
             }
 
-            return Ok(new { count = files.Count, size, filePath });
+            return Ok(new { size, filePath });
         }
 
         [HttpGet]
         [AllowAnonymous]
         [Route("files/{fileId}")]
-        public async Task<IActionResult> GetFileById(int fileID)
+        public async Task<IActionResult> GetFileById(string fileID)
         {
-            var file = await _fileRepository.GetFileById(fileID);
+            var file = await _fileManager.GetFileById(fileID);
             
             return File(file.File, "application/pdf", "newFile.pdf");
         }

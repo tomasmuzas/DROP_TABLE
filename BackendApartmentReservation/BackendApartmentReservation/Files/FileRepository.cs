@@ -4,6 +4,7 @@
     using Database;
     using Database.Entities;
     using Interfaces;
+    using Microsoft.EntityFrameworkCore;
 
     public class FileRepository : IFileRepository
     {
@@ -14,9 +15,9 @@
             _context = context;
         }
 
-        public async Task<DbFile> GetFileById(int fileID)
+        public async Task<DbFile> GetFileById(string fileID)
         {
-            return await _context.Files.FindAsync(fileID);
+            return await _context.Files.FirstOrDefaultAsync(f => f.ExternalFileId == fileID);
         }
 
         public async Task CreateFile(DbFile dbFile)
