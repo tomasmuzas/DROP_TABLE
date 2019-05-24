@@ -113,6 +113,11 @@ namespace BackendApartmentReservation.Trips
             return basicTripInformationResponses;
         }
 
+        public async Task DeleteTrip(string tripId)
+        {
+            await _tripRepository.DeleteTrip(tripId);
+        }
+
         public async Task<TripCreatedResponse> MergeTrips(MergeTripsRequest mergeTripsRequest, string managerId)
         {
             var firstTripToMerge = await _tripRepository.GetTrip(mergeTripsRequest.FirstTripId);

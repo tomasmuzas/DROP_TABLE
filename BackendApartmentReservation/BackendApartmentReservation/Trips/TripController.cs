@@ -28,6 +28,14 @@ namespace BackendApartmentReservation.Trips
             return Ok(await _tripManager.CreateBasicTrip(tripRequest, employeeId));
         }
 
+        [HttpDelete]
+        [Route("trips/{tripId}")]
+        [OrganizerOnly]
+        public async Task DeleteTrip(string tripId)
+        {
+            await _tripManager.DeleteTrip(tripId);
+        }
+
         [HttpGet]
         [Route("mergeCheck")]
         [OrganizerOnly]
