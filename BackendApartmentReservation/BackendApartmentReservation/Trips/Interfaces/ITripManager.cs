@@ -14,5 +14,7 @@ namespace BackendApartmentReservation.Trips.Interfaces
         bool IsPossibleToMergeTrips(DbTrip firstTrip, DbTrip secondTrip);
         Task<IEnumerable<BasicTripInformationResponse>> GetAllMergeableTrips(string tripId);
         Task<TripCreatedResponse> MergeTrips(MergeTripsRequest mergeTripsRequest, string managerId);
+
+        Task DeleteTrip(string tripId);
     }
 }

@@ -136,7 +136,11 @@ namespace BackendApartmentReservation.Trips
 
         public async Task DeleteTrip(string tripId)
         {
-            var trip = await _db.Trips.Where(t => t.ExternalTripId == tripId).SingleOrDefaultAsync();
+            var trip = await _db.Trips
+                .Include(t => t.Groups)
+                .Where(t => t.ExternalTripId == tripId)
+                .SingleOrDefaultAsync();
+
             if (trip == null)
             {
                 throw new ErrorCodeException(ErrorCodes.TripNotFound);
@@ -180,18 +184,22 @@ namespace BackendApartmentReservation.Trips
                 _db.Checklists.Remove(checklist);
             }
 
-            var groups = await _db.Groups.Where(g => trip.Groups.Any(tg => tg.ExternalGroupId == g.ExternalGroupId)).ToListAsync();
-            foreach (var group in groups)
+            if (trip.Groups != null)
             {
-                var employeeGroups = _db.DbEmployeeGroup.Where(eg => eg.DbGroup.ExternalGroupId == group.ExternalGroupId);
-                _db.DbEmployeeGroup.RemoveRange(employeeGroups);
+                var groups = await _db.Groups.Where(g => trip.Groups.Any(tg => tg.ExternalGroupId == g.ExternalGroupId)).ToListAsync();
+                foreach (var group in groups)
+                {
+                    var employeeGroups = _db.DbEmployeeGroup.Where(eg => eg.DbGroup.ExternalGroupId == group.ExternalGroupId);
+                    _db.DbEmployeeGroup.RemoveRange(employeeGroups);
+                }
+
+                _db.Groups.RemoveRange(groups);
             }
 
             var confirmations = _db.Confirmations
                 .Include(c => c.Trip)
                 .Where(c => c.Trip.ExternalTripId == tripId);
 
-            _db.Groups.RemoveRange(groups);
             _db.Confirmations.RemoveRange(confirmations);
 
             _db.Trips.Remove(trip);
