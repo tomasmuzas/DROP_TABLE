@@ -50,5 +50,13 @@
         Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetAllTripChecklists(string tripId);
 
         Task UpdateChecklistTrip(DbEmployeeAmenitiesChecklist checklist, string newTripId);
+
+        Task AcceptTripParticipationConfirmation(string employeeId, string tripId);
+
+        Task DeclineTripParticipationConfirmation(string employeeId, string tripId);
+
+        Task AcceptTripMergeConfirmation(string employeeId, string tripId);
+
+        Task DeclineTripMergeConfirmation(string employeeId, string tripId);
     }
 }

@@ -17,6 +17,8 @@
         public const string ChecklistCarAlreadyExists = "checklist.car_rent_already_exists";
         public const string ChecklistLivingPlaceAlreadyExists = "checklist.living_place_already_exists";
 
+        public const string WaitingConfirmationNotFound = "confirmation.waiting_confirmation_not_found";
+
         public const string NoMoreApartmentRoomsLeft = "apartments.no_more_rooms_left";
     }
 }
