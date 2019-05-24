@@ -58,5 +58,7 @@
         public DbSet<DbEmployeePlan> EmployeePlans { get; set; }
 
         public DbSet<DbAuthorization> Authorizations { get; set; }
+
+        public DbSet<DbFile> Files { get; set; }
     }
 }
