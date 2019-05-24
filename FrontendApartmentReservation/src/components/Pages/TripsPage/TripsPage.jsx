@@ -14,7 +14,7 @@ class TripsPage extends React.Component {
 
     render() {
         const { t } = this.props;
-        if (this.props.trips.length >= 1) {
+        if (this.props.trips) {
             return (
                 <div className="row mt-5">
                     <div className="col-12">
