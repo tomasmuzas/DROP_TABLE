@@ -143,7 +143,7 @@ namespace BackendApartmentReservation.Trips
             {
                 DepartureDate = departureDate,
                 DestinationOfficeId = firstTrip.DestinationOffice.ExternalOfficeId,
-                EmployeeIds = employeeIds,
+                EmployeeIds = employeeIds.Distinct().ToList(),
                 ReturnDate = returnDate
             };
 
