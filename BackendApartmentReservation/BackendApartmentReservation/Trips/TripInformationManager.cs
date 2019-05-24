@@ -5,6 +5,7 @@ namespace BackendApartmentReservation.Trips
     using System.Threading.Tasks;
     using Confirmations;
     using Confirmations.Interfaces;
+    using Database.Entities;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Responses;
     using Interfaces;
@@ -26,11 +27,9 @@ namespace BackendApartmentReservation.Trips
             _livingPlaceManager = livingPlaceManager;
         }
 
-        public async Task<BasicTripInformationResponse> GetBasicTripInformation(string tripId)
+        public async Task<BasicTripInformationResponse> GetBasicTripInformation(DbTrip trip)
         {
-            var trip = await _tripRepository.GetTrip(tripId);
-
-            var checklists = await _tripRepository.GetTripChecklistsWithEmployees(tripId);
+            var checklists = await _tripRepository.GetTripChecklistsWithEmployees(trip.ExternalTripId);
 
             var checklistInformations = checklists
                 .Select(c => new BasicPersonalChecklistInfo
@@ -42,7 +41,7 @@ namespace BackendApartmentReservation.Trips
                         FirstName = c.Employee.FirstName,
                         LastName = c.Employee.LastName
                     },
-                    HasAcceptedTripConfirmation = _confirmationRepository.HasAcceptedTripParticipation(c.Employee.ExternalEmployeeId, tripId),
+                    HasAcceptedTripConfirmation = _confirmationRepository.HasAcceptedTripParticipation(c.Employee.ExternalEmployeeId, trip.ExternalTripId),
                     IsApartmentRequired = c.LivingPlace != null,
                     IsFlightRequired = c.Flight != null,
                     IsCarRentRequired = c.Car != null
@@ -50,11 +49,11 @@ namespace BackendApartmentReservation.Trips
                 .ToList();
 
             var availableRooms = await
-                _livingPlaceManager.GetNumberOfAvailableApartmentRooms(tripId, trip.DepartureDate, trip.ReturnDate);
+                _livingPlaceManager.GetNumberOfAvailableApartmentRooms(trip.ExternalTripId, trip.DepartureDate, trip.ReturnDate);
 
             return new BasicTripInformationResponse
             {
-                TripId = tripId,
+                TripId = trip.ExternalTripId,
                 StartTime = trip.DepartureDate,
                 EndTime = trip.ReturnDate,
                 AvailableApartments = availableRooms,
@@ -64,6 +63,12 @@ namespace BackendApartmentReservation.Trips
                 },
                 ChecklistInfos = checklistInformations
             };
+        }
+
+        public async Task<BasicTripInformationResponse> GetBasicTripInformation(string tripId)
+        {
+            var trip = await _tripRepository.GetTrip(tripId);
+            return await GetBasicTripInformation(trip);
         }
 
         public async Task<IEnumerable<BasicTripInformationResponse>> GetAllOrganizedTripsInformation(string employeeId)
@@ -88,7 +93,7 @@ namespace BackendApartmentReservation.Trips
             var infos = new List<BasicTripInformationResponse>();
             foreach (var trip in trips)
             {
-                var info = await GetBasicTripInformation(trip.ExternalTripId);
+                var info = await GetBasicTripInformation(trip);
                 infos.Add(info);
             }
 

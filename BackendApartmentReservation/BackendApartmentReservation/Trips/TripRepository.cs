@@ -119,17 +119,11 @@ namespace BackendApartmentReservation.Trips
 
         public async Task<IEnumerable<DbTrip>> GetAllParticipatingTripsOfEmployee(string employeeId)
         {
-            var groups = await _db.DbEmployeeGroup
-                .Include(eg => eg.DbEmployee)
-                .Include(eg => eg.DbGroup)
-                .Where(eg => eg.DbEmployee.ExternalEmployeeId == employeeId)
-                .Select(eg => eg.DbGroup)
-                .ToListAsync();
-
-            return await _db.Trips
-                .Include(t => t.DestinationOffice)
-                .Where(t => t.Groups
-                    .Any(g => groups.Contains(g)))
+            return await _db.Checklists
+                .Include(c => c.Trip)
+                .Include(c => c.Employee)
+                .Where(c => c.Employee.ExternalEmployeeId == employeeId)
+                .Select(c => c.Trip)
                 .ToListAsync();
         }
 
