@@ -5,8 +5,9 @@ namespace BackendApartmentReservation.Employees
     using System.Threading.Tasks;
     using Interfaces;
     using Microsoft.AspNetCore.Mvc;
-    
+
     [ApiController]
+    [Route("files")]
     public class FilesController : AuthorizedController
     {
         private readonly IFileManager _fileManager;
@@ -18,11 +19,11 @@ namespace BackendApartmentReservation.Employees
         }
 
         [HttpGet]
-        [Route("files/{fileId}")]
-        public async Task<IActionResult> GetFileById(string fileID)
+        [Route("{fileId}")]
+        public async Task<IActionResult> GetFileById(string fileId)
         {
-            var file = await _fileManager.GetFileById(fileID);
-            
+            var file = await _fileManager.GetFileById(fileId);
+
             return File(file.File, "application/pdf", "document.pdf");
         }
 
