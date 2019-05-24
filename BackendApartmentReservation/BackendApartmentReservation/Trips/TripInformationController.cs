@@ -5,6 +5,7 @@ using BackendApartmentReservation.Infrastructure.Authorization;
 namespace BackendApartmentReservation.Trips
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using DataContracts.DataTransferObjects.Responses;
     using Interfaces;
@@ -44,7 +45,15 @@ namespace BackendApartmentReservation.Trips
         public async Task<IEnumerable<BasicTripInformationResponse>> GetAllParticipatingTripsInformation()
         {
             var employeeId = GetEmployeeId();
-            return await _tripInformationManager.GetAllParticipatingTripsInformation(employeeId);
+            var trips = await _tripInformationManager.GetAllParticipatingTripsInformation(employeeId);
+            var tripsList = trips.ToList();
+
+            tripsList.ForEach(r =>
+            {
+                r.ChecklistInfos = r.ChecklistInfos.Where(c => c.Employee.Id == employeeId).ToList();
+            });
+
+            return tripsList;
         }
     }
 }

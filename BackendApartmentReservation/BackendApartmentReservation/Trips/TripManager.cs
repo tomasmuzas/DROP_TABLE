@@ -143,7 +143,7 @@ namespace BackendApartmentReservation.Trips
             {
                 DepartureDate = departureDate,
                 DestinationOfficeId = firstTrip.DestinationOffice.ExternalOfficeId,
-                EmployeeIds = employeeIds,
+                EmployeeIds = employeeIds.Distinct().ToList(),
                 ReturnDate = returnDate
             };
 
@@ -152,7 +152,12 @@ namespace BackendApartmentReservation.Trips
             var checklists = (await _checklistManager.GetAllTripChecklists(mergeTripsRequest.FirstTripId)).ToList();
             checklists.AddRange((await _checklistManager.GetAllTripChecklists(mergeTripsRequest.SecondTripId)).ToList());
 
-            foreach (var checklist in checklists)
+            var uniqueChecklists = tripRequest.EmployeeIds.Select(eid =>
+                checklists
+                    .FirstOrDefault(c => c.Employee.ExternalEmployeeId == eid &&
+                        c.Trip.ExternalTripId == mergeTripsRequest.FirstTripId));
+
+            foreach (var checklist in uniqueChecklists)
             {
                 await _checklistManager.UpdateChecklistTrip(checklist, mergedTrip.ExternalTripId);
             }
