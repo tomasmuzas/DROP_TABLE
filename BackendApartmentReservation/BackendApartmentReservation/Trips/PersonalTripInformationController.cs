@@ -3,6 +3,7 @@
 namespace BackendApartmentReservation.Trips
 {
     using System.Threading.Tasks;
+    using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
     using Checklists.Interfaces;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
@@ -162,30 +163,34 @@ namespace BackendApartmentReservation.Trips
 
         [HttpPost]
         [Route("participation/accept")]
+        [OrganizerOnly]
         public async Task AcceptTripParticipationConfirmation(string tripId, string employeeId)
         {
-            await _checklistManager.AcceptTripParticipationConfirmation(tripId, employeeId);
+            await _checklistManager.AcceptTripParticipationConfirmation(employeeId, tripId);
         }
 
         [HttpPost]
         [Route("participation/decline")]
+        [OrganizerOnly]
         public async Task DeclineTripParticipationConfirmation(string tripId, string employeeId)
         {
-            await _checklistManager.DeclineTripParticipationConfirmation(tripId, employeeId);
+            await _checklistManager.DeclineTripParticipationConfirmation(employeeId, tripId);
         }
 
         [HttpPost]
         [Route("merge/accept")]
+        [OrganizerOnly]
         public async Task AcceptTripMergeConfirmation(string tripId, string employeeId)
         {
-            await _checklistManager.AcceptTripMergeConfirmation(tripId, employeeId);
+            await _checklistManager.AcceptTripMergeConfirmation(employeeId, tripId);
         }
 
         [HttpPost]
         [Route("merge/decline")]
+        [OrganizerOnly]
         public async Task DeclineTripMergeConfirmation(string tripId, string employeeId)
         {
-            await _checklistManager.DeclineTripMergeConfirmation(tripId, employeeId);
+            await _checklistManager.DeclineTripMergeConfirmation(employeeId, tripId);
         }
     }
 }
