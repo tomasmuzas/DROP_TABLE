@@ -7,7 +7,6 @@ namespace BackendApartmentReservation.Trips
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/trips/{tripId}/employees/{employeeId}")]
@@ -159,6 +158,34 @@ namespace BackendApartmentReservation.Trips
         public async Task DeleteHotelReservation(string tripId, string employeeId)
         {
             await _checklistManager.DeleteHotelReservation(employeeId, tripId);
+        }
+
+        [HttpPost]
+        [Route("participation/accept")]
+        public async Task AcceptTripParticipationConfirmation(string tripId, string employeeId)
+        {
+            await _checklistManager.AcceptTripParticipationConfirmation(tripId, employeeId);
+        }
+
+        [HttpPost]
+        [Route("participation/decline")]
+        public async Task DeclineTripParticipationConfirmation(string tripId, string employeeId)
+        {
+            await _checklistManager.DeclineTripParticipationConfirmation(tripId, employeeId);
+        }
+
+        [HttpPost]
+        [Route("merge/accept")]
+        public async Task AcceptTripMergeConfirmation(string tripId, string employeeId)
+        {
+            await _checklistManager.AcceptTripMergeConfirmation(tripId, employeeId);
+        }
+
+        [HttpPost]
+        [Route("merge/decline")]
+        public async Task DeclineTripMergeConfirmation(string tripId, string employeeId)
+        {
+            await _checklistManager.DeclineTripMergeConfirmation(tripId, employeeId);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace BackendApartmentReservation.Checklists
     using System.Collections.Generic;
     using BackendApartmentReservation.Apartments.Interfaces;
     using BackendApartmentReservation.Groups.Interfaces;
+    using BackendApartmentReservation.Confirmations.Interfaces;
 
     public class ChecklistManager : IChecklistManager
     {
@@ -31,6 +32,7 @@ namespace BackendApartmentReservation.Checklists
         private readonly ICarRentRepository _carRentRepository;
         private readonly IHotelRepository _hotelRepository;
         private readonly IApartmentRepository _apartmentRepository;
+        private readonly IConfirmationRepository _confirmationRepository;
 
         private readonly ILogger<ChecklistManager> _logger;
 
@@ -44,6 +46,7 @@ namespace BackendApartmentReservation.Checklists
             ILivingPlaceRepository livingPlaceRepository,
             IHotelRepository hotelRepository,
             IApartmentRepository apartmentRepository,
+            IConfirmationRepository confirmationRepository,
             ILogger<ChecklistManager> logger)
         {
             _employeeRepository = employeeRepository;
@@ -56,6 +59,7 @@ namespace BackendApartmentReservation.Checklists
             _carRentRepository = carRentRepository;
             _hotelRepository = hotelRepository;
             _apartmentRepository = apartmentRepository;
+            _confirmationRepository = confirmationRepository;
 
             _logger = logger;
         }
@@ -374,6 +378,62 @@ namespace BackendApartmentReservation.Checklists
             var trip = await _tripRepository.GetTrip(newTripId);
             checklist.Trip = trip;
             await _checklistRepository.UpdateChecklist(checklist);
+        }
+
+        public async Task AcceptTripParticipationConfirmation(string employeeId, string tripId)
+        {
+            var confirmation = await _confirmationRepository.GetWaitingConfirmation(ConfirmationType.TripParticipation,
+                employeeId, tripId);
+
+            if (confirmation == null)
+            {
+                _logger.LogError($"Waiting trip participation confirmation for employee {employeeId} and trip {tripId} was not found");
+                throw new ErrorCodeException(ErrorCodes.WaitingConfirmationNotFound);
+            }
+
+            await _confirmationRepository.AcceptConfirmation(confirmation);
+        }
+
+        public async Task DeclineTripParticipationConfirmation(string employeeId, string tripId)
+        {
+            var confirmation = await _confirmationRepository.GetWaitingConfirmation(ConfirmationType.TripParticipation,
+                employeeId, tripId);
+
+            if (confirmation == null)
+            {
+                _logger.LogError($"Waiting trip participation confirmation for employee {employeeId} and trip {tripId} was not found");
+                throw new ErrorCodeException(ErrorCodes.WaitingConfirmationNotFound);
+            }
+
+            await _confirmationRepository.DeclineConfirmation(confirmation);
+        }
+
+        public async Task AcceptTripMergeConfirmation(string employeeId, string tripId)
+        {
+            var confirmation = await _confirmationRepository.GetWaitingConfirmation(ConfirmationType.TripMerge,
+                employeeId, tripId);
+
+            if (confirmation == null)
+            {
+                _logger.LogError($"Waiting trip merge confirmation for employee {employeeId} and trip {tripId} was not found");
+                throw new ErrorCodeException(ErrorCodes.WaitingConfirmationNotFound);
+            }
+
+            await _confirmationRepository.AcceptConfirmation(confirmation);
+        }
+
+        public async Task DeclineTripMergeConfirmation(string employeeId, string tripId)
+        {
+            var confirmation = await _confirmationRepository.GetWaitingConfirmation(ConfirmationType.TripMerge,
+                employeeId, tripId);
+
+            if (confirmation == null)
+            {
+                _logger.LogError($"Waiting trip merge confirmation for employee {employeeId} and trip {tripId} was not found");
+                throw new ErrorCodeException(ErrorCodes.WaitingConfirmationNotFound);
+            }
+
+            await _confirmationRepository.DeclineConfirmation(confirmation);
         }
     }
 }
