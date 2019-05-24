@@ -154,6 +154,16 @@ namespace BackendApartmentReservation.Trips
 
             foreach (var checklist in checklists)
             {
+                if (checklists.Count(c => c.Employee.ExternalEmployeeId == checklist.Employee.ExternalEmployeeId) > 1)
+                {
+                    var secondChecklist =
+                        checklists.Single(c => c.Trip.ExternalTripId == mergeTripsRequest.SecondTripId);
+                    checklists.Remove(secondChecklist);
+                }
+            }
+
+            foreach (var checklist in checklists)
+            {
                 await _checklistManager.UpdateChecklistTrip(checklist, mergedTrip.ExternalTripId);
             }
 
