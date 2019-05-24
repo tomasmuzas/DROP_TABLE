@@ -77,7 +77,7 @@ namespace BackendApartmentReservation.Checklists
                 Car = carInfo,
                 LivingPlace = new LivingPlaceReservationInfo
                 {
-                    Required = hotelReservationInfo.Required || apartmentReservationInfo.Required,
+                    IsRequired = hotelReservationInfo.Required || apartmentReservationInfo.Required,
                     ApartmentReservationInfo = apartmentReservationInfo,
                     HotelReservationInfo = hotelReservationInfo
                 }

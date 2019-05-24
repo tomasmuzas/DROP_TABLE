@@ -397,6 +397,19 @@ namespace BackendApartmentReservation.Tests.Managers
                 }
             }));
 
+            var getHotelCall = A.CallTo(() =>
+                _checklistRepository.GetChecklistFullHotelReservation(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getHotelCall.Returns(Task.FromResult(new DbHotelReservation
+            {
+                HotelName = "Hotel"
+            }));
+
+            var getApartmentCall = A.CallTo(() =>
+                _checklistRepository.GetChecklistFullApartmentRoomReservation(employee.ExternalEmployeeId, trip.ExternalTripId));
+
+            getApartmentCall.Returns(Task.FromResult((DbRoomReservation)null));
+
             var info = await _manager.GetFullChecklistInformation(employee.ExternalEmployeeId, trip.ExternalTripId);
 
             getFlightCall.MustHaveHappenedOnceExactly();
@@ -412,6 +425,11 @@ namespace BackendApartmentReservation.Tests.Managers
             Assert.Equal("CAR123", info.Car.CarNumber);
             Assert.NotNull(info.Car.RentStartTime);
             Assert.NotNull(info.Car.RentEndTime);
+
+            Assert.True(info.LivingPlace.IsRequired);
+            Assert.True(info.LivingPlace.HotelReservationInfo.Required);
+            Assert.False(info.LivingPlace.ApartmentReservationInfo.Required);
+            Assert.Equal("Hotel", info.LivingPlace.HotelReservationInfo.HotelName);
         }
         [Fact]
         public async Task AddCarRentForEmployee_CreatesCarRent()
