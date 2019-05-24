@@ -14,7 +14,7 @@ namespace BackendApartmentReservation.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    File = table.Column<byte[]>(nullable: true)
+                    File = table.Column<byte[]>(nullable: false)
                 },
                 constraints: table =>
                 {

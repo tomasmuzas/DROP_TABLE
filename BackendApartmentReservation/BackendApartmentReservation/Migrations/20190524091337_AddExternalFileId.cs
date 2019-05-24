@@ -9,7 +9,7 @@ namespace BackendApartmentReservation.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "ExternalFileId",
                 table: "Files",
-                nullable: true);
+                nullable: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

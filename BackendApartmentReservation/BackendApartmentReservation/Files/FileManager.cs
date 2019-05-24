@@ -1,9 +1,11 @@
 ﻿namespace BackendApartmentReservation.Employees
 {
     using System;
+    using System.IO;
     using System.Threading.Tasks;
     using Database.Entities;
     using Interfaces;
+    using Microsoft.AspNetCore.Http;
 
     public class FileManager : IFileManager
     {
@@ -14,12 +16,19 @@
             _fileRepository = fileRepository;
         }
 
-        public async Task<string> UploadFile(DbFile dbFile)
+        public async Task<string> UploadFile(IFormFile formFile)
         {
             var fileId = Guid.NewGuid().ToString();
-            dbFile.ExternalFileId = fileId;
+            var file = new DbFile();
+            file.ExternalFileId = fileId;
 
-            await _fileRepository.CreateFile(dbFile);
+            using (var stream = new MemoryStream())
+            {
+                await formFile.CopyToAsync(stream);
+                file.File = stream.ToArray();
+            }
+
+            await _fileRepository.CreateFile(file);
             return fileId;
         }
 
