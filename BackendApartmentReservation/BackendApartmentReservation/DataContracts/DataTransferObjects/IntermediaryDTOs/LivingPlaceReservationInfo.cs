@@ -2,7 +2,7 @@
 {
     public class LivingPlaceReservationInfo
     {
-        public bool Required { get; set; }
+        public bool IsRequired { get; set; }
 
         public ApartmentReservationInfo ApartmentReservationInfo { get; set; }
 

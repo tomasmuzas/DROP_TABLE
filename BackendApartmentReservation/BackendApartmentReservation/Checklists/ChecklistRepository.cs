@@ -50,7 +50,8 @@
                 .Include(c => c.Car)
                 .ThenInclude(car => car.CarReservation)
                 .Include(c => c.LivingPlace)
-//                .ThenInclude(l => l.LivingPlaceReservation)
+                    .ThenInclude(l => l.ApartmentRoomReservation)
+                .Include(l => l.LivingPlace.HotelReservation)
                 .SingleOrDefaultAsync(c =>
                     c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId);
         }
@@ -87,7 +88,7 @@
                 .Include(c => c.HotelReservation)
                 .SingleOrDefaultAsync();
 
-            return livingPlace.HotelReservation;
+            return livingPlace?.HotelReservation;
         }
 
         public async Task<DbRoomReservation> GetChecklistFullApartmentRoomReservation(string employeeId, string tripId)
@@ -101,7 +102,7 @@
                     .ThenInclude(a => a.Room)
                 .SingleOrDefaultAsync();
 
-            return livingPlace.ApartmentRoomReservation;
+            return livingPlace?.ApartmentRoomReservation;
         }
 
         public async Task<IEnumerable<DbEmployeeAmenitiesChecklist>> GetAllTripChecklists(string tripId)
