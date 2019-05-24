@@ -26,7 +26,7 @@ export const CLEAR_MY_TRIPS = "CLEAR_MY_TRIPS";
 export const UPDATE_MY_TRIPS = "UPDATE_MY_TRIPS";
 
 var BACKEND_BASE_URI;
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
     BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
 }
 else {
