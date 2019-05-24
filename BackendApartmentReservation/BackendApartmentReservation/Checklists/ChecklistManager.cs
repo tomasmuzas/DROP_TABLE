@@ -68,11 +68,19 @@ namespace BackendApartmentReservation.Checklists
         {
             var flightInfo = await GetFlightInfo(employeeId, tripId);
             var carInfo = await GetCarRentInfo(employeeId, tripId);
+            var hotelReservationInfo = await GetHotelReservationInfo(employeeId, tripId);
+            var apartmentReservationInfo = await GetApartmentReservationInfo(employeeId, tripId);
 
             return new ChecklistInformationResponse
             {
                 Flight = flightInfo,
-                Car = carInfo
+                Car = carInfo,
+                LivingPlace = new LivingPlaceReservationInfo
+                {
+                    Required = hotelReservationInfo.Required || apartmentReservationInfo.Required,
+                    ApartmentReservationInfo = apartmentReservationInfo,
+                    HotelReservationInfo = hotelReservationInfo
+                }
             };
         }
 
