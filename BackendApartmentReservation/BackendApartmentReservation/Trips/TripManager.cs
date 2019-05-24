@@ -152,17 +152,12 @@ namespace BackendApartmentReservation.Trips
             var checklists = (await _checklistManager.GetAllTripChecklists(mergeTripsRequest.FirstTripId)).ToList();
             checklists.AddRange((await _checklistManager.GetAllTripChecklists(mergeTripsRequest.SecondTripId)).ToList());
 
-            foreach (var checklist in checklists)
-            {
-                if (checklists.Count(c => c.Employee.ExternalEmployeeId == checklist.Employee.ExternalEmployeeId) > 1)
-                {
-                    var secondChecklist =
-                        checklists.Single(c => c.Trip.ExternalTripId == mergeTripsRequest.SecondTripId);
-                    checklists.Remove(secondChecklist);
-                }
-            }
+            var uniqueChecklists = tripRequest.EmployeeIds.Select(eid =>
+                checklists
+                    .FirstOrDefault(c => c.Employee.ExternalEmployeeId == eid &&
+                        c.Trip.ExternalTripId == mergeTripsRequest.FirstTripId));
 
-            foreach (var checklist in checklists)
+            foreach (var checklist in uniqueChecklists)
             {
                 await _checklistManager.UpdateChecklistTrip(checklist, mergedTrip.ExternalTripId);
             }
