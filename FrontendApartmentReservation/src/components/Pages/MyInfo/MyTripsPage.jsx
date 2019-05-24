@@ -2,25 +2,34 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../../actions';
+import MyTripCard from './MyTripCard'
+import { withTranslation } from "react-i18next";
 import { GridLoader } from "react-spinners";
 
-class ApartmentsPage extends React.Component {
+class MyTripsPage extends React.Component {
 
     componentWillMount() {
-        this.props.getAllApartments();
+        this.props.clearMyTrips()
+        this.props.getMyTrips();
     }
 
     render() {
-        if (this.props.apartments) {
+        const { t } = this.props;
+
+        if (this.props.myTrips) {
             return (
-                <div>
-                    This is apartments page
-                    {this.props.apartments.map(apartment => <div> {apartment} </div>)}
+                <div className="row mt-5">
+                    <div className="col-12">
+                        <h1 style={{textAlign:'center'}}>{t("MyTrips")}</h1>
+                        <div>
+                            {this.props.myTrips.map((trip, index) => <MyTripCard key={trip.tripId} index={index} trip={trip}/>)}
+                        </div>
+                    </div>
                 </div>
             );
         }
-        else{
-            return(
+        else {
+            return (
                 <div className="center-outer-div">
                     <div className='center-div'>
                         <GridLoader
@@ -40,8 +49,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        apartments: state.apartments
+        myTrips: state.myTrips
     };
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(ApartmentsPage));
+export default (connect(mapStateToProps, mapDispatchToProps)(withTranslation()(MyTripsPage)));

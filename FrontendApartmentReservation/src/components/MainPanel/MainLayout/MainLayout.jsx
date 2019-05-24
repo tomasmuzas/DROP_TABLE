@@ -12,6 +12,7 @@ import TripCheckList from '../../Pages/CheckListPage/TripCheckList';
 import CheckListDetails from '../../Pages/CheckListPage/CheckListFullDetails/CheckListDetails';
 import LoginPage from '../../Pages/SignUpPage/LoginPage';
 import MergeTrips from '../../Pages/TripsPage/MergeTrips';
+import MyTrips from '../../Pages/MyInfo/MyTripsPage';
 
 export default class MainLayout extends React.Component {
     render() {
@@ -31,6 +32,7 @@ export default class MainLayout extends React.Component {
                     <Route path="/trip/:tripId/merge" component={MergeTrips}/>
                     <Route path="/trip/:tripId" component={TripCheckList}/>
                     <Route path="/:tripId/checklist/:employeeId" component={CheckListDetails}/>
+                    <Route path="/myInfo/myTrips" component={MyTrips}/>
                     <Route path="*" component={PageNotFound}/>
                 </Switch>
             </div>

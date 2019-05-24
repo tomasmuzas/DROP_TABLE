@@ -16,13 +16,13 @@ import IconButton from '@material-ui/core/IconButton';
 import i18n from "../../../i18n"
 import arrowUp from './up-arrow.png';
 import arrowDown from './down-arrow.png';
+import { GridLoader } from 'react-spinners';
 
 class CheckListCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             showDetails: false,
-            carInfo: { IsRequired: true, carNumber: 12342, PickUpPoint: 'Didlaukio g. 59' },
             apartmentsInfo: { IsRequired: true, AppartmentsAddress: 'Didlaukio g. 59' },
         }
 
@@ -54,8 +54,14 @@ class CheckListCard extends React.Component {
         }
         else {
             return (
-                <div>
-                    loading
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }
@@ -77,8 +83,14 @@ class CheckListCard extends React.Component {
         }
         else {
             return (
-                <div>
-                    loading
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }
@@ -91,13 +103,13 @@ class CheckListCard extends React.Component {
                 <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
                     <div className="col justify-content-md-center nameDiv pl-5 pb-lg-0 pb-5">
                         <h5>{checkListInfo.employee.firstName} {checkListInfo.employee.lastName} &nbsp;
-                        {checkListInfo.hasAcceptedTripConfirmation ? 
-                            <span style={{ color: "#81c784"}}>({t("TripAccepted")})</span> :
-                            <span style={{ color: "#f50057"}}>({t("TripNotYetAccepted")})</span>
-                        }
+                        {checkListInfo.hasAcceptedTripConfirmation ?
+                                <span style={{ color: "#81c784" }}>({t("TripAccepted")})</span> :
+                                <span style={{ color: "#f50057" }}>({t("TripNotYetAccepted")})</span>
+                            }
                         </h5>
                     </div>
-                    <div className="col pr-5">
+                    <div className="col-12 col-lg-6 pr-5">
                         <div style={{ float: "right" }}>
                             <FormControlLabel
                                 control={<Checkbox checked={checkListInfo.isApartmentRequired} />}

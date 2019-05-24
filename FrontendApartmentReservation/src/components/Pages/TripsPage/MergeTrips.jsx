@@ -6,6 +6,7 @@ import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../../actions';
 import TripCard from './TripCard';
+import { GridLoader } from 'react-spinners';
 
 
 class MergeTrips extends React.Component {
@@ -31,10 +32,11 @@ class MergeTrips extends React.Component {
     }
 
     getTripsList() {
-        if (this.props.mergeableTrips && this.props.mergeableTrips.length > 0) {
+        if (this.props.mergeableTrips && this.props.mergeableTrips) {
             return (
                 <div className="pl-5">
-                    <h3> {i18next.t("TripsPossibleToMerge")}</h3>
+                    {this.props.mergeableTrips === [] ?
+                    <h3> {i18next.t("TripsPossibleToMerge")}</h3> : <h3>{i18next.t("NoTripsToMerge")}</h3>}
                     {this.props.mergeableTrips.map(trip => <TripCard key={trip.tripId} trip={trip} mergeable={true} 
                     mergeableTripId ={this.props.match.params.tripId}/>)}
                 </div>
@@ -42,8 +44,14 @@ class MergeTrips extends React.Component {
         }
         else {
             return (
-                <div className="pl-5">
-                    <h3> Loading</h3>
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }
@@ -69,8 +77,14 @@ class MergeTrips extends React.Component {
         }
         else {
             return (
-                <div>
-                    loading
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }

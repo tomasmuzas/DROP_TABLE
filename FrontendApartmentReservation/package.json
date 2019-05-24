@@ -36,6 +36,7 @@
     "react-datepicker": "^2.3.0",
     "react-i18next": "^10.6.1",
     "react-select": "^2.4.2",
+    "react-spinners": "^0.5.4",
     "redux-form": "^7.4.2",
     "simple-react-calendar": "^1.8.0"
   },

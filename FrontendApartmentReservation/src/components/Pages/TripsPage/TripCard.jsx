@@ -9,8 +9,6 @@ import { Link } from 'react-router-dom';
 import i18n from "../../../i18n";
 import Button from '@material-ui/core/Button';
 
-
-
 class TripCard extends React.Component {
     constructor(props) {
         super(props);
@@ -38,7 +36,6 @@ class TripCard extends React.Component {
                         <Button className="justify-content-center" variant="outlined" color="secondary">
                             {t("Merge")}
                         </Button>
-
                     </Link>
                 </div>
                 <div className="col-lg-3 col-12 pt-5 pl-5" hidden={mergeable}>

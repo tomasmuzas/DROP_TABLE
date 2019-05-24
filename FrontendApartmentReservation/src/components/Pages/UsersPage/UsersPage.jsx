@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../../actions';
+import { GridLoader } from "react-spinners";
 
 class UsersPage extends React.Component {
 
@@ -22,8 +23,14 @@ class UsersPage extends React.Component {
         }
         else {
             return (
-                <div>
-                    loading
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
                 </div>
             )
         }
