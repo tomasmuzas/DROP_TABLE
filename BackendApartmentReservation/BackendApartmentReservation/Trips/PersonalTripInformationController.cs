@@ -31,6 +31,15 @@ namespace BackendApartmentReservation.Trips
         }
 
         [HttpGet]
+        [Route("checklist/personal")]
+        public async Task<ChecklistInformationResponse> GetEmployeeChecklistInformation(
+            string tripId)
+        {
+            var employeeId = GetEmployeeId();
+            return await _checklistManager.GetFullChecklistInformation(employeeId, tripId);
+        }
+
+        [HttpGet]
         [Route("flight")]
         public async Task<FlightReservationInfo> GetFlightInfo(string tripId, string employeeId)
         {
@@ -162,34 +171,38 @@ namespace BackendApartmentReservation.Trips
         }
 
         [HttpPost]
-        [Route("participation/accept")]
+        [Route("~/api/trips/{tripId}/participation/accept")]
         [OrganizerOnly]
-        public async Task AcceptTripParticipationConfirmation(string tripId, string employeeId)
+        public async Task AcceptTripParticipationConfirmation(string tripId)
         {
+            var employeeId = GetEmployeeId();
             await _checklistManager.AcceptTripParticipationConfirmation(employeeId, tripId);
         }
 
         [HttpPost]
-        [Route("participation/decline")]
+        [Route("~/api/trips/{tripId}/participation/decline")]
         [OrganizerOnly]
-        public async Task DeclineTripParticipationConfirmation(string tripId, string employeeId)
+        public async Task DeclineTripParticipationConfirmation(string tripId)
         {
+            var employeeId = GetEmployeeId();
             await _checklistManager.DeclineTripParticipationConfirmation(employeeId, tripId);
         }
 
         [HttpPost]
-        [Route("merge/accept")]
+        [Route("~/api/trips/{tripId}/merge/accept")]
         [OrganizerOnly]
-        public async Task AcceptTripMergeConfirmation(string tripId, string employeeId)
+        public async Task AcceptTripMergeConfirmation(string tripId)
         {
+            var employeeId = GetEmployeeId();
             await _checklistManager.AcceptTripMergeConfirmation(employeeId, tripId);
         }
 
         [HttpPost]
-        [Route("merge/decline")]
+        [Route("~/api/trips/{tripId}/merge/decline")]
         [OrganizerOnly]
-        public async Task DeclineTripMergeConfirmation(string tripId, string employeeId)
+        public async Task DeclineTripMergeConfirmation(string tripId)
         {
+            var employeeId = GetEmployeeId();
             await _checklistManager.DeclineTripMergeConfirmation(employeeId, tripId);
         }
     }
