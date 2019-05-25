@@ -26,7 +26,7 @@ export const UPDATE_MY_TRIPS = "UPDATE_MY_TRIPS";
 export const DELETE_TRIP = "DELETE_TRIP";
 
 var BACKEND_BASE_URI;
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
     BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
 }
 else {
@@ -541,7 +541,6 @@ export const deleteTrip = (tripId) => (dispatch) => {
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {
-        console.log(response);
         if (response.status === 401) {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
