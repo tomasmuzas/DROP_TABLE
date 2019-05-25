@@ -64,6 +64,7 @@
                 .Where(c => c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId)
                 .Select(c => c.Flight)
                 .Include(c => c.FlightReservation)
+                .Include(c => c.Ticket)
                 .SingleOrDefaultAsync();
         }
 

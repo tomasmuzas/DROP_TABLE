@@ -19,6 +19,7 @@ namespace BackendApartmentReservation.Checklists
     using BackendApartmentReservation.Apartments.Interfaces;
     using BackendApartmentReservation.Groups.Interfaces;
     using BackendApartmentReservation.Confirmations.Interfaces;
+    using Microsoft.AspNetCore.Http;
 
     public class ChecklistManager : IChecklistManager
     {
@@ -34,6 +35,7 @@ namespace BackendApartmentReservation.Checklists
         private readonly IApartmentRepository _apartmentRepository;
         private readonly IConfirmationRepository _confirmationRepository;
 
+        private readonly IFileManager _fileManager;
         private readonly ILogger<ChecklistManager> _logger;
 
         public ChecklistManager(
@@ -47,6 +49,7 @@ namespace BackendApartmentReservation.Checklists
             IHotelRepository hotelRepository,
             IApartmentRepository apartmentRepository,
             IConfirmationRepository confirmationRepository,
+            IFileManager fileManager,
             ILogger<ChecklistManager> logger)
         {
             _employeeRepository = employeeRepository;
@@ -61,6 +64,7 @@ namespace BackendApartmentReservation.Checklists
             _apartmentRepository = apartmentRepository;
             _confirmationRepository = confirmationRepository;
 
+            _fileManager = fileManager;
             _logger = logger;
         }
 
@@ -139,6 +143,23 @@ namespace BackendApartmentReservation.Checklists
             await _flightRepository.UpdateFlight(flight);
             _logger.LogInformation(
                 $"Updated flight information for the checklist for employee {employeeId} and trip {tripId}");
+        }
+
+        public async Task UpdateFlightTicketForEmployee(string employeeId, string tripId, IFormFile file)
+        {
+            var flight = await _checklistRepository.GetChecklistFullFlight(employeeId, tripId);
+
+            var newFile = await _fileManager.UploadFile(file);
+            if (flight.Ticket != null)
+            {
+                await _fileManager.DeleteFile(flight.Ticket);
+            }
+
+            flight.Ticket = newFile;
+
+            await _flightRepository.UpdateFlight(flight);
+            _logger.LogInformation(
+                $"Updated ticket for the flight for employee {employeeId} and trip {tripId}");
         }
 
         public async Task<FlightReservationInfo> GetFlightInfo(string employeeId, string tripId)

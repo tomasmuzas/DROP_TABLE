@@ -6,6 +6,7 @@
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
+    using Microsoft.AspNetCore.Http;
 
     public interface IChecklistManager
     {
@@ -58,5 +59,7 @@
         Task AcceptTripMergeConfirmation(string employeeId, string tripId);
 
         Task DeclineTripMergeConfirmation(string employeeId, string tripId);
+
+        Task UpdateFlightTicketForEmployee(string employeeId, string tripId, IFormFile file);
     }
 }

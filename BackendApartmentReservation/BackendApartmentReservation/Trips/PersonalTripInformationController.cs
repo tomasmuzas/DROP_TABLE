@@ -72,7 +72,7 @@ namespace BackendApartmentReservation.Trips
             [FromForm]FileRequest request)
         {
 
-            //await _checklistManager.UpdateFlightForEmployee(employeeId, tripId, info);
+            await _checklistManager.UpdateFlightTicketForEmployee(employeeId, tripId, request.File);
         }
 
         [HttpDelete]

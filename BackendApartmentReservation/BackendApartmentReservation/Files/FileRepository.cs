@@ -20,10 +20,11 @@
             return await _context.Files.FirstOrDefaultAsync(f => f.ExternalFileId == fileID);
         }
 
-        public async Task CreateFile(DbFile dbFile)
-        {             
+        public async Task<DbFile> CreateFile(DbFile dbFile)
+        {
             await _context.Files.AddAsync(dbFile);
             await _context.SaveChangesAsync();
+            return dbFile;
         }
 
         public async Task UpdateFile(DbFile dbFile)

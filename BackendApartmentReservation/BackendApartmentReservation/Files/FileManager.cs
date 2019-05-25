@@ -16,7 +16,7 @@
             _fileRepository = fileRepository;
         }
 
-        public async Task<string> UploadFile(IFormFile formFile)
+        public async Task<DbFile> UploadFile(IFormFile formFile)
         {
             var fileId = Guid.NewGuid().ToString();
             var file = new DbFile();
@@ -28,13 +28,17 @@
                 file.File = stream.ToArray();
             }
 
-            await _fileRepository.CreateFile(file);
-            return fileId;
+            return await _fileRepository.CreateFile(file);
         }
 
         public async Task<DbFile> GetFileById(string fileID)
         {
             return await _fileRepository.GetFileById(fileID);
+        }
+
+        public async Task DeleteFile(DbFile file)
+        {
+            await _fileRepository.DeleteFile(file);
         }
     }
 }
