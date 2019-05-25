@@ -8,6 +8,7 @@ namespace BackendApartmentReservation.Trips
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/trips/{tripId}/employees/{employeeId}")]
@@ -61,6 +62,17 @@ namespace BackendApartmentReservation.Trips
             [FromBody] FlightReservationRequest info)
         {
             await _checklistManager.UpdateFlightForEmployee(employeeId, tripId, info);
+        }
+
+        [HttpPut]
+        [Route("flight/ticket")]
+        public async Task UpdateFlightTicket(
+            string tripId,
+            string employeeId,
+            [FromForm]FileRequest request)
+        {
+
+            //await _checklistManager.UpdateFlightForEmployee(employeeId, tripId, info);
         }
 
         [HttpDelete]

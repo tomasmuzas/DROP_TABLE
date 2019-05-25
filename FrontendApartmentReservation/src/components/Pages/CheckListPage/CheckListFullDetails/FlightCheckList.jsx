@@ -18,7 +18,10 @@ class FlightCheckList extends React.Component {
                 flightNumber: '',
                 company: '',
                 flightTime: '',
-                airportAddress: '',
+                airportAddress: ''
+            },
+            flightTicket: {
+                file: null
             }
         }
 
@@ -28,6 +31,7 @@ class FlightCheckList extends React.Component {
         this.handleAirportAddressChange = this.handleAirportAddressChange.bind(this);
         this.handleFlightCompanyChange = this.handleFlightCompanyChange.bind(this);
         this.handleFlightTimeChange = this.handleFlightTimeChange.bind(this);
+        this.handleFlightTicketChange = this.handleFlightTicketChange.bind(this);
     }
 
     componentWillReceiveProps(newProps){
@@ -40,6 +44,14 @@ class FlightCheckList extends React.Component {
         e.preventDefault();
         const { flightInfo } = this.state;
         this.props.updateFlightInfo(flightInfo, this.props.employeeId, this.props.tripId);
+    }
+
+    handleTicketSubmit(e) {
+        e.preventDefault();
+        const { flightTicket } = this.state;
+        if(this.state.flightTicket.file){
+            this.props.uploadFlightTicket(flightTicket.file, this.props.employeeId, this.props.tripId)
+        }
     }
 
     handleIsRequiredChange(e) {
@@ -88,6 +100,14 @@ class FlightCheckList extends React.Component {
         });
     }
 
+    handleFlightTicketChange(e) {
+        var flightTicket = this.state.flightTicket;
+        flightTicket.file = e.target.files[0];
+        this.setState({
+            flightTicket: flightTicket
+        });
+    }
+
     render() {
         const { t } = this.props;
         if (this.state.flightInfo) {
@@ -125,6 +145,17 @@ class FlightCheckList extends React.Component {
                                     onChange={this.handleFlightCompanyChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveFlightInfo")}</button>
+                        </form>
+
+
+                        <form className={`form-signin`} encType= "multipart/form-data" onSubmit={this.handleTicketSubmit}>
+                            <div className="form-group">
+                                {t("FlightTicket")}
+                                <input type="file" accept="application/pdf" id="FlightTicket" className={`form-control`}
+                                    name="FlightTicket"
+                                    onChange={this.handleFlightTicketChange} />
+                            </div>
+                            <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveTicket")}</button>                            
                         </form>
                     </div>
                 </div>
