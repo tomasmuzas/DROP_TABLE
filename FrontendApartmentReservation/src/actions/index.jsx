@@ -33,6 +33,8 @@ else {
     BACKEND_BASE_URI = process.env.REACT_APP_DEV_BASE_URI;
 }
 
+export const BACKEND_URL = BACKEND_BASE_URI
+
 export const getAllApartments = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/apartments`, {
         method: "GET",
@@ -362,6 +364,56 @@ export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) =
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            alert(i18n.t("FlightInfoUpdate") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const uploadFlightTicket = (flightTicketFile, employeeId, tripId) => (dispatch) => {
+    const formData = new FormData();
+    console.log(flightTicketFile);
+    formData.append('file', flightTicketFile);
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight/ticket', {
+        method: "PUT",
+        body: formData,
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            alert(i18n.t("FlightInfoUpdate") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const updateCarDocuments = (flightTicketFile, employeeId, tripId) => (dispatch) => {
+    const formData = new FormData();
+    console.log(flightTicketFile);
+    formData.append('file', flightTicketFile);
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car/document', {
+        method: "PUT",
+        body: formData,
+        headers: {
             "Authorization": "Bearer " + sessionStorage.getItem('token')
         }
     }).then(response => {

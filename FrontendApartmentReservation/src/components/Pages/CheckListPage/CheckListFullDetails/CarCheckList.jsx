@@ -8,6 +8,8 @@ import { bindActionCreators } from 'redux'; import { Link } from 'react-router-d
 import Checkbox from '@material-ui/core/Checkbox';
 import { GridLoader } from 'react-spinners';
 import moment from 'moment'
+import {BACKEND_URL} from '../../../../actions/index'
+
 
 class CarCheckList extends React.Component {
     constructor(props) {
@@ -19,16 +21,20 @@ class CarCheckList extends React.Component {
                 carAddress: '',
                 rentStartTime: '',
                 rentEndTime: '',
+            },
+            carDocuments: {
+                file: null
             }
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDocumentSubmit = this.handleDocumentSubmit.bind(this);
         this.handleIsRequiredChange = this.handleIsRequiredChange.bind(this);
         this.handleCarNumberChange = this.handleCarNumberChange.bind(this);
         this.handleCarAddressChange = this.handleCarAddressChange.bind(this);
         this.handleRentStartTimeChange = this.handleRentStartTimeChange.bind(this);
         this.handleRentEndTimeChange = this.handleRentEndTimeChange.bind(this);
-
+        this.handleDocumentChange = this.handleDocumentChange.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -41,6 +47,14 @@ class CarCheckList extends React.Component {
         e.preventDefault();
         const { carInfo } = this.state;
         this.props.updateCarInfo(carInfo, this.props.employeeId, this.props.tripId);
+    }
+
+    handleDocumentSubmit(e) {
+        e.preventDefault();
+        const { carDocuments } = this.state;
+        if(this.state.carDocuments.file){
+            this.props.updateCarDocuments(carDocuments.file, this.props.employeeId, this.props.tripId);
+        }
     }
 
     handleIsRequiredChange(e) {
@@ -89,6 +103,14 @@ class CarCheckList extends React.Component {
         });
     }
 
+    handleDocumentChange(e) {
+        var documents = this.state.carDocuments;
+        documents.file = e.target.files[0];
+        this.setState({
+            carDocuments: documents
+        });
+    }
+
     render() {
         const { t } = this.props;
         if (this.state.carInfo) {
@@ -126,6 +148,21 @@ class CarCheckList extends React.Component {
                                     onChange={this.handleRentEndTimeChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveCarInfo")}</button>
+                        </form>
+
+                        <form className={`form-signin`} encType= "multipart/form-data" onSubmit={this.handleDocumentSubmit}>
+                            <div className="form-group">
+                                {t("CarDocument")}
+                                <input type="file" accept="application/pdf" id="FlightTicket" className={`form-control`}
+                                    name="Document"
+                                    onChange={this.handleDocumentChange} />
+                            </div>
+                            {this.state.carInfo.documentFileId &&
+                                <a href={BACKEND_URL + '/files/' + this.state.carInfo.documentFileId}>
+                                    Dabartiniai dokumentai
+                                </a>
+                            }
+                            <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveTicket")}</button>                            
                         </form>
                     </div>
                 </div>
