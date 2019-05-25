@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { GridLoader } from 'react-spinners';
+import moment from 'moment'
 
 class FlightCheckList extends React.Component {
     constructor(props) {
@@ -30,6 +31,7 @@ class FlightCheckList extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
+        console.log(newProps.singleFlightInfo)
         this.setState({
             flightInfo: newProps.singleFlightInfo
         })
@@ -108,7 +110,7 @@ class FlightCheckList extends React.Component {
                             <div className="form-group mb-2">
                                 {t("FlightTime")}
                                 <input type="datetime-local" id="FlightTime" className={`form-control`} placeholder={t("FlightTime")}
-                                    required name="FlightTime" value={this.state.flightInfo.flightTime}
+                                    required name="FlightTime" value={moment(this.state.flightInfo.flightTime).format('YYYY-MM-DDTHH:MM')}
                                     onChange={this.handleFlightTimeChange} />
                             </div>
                             <div className="form-group mb-2">

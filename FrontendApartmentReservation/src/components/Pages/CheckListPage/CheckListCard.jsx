@@ -23,7 +23,6 @@ class CheckListCard extends React.Component {
         super(props);
         this.state = {
             showDetails: false,
-            apartmentsInfo: { IsRequired: true, AppartmentsAddress: 'Didlaukio g. 59' },
         }
 
         this.handleShowDetailsChange = this.handleShowDetailsChange.bind(this);
@@ -39,18 +38,66 @@ class CheckListCard extends React.Component {
         this.props.getChecklist(this.props.checkListInfo.employee.id, this.props.tripId);
     }
 
+    getFormattedDate(checklistDate){
+        if(checklistDate){
+            var tempDate = new Date(checklistDate);
+             return tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        }
+        else{
+            return checklistDate;
+        }
+    }
+
     showFlight(checklist) {
         const { t } = this.props;
         if (checklist) {
-            var flightDate = new Date(checklist.flight.flightTime);
+            
             return (
                 <div className="col-12 col-lg-4" hidden={!checklist.flight.isRequired}>
                     <h6> {t("FlightNumber")}: {checklist.flight.flightNumber}</h6>
                     <h6> {t("FlightCompany")}:  {checklist.flight.company}</h6>
                     <h6> {t("AirportAddress")}:  {checklist.flight.airportAddress}</h6>
-                    <h6> {t("FlightTime")}: {flightDate.toLocaleDateString('lt-LT') + " " + flightDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} </h6>
+                    <h6> {t("FlightTime")}: {this.getFormattedDate(checklist.flight.flightTime)} </h6>
                 </div>
             )
+        }
+        else {
+            return (
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    showApartments(checklist) {
+        const { t } = this.props;
+        if (checklist) {
+            if(checklist.livingPlace.apartmentReservationInfo.required){
+                return (
+                    <div className="col-12 col-lg-4" hidden={!checklist.livingPlace.isRequired}>
+                        <h6> {t("ApartmentAddress")}: {checklist.livingPlace.apartmentsReservationInfo.apartmentAddress}</h6>
+                        <h6> {t("RoomNumber")}:  {checklist.livingPlace.apartmentsReservationInfo.roomNumber}</h6>
+                        <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.apartmentsReservationInfo.dateFrom)}</h6>
+                        <h6> {t("DateTo")}: {this.getFormattedDate(checklist.livingPlace.apartmentsReservationInfo.dateTo)} </h6>
+                    </div>
+                )
+            }
+            if(checklist.livingPlace.hotelReservationInfo.required){
+                return (
+                    <div className="col-12 col-lg-4" hidden={!checklist.livingPlace.isRequired}>
+                        <h6> {t("HotelName")}: {checklist.hotelReservationInfo.hotelName}</h6>
+                        <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
+                        <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
+                    </div>
+                )
+            }
         }
         else {
             return (
@@ -70,14 +117,29 @@ class CheckListCard extends React.Component {
     showCar(checklist) {
         const { t } = this.props;
         if (checklist) {
-            var rentStartTime = new Date(checklist.car.rentStartTime);
-            var rentEndTime = new Date(checklist.car.rentEndTime);
+            var rentStartTime;
+            var rentEndTime;
+            if(checklist.car.rentStartTime){
+                var tempDate = new Date(checklist.car.rentStartTime);
+                rentStartTime = tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            }
+            else{
+                rentStartTime = checklist.car.rentStartTime;
+            }
+
+            if(checklist.car.rentEndTime){
+                var tempDate = new Date(checklist.car.rentEndTime);
+                rentEndTime = tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            }
+            else{
+                rentEndTime = checklist.car.rentEndTime;
+            }
             return (
                 <div className="col-12 col-lg-4" hidden={!checklist.car.isRequired}>
                     <h6> {t("CarNumber")}: {checklist.car.carNumber}</h6>
                     <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
-                    <h6> {t("RentStartTime")}: {rentStartTime.toLocaleDateString('lt-LT') + " " + rentStartTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</h6>
-                    <h6> {t("RentEndTime")}: {rentEndTime.toLocaleDateString('lt-LT') + " " + rentEndTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</h6>
+                    <h6> {t("RentStartTime")}: {rentStartTime}</h6>
+                    <h6> {t("RentEndTime")}: {rentEndTime}</h6>
                 </div>
             )
         }
@@ -140,10 +202,7 @@ class CheckListCard extends React.Component {
                 <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }} hidden={!this.state.showDetails}>
                     {this.showFlight(this.props.checklist[this.props.index])}
                     {this.showCar(this.props.checklist[this.props.index])}
-                    <div className="col-12 col-lg-4" hidden={!this.state.apartmentsInfo.IsRequired}>
-                        <h6> {t("ApartmentsAddres")}: {this.state.apartmentsInfo.AppartmentsAddress}</h6>
-
-                    </div>
+                    {this.showApartments(this.props.checklist[this.props.index])}
                 </div>
             </div>
         )

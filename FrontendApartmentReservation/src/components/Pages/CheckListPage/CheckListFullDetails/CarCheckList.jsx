@@ -7,6 +7,7 @@ import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux'; import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import { GridLoader } from 'react-spinners';
+import moment from 'moment'
 
 class CarCheckList extends React.Component {
     constructor(props) {
@@ -115,13 +116,13 @@ class CarCheckList extends React.Component {
                             <div className="form-group mb-2">
                                 {t("RentStartTime")}
                                 <input type="datetime-local" id="RentStartTime" className={`form-control`} placeholder={t("RentStartTime")}
-                                    required name="RentStartTime" value={this.state.carInfo.rentStartTime}
+                                    required name="RentStartTime" value={moment(this.state.carInfo.rentEndTime).format('YYYY-MM-DDTHH:MM')}
                                     onChange={this.handleRentStartTimeChange} />
                             </div>
                             <div className="form-group mb-2">
                                 {t("RentEndTime")}
                                 <input type="datetime-local" id="RentEndTime" className={`form-control`} placeholder={t("RentEndTime")}
-                                    required name="RentEndTime" value={this.state.carInfo.rentEndTime}
+                                    required name="RentEndTime" value={moment(this.state.carInfo.rentEndTime).format('YYYY-MM-DDTHH:MM')}
                                     onChange={this.handleRentEndTimeChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveCarInfo")}</button>

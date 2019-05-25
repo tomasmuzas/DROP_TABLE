@@ -88,6 +88,11 @@ i18n.use(LanguageDetector).init({
         "MyTrips": "My trips",
         "NoTripsToMerge": "There are no trips possible to merge",
         "Accept": "Accept",
+        "DeleteTrip" : "Delete Trip",
+        "ApartmentAddress" : "Apartments Address",
+        "RoomNumber" : "Room Number",
+        "DateFrom": "Date From",
+        "DateTo" :"Date To",
       }
     },
     lt: {
@@ -174,6 +179,11 @@ i18n.use(LanguageDetector).init({
         "MyTrips": "Mano kelionės",
         "NoTripsToMerge" : "Nėra kelionių kurias galite sujungti",
         "Accept" :"Patvirtinti",
+        "DeleteTrip" : "Ištrinti kelionę",
+        "ApartmentAddress" : "Apartamentų adresas",
+        "RoomNumber" : "Kambario numeris",
+        "DateFrom": "Pradžios data",
+        "DateTo" :"Pabaigos data",
       }
     }
   },
