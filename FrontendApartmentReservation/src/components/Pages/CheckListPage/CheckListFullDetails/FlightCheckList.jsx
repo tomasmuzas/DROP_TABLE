@@ -9,6 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { GridLoader } from 'react-spinners';
 import moment from 'moment'
 import {BACKEND_URL} from '../../../../actions/index'
+import pdf from '../pdf.png';
 
 
 class FlightCheckList extends React.Component {
@@ -153,16 +154,19 @@ class FlightCheckList extends React.Component {
 
                         <form className={`form-signin`} encType= "multipart/form-data" onSubmit={this.handleTicketSubmit}>
                             <div className="form-group">
-                                {t("FlightTicket")}
+                                <h3>{t("FlightTicket")}</h3>
+                                <div className="mt-4 mb-4">
+                                    {this.state.flightInfo.ticketFileId &&
+                                        <a href={BACKEND_URL + '/files/' + this.state.flightInfo.ticketFileId}>
+                                            {t("CurrentFlightTicket")} <img src={pdf} alt="pdf-icon" style={{ height: '32px' }}/>
+                                        </a>
+                                    }
+                                </div>
                                 <input type="file" accept="application/pdf" id="FlightTicket" className={`form-control`}
                                     name="FlightTicket"
                                     onChange={this.handleFlightTicketChange} />
                             </div>
-                            {this.state.flightInfo.ticketFileId &&
-                                <a href={BACKEND_URL + '/files/' + this.state.flightInfo.ticketFileId}>
-                                    {t("CurrentFlightTicket")}
-                                </a>
-                            }
+
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveTicket")}</button>                            
                         </form>
                     </div>
