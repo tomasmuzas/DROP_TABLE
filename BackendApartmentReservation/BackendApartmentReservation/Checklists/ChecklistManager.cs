@@ -179,6 +179,7 @@ namespace BackendApartmentReservation.Checklists
             flightInfo.Company = flight.FlightReservation.Company;
             flightInfo.AirportAddress = flight.FlightReservation.AirportAddress;
             flightInfo.FlightTime = flight.FlightReservation.FlightTime;
+            flightInfo.TicketFileId = flight.Ticket.ExternalFileId;
 
             return flightInfo;
         }

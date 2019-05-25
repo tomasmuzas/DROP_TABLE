@@ -26,6 +26,7 @@ class FlightCheckList extends React.Component {
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleTicketSubmit = this.handleTicketSubmit.bind(this);
         this.handleIsRequiredChange = this.handleIsRequiredChange.bind(this);
         this.handleFlightNumberChange = this.handleFlightNumberChange.bind(this);
         this.handleAirportAddressChange = this.handleAirportAddressChange.bind(this);
