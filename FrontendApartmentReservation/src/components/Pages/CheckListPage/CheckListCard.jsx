@@ -117,29 +117,12 @@ class CheckListCard extends React.Component {
     showCar(checklist) {
         const { t } = this.props;
         if (checklist) {
-            var rentStartTime;
-            var rentEndTime;
-            if(checklist.car.rentStartTime){
-                var tempDate = new Date(checklist.car.rentStartTime);
-                rentStartTime = tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-            }
-            else{
-                rentStartTime = checklist.car.rentStartTime;
-            }
-
-            if(checklist.car.rentEndTime){
-                var tempDate = new Date(checklist.car.rentEndTime);
-                rentEndTime = tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-            }
-            else{
-                rentEndTime = checklist.car.rentEndTime;
-            }
             return (
                 <div className="col-12 col-lg-4" hidden={!checklist.car.isRequired}>
                     <h6> {t("CarNumber")}: {checklist.car.carNumber}</h6>
                     <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
-                    <h6> {t("RentStartTime")}: {rentStartTime}</h6>
-                    <h6> {t("RentEndTime")}: {rentEndTime}</h6>
+                    <h6> {t("RentStartTime")}: {this.getFormattedDate(checklist.car.rentStartTime)}</h6>
+                    <h6> {t("RentEndTime")}: {this.getFormattedDate(checklist.car.rentEndtTime)}</h6>
                 </div>
             )
         }
