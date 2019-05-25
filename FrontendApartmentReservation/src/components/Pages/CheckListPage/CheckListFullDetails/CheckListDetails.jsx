@@ -10,13 +10,6 @@ import { Link } from 'react-router-dom';
 import { GridLoader } from "react-spinners";
 
 class CheckListDetails extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            apartmentsInfo: { IsRequired: true, Address: 1234 },
-        }
-    }
-
     componentWillMount() {
         this.props.getSingleChecklist(this.props.match.params.employeeId, this.props.match.params.tripId);
     }
@@ -36,7 +29,7 @@ class CheckListDetails extends React.Component {
                         <CarCheckList carInfo ={this.props.singleChecklist.car} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                     <div className="p-5">
-                        <ApartmentsCheckList apartmentsInfo ={this.state.apartmentsInfo} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
+                        <ApartmentsCheckList apartmentsInfo ={this.props.singleChecklist.apartmentsInfo} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                 </div>
             );

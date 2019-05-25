@@ -8,7 +8,6 @@ export const GET_ALL_EMPLOYEES = 'GET_ALL_EMPLOYEES';
 export const GET_AVAILABLE_EMPLOYEES = 'GET_AVAILABLE_EMPLOYEES';
 export const GET_ALL_TRIPS = 'GET_ALL_TRIPS';
 export const GET_ALL_OFFICES = 'GET_ALL_OFFICES';
-export const CREATE_TRIP = 'CREATE_TRIP';
 export const GET_TRIP_BASIC = 'GET_TRIP_BASIC';
 export const GET_CHECKLIST = "GET_CHECKLIST";
 export const GET_SINGLE_CHECKLIST = "GET_SINGLE_CHECKLIST";
@@ -24,6 +23,7 @@ export const GET_MERGEABLE_TRIPS = "GET_MERGEABLE_TRIPS";
 export const GET_MY_TRIPS = "GET_MY_TRIPS";
 export const CLEAR_MY_TRIPS = "CLEAR_MY_TRIPS";
 export const UPDATE_MY_TRIPS = "UPDATE_MY_TRIPS";
+export const DELETE_TRIP = "DELETE_TRIP";
 
 var BACKEND_BASE_URI;
 if (process.env.NODE_ENV === 'production') {
@@ -473,6 +473,7 @@ export const acceptTrip = (tripId) => (dispatch) => {
             return;
         }
         if (response.status === 200) {
+            clearTrips();
             dispatch({
                 type: UPDATE_MY_TRIPS,
                 payload: tripId
@@ -524,6 +525,32 @@ export const deleteCarInfo = (employeeId, tripId) => (dispatch) => {
         }
         if (response.status === 200) {
             alert(i18n.t("CarInfoDelete") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const deleteTrip = (tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            dispatch({
+                type : 'DELETE_TRIP',
+                payload: tripId
+            })
         }
         else {
             alert(i18n.t("SignUpError") + response.status);
@@ -591,10 +618,6 @@ export const createTrip = (employeeIds, destinationOfficeId, departureDate, retu
         }
         if (response.status === 200) {
             response.json().then(data => {
-                dispatch({
-                    type: CREATE_TRIP,
-                    payload: data
-                })
                 dispatch(push('/trip/' + data.tripId))
             });
         }

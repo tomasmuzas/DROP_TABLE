@@ -7,11 +7,26 @@ import { withTranslation } from "react-i18next";
 import { GridLoader } from 'react-spinners';
 
 class TripsPage extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            updated: false
+        }
+
+        this.updateState = this.updateState.bind(this);
+    }
+
     componentWillMount() {
         this.props.getAllTrips();
         this.props.clearMergableTrips();
     }
 
+    updateState(){
+        setTimeout(function(){ this.setState({
+            update: true
+        }) }.bind(this), 3000);
+    }
     render() {
         const { t } = this.props;
         if (this.props.trips) {
@@ -20,7 +35,7 @@ class TripsPage extends React.Component {
                     <div className="col-12">
                         <h1 style={{ textAlign: 'center' }}>{t("MyOrganizedTrips")}</h1>
                         <div>
-                            {this.props.trips.map(trip => <TripCard key={trip.tripId} trip={trip} mergeable={false} />)}
+                            {this.props.trips.map(trip => <TripCard key={trip.tripId} trip={trip} mergeable={false} updateState = {this.updateState}/>)}
                         </div>
                     </div>
                 </div>

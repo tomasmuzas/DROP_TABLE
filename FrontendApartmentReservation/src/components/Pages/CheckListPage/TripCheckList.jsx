@@ -47,7 +47,7 @@ class TripCheckList extends React.Component {
                     }
                     <div>
                         {this.props.tripbasic.checklistInfos.map((checkListInfo, index) =>
-                            <CheckListCard checkListInfo={checkListInfo} index={index} tripId={this.props.tripbasic.tripId} key={checkListInfo.employee.id} />)}
+                            <CheckListCard checkListInfo={checkListInfo} availableApartments={this.props.tripbasic.availableApartments} index={index} tripId={this.props.tripbasic.tripId} key={checkListInfo.employee.id} />)}
                     </div>
                     <div className="pt-5 justify-content-md-center" style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
                     <Link className={`btn btn-lg btn-primary btn-block`} style={{ width: '30%' }} to={''} type="submit">{t("FinishCreation")}</Link>

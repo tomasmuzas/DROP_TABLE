@@ -20,10 +20,10 @@ class ApartmentsCheckList extends React.Component {
         this.handleApartmentAddressChange = this.handleApartmentAddressChange.bind(this);
     }
 
-    componentWillMount() {
-        //this.props.employeeId;
-        //this.props.tripId;
-        //getchecklistinfo
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            appartmentsInfo: newProps.appartmentsInfo
+        })
     }
 
     handleSubmit(e) {
