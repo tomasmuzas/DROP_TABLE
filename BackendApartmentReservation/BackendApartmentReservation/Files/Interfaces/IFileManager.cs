@@ -6,8 +6,10 @@
 
     public interface IFileManager
     {
-        Task<string> UploadFile(IFormFile formFile);
+        Task<DbFile> UploadFile(IFormFile formFile);
 
         Task<DbFile> GetFileById(string fileID);
+
+        Task DeleteFile(DbFile file);
     }
 }

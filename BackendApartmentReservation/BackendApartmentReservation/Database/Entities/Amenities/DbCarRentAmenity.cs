@@ -9,5 +9,7 @@
         public int Id { get; set; }
 
         public DbCarReservation CarReservation { get; set; }
+
+        public DbFile Documents { get; set; }
     }
 }

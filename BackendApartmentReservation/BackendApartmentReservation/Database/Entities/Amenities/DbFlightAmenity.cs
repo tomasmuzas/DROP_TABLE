@@ -9,5 +9,7 @@
         public int Id { get; set; }
 
         public DbFlightReservation FlightReservation { get; set; }
+
+        public DbFile Ticket { get; set; }
     }
 }

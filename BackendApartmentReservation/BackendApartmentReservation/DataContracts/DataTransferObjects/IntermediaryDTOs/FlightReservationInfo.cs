@@ -13,5 +13,7 @@
         public DateTimeOffset? FlightTime { get; set; }
 
         public string AirportAddress { get; set; }
+
+        public string TicketFileId { get; set; }
     }
 }
