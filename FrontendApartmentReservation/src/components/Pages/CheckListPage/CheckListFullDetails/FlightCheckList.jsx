@@ -8,6 +8,8 @@ import { bindActionCreators } from 'redux';import { Link } from 'react-router-do
 import Checkbox from '@material-ui/core/Checkbox';
 import { GridLoader } from 'react-spinners';
 import moment from 'moment'
+import {BACKEND_URL} from '../../../../actions/index'
+
 
 class FlightCheckList extends React.Component {
     constructor(props) {
@@ -156,6 +158,11 @@ class FlightCheckList extends React.Component {
                                     name="FlightTicket"
                                     onChange={this.handleFlightTicketChange} />
                             </div>
+                            {this.state.flightInfo.ticketFileId &&
+                                <a href={BACKEND_URL + '/files/' + this.state.flightInfo.ticketFileId}>
+                                    Dabartinis bilietas
+                                </a>
+                            }
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveTicket")}</button>                            
                         </form>
                     </div>
