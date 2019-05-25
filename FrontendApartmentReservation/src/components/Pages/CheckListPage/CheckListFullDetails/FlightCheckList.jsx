@@ -160,7 +160,7 @@ class FlightCheckList extends React.Component {
                             </div>
                             {this.state.flightInfo.ticketFileId &&
                                 <a href={BACKEND_URL + '/files/' + this.state.flightInfo.ticketFileId}>
-                                    Dabartinis bilietas
+                                    {t("CurrentFlightTicket")}
                                 </a>
                             }
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveTicket")}</button>                            

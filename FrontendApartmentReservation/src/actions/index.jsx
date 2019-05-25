@@ -410,7 +410,7 @@ export const updateCarDocuments = (flightTicketFile, employeeId, tripId) => (dis
     const formData = new FormData();
     console.log(flightTicketFile);
     formData.append('file', flightTicketFile);
-    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car/document', {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car/documents', {
         method: "PUT",
         body: formData,
         headers: {

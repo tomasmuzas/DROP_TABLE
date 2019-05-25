@@ -61,5 +61,7 @@
         Task DeclineTripMergeConfirmation(string employeeId, string tripId);
 
         Task UpdateFlightTicketForEmployee(string employeeId, string tripId, IFormFile file);
+
+        Task UpdateCarRentDocumentForEmployee(string employeeId, string tripId, IFormFile file);
     }
 }

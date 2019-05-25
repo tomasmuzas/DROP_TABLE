@@ -162,6 +162,23 @@ namespace BackendApartmentReservation.Checklists
                 $"Updated ticket for the flight for employee {employeeId} and trip {tripId}");
         }
 
+        public async Task UpdateCarRentDocumentForEmployee(string employeeId, string tripId, IFormFile file)
+        {
+            var car = await _checklistRepository.GetChecklistFullCarRent(employeeId, tripId);
+
+            var newFile = await _fileManager.UploadFile(file);
+            if (car.Documents != null)
+            {
+                await _fileManager.DeleteFile(car.Documents);
+            }
+
+            car.Documents = newFile;
+
+            await _carRentRepository.UpdateCarRent(car);
+            _logger.LogInformation(
+                $"Updated documents for the car rent for employee {employeeId} and trip {tripId}");
+        }
+
         public async Task<FlightReservationInfo> GetFlightInfo(string employeeId, string tripId)
         {
             var flight = await _checklistRepository.GetChecklistFullFlight(employeeId, tripId);
@@ -179,7 +196,7 @@ namespace BackendApartmentReservation.Checklists
             flightInfo.Company = flight.FlightReservation.Company;
             flightInfo.AirportAddress = flight.FlightReservation.AirportAddress;
             flightInfo.FlightTime = flight.FlightReservation.FlightTime;
-            flightInfo.TicketFileId = flight.Ticket.ExternalFileId;
+            flightInfo.TicketFileId = flight.Ticket?.ExternalFileId;
 
             return flightInfo;
         }
@@ -244,6 +261,7 @@ namespace BackendApartmentReservation.Checklists
             carReservationInfo.RentStartTime = carRent.CarReservation.RentStartTime;
             carReservationInfo.RentEndTime = carRent.CarReservation.RentEndTime;
             carReservationInfo.CarAddress = carRent.CarReservation.CarAddress;
+            carReservationInfo.DocumentsFileId = carRent.Documents?.ExternalFileId;
 
             return carReservationInfo;
         }

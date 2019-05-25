@@ -152,17 +152,17 @@ class CarCheckList extends React.Component {
 
                         <form className={`form-signin`} encType= "multipart/form-data" onSubmit={this.handleDocumentSubmit}>
                             <div className="form-group">
-                                {t("CarDocument")}
+                                {t("CarDocuments")}
                                 <input type="file" accept="application/pdf" id="FlightTicket" className={`form-control`}
                                     name="Document"
                                     onChange={this.handleDocumentChange} />
                             </div>
-                            {this.state.carInfo.documentFileId &&
-                                <a href={BACKEND_URL + '/files/' + this.state.carInfo.documentFileId}>
-                                    Dabartiniai dokumentai
+                            {this.state.carInfo.documentsFileId &&
+                                <a href={BACKEND_URL + '/files/' + this.state.carInfo.documentsFileId}>
+                                    {t("CurrentCarDocuments")}
                                 </a>
                             }
-                            <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveTicket")}</button>                            
+                            <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveDocuments")}</button>                            
                         </form>
                     </div>
                 </div>
