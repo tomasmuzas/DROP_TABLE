@@ -25,8 +25,12 @@ class TripCard extends React.Component {
     }
 
     deleteTrip(){
-        this.props.deleteTrip(this.props.trip.tripId);
-        this.props.updateState();
+        var that = this;
+        var promise = that.props.deleteTrip(that.props.trip.tripId).then(function (result) {
+            if (result === 200) {
+                that.props.updateState();
+            }
+        });
     }
 
     render() {

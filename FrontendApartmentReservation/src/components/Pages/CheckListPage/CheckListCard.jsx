@@ -92,7 +92,7 @@ class CheckListCard extends React.Component {
             if(checklist.livingPlace.hotelReservationInfo.required){
                 return (
                     <div className="col-12 col-lg-4" hidden={!checklist.livingPlace.isRequired}>
-                        <h6> {t("HotelName")}: {checklist.hotelReservationInfo.hotelName}</h6>
+                        <h6> {t("Hotel")}: {checklist.livingPlace.hotelReservationInfo.hotelName}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
                         <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
                     </div>
