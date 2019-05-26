@@ -123,6 +123,13 @@ namespace BackendApartmentReservation.Trips
             await _checklistManager.DeleteCarRent(employeeId, tripId);
         }
 
+        [HttpDelete]
+        [Route("livingplace")]
+        public async Task DeleteLivingPlace(string tripId, string employeeId)
+        {
+            await _checklistManager.DeleteLivingPlace(employeeId, tripId);
+        }
+
         [HttpGet]
         [Route("apartment")]
         public async Task<ApartmentReservationInfo> GetApartmentReservationInfo(string tripId, string employeeId)
