@@ -10,8 +10,9 @@ import singleCarInfo from './singleCarInfo';
 import plans from './plans';
 import mergeableTrips from './mergeableTrips';
 import myTrips from './myTrips';
+import personalChecklist from './personalChecklist';
 
 export default {
     employees, trips, apartments, offices, tripbasic, checklist, singleFlightInfo, singleChecklist, singleCarInfo,
-    plans, mergeableTrips, myTrips
+    plans, mergeableTrips, myTrips, personalChecklist
 };

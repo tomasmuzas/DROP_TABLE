@@ -103,25 +103,25 @@ class FlightCheckList extends React.Component {
                             <div className="form-group mb-2">
                                 {t("FlightNumber")}
                                 <input type="text" id="FlightNumber" className={`form-control`} placeholder={t("FlightNumber")}
-                                    required autoFocus name="FlightNumber" value={this.state.flightInfo.flightNumber}
+                                    autoFocus name="FlightNumber" value={this.state.flightInfo.flightNumber}
                                     onChange={this.handleFlightNumberChange} />
                             </div>
                             <div className="form-group mb-2">
                                 {t("FlightTime")}
                                 <input type="datetime-local" id="FlightTime" className={`form-control`} placeholder={t("FlightTime")}
-                                    required name="FlightTime" value={moment(this.state.flightInfo.flightTime).format('YYYY-MM-DDTHH:MM')}
+                                    name="FlightTime" value={moment(this.state.flightInfo.flightTime).format('YYYY-MM-DDTHH:MM')}
                                     onChange={this.handleFlightTimeChange} />
                             </div>
                             <div className="form-group mb-2">
                                 {t("AirportAddress")}
                                 <input type="text" id="AirportAddress" className={`form-control`} placeholder={t("AirportAddress")}
-                                    required name="AirportAddress" value={this.state.flightInfo.airportAddress}
+                                    name="AirportAddress" value={this.state.flightInfo.airportAddress}
                                     onChange={this.handleAirportAddressChange} />
                             </div>
                             <div className="form-group">
                                 {t("FlightCompany")}
                                 <input type="text" id="FlightCompany" className={`form-control`} placeholder={t("FlightCompany")}
-                                    required name="FlightCompany" value={this.state.flightInfo.company}
+                                    name="FlightCompany" value={this.state.flightInfo.company}
                                     onChange={this.handleFlightCompanyChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveFlightInfo")}</button>

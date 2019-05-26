@@ -25,7 +25,6 @@ class MyTripCard extends React.Component {
         super(props);
         this.state = {
             showDetails: false,
-            apartmentsInfo: { IsRequired: true, AppartmentsAddress: 'Didlaukio g. 59' },
         }
 
         this.handleShowDetailsChange = this.handleShowDetailsChange.bind(this);
@@ -33,10 +32,14 @@ class MyTripCard extends React.Component {
     }
 
     acceptTrip(e) {
-        this.props.acceptTrip(this.props.trip.tripId);
-        setTimeout(function(){ this.setState({
-            showDetails: false
-        }) }.bind(this), 3000);
+        var that = this;
+        var promise = this.props.acceptTrip(this.props.trip.tripId).then(function (result) {
+            if (result === 200) {
+                that.setState({
+                    showDetails: false,
+                })
+            }
+        });
     }
 
     handleShowDetailsChange(e) {
@@ -46,21 +49,69 @@ class MyTripCard extends React.Component {
     }
 
     componentWillMount() {
-        this.props.getChecklist(this.props.myId, this.props.trip.tripId);
+        this.props.getPersonalChecklist(this.props.myId, this.props.trip.tripId);
+    }
+
+    getFormattedDate(checklistDate){
+        if(checklistDate){
+            var tempDate = new Date(checklistDate);
+             return tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        }
+        else{
+            return checklistDate;
+        }
     }
 
     showFlight(checklist) {
         const { t } = this.props;
         if (checklist) {
-            var flightDate = new Date(checklist.flight.flightTime);
+            
             return (
                 <div className="col-12 col-lg-4" hidden={!checklist.flight.isRequired}>
                     <h6> {t("FlightNumber")}: {checklist.flight.flightNumber}</h6>
                     <h6> {t("FlightCompany")}:  {checklist.flight.company}</h6>
                     <h6> {t("AirportAddress")}:  {checklist.flight.airportAddress}</h6>
-                    <h6> {t("FlightTime")}: {flightDate.toLocaleDateString('lt-LT') + " " + flightDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} </h6>
+                    <h6> {t("FlightTime")}: {this.getFormattedDate(checklist.flight.flightTime)} </h6>
                 </div>
             )
+        }
+        else {
+            return (
+                <div className="center-outer-div">
+                    <div className='center-div'>
+                        <GridLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'red'}
+                        />
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    showApartments(checklist) {
+        const { t } = this.props;
+        if (checklist) {
+            if(checklist.livingPlace.apartmentReservationInfo.required){
+                return (
+                    <div className="col-12 col-lg-4" hidden={!checklist.livingPlace.isRequired}>
+                        <h6> {t("ApartmentAddress")}: {checklist.livingPlace.apartmentReservationInfo.apartmentAddress}</h6>
+                        <h6> {t("RoomNumber")}:  {checklist.livingPlace.apartmentReservationInfo.roomNumber}</h6>
+                        <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.apartmentReservationInfo.dateFrom)}</h6>
+                        <h6> {t("DateTo")}: {this.getFormattedDate(checklist.livingPlace.apartmentReservationInfo.dateTo)} </h6>
+                    </div>
+                )
+            }
+            if(checklist.livingPlace.hotelReservationInfo.required){
+                return (
+                    <div className="col-12 col-lg-4" hidden={!checklist.livingPlace.isRequired}>
+                        <h6> {t("Hotel")}: {checklist.livingPlace.hotelReservationInfo.hotelName}</h6>
+                        <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
+                        <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
+                    </div>
+                )
+            }
         }
         else {
             return (
@@ -80,14 +131,12 @@ class MyTripCard extends React.Component {
     showCar(checklist) {
         const { t } = this.props;
         if (checklist) {
-            var rentStartTime = new Date(checklist.car.rentStartTime);
-            var rentEndTime = new Date(checklist.car.rentEndTime);
             return (
                 <div className="col-12 col-lg-4" hidden={!checklist.car.isRequired}>
                     <h6> {t("CarNumber")}: {checklist.car.carNumber}</h6>
                     <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
-                    <h6> {t("RentStartTime")}: {rentStartTime.toLocaleDateString('lt-LT') + " " + rentStartTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</h6>
-                    <h6> {t("RentEndTime")}: {rentEndTime.toLocaleDateString('lt-LT') + " " + rentEndTime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</h6>
+                    <h6> {t("RentStartTime")}: {this.getFormattedDate(checklist.car.rentStartTime)}</h6>
+                    <h6> {t("RentEndTime")}: {this.getFormattedDate(checklist.car.rentEndtTime)}</h6>
                 </div>
             )
         }
@@ -110,7 +159,7 @@ class MyTripCard extends React.Component {
         const { t, trip } = this.props;
         var tripStartTime = new Date(trip.startTime);
         var tripEndTime = new Date(trip.endTime);
-        if (this.props.checklist) {
+        if (this.props.personalChecklist && this.props.personalChecklist !== []) {
             return (
                 <div>
                     <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
@@ -150,12 +199,9 @@ class MyTripCard extends React.Component {
                         </div>
                     </div>
                     <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }} hidden={!this.state.showDetails}>
-                        {this.showFlight(this.props.checklist[this.props.index])}
-                        {this.showCar(this.props.checklist[this.props.index])}
-                        <div className="col-12 col-lg-4" hidden={!this.state.apartmentsInfo.IsRequired}>
-                            <h6> {t("ApartmentsAddres")}: {this.state.apartmentsInfo.AppartmentsAddress}</h6>
-
-                        </div>
+                        {this.showFlight(this.props.personalChecklist[this.props.index])}
+                        {this.showCar(this.props.personalChecklist[this.props.index])}
+                        {this.showApartments(this.props.personalChecklist[this.props.index])}
                     </div>
                 </div>
             )
@@ -181,7 +227,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        checklist: state.checklist,
+        personalChecklist: state.personalChecklist,
     };
 }
 

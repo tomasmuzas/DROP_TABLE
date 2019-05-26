@@ -104,25 +104,25 @@ class CarCheckList extends React.Component {
                             <div className="form-group mb-2">
                                 {t("CarNumber")}
                                 <input type="text" id="CarNumber" className={`form-control`} placeholder={t("CarNumber")}
-                                    required autoFocus name="CarNumber" value={this.state.carInfo.carNumber}
+                                    autoFocus name="CarNumber" value={this.state.carInfo.carNumber}
                                     onChange={this.handleCarNumberChange} />
                             </div>
                             <div className="form-group mb-2">
                                 {t("CarAddress")}
                                 <input type="text" id="CarAddress" className={`form-control`} placeholder={t("CarAddress")}
-                                    required name="CarAddress" value={this.state.carInfo.carAddress}
+                                    name="CarAddress" value={this.state.carInfo.carAddress}
                                     onChange={this.handleCarAddressChange} />
                             </div>
                             <div className="form-group mb-2">
                                 {t("RentStartTime")}
                                 <input type="datetime-local" id="RentStartTime" className={`form-control`} placeholder={t("RentStartTime")}
-                                    required name="RentStartTime" value={moment(this.state.carInfo.rentEndTime).format('YYYY-MM-DDTHH:MM')}
+                                    name="RentStartTime" value={moment(this.state.carInfo.rentEndTime).format('YYYY-MM-DDTHH:MM')}
                                     onChange={this.handleRentStartTimeChange} />
                             </div>
                             <div className="form-group mb-2">
                                 {t("RentEndTime")}
                                 <input type="datetime-local" id="RentEndTime" className={`form-control`} placeholder={t("RentEndTime")}
-                                    required name="RentEndTime" value={moment(this.state.carInfo.rentEndTime).format('YYYY-MM-DDTHH:MM')}
+                                    name="RentEndTime" value={moment(this.state.carInfo.rentEndTime).format('YYYY-MM-DDTHH:MM')}
                                     onChange={this.handleRentEndTimeChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveCarInfo")}</button>

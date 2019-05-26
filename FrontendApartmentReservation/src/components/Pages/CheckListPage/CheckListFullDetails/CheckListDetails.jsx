@@ -29,7 +29,7 @@ class CheckListDetails extends React.Component {
                         <CarCheckList carInfo ={this.props.singleChecklist.car} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                     <div className="p-5">
-                        <ApartmentsCheckList apartmentsInfo ={this.props.singleChecklist.apartmentsInfo} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
+                        <ApartmentsCheckList apartmentsInfo ={this.props.singleChecklist.livingPlace} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                 </div>
             );

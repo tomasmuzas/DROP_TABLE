@@ -24,9 +24,11 @@ export const GET_MY_TRIPS = "GET_MY_TRIPS";
 export const CLEAR_MY_TRIPS = "CLEAR_MY_TRIPS";
 export const UPDATE_MY_TRIPS = "UPDATE_MY_TRIPS";
 export const DELETE_TRIP = "DELETE_TRIP";
+export const GET_PERSONAL_CHECKLIST = "GET_PERSONAL_CHECKLIST";
+export const CLEAR_PERSONAL_CHECKLIST = "CLEAR_PERSONAL_CHECKLIST";
 
 var BACKEND_BASE_URI;
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
     BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
 }
 else {
@@ -60,6 +62,69 @@ export const getAllApartments = () => (dispatch) => {
 export const reserveApartmentsForAll = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + `/apartment`, {
         method: "Post",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            clearTrips();
+            dispatch(push('/trip/' + tripId));
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const reserveApartmentsForOne = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/'+ employeeId + `/apartment`, {
+        method: "Post",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            clearTrips();
+            return response.status;
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const deleteApartmentsReservationForOne = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/'+ employeeId + `/apartment`, {
+        method: "Delete",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            clearTrips();
+            return response.status;
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const deleteApartmentsReservation = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/'+ employeeId + `/apartment`, {
+        method: "Delete",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -302,7 +367,7 @@ export const getPlans = (employeeIds) => (dispatch) => {
 }
 
 export const getChecklist = (employeeId, tripId) => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist/personal', {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -319,6 +384,30 @@ export const getChecklist = (employeeId, tripId) => (dispatch) => {
             .then(data => {
                 dispatch({
                     type: GET_CHECKLIST,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.warn(error));
+}
+
+export const getPersonalChecklist = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist/personal', {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_PERSONAL_CHECKLIST,
                     payload: data
                 });
             });
@@ -403,6 +492,98 @@ export const createFlightInfo = (employeeId, tripId) => (dispatch) => {
     }).catch((error) => console.warn(error));
 }
 
+export const createApartmentsInfo = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            alert(i18n.t("ApartmentsInfoCreated") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const deleteHotelReservation = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            alert(i18n.t("ApartmentsInfoDeleted") + response.status);
+            return response.status;
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+export const deleteApartmentsInfo = (employeeId, tripId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/livingplace', {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            alert(i18n.t("ApartmentsInfoDeleted") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const updateApartmentsInfo = (HotelName, DateFrom, DateTo, tripId, employeeId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
+        method: "PUT",
+        body: JSON.stringify({HotelName, DateFrom, DateTo}),
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            alert(i18n.t("CarInfoUpdate") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
 
 export const deleteFlightInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
@@ -457,7 +638,6 @@ export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
     }).catch((error) => console.warn(error));
 }
 
-
 export const acceptTrip = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/participation/accept', {
         method: "POST",
@@ -478,7 +658,7 @@ export const acceptTrip = (tripId) => (dispatch) => {
                 type: UPDATE_MY_TRIPS,
                 payload: tripId
             })
-            return;
+            return response.status;
         }
         else {
             alert(i18n.t("SignUpError") + response.status);
@@ -550,7 +730,8 @@ export const deleteTrip = (tripId) => (dispatch) => {
             dispatch({
                 type : 'DELETE_TRIP',
                 payload: tripId
-            })
+            });
+            return response.status;
         }
         else {
             alert(i18n.t("SignUpError") + response.status);
@@ -617,6 +798,14 @@ export const createTrip = (employeeIds, destinationOfficeId, departureDate, retu
             return;
         }
         if (response.status === 200) {
+            dispatch({
+                type: CLEAR_PERSONAL_CHECKLIST
+            });
+
+            dispatch({
+                type: CLEAR_MY_TRIPS
+            });
+            
             response.json().then(data => {
                 dispatch(push('/trip/' + data.tripId))
             });
@@ -654,4 +843,10 @@ export const clearMergableTrips = () => (dispatch) => {
 export const logoutUser = () => (dispatch) => {
     sessionStorage.removeItem('token');
     dispatch(push('/login'));
+}
+
+export const clearPersonalChecklist = () => (dispatch) => {
+    dispatch({
+        type: CLEAR_PERSONAL_CHECKLIST
+    });
 }

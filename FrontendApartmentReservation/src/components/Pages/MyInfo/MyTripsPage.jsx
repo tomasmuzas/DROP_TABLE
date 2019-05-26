@@ -9,7 +9,8 @@ import { GridLoader } from "react-spinners";
 class MyTripsPage extends React.Component {
 
     componentWillMount() {
-        this.props.clearMyTrips()
+        this.props.clearMyTrips();
+        this.props.clearPersonalChecklist();
         this.props.getMyTrips();
     }
 
@@ -49,7 +50,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        myTrips: state.myTrips
+        myTrips: state.myTrips,
+        personalChecklist: state.personalChecklist
     };
 }
 

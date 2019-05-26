@@ -51,7 +51,6 @@ i18n.use(LanguageDetector).init({
         "CarInfoUpdate": "Car info updated",
         "CarInfoCreate": "Car info created",
         "CarInfoDelete": "Car info deleted",
-        "ApartmentsInfoUpdated":"Apartments info updated",
         "DestinationOffice": "Destination Office",
         "CarNumber": "Car Number",
         "CarAddress": "Car address",
@@ -93,6 +92,18 @@ i18n.use(LanguageDetector).init({
         "RoomNumber" : "Room Number",
         "DateFrom": "Date From",
         "DateTo" :"Date To",
+        "Hotel" : "Hotel",
+        "SaveHotelInfo": "Save hotel information",
+        "AvailableSpaceInApartments" : "Available space in apartments: ",
+        "ReserveApartmentForOne" : "Reserve apartment",
+        "DeleteReservation" : "Delete reservation",
+        "ReservationAlreadyMade" : "Reservation is already made",
+        "ApartmentsInfoUpdated":"Apartments information updated",
+        "ApartmentsInfoCreated":"Apartments information created",
+        "ApartmentsInfoDeleted":"Apartments information deleted",
+        "BookHotel" : "Book hotel",
+        "DeleteHotelInfo": "Delete hotel information"
+
       }
     },
     lt: {
@@ -142,7 +153,6 @@ i18n.use(LanguageDetector).init({
         "CarInfoUpdate": "Mašinos informacija išsaugota",
         "CarInfoCreate": "Mašinos informacija sukurta",
         "CarInfoDelete": "Mašinos informacija ištrinta",
-        "ApartmentsInfoUpdated":"Apartamentų informacija išsaugota",
         "DestinationOffice": "Išvykimo ofisas",
         "CarNumber": "Mašinos numeris",
         "CarAddress": "Mašinos adresas",
@@ -184,6 +194,17 @@ i18n.use(LanguageDetector).init({
         "RoomNumber" : "Kambario numeris",
         "DateFrom": "Pradžios data",
         "DateTo" :"Pabaigos data",
+        "Hotel" : "Viešbutis",
+        "SaveHotelInfo": "Išsaugoti viešbučio informaciją",
+        "AvailableSpaceInApartments" : "Laisva vieta apartamentuose: ",
+        "ReserveApartmentForOne" : "Rezervuoti apartamentus",
+        "DeleteReservation" : "Ištrinti rezervaciją",
+        "ReservationAlreadyMade" : "Apartamentai jau rezervuoti",
+        "ApartmentsInfoUpdated":"Apartamentų informacija išsaugota",
+        "ApartmentsInfoCreated":"Apartamentų informacija sukurta",
+        "ApartmentsInfoDeleted":"Apartamentų informacija ištrinta",
+        "BookHotel" : "Užsakyti viešbutį",
+        "DeleteHotelInfo": "Ištrinti viešbučio informaciją"
       }
     }
   },
