@@ -192,6 +192,16 @@ namespace BackendApartmentReservation.Trips
             await _checklistManager.UpdateHotelReservationForEmployee(employeeId, tripId, info);
         }
 
+        [HttpPut]
+        [Route("hotel/documents")]
+        public async Task UpdateHotelDocuments(
+            string tripId,
+            string employeeId,
+            [FromForm] FileRequest request)
+        {
+            await _checklistManager.UpdateHotelDocumentsForEmployee(employeeId, tripId, request.File);
+        }
+
         [HttpDelete]
         [Route("hotel")]
         public async Task DeleteHotelReservation(string tripId, string employeeId)

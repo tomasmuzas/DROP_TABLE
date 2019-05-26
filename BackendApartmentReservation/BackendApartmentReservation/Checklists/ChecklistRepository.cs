@@ -88,6 +88,7 @@
                 .Where(c => c.Employee.ExternalEmployeeId == employeeId && c.Trip.ExternalTripId == tripId)
                 .Select(c => c.LivingPlace)
                 .Include(c => c.HotelReservation)
+                    .ThenInclude(h => h.Documents)
                 .SingleOrDefaultAsync();
 
             return livingPlace?.HotelReservation;

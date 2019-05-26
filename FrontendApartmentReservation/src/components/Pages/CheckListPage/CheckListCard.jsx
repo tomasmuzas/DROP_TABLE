@@ -16,7 +16,9 @@ import IconButton from '@material-ui/core/IconButton';
 import i18n from "../../../i18n"
 import arrowUp from './up-arrow.png';
 import arrowDown from './down-arrow.png';
+import pdf from './pdf.png';
 import { GridLoader } from 'react-spinners';
+import {BACKEND_URL} from '../../../actions/index'
 
 class CheckListCard extends React.Component {
     constructor(props) {
@@ -58,6 +60,13 @@ class CheckListCard extends React.Component {
                     <h6> {t("FlightCompany")}:  {checklist.flight.company}</h6>
                     <h6> {t("AirportAddress")}:  {checklist.flight.airportAddress}</h6>
                     <h6> {t("FlightTime")}: {this.getFormattedDate(checklist.flight.flightTime)} </h6>
+                    <h6>                                    
+                        {checklist.flight.ticketFileId &&
+                            <a href={BACKEND_URL + '/files/' + checklist.flight.ticketFileId}>
+                                {t("CurrentFlightTicket")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }}/>
+                            </a>
+                        }
+                    </h6>
                 </div>
             )
         }
@@ -95,6 +104,13 @@ class CheckListCard extends React.Component {
                         <h6> {t("Hotel")}: {checklist.livingPlace.hotelReservationInfo.hotelName}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
                         <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
+                        <h6>                                    
+                            {checklist.livingPlace.hotelReservationInfo.documentsFileId &&
+                                <a href={BACKEND_URL + '/files/' + checklist.livingPlace.hotelReservationInfo.documentsFileId}>
+                                    {t("CurrentHotelDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }}/>
+                                </a>
+                            }
+                        </h6>
                     </div>
                 )
             }
@@ -123,6 +139,13 @@ class CheckListCard extends React.Component {
                     <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
                     <h6> {t("RentStartTime")}: {this.getFormattedDate(checklist.car.rentStartTime)}</h6>
                     <h6> {t("RentEndTime")}: {this.getFormattedDate(checklist.car.rentEndtTime)}</h6>
+                    <h6>                                    
+                        {checklist.car.documentsFileId &&
+                            <a href={BACKEND_URL + '/files/' + checklist.car.documentsFileId}>
+                                {t("CurrentCarDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }}/>
+                            </a>
+                        }
+                    </h6>
                 </div>
             )
         }
