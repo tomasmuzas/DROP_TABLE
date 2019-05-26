@@ -57,6 +57,7 @@ namespace BackendApartmentReservation.Trips
                     employeePlan.StartDate = trip.DepartureDate;
                     employeePlan.EndDate = trip.ReturnDate;
                     employeePlan.Employee = employeeGroup.DbEmployee;
+                    employeePlan.AssociatedTrip = trip;
                     await _employeeRepository.CreateEmployeePlan(employeePlan);
                 }
             }

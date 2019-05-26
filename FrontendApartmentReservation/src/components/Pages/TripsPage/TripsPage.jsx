@@ -23,9 +23,9 @@ class TripsPage extends React.Component {
     }
 
     updateState(){
-        setTimeout(function(){ this.setState({
+        this.setState({
             update: true
-        }) }.bind(this), 3000);
+        });
     }
     render() {
         const { t } = this.props;

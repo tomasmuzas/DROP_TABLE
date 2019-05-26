@@ -181,7 +181,8 @@ const mapStateToProps = (state) => {
         employees: state.employees,
         offices: state.offices,
         trips: state.trips,
-        plans: state.plans
+        plans: state.plans,
+        personalChecklist: state.personalChecklist
     }
 }
 

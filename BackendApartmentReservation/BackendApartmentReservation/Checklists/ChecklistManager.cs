@@ -179,6 +179,30 @@ namespace BackendApartmentReservation.Checklists
                 $"Updated documents for the car rent for employee {employeeId} and trip {tripId}");
         }
 
+        public async Task DeleteLivingPlace(string employeeId, string tripId)
+        {
+            var checklist = await _checklistRepository.GetFullChecklist(employeeId, tripId);
+            var hotel = checklist.LivingPlace?.HotelReservation;
+
+            if (hotel != null)
+            {
+                await _hotelRepository.DeleteHotelReservation(hotel);
+                _logger.LogInformation($"Deleted hotel reservation for employee {employeeId} and trip {tripId}");
+            }
+
+            var apartmentReservation = checklist.LivingPlace?.ApartmentRoomReservation;
+
+            if (apartmentReservation != null)
+            {
+                await _apartmentRepository.DeleteRoomReservation(apartmentReservation);
+                _logger.LogInformation($"Deleted apartment room for employee {employeeId} and trip {tripId}");
+            }
+
+            checklist.LivingPlace = null;
+            await _checklistRepository.UpdateChecklist(checklist);
+            _logger.LogInformation($"Deleted living place information for employee {employeeId} and trip {tripId}");
+        }
+
         public async Task<FlightReservationInfo> GetFlightInfo(string employeeId, string tripId)
         {
             var flight = await _checklistRepository.GetChecklistFullFlight(employeeId, tripId);
