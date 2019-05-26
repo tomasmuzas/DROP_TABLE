@@ -472,7 +472,6 @@ export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) =
 
 export const uploadFlightTicket = (flightTicketFile, employeeId, tripId) => (dispatch) => {
     const formData = new FormData();
-    console.log(flightTicketFile);
     formData.append('file', flightTicketFile);
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight/ticket', {
         method: "PUT",
@@ -497,7 +496,6 @@ export const uploadFlightTicket = (flightTicketFile, employeeId, tripId) => (dis
 
 export const updateCarDocuments = (flightTicketFile, employeeId, tripId) => (dispatch) => {
     const formData = new FormData();
-    console.log(flightTicketFile);
     formData.append('file', flightTicketFile);
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car/documents', {
         method: "PUT",
@@ -825,6 +823,11 @@ export const login = (Email, Password) => (dispatch) => {
         if (response.status === 200) {
             response.json().then(data => {
                 sessionStorage.setItem('token', data.jwtToken);
+                var usefulInfo = data.jwtToken.split('.');
+                var decodedString = Buffer.from(usefulInfo[1], 'base64').toString();
+                var decodedJson = JSON.parse(decodedString);
+                var userRole = decodedJson["Role"];
+                sessionStorage.setItem('role', userRole);
                 dispatch(push('/'))
             });
         }

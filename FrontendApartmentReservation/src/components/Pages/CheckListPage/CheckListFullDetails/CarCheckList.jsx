@@ -139,13 +139,13 @@ class CarCheckList extends React.Component {
                             <div className="form-group mb-2">
                                 {t("RentStartTime")}
                                 <input type="datetime-local" id="RentStartTime" className={`form-control`} placeholder={t("RentStartTime")}
-                                    name="RentStartTime" value={moment(this.state.carInfo.rentEndTime).format('YYYY-MM-DDTHH:MM')}
+                                    name="RentStartTime" value={this.state.carInfo.rentEndTime}
                                     onChange={this.handleRentStartTimeChange} />
                             </div>
                             <div className="form-group mb-2">
                                 {t("RentEndTime")}
                                 <input type="datetime-local" id="RentEndTime" className={`form-control`} placeholder={t("RentEndTime")}
-                                    name="RentEndTime" value={moment(this.state.carInfo.rentEndTime).format('YYYY-MM-DDTHH:MM')}
+                                    name="RentEndTime" value={this.state.carInfo.rentEndTime}
                                     onChange={this.handleRentEndTimeChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveCarInfo")}</button>
