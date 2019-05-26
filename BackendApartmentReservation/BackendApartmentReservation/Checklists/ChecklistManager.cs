@@ -348,7 +348,6 @@ namespace BackendApartmentReservation.Checklists
             hotelReservationInfo.HotelName = hotelReservation.HotelName;
             hotelReservationInfo.DateFrom = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateFrom);
             hotelReservationInfo.DateTo = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateTo);
-            hotelReservationInfo.DocumentsFileId = hotelReservation.Documents?.ExternalFileId;
 
             return hotelReservationInfo;
         }
