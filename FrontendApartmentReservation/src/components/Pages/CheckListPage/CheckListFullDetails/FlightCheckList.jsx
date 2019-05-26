@@ -133,7 +133,7 @@ class FlightCheckList extends React.Component {
                             <div className="form-group mb-2">
                                 {t("FlightTime")}
                                 <input type="datetime-local" id="FlightTime" className={`form-control`} placeholder={t("FlightTime")}
-                                    name="FlightTime" value={moment(this.state.flightInfo.flightTime).format('YYYY-MM-DDTHH:MM')}
+                                    name="FlightTime" value={this.state.flightInfo.flightTime}
                                     onChange={this.handleFlightTimeChange} />
                             </div>
                             <div className="form-group mb-2">
