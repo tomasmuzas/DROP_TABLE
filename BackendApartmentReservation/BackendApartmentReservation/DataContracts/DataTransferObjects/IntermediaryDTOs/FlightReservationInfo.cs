@@ -10,7 +10,7 @@
 
         public string Company { get; set; }
 
-        public DateTimeOffset? FlightTime { get; set; }
+        public string FlightTime { get; set; }
 
         public string AirportAddress { get; set; }
 
