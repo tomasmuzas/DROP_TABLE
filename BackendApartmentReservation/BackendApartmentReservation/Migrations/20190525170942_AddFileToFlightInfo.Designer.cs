@@ -4,14 +4,16 @@ using BackendApartmentReservation.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendApartmentReservation.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190525170942_AddFileToFlightInfo")]
+    partial class AddFileToFlightInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,13 +31,9 @@ namespace BackendApartmentReservation.Migrations
 
                     b.Property<int?>("CarReservationId");
 
-                    b.Property<int?>("DocumentsId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CarReservationId");
-
-                    b.HasIndex("DocumentsId");
 
                     b.ToTable("CarRentAmenities");
                 });
@@ -245,8 +243,6 @@ namespace BackendApartmentReservation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AssociatedTripId");
-
                     b.Property<string>("Description");
 
                     b.Property<int?>("EmployeeId");
@@ -256,8 +252,6 @@ namespace BackendApartmentReservation.Migrations
                     b.Property<DateTimeOffset>("StartDate");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssociatedTripId");
 
                     b.HasIndex("EmployeeId");
 
@@ -431,10 +425,6 @@ namespace BackendApartmentReservation.Migrations
                     b.HasOne("BackendApartmentReservation.Database.Entities.Reservations.DbCarReservation", "CarReservation")
                         .WithMany()
                         .HasForeignKey("CarReservationId");
-
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbFile", "Documents")
-                        .WithMany()
-                        .HasForeignKey("DocumentsId");
                 });
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.Amenities.DbFlightAmenity", b =>
@@ -527,10 +517,6 @@ namespace BackendApartmentReservation.Migrations
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployeePlan", b =>
                 {
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbTrip", "AssociatedTrip")
-                        .WithMany()
-                        .HasForeignKey("AssociatedTripId");
-
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbEmployee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");

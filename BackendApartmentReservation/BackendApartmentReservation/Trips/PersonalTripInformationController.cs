@@ -8,6 +8,7 @@ namespace BackendApartmentReservation.Trips
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
     using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/trips/{tripId}/employees/{employeeId}")]
@@ -63,6 +64,17 @@ namespace BackendApartmentReservation.Trips
             await _checklistManager.UpdateFlightForEmployee(employeeId, tripId, info);
         }
 
+        [HttpPut]
+        [Route("flight/ticket")]
+        public async Task UpdateFlightTicket(
+            string tripId,
+            string employeeId,
+            [FromForm]FileRequest request)
+        {
+
+            await _checklistManager.UpdateFlightTicketForEmployee(employeeId, tripId, request.File);
+        }
+
         [HttpDelete]
         [Route("flight")]
         public async Task DeleteFlight(string tripId, string employeeId)
@@ -94,11 +106,28 @@ namespace BackendApartmentReservation.Trips
             await _checklistManager.UpdateCarRentForEmployee(employeeId, tripId, info);
         }
 
+        [HttpPut]
+        [Route("car/documents")]
+        public async Task UpdateCarRentDocuments(
+            string tripId,
+            string employeeId,
+            [FromForm] FileRequest request)
+        {
+            await _checklistManager.UpdateCarRentDocumentForEmployee(employeeId, tripId, request.File);
+        }
+
         [HttpDelete]
         [Route("car")]
         public async Task DeleteCarRent(string tripId, string employeeId)
         {
             await _checklistManager.DeleteCarRent(employeeId, tripId);
+        }
+
+        [HttpDelete]
+        [Route("livingplace")]
+        public async Task DeleteLivingPlace(string tripId, string employeeId)
+        {
+            await _checklistManager.DeleteLivingPlace(employeeId, tripId);
         }
 
         [HttpGet]

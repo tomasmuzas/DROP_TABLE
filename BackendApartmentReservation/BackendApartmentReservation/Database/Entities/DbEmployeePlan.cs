@@ -15,5 +15,7 @@
         public DateTimeOffset EndDate { get; set; }
 
         public string Description { get; set; }
+
+        public DbTrip AssociatedTrip { get; set; }
     }
 }

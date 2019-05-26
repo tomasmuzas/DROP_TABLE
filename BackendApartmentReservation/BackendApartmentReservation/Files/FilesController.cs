@@ -4,6 +4,7 @@ namespace BackendApartmentReservation.Employees
 {
     using System.Threading.Tasks;
     using Interfaces;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -19,6 +20,7 @@ namespace BackendApartmentReservation.Employees
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("{fileId}")]
         public async Task<IActionResult> GetFileById(string fileId)
         {

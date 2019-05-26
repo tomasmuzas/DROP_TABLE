@@ -7,7 +7,7 @@
     {
         Task<DbFile> GetFileById(string fileID);
 
-        Task CreateFile(DbFile dbFile);
+        Task<DbFile> CreateFile(DbFile dbFile);
 
         Task UpdateFile(DbFile dbFile);
 

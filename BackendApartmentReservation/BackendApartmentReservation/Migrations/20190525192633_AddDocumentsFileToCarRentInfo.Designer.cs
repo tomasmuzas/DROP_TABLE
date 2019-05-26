@@ -4,14 +4,16 @@ using BackendApartmentReservation.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BackendApartmentReservation.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190525192633_AddDocumentsFileToCarRentInfo")]
+    partial class AddDocumentsFileToCarRentInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,8 +247,6 @@ namespace BackendApartmentReservation.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AssociatedTripId");
-
                     b.Property<string>("Description");
 
                     b.Property<int?>("EmployeeId");
@@ -256,8 +256,6 @@ namespace BackendApartmentReservation.Migrations
                     b.Property<DateTimeOffset>("StartDate");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssociatedTripId");
 
                     b.HasIndex("EmployeeId");
 
@@ -527,10 +525,6 @@ namespace BackendApartmentReservation.Migrations
 
             modelBuilder.Entity("BackendApartmentReservation.Database.Entities.DbEmployeePlan", b =>
                 {
-                    b.HasOne("BackendApartmentReservation.Database.Entities.DbTrip", "AssociatedTrip")
-                        .WithMany()
-                        .HasForeignKey("AssociatedTripId");
-
                     b.HasOne("BackendApartmentReservation.Database.Entities.DbEmployee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");

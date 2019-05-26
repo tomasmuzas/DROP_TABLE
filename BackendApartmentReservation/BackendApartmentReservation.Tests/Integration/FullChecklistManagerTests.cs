@@ -33,6 +33,7 @@ namespace BackendApartmentReservation.Tests.Integration
                 var hotelRepository = A.Fake <IHotelRepository>(o => o.Strict());
                 var apartmentRepository = A.Fake<IApartmentRepository>(o => o.Strict());
                 var confirmationRepository = A.Fake<IConfirmationRepository>(o => o.Strict());
+                var fileManager = A.Fake<IFileManager>(o => o.Strict());
                 var checklistRepository = new ChecklistRepository(dbContext);
 
                 var checklistManager = new ChecklistManager(
@@ -46,6 +47,7 @@ namespace BackendApartmentReservation.Tests.Integration
                     hotelRepository,
                     apartmentRepository,
                     confirmationRepository,
+                    fileManager,
                     new NullLogger<ChecklistManager>());
 
                 var employee = new DbEmployee

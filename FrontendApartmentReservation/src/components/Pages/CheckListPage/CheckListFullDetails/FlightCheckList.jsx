@@ -8,6 +8,9 @@ import { bindActionCreators } from 'redux';import { Link } from 'react-router-do
 import Checkbox from '@material-ui/core/Checkbox';
 import { GridLoader } from 'react-spinners';
 import moment from 'moment'
+import {BACKEND_URL} from '../../../../actions/index'
+import pdf from '../pdf.png';
+
 
 class FlightCheckList extends React.Component {
     constructor(props) {
@@ -18,16 +21,21 @@ class FlightCheckList extends React.Component {
                 flightNumber: '',
                 company: '',
                 flightTime: '',
-                airportAddress: '',
+                airportAddress: ''
+            },
+            flightTicket: {
+                file: null
             }
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleTicketSubmit = this.handleTicketSubmit.bind(this);
         this.handleIsRequiredChange = this.handleIsRequiredChange.bind(this);
         this.handleFlightNumberChange = this.handleFlightNumberChange.bind(this);
         this.handleAirportAddressChange = this.handleAirportAddressChange.bind(this);
         this.handleFlightCompanyChange = this.handleFlightCompanyChange.bind(this);
         this.handleFlightTimeChange = this.handleFlightTimeChange.bind(this);
+        this.handleFlightTicketChange = this.handleFlightTicketChange.bind(this);
     }
 
     componentWillReceiveProps(newProps){
@@ -40,6 +48,14 @@ class FlightCheckList extends React.Component {
         e.preventDefault();
         const { flightInfo } = this.state;
         this.props.updateFlightInfo(flightInfo, this.props.employeeId, this.props.tripId);
+    }
+
+    handleTicketSubmit(e) {
+        e.preventDefault();
+        const { flightTicket } = this.state;
+        if(this.state.flightTicket.file){
+            this.props.uploadFlightTicket(flightTicket.file, this.props.employeeId, this.props.tripId)
+        }
     }
 
     handleIsRequiredChange(e) {
@@ -88,6 +104,14 @@ class FlightCheckList extends React.Component {
         });
     }
 
+    handleFlightTicketChange(e) {
+        var flightTicket = this.state.flightTicket;
+        flightTicket.file = e.target.files[0];
+        this.setState({
+            flightTicket: flightTicket
+        });
+    }
+
     render() {
         const { t } = this.props;
         if (this.state.flightInfo) {
@@ -125,6 +149,25 @@ class FlightCheckList extends React.Component {
                                     onChange={this.handleFlightCompanyChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveFlightInfo")}</button>
+                        </form>
+
+
+                        <form className={`form-signin`} encType= "multipart/form-data" onSubmit={this.handleTicketSubmit}>
+                            <div className="form-group">
+                                <h3>{t("FlightTicket")}</h3>
+                                <div className="mt-4 mb-4">
+                                    {this.state.flightInfo.ticketFileId &&
+                                        <a href={BACKEND_URL + '/files/' + this.state.flightInfo.ticketFileId}>
+                                            {t("CurrentFlightTicket")} <img src={pdf} alt="pdf-icon" style={{ height: '32px' }}/>
+                                        </a>
+                                    }
+                                </div>
+                                <input type="file" accept="application/pdf" id="FlightTicket" className={`form-control`}
+                                    name="FlightTicket"
+                                    onChange={this.handleFlightTicketChange} />
+                            </div>
+
+                            <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveTicket")}</button>                            
                         </form>
                     </div>
                 </div>
