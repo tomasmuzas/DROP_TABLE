@@ -118,6 +118,13 @@ class MyTripCard extends React.Component {
                         <h6> {t("Hotel")}: {checklist.livingPlace.hotelReservationInfo.hotelName}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
                         <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
+                        <h6>                                    
+                            {checklist.livingPlace.hotelReservationInfo.documentsFileId &&
+                                <a href={BACKEND_URL + '/files/' + checklist.livingPlace.hotelReservationInfo.documentsFileId}>
+                                    {t("CurrentHotelDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }}/>
+                                </a>
+                            }
+                        </h6>
                     </div>
                 )
             }
