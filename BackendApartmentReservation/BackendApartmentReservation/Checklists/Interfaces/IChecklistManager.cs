@@ -65,5 +65,7 @@
         Task UpdateCarRentDocumentForEmployee(string employeeId, string tripId, IFormFile file);
 
         Task DeleteLivingPlace(string employeeId, string tripId);
+
+        Task UpdateHotelDocumentsForEmployee(string employeeId, string tripId, IFormFile file);
     }
 }

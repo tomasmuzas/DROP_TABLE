@@ -204,6 +204,23 @@ namespace BackendApartmentReservation.Checklists
             _logger.LogInformation($"Deleted living place information for employee {employeeId} and trip {tripId}");
         }
 
+        public async Task UpdateHotelDocumentsForEmployee(string employeeId, string tripId, IFormFile file)
+        {
+            var hotel = await _checklistRepository.GetChecklistFullHotelReservation(employeeId, tripId);
+
+            var newFile = await _fileManager.UploadFile(file);
+            if (hotel.Documents != null)
+            {
+                await _fileManager.DeleteFile(hotel.Documents);
+            }
+
+            hotel.Documents = newFile;
+
+            await _hotelRepository.UpdateHotelReservation(hotel);
+            _logger.LogInformation(
+                $"Updated documents for the hotel for employee {employeeId} and trip {tripId}");
+        }
+
         public async Task<FlightReservationInfo> GetFlightInfo(string employeeId, string tripId)
         {
             var flight = await _checklistRepository.GetChecklistFullFlight(employeeId, tripId);
@@ -348,6 +365,7 @@ namespace BackendApartmentReservation.Checklists
             hotelReservationInfo.HotelName = hotelReservation.HotelName;
             hotelReservationInfo.DateFrom = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateFrom);
             hotelReservationInfo.DateTo = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateTo);
+            hotelReservationInfo.DocumentsFileId = hotelReservation.Documents?.ExternalFileId;
 
             return hotelReservationInfo;
         }
