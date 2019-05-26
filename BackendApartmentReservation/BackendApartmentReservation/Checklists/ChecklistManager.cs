@@ -19,6 +19,7 @@ namespace BackendApartmentReservation.Checklists
     using BackendApartmentReservation.Apartments.Interfaces;
     using BackendApartmentReservation.Groups.Interfaces;
     using BackendApartmentReservation.Confirmations.Interfaces;
+    using Infrastructure.Utilities;
     using Microsoft.AspNetCore.Http;
 
     public class ChecklistManager : IChecklistManager
@@ -219,7 +220,7 @@ namespace BackendApartmentReservation.Checklists
             flightInfo.FlightNumber = flight.FlightReservation.FlightNumber;
             flightInfo.Company = flight.FlightReservation.Company;
             flightInfo.AirportAddress = flight.FlightReservation.AirportAddress;
-            flightInfo.FlightTime = flight.FlightReservation.FlightTime;
+            flightInfo.FlightTime = DateTimeFormatter.GetStandardDateTimeString(flight.FlightReservation.FlightTime);
             flightInfo.TicketFileId = flight.Ticket?.ExternalFileId;
 
             return flightInfo;
@@ -282,8 +283,8 @@ namespace BackendApartmentReservation.Checklists
 
             carReservationInfo.IsRequired = true;
             carReservationInfo.CarNumber = carRent.CarReservation.CarNumber;
-            carReservationInfo.RentStartTime = carRent.CarReservation.RentStartTime;
-            carReservationInfo.RentEndTime = carRent.CarReservation.RentEndTime;
+            carReservationInfo.RentStartTime = DateTimeFormatter.GetStandardDateTimeString(carRent.CarReservation.RentStartTime);
+            carReservationInfo.RentEndTime = DateTimeFormatter.GetStandardDateTimeString(carRent.CarReservation.RentEndTime);
             carReservationInfo.CarAddress = carRent.CarReservation.CarAddress;
             carReservationInfo.DocumentsFileId = carRent.Documents?.ExternalFileId;
 
@@ -345,8 +346,9 @@ namespace BackendApartmentReservation.Checklists
 
             hotelReservationInfo.Required = true;
             hotelReservationInfo.HotelName = hotelReservation.HotelName;
-            hotelReservationInfo.DateFrom = hotelReservation.DateFrom;
-            hotelReservationInfo.DateTo = hotelReservation.DateTo;
+            hotelReservationInfo.DateFrom = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateFrom);
+            hotelReservationInfo.DateTo = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateTo);
+            hotelReservationInfo.DocumentsFileId = hotelReservation.Documents?.ExternalFileId;
 
             return hotelReservationInfo;
         }
@@ -422,8 +424,8 @@ namespace BackendApartmentReservation.Checklists
             apartmentReservationInfo.Required = true;
             apartmentReservationInfo.ApartmentAddress = trip.DestinationOffice.OfficeApartment.Address;
             apartmentReservationInfo.RoomNumber = apartmentReservation.Room.RoomNumber;
-            apartmentReservationInfo.DateFrom = apartmentReservation.DateFrom;
-            apartmentReservationInfo.DateTo = apartmentReservation.DateTo;
+            apartmentReservationInfo.DateFrom = DateTimeFormatter.GetStandardDateTimeString(apartmentReservation.DateFrom);
+            apartmentReservationInfo.DateTo = DateTimeFormatter.GetStandardDateTimeString(apartmentReservation.DateTo);
 
             return apartmentReservationInfo;
         }

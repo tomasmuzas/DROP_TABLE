@@ -8,9 +8,9 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Intermed
 
         public string CarNumber { get; set; }
 
-        public DateTimeOffset? RentStartTime { get; set; }
+        public string RentStartTime { get; set; }
 
-        public DateTimeOffset? RentEndTime { get; set; }
+        public string RentEndTime { get; set; }
 
         public string CarAddress { get; set; }
 
