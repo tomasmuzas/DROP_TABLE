@@ -11,5 +11,7 @@
         public DateTimeOffset? DateFrom { get; set; }
 
         public DateTimeOffset? DateTo { get; set; }
+
+        public string DocumentsFileId { get; set; }
     }
 }

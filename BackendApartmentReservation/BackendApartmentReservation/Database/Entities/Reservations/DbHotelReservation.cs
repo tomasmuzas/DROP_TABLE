@@ -13,5 +13,7 @@
         public DateTimeOffset? DateFrom { get; set; }
 
         public DateTimeOffset? DateTo { get; set; }
+
+        public DbFile Documents { get; set; }
     }
 }
