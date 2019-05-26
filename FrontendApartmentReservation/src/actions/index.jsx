@@ -494,6 +494,31 @@ export const uploadFlightTicket = (flightTicketFile, employeeId, tripId) => (dis
     }).catch((error) => console.warn(error));
 }
 
+export const uploadHotelDocuments = (flightTicketFile, employeeId, tripId) => (dispatch) => {
+    const formData = new FormData();
+    console.log(flightTicketFile);
+    formData.append('file', flightTicketFile);
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel/documents', {
+        method: "PUT",
+        body: formData,
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token')
+        }
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 200) {
+            alert(i18n.t("FlightInfoUpdate") + response.status);
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
 export const updateCarDocuments = (flightTicketFile, employeeId, tripId) => (dispatch) => {
     const formData = new FormData();
     formData.append('file', flightTicketFile);

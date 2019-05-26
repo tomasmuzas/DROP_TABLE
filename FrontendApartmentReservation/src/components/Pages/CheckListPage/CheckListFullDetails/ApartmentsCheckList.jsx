@@ -11,6 +11,8 @@ import { GridLoader } from 'react-spinners';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import moment from 'moment'
+import {BACKEND_URL} from '../../../../actions/index'
+import pdf from '../pdf.png';
 
 class ApartmentsCheckList extends React.Component {
     constructor(props) {
@@ -20,6 +22,7 @@ class ApartmentsCheckList extends React.Component {
                 isRequired: false,
                 apartmentReservationInfo: { required: false, apartmentAddress: undefined, roomNumber: 1, dateFrom: null, dateTo: null },
                 hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '' }
+                hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '', file: null }
             },
             showHotelInfo: false,
             showApartmentsInfo: true,
@@ -27,8 +30,10 @@ class ApartmentsCheckList extends React.Component {
         }
 
         this.handleHotelSubmit = this.handleHotelSubmit.bind(this);
+        this.handleHotelDocumentsSubmit = this.handleHotelDocumentsSubmit.bind(this);
         this.handleIsRequiredChange = this.handleIsRequiredChange.bind(this);
         this.handleHotelNameChange = this.handleHotelNameChange.bind(this);
+        this.handleHotelDocumentsChange = this.handleHotelDocumentsChange.bind(this);
         this.deleteReservation = this.deleteReservation.bind(this);
         this.reserveApartmentForOne = this.reserveApartmentForOne.bind(this);
         this.handleDateFromChange = this.handleDateFromChange.bind(this);
@@ -49,6 +54,15 @@ class ApartmentsCheckList extends React.Component {
             showApartmentsInfo : showApartmentsInfo,
             showHotelInfo : showHotelInfo
         })
+    }
+
+    handleHotelDocumentsSubmit(e) {
+        e.preventDefault();
+        const { file } = this.state.livingPlace.hotelReservationInfo;
+
+        if(file){
+            this.props.uploadHotelDocuments(file, this.props.employeeId, this.props.tripId)
+        }
     }
 
     handleHotelSubmit(e) {
@@ -143,6 +157,16 @@ class ApartmentsCheckList extends React.Component {
         });
     }
 
+    
+    handleHotelDocumentsChange(e) {
+        var livingPlace = this.state.livingPlace; 
+        var hotelInfo = livingPlace.hotelReservationInfo;
+        hotelInfo.file = e.target.files[0];
+        this.setState({
+            livingPlace: livingPlace
+        });
+    }
+
     bookHotel() {
         this.props.createApartmentsInfo(this.props.employeeId, this.props.tripId);
         this.setState({
@@ -178,6 +202,24 @@ class ApartmentsCheckList extends React.Component {
                     <button className={`btn btn-lg btn-primary btn-block`} onClick={this.deleteHotelReservation}>{i18next.t("DeleteHotelInfo")}</button>
                     <button className={`btn btn-lg btn-primary btn-block`} type="submit">{i18next.t("SaveHotelInfo")}</button>
                 </form>
+
+                <form className={`form-signin`} encType= "multipart/form-data" hidden={!this.state.showHotelInfo} onSubmit={this.handleHotelDocumentsSubmit}>
+                            <div className="form-group">
+                                <h3>{i18next.t("HotelDocuments")}</h3>
+                                <div className="mt-4 mb-4">
+                                    {this.state.livingPlace.hotelReservationInfo.documentsFileId &&
+                                        <a href={BACKEND_URL + '/files/' + this.state.livingPlace.hotelReservationInfo.documentsFileId}>
+                                            {i18next.t("CurrentHotelDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '32px' }}/>
+                                        </a>
+                                    }
+                                </div>
+                                <input type="file" accept="application/pdf" id="FlightTicket" className={`form-control`}
+                                    name="HotelDocument"
+                                    onChange={this.handleHotelDocumentsChange} />
+                            </div>
+
+                            <button className={`btn btn-lg btn-primary btn-block`} type="submit">{i18next.t("SaveHotelDocuments")}</button>                            
+                        </form>
             </div>
         )
     }
