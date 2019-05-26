@@ -149,8 +149,10 @@ namespace BackendApartmentReservation.Trips
             var checklists = await _db.Checklists.Where(c => c.Trip.ExternalTripId == tripId)
                 .Include(c => c.Car)
                     .ThenInclude(x => x.CarReservation)
+                .Include(c => c.Car.Documents)
                 .Include(c => c.Flight)
                     .ThenInclude(x => x.FlightReservation)
+                .Include(c => c.Flight.Ticket)
                 .Include(c => c.LivingPlace)
                 .Include(c => c.LivingPlace.ApartmentRoomReservation)
                 .Include(a => a.LivingPlace.HotelReservation)
@@ -160,12 +162,21 @@ namespace BackendApartmentReservation.Trips
             {
                 if (checklist.Car != null)
                 {
+                    if (checklist.Car.Documents != null)
+                    {
+                        _db.Files.Remove(checklist.Car.Documents);
+                    }
                     _db.CarReservations.Remove(checklist.Car.CarReservation);
                     _db.CarRentAmenities.Remove(checklist.Car);
                 }
 
                 if (checklist.Flight != null)
                 {
+                    if (checklist.Flight.Ticket != null)
+                    {
+                        _db.Files.Remove(checklist.Flight.Ticket);
+                    }
+
                     _db.FlightReservations.Remove(checklist.Flight.FlightReservation);
                     _db.FlightAmenities.Remove(checklist.Flight);
                 }
@@ -173,7 +184,9 @@ namespace BackendApartmentReservation.Trips
                 if (checklist.LivingPlace != null)
                 {
                     if (checklist.LivingPlace.ApartmentRoomReservation != null)
+                    {
                         _db.DbRoomReservations.Remove(checklist.LivingPlace.ApartmentRoomReservation);
+                    }
 
                     if (checklist.LivingPlace.HotelReservation != null)
                         _db.HotelReservations.Remove(checklist.LivingPlace.HotelReservation);
@@ -201,6 +214,12 @@ namespace BackendApartmentReservation.Trips
                 .Where(c => c.Trip.ExternalTripId == tripId);
 
             _db.Confirmations.RemoveRange(confirmations);
+
+            var plans = _db.EmployeePlans
+                .Include(p => p.AssociatedTrip)
+                .Where(p => p.AssociatedTrip.ExternalTripId == tripId);
+
+            _db.EmployeePlans.RemoveRange(plans);
 
             _db.Trips.Remove(trip);
             await _db.SaveChangesAsync();
