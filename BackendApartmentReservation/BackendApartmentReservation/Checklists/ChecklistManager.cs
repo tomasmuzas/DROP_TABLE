@@ -364,6 +364,7 @@ namespace BackendApartmentReservation.Checklists
             hotelReservationInfo.HotelName = hotelReservation.HotelName;
             hotelReservationInfo.DateFrom = hotelReservation.DateFrom;
             hotelReservationInfo.DateTo = hotelReservation.DateTo;
+            hotelReservationInfo.DocumentsFileId = hotelReservation.Documents?.ExternalFileId;
 
             return hotelReservationInfo;
         }
