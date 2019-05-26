@@ -21,7 +21,6 @@ class ApartmentsCheckList extends React.Component {
             livingPlace: {
                 isRequired: false,
                 apartmentReservationInfo: { required: false, apartmentAddress: undefined, roomNumber: 1, dateFrom: null, dateTo: null },
-                hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '' }
                 hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '', file: null }
             },
             showHotelInfo: false,
