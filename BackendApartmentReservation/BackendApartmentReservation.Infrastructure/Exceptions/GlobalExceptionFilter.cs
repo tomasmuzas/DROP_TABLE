@@ -25,14 +25,27 @@ namespace BackendApartmentReservation.Infrastructure.Exceptions
 
             context.ExceptionHandled = true;
 
-            var responseObject = new ErrorResponse
+            IActionResult response;
+            if (exception is ErrorCodeException errorCodeException)
             {
-                ErrorCode = ErrorCodes.GenericInternalServerError,
-                Exception = _environment.EnvironmentName != "prod" ? exception : null
-            };
+                var responseObject = new ErrorResponse
+                {
+                    ErrorCode = errorCodeException.ErrorCode,
+                    Exception = exception
+                };
+                response = new BadRequestObjectResult(responseObject);
+            }
+            else
+            {
+                var responseObject = new ErrorResponse
+                {
+                    ErrorCode = ErrorCodes.GenericInternalServerError,
+                    Exception = _environment.EnvironmentName != "prod" ? exception : null
+                };
 
-            var response = new ObjectResult(responseObject);
-            response.StatusCode = StatusCodes.Status500InternalServerError;
+                response = new ObjectResult(responseObject);
+                (response as ObjectResult).StatusCode = StatusCodes.Status500InternalServerError;
+            }
 
             context.Result = response;
         }

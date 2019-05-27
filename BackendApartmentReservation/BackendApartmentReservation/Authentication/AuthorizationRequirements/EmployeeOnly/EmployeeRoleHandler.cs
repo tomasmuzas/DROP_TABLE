@@ -4,8 +4,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
 using BackendApartmentReservation.Authentication.Interfaces;
+using BackendApartmentReservation.Database.Entities;
 using BackendApartmentReservation.Employees;
 using Microsoft.AspNetCore.Authorization;
+using NLog;
 
 namespace BackendApartmentReservation.Authentication.AuthorizationRequirements.EmployeeOnly
 {
@@ -29,9 +31,10 @@ namespace BackendApartmentReservation.Authentication.AuthorizationRequirements.E
                 return;
             }
 
+            DbEmployee employee;
             try
             {
-                await _authenticationManager.GetAndVerifyEmployee(employeeId);
+                employee = await _authenticationManager.GetAndVerifyEmployee(employeeId);
             }
             catch (ArgumentException)
             {
@@ -39,6 +42,8 @@ namespace BackendApartmentReservation.Authentication.AuthorizationRequirements.E
                 return;
             }
 
+//            MappedDiagnosticsLogicalContext.Set("User", employee.ExternalEmployeeId);
+//            MappedDiagnosticsLogicalContext.Set("Role", employee.Role.ToString());
             context.Succeed(requirement);
         }
     }
