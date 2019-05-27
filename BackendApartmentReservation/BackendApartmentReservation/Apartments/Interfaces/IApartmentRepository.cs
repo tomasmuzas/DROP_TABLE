@@ -9,6 +9,8 @@ namespace BackendApartmentReservation.Apartments.Interfaces
 
     public interface IApartmentRepository
     {
+        Task<IEnumerable<DbApartment>> GetAllApartments();
+
         Task<DbApartment> CreateApartment(string address, List<DbApartmentRoom> apartmentRooms);
 
         Task<DbRoomReservation> CreateRoomReservation(string tripId, DbEmployee employee, DateTimeOffset dateFrom, DateTimeOffset dateTo);

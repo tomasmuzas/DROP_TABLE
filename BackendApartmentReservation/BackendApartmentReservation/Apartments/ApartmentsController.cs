@@ -1,37 +1,32 @@
-﻿using System;
-using BackendApartmentReservation.Apartments.Interfaces;
-using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
-using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
-using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
-using BackendApartmentReservation.Infrastructure.Authorization;
-using BackendApartmentReservation.LivingPlace.Interfaces;
-
-namespace BackendApartmentReservation.Apartments
+﻿namespace BackendApartmentReservation.Apartments
 {
+    using BackendApartmentReservation.Authentication.AuthorizationRequirements.AdminOnly;
+    using BackendApartmentReservation.Authentication.AuthorizationRequirements.OrganizerOnly;
+    using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
+    using BackendApartmentReservation.Infrastructure.Authorization;
+    using BackendApartmentReservation.LivingPlace.Interfaces;
+    using System;
+    using BackendApartmentReservation.Database.Entities;
+    using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
 
     [Route("api")]
     [ApiController]
     public class ApartmentsController : AuthorizedController
     {
-        private readonly ILogger<ApartmentsController> _logger;
         private readonly ILivingPlaceManager _livingPlaceManager;
-        public ApartmentsController(ILogger<ApartmentsController> logger,
-            ILivingPlaceManager livingPlaceManager)
+
+        public ApartmentsController(ILivingPlaceManager livingPlaceManager)
         {
-            _logger = logger;
             _livingPlaceManager = livingPlaceManager;
         }
 
         [HttpGet]
         [Route("apartments")]
-        public async Task<IEnumerable<string>> Get()
+        public async Task<IEnumerable<DbApartment>> GetAllApartments()
         {
-            _logger.LogInformation("Initial step");
-            return await Task.FromResult(new[] { "flat1", "flat2" });
+            return await _livingPlaceManager.GetAllApartments();
         }
 
         [HttpPost]
@@ -40,7 +35,6 @@ namespace BackendApartmentReservation.Apartments
         public async Task CreateApartment([FromBody] CreateApartmentRequest apartmentRequest)
         {
             await _livingPlaceManager.CreateApartment(apartmentRequest);
-
         }
 
         [HttpGet]
