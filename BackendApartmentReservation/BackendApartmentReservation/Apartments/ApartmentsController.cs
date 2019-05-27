@@ -29,6 +29,21 @@
             return await _livingPlaceManager.GetAllApartments();
         }
 
+        [HttpGet]
+        [Route("apartments/{apartmentsId}")]
+        public async Task<DbApartment> GetApartments(int apartmentsId)
+        {
+            return await _livingPlaceManager.GetApartmentsById(apartmentsId);
+        }
+
+        [HttpPost]
+        [Route("apartments")]
+        [AdminOnly]
+        public async Task UpdateApartmentAddress([FromBody] ApartmentAddressUpdateRequest info)
+        {
+            await _livingPlaceManager.UpdateApartmentAddress(info.ApartmentId, info.Address);
+        }
+
         [HttpPost]
         [Route("apartments")]
         [AdminOnly]

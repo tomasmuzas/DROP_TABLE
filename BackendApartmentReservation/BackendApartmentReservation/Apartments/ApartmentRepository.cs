@@ -102,9 +102,20 @@ namespace BackendApartmentReservation.Apartments
             return await _db.DbRoomReservations.FindAsync(reservationId);
         }
 
+        public async Task<DbApartment> GetApartmentsById(int apartmentId)
+        {
+            return await _db.Apartments.FindAsync(apartmentId);
+        }
+
         public async Task<IEnumerable<DbApartment>> GetAllApartments()
         {
             return await _db.Apartments.ToListAsync();
         }
+
+        public async Task UpdateApartment(DbApartment apartment)
+        {
+            _db.Apartments.Update(apartment);
+            await _db.SaveChangesAsync();
+        }        
     }
 }

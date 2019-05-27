@@ -33,10 +33,23 @@ namespace BackendApartmentReservation.LivingPlace
             return await _apartmentRepository.GetAllApartments();
         }
 
+        public async Task<DbApartment> GetApartmentsById(int apartmentId)
+        {
+            return await _apartmentRepository.GetApartmentsById(apartmentId);
+        }
+
         public async Task<int> GetNumberOfAvailableApartmentRooms(string tripId, DateTimeOffset dateFrom, DateTimeOffset dateTo)
         {
             var availableRooms = await _apartmentRepository.GetAvailableRooms(tripId, dateFrom, dateTo);
             return availableRooms.Count();
+        }
+
+        public async Task<DbApartment> UpdateApartmentAddress(int apartmentId, string address)
+        {
+            var apartment = await _apartmentRepository.GetApartmentsById(apartmentId);
+            apartment.Address = address;
+            await _apartmentRepository.UpdateApartment(apartment);
+            return apartment;
         }
     }
 }
