@@ -49,6 +49,8 @@ class PageHeader extends React.Component {
     render() {
         const { t, i18n } = this.props;
         const isLoggedIn = sessionStorage.getItem("token") === null? false: true;
+        const visibleForAdmin = (sessionStorage.getItem("token") !== null && sessionStorage.getItem("role") === 'Admin')?true:false;
+        const visibleForOrganizer = (sessionStorage.getItem("token") !== null && (sessionStorage.getItem("role") === 'Organizer' || sessionStorage.getItem("role") === 'Admin'))?true:false;
         return (
             <div>
                 <nav className="navbar navbar-collapse navbar-expand-lg navbar-dark bg-dark">
@@ -63,22 +65,22 @@ class PageHeader extends React.Component {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className={" navbar-collapse collapse" + this.state.collapseDiv} id="navbarColor01">
-                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!visibleForAdmin}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/apartments" name={t("Apartments")} /></li>
                         </ul>
-                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!visibleForOrganizer}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/trips" name={t("Trips")} /></li>
                         </ul>
                         <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/myInfo/myTrips" name={t("MyTrips")} /></li>
                         </ul>
-                        <ul className="pr-2 navbar-nav mr-auto" hidden = {isLoggedIn}>
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!visibleForAdmin}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/signUp" name={t("SignUp")} /></li>
                         </ul>
                         <ul className="pr-2 navbar-nav mr-auto" hidden = {isLoggedIn}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/login" name={t("Login")} /></li>
                         </ul>
-                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
+                        <ul className="pr-2 navbar-nav mr-auto" hidden = {!visibleForOrganizer}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/createTrip" name={t("CreateTrip")} /></li>
                         </ul>
                         <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>

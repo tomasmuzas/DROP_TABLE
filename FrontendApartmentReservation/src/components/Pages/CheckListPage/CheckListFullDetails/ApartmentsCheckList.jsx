@@ -21,7 +21,7 @@ class ApartmentsCheckList extends React.Component {
             livingPlace: {
                 isRequired: false,
                 apartmentReservationInfo: { required: false, apartmentAddress: undefined, roomNumber: 1, dateFrom: null, dateTo: null },
-                hotelReservationInfo: { required: false, hotelName: '', dateFrom: null, dateTo: null, file: null }
+                hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '', file: null }
             },
             showHotelInfo: false,
             showApartmentsInfo: true,
@@ -42,11 +42,16 @@ class ApartmentsCheckList extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        var showBookHotelButton = !newProps.apartmentsInfo.apartmentReservationInfo.apartmentAddress && !newProps.apartmentsInfo.apartmentReservationInfo.hotelReservationInfo ? true : false;
+        var showBookHotelButton = !newProps.apartmentsInfo.apartmentReservationInfo.apartmentAddress && !newProps.apartmentsInfo.hotelReservationInfo.hotelName ? true : false;
+        var showApartmentsInfo = (newProps.apartmentsInfo.apartmentReservationInfo.apartmentAddress && !newProps.apartmentsInfo.hotelReservationInfo.hotelName) || 
+        (!newProps.apartmentsInfo.apartmentReservationInfo.apartmentAddress && !newProps.apartmentsInfo.hotelReservationInfo.hotelName) ? true : false;
+        var showHotelInfo = !!newProps.apartmentsInfo.hotelReservationInfo.hotelName;
         this.setState({
             livingPlace: newProps.apartmentsInfo,
             apartmentsSpace: this.props.tripbasic.availableApartments,
             showBookHotelButton: showBookHotelButton,
+            showApartmentsInfo : showApartmentsInfo,
+            showHotelInfo : showHotelInfo
         })
     }
 
@@ -94,7 +99,6 @@ class ApartmentsCheckList extends React.Component {
                 })
             }
         });
-
     }
 
     reserveApartmentForOne() {
@@ -173,9 +177,8 @@ class ApartmentsCheckList extends React.Component {
 
     hotelForm() {
         return (
-            <div className="">
+            <div>
                 <button className={`btn btn-lg btn-primary btn-block`} hidden={!this.state.showBookHotelButton} onClick={this.bookHotel}>{i18next.t("BookHotel")}</button>
-
                 <form className={`form-signin`} onSubmit={this.handleHotelSubmit} hidden={!this.state.showHotelInfo} >
                     <div className="form-group mb-2">
                         {i18next.t("Hotel")}
