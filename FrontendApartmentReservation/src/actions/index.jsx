@@ -1,6 +1,7 @@
 import { push } from 'react-router-redux';
 import i18n from "../i18n";
 import { Router } from 'react-router';
+import {uuid} from 'uuid/v1'
 
 export const GET_ALL_APARTMENTS = 'GET_ALL_APARTMENTS';
 export const GET_ALL_AUTHENTICATIONS = 'GET_ALL_AUTHENTICATIONS';
@@ -37,14 +38,19 @@ else {
 
 export const BACKEND_URL = BACKEND_BASE_URI
 
+const getDefaultHeaders = () => {
+    return {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Bearer " + sessionStorage.getItem('token'),
+        "x-correlation-id": uuid()
+    }
+}
+
 export const getAllApartments = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/apartments`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -64,11 +70,7 @@ export const getAllApartments = () => (dispatch) => {
 export const reserveApartmentsForAll = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + `/apartment`, {
         method: "Post",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -85,11 +87,7 @@ export const reserveApartmentsForAll = (tripId) => (dispatch) => {
 export const reserveApartmentsForOne = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/'+ employeeId + `/apartment`, {
         method: "Post",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -106,11 +104,7 @@ export const reserveApartmentsForOne = (employeeId, tripId) => (dispatch) => {
 export const deleteApartmentsReservationForOne = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/'+ employeeId + `/apartment`, {
         method: "Delete",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -127,11 +121,7 @@ export const deleteApartmentsReservationForOne = (employeeId, tripId) => (dispat
 export const deleteApartmentsReservation = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/'+ employeeId + `/apartment`, {
         method: "Delete",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -148,11 +138,7 @@ export const deleteApartmentsReservation = (employeeId, tripId) => (dispatch) =>
 export const getAllOffices = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/offices`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -172,11 +158,7 @@ export const getAllOffices = () => (dispatch) => {
 export const getAllEmployees = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -197,11 +179,7 @@ export const getAllEmployees = () => (dispatch) => {
 export const getEmployees = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -221,11 +199,7 @@ export const getEmployees = () => (dispatch) => {
 export const getAllTrips = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/tripinfo/organized`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -246,11 +220,7 @@ export const getAllTrips = () => (dispatch) => {
 export const getMyTrips = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/tripinfo/participating`, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -271,11 +241,7 @@ export const getMyTrips = () => (dispatch) => {
 export const getMergeableTrips = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/mergeableTrips/?firstTripId=` + tripId, {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -296,11 +262,7 @@ export const getMergeableTrips = (tripId) => (dispatch) => {
 export const mergeTrips = (FirstTripId, SecondTripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/mergeTrips`, {
         method: "Post",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        },
+        headers: getDefaultHeaders(),
         body: JSON.stringify({
             FirstTripId,
             SecondTripId
@@ -322,11 +284,7 @@ export const mergeTrips = (FirstTripId, SecondTripId) => (dispatch) => {
 export const getBasicTrip = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/tripinfo/` + tripId + '/basic', {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -347,11 +305,7 @@ export const getPlans = (employeeIds) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees/plans`, {
         method: "POST",
         body: JSON.stringify(employeeIds),
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -371,11 +325,7 @@ export const getPlans = (employeeIds) => (dispatch) => {
 export const getChecklist = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -395,11 +345,7 @@ export const getChecklist = (employeeId, tripId) => (dispatch) => {
 export const getPersonalChecklist = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist/personal', {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -419,11 +365,7 @@ export const getPersonalChecklist = (employeeId, tripId) => (dispatch) => {
 export const getSingleChecklist = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -450,11 +392,7 @@ export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) =
             flightTime: flightInfo.flightTime,
             airportAddress: flightInfo.airportAddress
         }),
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -477,7 +415,8 @@ export const uploadFlightTicket = (flightTicketFile, employeeId, tripId) => (dis
         method: "PUT",
         body: formData,
         headers: {
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
+            "Authorization": "Bearer " + sessionStorage.getItem('token'),
+            "x-correlation-id": uuid()
         }
     }).then(response => {
         if (response.status === 401) {
@@ -502,7 +441,8 @@ export const uploadHotelDocuments = (flightTicketFile, employeeId, tripId) => (d
         method: "PUT",
         body: formData,
         headers: {
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
+            "Authorization": "Bearer " + sessionStorage.getItem('token'),
+            "x-correlation-id": uuid()
         }
     }).then(response => {
         if (response.status === 401) {
@@ -526,7 +466,8 @@ export const updateCarDocuments = (flightTicketFile, employeeId, tripId) => (dis
         method: "PUT",
         body: formData,
         headers: {
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
+            "Authorization": "Bearer " + sessionStorage.getItem('token'),
+            "x-correlation-id": uuid()
         }
     }).then(response => {
         if (response.status === 401) {
@@ -547,11 +488,7 @@ export const updateCarDocuments = (flightTicketFile, employeeId, tripId) => (dis
 export const createFlightInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -570,11 +507,7 @@ export const createFlightInfo = (employeeId, tripId) => (dispatch) => {
 export const createApartmentsInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -593,11 +526,7 @@ export const createApartmentsInfo = (employeeId, tripId) => (dispatch) => {
 export const deleteHotelReservation = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -616,11 +545,7 @@ export const deleteHotelReservation = (employeeId, tripId) => (dispatch) => {
 export const deleteApartmentsInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/livingplace', {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -640,11 +565,7 @@ export const updateApartmentsInfo = (HotelName, DateFrom, DateTo, tripId, employ
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
         method: "PUT",
         body: JSON.stringify({HotelName, DateFrom, DateTo}),
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -663,11 +584,7 @@ export const updateApartmentsInfo = (HotelName, DateFrom, DateTo, tripId, employ
 export const deleteFlightInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -693,11 +610,7 @@ export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
             rentEndTime: carInfo.rentEndTime,
             rentStartTime: carInfo.rentStartTime
         }),
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -716,11 +629,7 @@ export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
 export const acceptTrip = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/participation/accept', {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -744,11 +653,7 @@ export const acceptTrip = (tripId) => (dispatch) => {
 export const createCarInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -767,11 +672,7 @@ export const createCarInfo = (employeeId, tripId) => (dispatch) => {
 export const deleteCarInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -790,11 +691,7 @@ export const deleteCarInfo = (employeeId, tripId) => (dispatch) => {
 export const deleteTrip = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId, {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
@@ -818,11 +715,7 @@ export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dis
     fetch(BACKEND_BASE_URI + "/api/employees", {
         method: "POST",
         body: JSON.stringify({ FirstName, LastName, Email, Password, Office }),
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 200) {
             response.json().then(data => {
@@ -866,11 +759,7 @@ export const createTrip = (employeeIds, destinationOfficeId, departureDate, retu
     fetch(BACKEND_BASE_URI + "/api/trips", {
         method: "POST",
         body: JSON.stringify({ employeeIds, destinationOfficeId, departureDate, returnDate }),
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
-        }
+        headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
             dispatch(push('/login'));
