@@ -54,7 +54,6 @@ class LoginPage extends React.Component {
                             onChange={this.handlePasswordChange} />
                     </div>
                     <button className={`btn btn-lg btn-primary btn-block`} type="submit">Login</button>
-                    <p className={`mt-5 mb-3 text-muted`}>PatogusMiegas &copy; 2018</p>
                 </form>
             </div>
         );

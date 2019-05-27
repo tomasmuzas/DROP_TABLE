@@ -1,8 +1,18 @@
-import users from './users';
+import employees from './employees';
 import trips from './trips';
-import authentication from './authentication';
-import apartments from './apartments'
+import apartments from './apartments';
+import offices from './offices';
+import tripbasic from './tripbasic';
+import checklist from './checklist';
+import singleFlightInfo from './singleFlightInfo';
+import singleChecklist from './singleChecklist';
+import singleCarInfo from './singleCarInfo';
+import plans from './plans';
+import mergeableTrips from './mergeableTrips';
+import myTrips from './myTrips';
+import personalChecklist from './personalChecklist';
 
 export default {
-    users, trips, authentication, apartments
+    employees, trips, apartments, offices, tripbasic, checklist, singleFlightInfo, singleChecklist, singleCarInfo,
+    plans, mergeableTrips, myTrips, personalChecklist
 };

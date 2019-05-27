@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace BackendApartmentReservation.Database.Entities
+﻿namespace BackendApartmentReservation.Database.Entities
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class DbGroup
     {
         [Key]
         public int Id { get; set; }
 
-        public List<DbEmployee> Employees { get; set; }
+        public string ExternalGroupId { get; set; }
 
         public DbEmployee Manager { get; set; }
+
+        public DbOffice StartingOffice { get; set; }
     }
 }
