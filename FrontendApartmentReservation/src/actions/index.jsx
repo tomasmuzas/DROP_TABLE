@@ -1,7 +1,7 @@
 import { push } from 'react-router-redux';
 import i18n from "../i18n";
 import { Router } from 'react-router';
-import {uuid} from 'uuid/v1'
+import uuid from 'uuid/v1'
 
 export const GET_ALL_APARTMENTS = 'GET_ALL_APARTMENTS';
 export const GET_ALL_AUTHENTICATIONS = 'GET_ALL_AUTHENTICATIONS';
