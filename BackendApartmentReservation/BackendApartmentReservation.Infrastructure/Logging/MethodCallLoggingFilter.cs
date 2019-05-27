@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -15,7 +18,23 @@ namespace BackendApartmentReservation.Infrastructure.Logging
         // Called on async method execution
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var resultContext = await next().ConfigureAwait(false); // Execute method
+            var httpHeaders = context.HttpContext.Request.Headers;
+            var correlationIdExists = httpHeaders.TryGetValue("x-correlation-id", out var correlationId);
+
+            if (!correlationIdExists)
+            {
+                correlationId = Guid.NewGuid().ToString();
+            }
+
+            MappedDiagnosticsLogicalContext.Set("CorrelationId", correlationId);
+
+            var employeeId = context.HttpContext.User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            MappedDiagnosticsLogicalContext.Set("User", employeeId);
+            var role = context.HttpContext.User.Claims.SingleOrDefault(c => c.Type == "Role")?.Value;
+            MappedDiagnosticsLogicalContext.Set("Role", role);
+
+            // Execute method
+            var resultContext = await next().ConfigureAwait(false); 
 
             if (resultContext.Exception == null)
             {
