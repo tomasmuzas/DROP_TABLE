@@ -75,7 +75,7 @@ namespace BackendApartmentReservation.Employees
         }
 
         [HttpGet]
-        [Route("employees/{userId}")]
+        [Route("employees/{employeeId}")]
         public async Task<IActionResult> GetEmployeeById(string employeeId)
         {
             var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeId);
@@ -89,7 +89,7 @@ namespace BackendApartmentReservation.Employees
         }
 
         [HttpGet]
-        [Route("employees/full/{userId}")]
+        [Route("employees/full/{employeeId}")]
         [AdminOnly]
         public async Task<IActionResult> GetEmployeeWithRoleById(string employeeId)
         {
