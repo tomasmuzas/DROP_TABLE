@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import MainPage from '../../Pages/MainPage/MainPage';
 import PageNotFound from '../../Pages/PageNotFound/PageNotFound';
 import ApartamentsPage from '../../Pages/ApartmentsPage/ApartmentsPage';
 import UsersPage from '../../Pages/UsersPage/UsersPage';
