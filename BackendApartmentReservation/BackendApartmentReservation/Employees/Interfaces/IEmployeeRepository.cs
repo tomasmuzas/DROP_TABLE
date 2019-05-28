@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using Database.Entities;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
+    using DataContracts.DataTransferObjects.Requests;
 
     public interface IEmployeeRepository
     {
@@ -22,5 +23,7 @@
         Task<IEnumerable<DbEmployeePlan>> GetEmployeePlans(IEnumerable<string> employeeIds);
 
         Task<DbEmployeePlan> CreateEmployeePlan(DbEmployeePlan dbEmployeePlan);
+
+        Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest);
     }
 }

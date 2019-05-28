@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Database.Entities;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
+    using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
     using Interfaces;
 
@@ -85,6 +86,11 @@
                 Start = p.StartDate,
                 End = p.EndDate
             });
+        }
+
+        public async Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest)
+        {
+            await _employeeRepository.ChangeUserInfo(employeeId, changeUserInfoRequest);
         }
     }
 }

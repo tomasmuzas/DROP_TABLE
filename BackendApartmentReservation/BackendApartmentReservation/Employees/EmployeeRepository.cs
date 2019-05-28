@@ -6,6 +6,8 @@
     using System.Threading.Tasks;
     using Database;
     using Database.Entities;
+    using DataContracts.DataTransferObjects.Requests;
+    using Infrastructure.Exceptions;
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
 
@@ -71,6 +73,24 @@
             await _context.EmployeePlans.AddAsync(dbEmployeePlan);
             await _context.SaveChangesAsync();
             return dbEmployeePlan;
+        }
+
+        public async Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest)
+        {
+            var employee = await _context.Employees.SingleOrDefaultAsync(e => e.ExternalEmployeeId == employeeId);
+
+            if (employee == null)
+            {
+                throw new ErrorCodeException(ErrorCodes.EmployeeNotFound);
+            }
+
+            employee.FirstName = changeUserInfoRequest.FirstName;
+            employee.LastName = changeUserInfoRequest.LastName;
+            employee.Email = changeUserInfoRequest.Email;
+            employee.Role = changeUserInfoRequest.Role;
+
+            _context.Employees.Update(employee);
+            await _context.SaveChangesAsync();
         }
     }
 }

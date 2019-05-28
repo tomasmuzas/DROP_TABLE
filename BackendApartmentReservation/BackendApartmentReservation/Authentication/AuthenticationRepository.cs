@@ -47,23 +47,5 @@ namespace BackendApartmentReservation.Authentication
             await _db.Authorizations.AddAsync(authorization);
             await _db.SaveChangesAsync();
         }
-
-        public async Task ChangeUserInfo(ChangeUserInfoRequest changeUserInfoRequest)
-        {
-            var employee = await _db.Employees.SingleOrDefaultAsync(e => e.ExternalEmployeeId == changeUserInfoRequest.UserId);
-
-            if (employee == null)
-            {
-                throw new ErrorCodeException(ErrorCodes.EmployeeNotFound);
-            }
-
-            employee.FirstName = changeUserInfoRequest.FirstName;
-            employee.LastName = changeUserInfoRequest.LastName;
-            employee.Email = changeUserInfoRequest.Email;
-            employee.Role = changeUserInfoRequest.Role;
-       
-            _db.Employees.Update(employee);
-            await _db.SaveChangesAsync();
-        }
     }
 }

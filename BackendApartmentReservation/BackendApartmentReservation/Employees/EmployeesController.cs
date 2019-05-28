@@ -43,7 +43,7 @@ namespace BackendApartmentReservation.Employees
         }
 
         [HttpGet]
-        [Route("employees")]
+        [Route("employees/full")]
         [AdminOnly]
         public async Task<IEnumerable<FullEmployeeInfo>> GetAllEmployeesWithRoles()
         {
@@ -89,7 +89,7 @@ namespace BackendApartmentReservation.Employees
         }
 
         [HttpGet]
-        [Route("employees/{userId}")]
+        [Route("employees/full/{userId}")]
         [AdminOnly]
         public async Task<IActionResult> GetEmployeeWithRoleById(string employeeId)
         {
@@ -109,6 +109,16 @@ namespace BackendApartmentReservation.Employees
         public async Task<IEnumerable<EmployeePlanInfo>> GetEmployeePlans(IEnumerable<string> employeeIds)
         {
             return await _employeeManager.GetEmployeePlans(employeeIds);
+        }
+
+        [HttpPut]
+        [AdminOnly]
+        [Route("employees/{employeeId}/info")]
+        public async Task ChangeEmployeeInfo(
+            string employeeId,
+            [FromBody]ChangeUserInfoRequest changeUserInfoRequest)
+        {
+            await _employeeManager.ChangeUserInfo(employeeId, changeUserInfoRequest);
         }
     }
 }

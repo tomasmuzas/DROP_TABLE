@@ -75,10 +75,5 @@ namespace BackendApartmentReservation.Authentication
 
             return employee;
         }
-
-        public async Task ChangeUserInfo(ChangeUserInfoRequest changeUserInfoRequest)
-        {
-            await _authenticationRepository.ChangeUserInfo(changeUserInfoRequest);
-        }
     }
 }
