@@ -60,6 +60,7 @@ namespace BackendApartmentReservation.Employees
             dbEmployee.LastName = model.LastName;
             dbEmployee.Email = model.Email;
             dbEmployee.Office = await _officeManager.GetOfficeById(model.Office);
+            dbEmployee.Role = model.Role;
 
             await _employeeManager.CreateEmployee(dbEmployee);
 
