@@ -78,16 +78,24 @@
         public async Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest)
         {
             var employee = await _context.Employees.SingleOrDefaultAsync(e => e.ExternalEmployeeId == employeeId);
+            var office =
+                await _context.Offices.SingleOrDefaultAsync(o => o.ExternalOfficeId == changeUserInfoRequest.OfficeId);
 
             if (employee == null)
             {
                 throw new ErrorCodeException(ErrorCodes.EmployeeNotFound);
             }
 
+            if (office == null)
+            {
+                throw new ErrorCodeException(ErrorCodes.TripOfficeNotFound);
+            }
+
             employee.FirstName = changeUserInfoRequest.FirstName;
             employee.LastName = changeUserInfoRequest.LastName;
             employee.Email = changeUserInfoRequest.Email;
             employee.Role = changeUserInfoRequest.Role;
+            employee.Office = office;
 
             _context.Employees.Update(employee);
             await _context.SaveChangesAsync();

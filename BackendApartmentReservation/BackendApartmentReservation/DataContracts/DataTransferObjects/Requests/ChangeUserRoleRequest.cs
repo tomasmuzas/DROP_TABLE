@@ -15,6 +15,8 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
         [EmailAddress]
         public string Email { get; set; }
 
+        public string OfficeId { get; set; }
+
         [Required]
         public EmployeeRole Role { get; set; }
     }
