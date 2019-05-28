@@ -42,6 +42,14 @@ namespace BackendApartmentReservation.Employees
             return await _employeeManager.GetAllEmployees();
         }
 
+        [HttpGet]
+        [Route("employees")]
+        [AdminOnly]
+        public async Task<IEnumerable<FullEmployeeInfo>> GetAllEmployeesWithRoles()
+        {
+            return await _employeeManager.GetAllEmployeesWithRoles();
+        }
+
         [HttpPost]
         [AdminOnly] // Comment out when working locally
         [Route("employees")]
@@ -68,9 +76,24 @@ namespace BackendApartmentReservation.Employees
 
         [HttpGet]
         [Route("employees/{userId}")]
-        public async Task<IActionResult> GetEmployeeById(string employeeID)
+        public async Task<IActionResult> GetEmployeeById(string employeeId)
         {
-            var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeID);
+            var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeId);
+
+            if (employee == null)
+            {
+                return BadRequest(ErrorCodes.EmployeeNotFound);
+            }
+
+            return Ok(employee);
+        }
+
+        [HttpGet]
+        [Route("employees/{userId}")]
+        [AdminOnly]
+        public async Task<IActionResult> GetEmployeeWithRoleById(string employeeId)
+        {
+            var employee = await _employeeManager.GetEmployeeWithRoleByEmployeeId(employeeId);
 
             if (employee == null)
             {

@@ -76,9 +76,9 @@ namespace BackendApartmentReservation.Authentication
             return employee;
         }
 
-        public async Task ChangeUserRole(ChangeUserRoleRequest changeUserRoleRequest)
+        public async Task ChangeUserInfo(ChangeUserInfoRequest changeUserInfoRequest)
         {
-            await _authenticationRepository.ChangeUserRole(changeUserRoleRequest.UserId, changeUserRoleRequest.Role);
+            await _authenticationRepository.ChangeUserInfo(changeUserInfoRequest);
         }
     }
 }

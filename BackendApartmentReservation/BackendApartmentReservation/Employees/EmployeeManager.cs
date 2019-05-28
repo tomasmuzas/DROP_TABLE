@@ -39,15 +39,41 @@
             });
         }
 
-        public async Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeID)
+        public async Task<IEnumerable<FullEmployeeInfo>> GetAllEmployeesWithRoles()
         {
-            var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeID);
+            var employees = await _employeeRepository.GetAllEmployees();
+            return employees.Select(e => new FullEmployeeInfo()
+            {
+                Id = e.ExternalEmployeeId,
+                Email = e.Email,
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                Role = e.Role
+            });
+        }
+
+        public async Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeId)
+        {
+            var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeId);
             return new EmployeeInfo
             {
                 Id = employee.ExternalEmployeeId,
                 Email = employee.Email,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName
+            };
+        }
+
+        public async Task<FullEmployeeInfo> GetEmployeeWithRoleByEmployeeId(string employeeId)
+        {
+            var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeId);
+            return new FullEmployeeInfo
+            {
+                Id = employee.ExternalEmployeeId,
+                Email = employee.Email,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Role = employee.Role
             };
         }
 

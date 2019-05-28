@@ -14,6 +14,6 @@ namespace BackendApartmentReservation.Authentication.Interfaces
 
         Task<DbEmployee> GetAndVerifyEmployee(string employeeId);
 
-        Task ChangeUserRole(ChangeUserRoleRequest changeUserRoleRequest);
+        Task ChangeUserInfo(ChangeUserInfoRequest changeUserInfoRequest);
     }
 }

@@ -5,12 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackendApartmentReservation.Employees;
 
-namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
+namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Responses
 {
-    public class ChangeUserInfoRequest
+    public class FullEmployeeInfo
     {
-        [Required]
-        public string UserId { get; set; }
+        public string Id { get; set; }
 
         [Required(AllowEmptyStrings = false)]
         public string FirstName { get; set; }
