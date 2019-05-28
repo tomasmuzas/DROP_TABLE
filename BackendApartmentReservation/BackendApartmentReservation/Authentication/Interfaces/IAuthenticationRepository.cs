@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BackendApartmentReservation.Database.Entities;
+using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.Employees;
 
 namespace BackendApartmentReservation.Authentication.Interfaces
@@ -10,6 +11,6 @@ namespace BackendApartmentReservation.Authentication.Interfaces
 
         Task CreateAuthenticationInfo(string hashedPassword, DbEmployee employee);
 
-        Task ChangeUserRole(string userId, EmployeeRole role);
+        Task ChangeUserInfo(ChangeUserInfoRequest changeUserInfoRequest);
     }
 }

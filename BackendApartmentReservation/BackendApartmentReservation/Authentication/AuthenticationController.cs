@@ -32,9 +32,9 @@ namespace BackendApartmentReservation.Authentication
         [HttpPost]
         [AdminOnly]
         [Route("employees/role")]
-        public async Task ChangeEmployeeRole(ChangeUserRoleRequest changeUserRoleRequest)
+        public async Task ChangeEmployeeRole(ChangeUserInfoRequest changeUserInfoRequest)
         {
-            await _authenticationManager.ChangeUserRole(changeUserRoleRequest);
+            await _authenticationManager.ChangeUserInfo(changeUserInfoRequest);
         }
     }
 }
