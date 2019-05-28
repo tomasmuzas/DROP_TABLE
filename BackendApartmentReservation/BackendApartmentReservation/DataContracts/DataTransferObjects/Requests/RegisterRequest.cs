@@ -1,6 +1,7 @@
 ﻿namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
 {
     using System.ComponentModel.DataAnnotations;
+    using Employees;
     using Infrastructure.Utilities;
 
     public class RegisterRequest
@@ -21,5 +22,7 @@
 
         [Required(AllowEmptyStrings = false)]
         public string Office { get; set; }
+
+        public EmployeeRole Role { get; set; }
     }
 }
