@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BackendApartmentReservation.Authentication.Interfaces;
 using BackendApartmentReservation.Database;
 using BackendApartmentReservation.Database.Entities;
+using BackendApartmentReservation.DataContracts.DataTransferObjects.Requests;
 using BackendApartmentReservation.Employees;
 using BackendApartmentReservation.Infrastructure.Exceptions;
 using BackendApartmentReservation.Migrations;
@@ -44,21 +45,6 @@ namespace BackendApartmentReservation.Authentication
             };
 
             await _db.Authorizations.AddAsync(authorization);
-            await _db.SaveChangesAsync();
-        }
-
-        public async Task ChangeUserRole(string userId, EmployeeRole role)
-        {
-            var employee = await _db.Employees.SingleOrDefaultAsync(e => e.ExternalEmployeeId == userId);
-
-            if (employee == null)
-            {
-                throw new ErrorCodeException(ErrorCodes.EmployeeNotFound);
-            }
-
-            employee.Role = role;
-       
-            _db.Employees.Update(employee);
             await _db.SaveChangesAsync();
         }
     }

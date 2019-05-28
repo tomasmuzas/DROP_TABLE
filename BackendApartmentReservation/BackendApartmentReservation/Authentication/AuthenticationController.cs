@@ -27,14 +27,5 @@ namespace BackendApartmentReservation.Authentication
         {
             return await _authenticationManager.Authenticate(request);
         }
-
-
-        [HttpPost]
-        [AdminOnly]
-        [Route("employees/role")]
-        public async Task ChangeEmployeeRole(ChangeUserRoleRequest changeUserRoleRequest)
-        {
-            await _authenticationManager.ChangeUserRole(changeUserRoleRequest);
-        }
     }
 }

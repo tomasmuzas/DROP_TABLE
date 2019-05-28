@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using Database.Entities;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
+    using DataContracts.DataTransferObjects.Requests;
     using DataContracts.DataTransferObjects.Responses;
 
     public interface IEmployeeManager
@@ -12,8 +13,14 @@
 
         Task<IEnumerable<EmployeeInfo>> GetAllEmployees();
 
-        Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeID);
+        Task<IEnumerable<FullEmployeeInfo>> GetAllEmployeesWithRoles();
+
+        Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeId);
+
+        Task<FullEmployeeInfo> GetEmployeeWithRoleByEmployeeId(string employeeId);
 
         Task<IEnumerable<EmployeePlanInfo>> GetEmployeePlans(IEnumerable<string> employeeIds);
+
+        Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest);
     }
 }

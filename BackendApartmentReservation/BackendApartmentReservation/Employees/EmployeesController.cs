@@ -42,6 +42,14 @@ namespace BackendApartmentReservation.Employees
             return await _employeeManager.GetAllEmployees();
         }
 
+        [HttpGet]
+        [Route("employees/full")]
+        [AdminOnly]
+        public async Task<IEnumerable<FullEmployeeInfo>> GetAllEmployeesWithRoles()
+        {
+            return await _employeeManager.GetAllEmployeesWithRoles();
+        }
+
         [HttpPost]
         [AdminOnly] // Comment out when working locally
         [Route("employees")]
@@ -52,6 +60,7 @@ namespace BackendApartmentReservation.Employees
             dbEmployee.LastName = model.LastName;
             dbEmployee.Email = model.Email;
             dbEmployee.Office = await _officeManager.GetOfficeById(model.Office);
+            dbEmployee.Role = model.Role;
 
             await _employeeManager.CreateEmployee(dbEmployee);
 
@@ -67,10 +76,25 @@ namespace BackendApartmentReservation.Employees
         }
 
         [HttpGet]
-        [Route("employees/{userId}")]
-        public async Task<IActionResult> GetEmployeeById(string employeeID)
+        [Route("employees/{employeeId}")]
+        public async Task<IActionResult> GetEmployeeById(string employeeId)
         {
-            var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeID);
+            var employee = await _employeeManager.GetEmployeeByEmployeeId(employeeId);
+
+            if (employee == null)
+            {
+                return BadRequest(ErrorCodes.EmployeeNotFound);
+            }
+
+            return Ok(employee);
+        }
+
+        [HttpGet]
+        [Route("employees/full/{employeeId}")]
+        [AdminOnly]
+        public async Task<IActionResult> GetEmployeeWithRoleById(string employeeId)
+        {
+            var employee = await _employeeManager.GetEmployeeWithRoleByEmployeeId(employeeId);
 
             if (employee == null)
             {
@@ -86,6 +110,16 @@ namespace BackendApartmentReservation.Employees
         public async Task<IEnumerable<EmployeePlanInfo>> GetEmployeePlans(IEnumerable<string> employeeIds)
         {
             return await _employeeManager.GetEmployeePlans(employeeIds);
+        }
+
+        [HttpPut]
+        [AdminOnly]
+        [Route("employees/{employeeId}/info")]
+        public async Task ChangeEmployeeInfo(
+            string employeeId,
+            [FromBody]ChangeUserInfoRequest changeUserInfoRequest)
+        {
+            await _employeeManager.ChangeUserInfo(employeeId, changeUserInfoRequest);
         }
     }
 }
