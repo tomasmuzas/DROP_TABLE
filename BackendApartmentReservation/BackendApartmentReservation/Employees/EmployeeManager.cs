@@ -52,12 +52,28 @@
             });
         }
 
+        public async Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeId)
+        {
+            var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeId);
             return new EmployeeInfo
             {
                 Id = employee.ExternalEmployeeId,
                 Email = employee.Email,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName
+            };
+        }
+
+        public async Task<FullEmployeeInfo> GetEmployeeWithRoleByEmployeeId(string employeeId)
+        {
+            var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeId);
+            return new FullEmployeeInfo
+            {
+                Id = employee.ExternalEmployeeId,
+                Email = employee.Email,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Role = employee.Role
             };
         }
 
