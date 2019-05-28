@@ -13,6 +13,8 @@
         Task<IEnumerable<EmployeeInfo>> GetAllEmployees();
 
         Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeID);
+        Task<IEnumerable<FullEmployeeInfo>> GetAllEmployeesWithRoles();
+
 
         Task<IEnumerable<EmployeePlanInfo>> GetEmployeePlans(IEnumerable<string> employeeIds);
     }
