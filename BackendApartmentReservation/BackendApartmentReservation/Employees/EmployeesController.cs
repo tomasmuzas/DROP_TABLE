@@ -42,6 +42,14 @@ namespace BackendApartmentReservation.Employees
             return await _employeeManager.GetAllEmployees();
         }
 
+        [HttpGet]
+        [Route("employees")]
+        [AdminOnly]
+        public async Task<IEnumerable<FullEmployeeInfo>> GetAllEmployeesWithRoles()
+        {
+            return await _employeeManager.GetAllEmployeesWithRoles();
+        }
+
         [HttpPost]
         [AdminOnly] // Comment out when working locally
         [Route("employees")]

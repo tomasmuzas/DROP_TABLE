@@ -39,9 +39,19 @@
             });
         }
 
-        public async Task<EmployeeInfo> GetEmployeeByEmployeeId(string employeeID)
+        public async Task<IEnumerable<FullEmployeeInfo>> GetAllEmployeesWithRoles()
         {
-            var employee = await _employeeRepository.GetEmployeeByEmployeeId(employeeID);
+            var employees = await _employeeRepository.GetAllEmployees();
+            return employees.Select(e => new FullEmployeeInfo()
+            {
+                Id = e.ExternalEmployeeId,
+                Email = e.Email,
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                Role = e.Role
+            });
+        }
+
             return new EmployeeInfo
             {
                 Id = employee.ExternalEmployeeId,
