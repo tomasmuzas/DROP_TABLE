@@ -3,20 +3,34 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../../actions';
 import { GridLoader } from "react-spinners";
+import UserCard from './UserCard';
+import { withTranslation } from 'react-i18next';
+
 
 class UsersPage extends React.Component {
 
     componentWillMount() {
-        this.props.getAllEmployees();
+        this.props.getEmployeesWithRoles();
     }
 
     render() {
-        if (this.props.employees) {
+        const { t } = this.props;
+        if (this.props.employees === []) {
+            return (<div className="row mt-5">
+                <div className="col-12">
+                    <h1>{t('EmptyEmployeesList')}</h1>
+                </div>
+            </div>
+            )
+        }
+        else if (this.props.employees.length > 0) {
             return (
-                <div>
-                   <div>
-                        This is UsersPage
-                        {this.props.employees.map(employee => <div> {employee.firstName} </div>)}
+                <div className="row mt-5">
+                    <div className="col-12">
+                        <h1 style={{ textAlign: 'center' }}>{t("Employees")}</h1>
+                        <div>
+                            {this.props.employees.map(employee => <UserCard employee={employee} key={employee.id} />)}
+                        </div>
                     </div>
                 </div>
             );
@@ -46,4 +60,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(UsersPage));
+export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(UsersPage));

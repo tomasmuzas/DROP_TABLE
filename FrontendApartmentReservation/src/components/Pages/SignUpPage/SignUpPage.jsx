@@ -5,6 +5,7 @@ import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../../actions';
 import Select from 'react-select';
+import i18next from 'i18next';
 
 class SignUpPage extends React.Component {
     constructor(props) {
@@ -16,6 +17,10 @@ class SignUpPage extends React.Component {
             inputPassword: '',
             selectedOffice: '',
             officesOptions: [],
+            rolesOptions: [{ value: 2, label: i18next.t('Admin') }, { value: 1, label: i18next.t('Organizer') }, { value: 0, label: i18next.t('Regular') }],
+            selectedRole: '',
+            isEditing: false,
+            employee: '',
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,15 +29,42 @@ class SignUpPage extends React.Component {
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleOfficeChange = this.handleOfficeChange.bind(this);
+        this.handleRoleChange = this.handleRoleChange.bind(this);
+        this.updateUser = this.updateUser.bind(this);
 
     }
 
     componentWillMount() {
         this.props.getAllOffices();
+        var isEditingParmsNotNull = this.props.match.params.employeeId ? true : false;
+        this.setState({
+            isEditing: isEditingParmsNotNull,
+        })
+        if (isEditingParmsNotNull) {
+            if (this.props.employees && this.props.employee !== [] && this.props.employees.length !== 0) {
+                var employee = this.props.employees.find(employee => employee.id === this.props.match.params.employeeId);
+                this.setStateWithEmployee(employee);
+            }
+            else {
+                this.props.getEmployeeById(this.props.match.params.employeeId)
+            }
+        }
+    }
+
+    setStateWithEmployee(employee) {
+        this.setState({
+            inputName: employee.firstName,
+            inputSurname: employee.lastName,
+            inputEmail: employee.email,
+            selectedRole: employee.role
+        })
     }
 
     componentWillReceiveProps(newProps) {
         this.setOfficesArray(newProps.offices);
+        if(this.state.isEditing && this.props.employees !== null && this.props.employees.length === 0 && newProps.employees !== [] && newProps.employees.length !== 0){
+            this.setStateWithEmployee(newProps.employees)
+        }
     }
 
     setOfficesArray(officesList) {
@@ -48,13 +80,18 @@ class SignUpPage extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const { inputName, inputSurname, inputEmail, inputPassword, selectedOffice } = this.state;
+        const { inputName, inputSurname, inputEmail, inputPassword, selectedOffice, selectedRole } = this.state;
         const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*d).{8,}$', 'i');
         if (regex.test(inputPassword)) {
-            this.props.signUpUser(inputName, inputSurname, inputEmail, inputPassword, selectedOffice);
+            this.props.signUpUser(inputName, inputSurname, inputEmail, inputPassword, selectedOffice, selectedRole);
         } else {
             alert(this.props.t("PasswordError"));
         }
+    }
+
+    updateUser() {
+        const { inputName, inputSurname, inputEmail, selectedOffice, selectedRole } = this.state;
+        this.props.updateUser(inputName, inputSurname, inputEmail, selectedOffice, selectedRole, this.props.match.params.employeeId);
     }
 
     handleNameChange(e) {
@@ -87,6 +124,12 @@ class SignUpPage extends React.Component {
         })
     }
 
+    handleRoleChange(e) {
+        this.setState({
+            selectedRole: e.value
+        })
+    }
+
     render() {
         const { inputName, inputSurname, inputEmail, inputPassword, inputOffice } = this.state;
         const { t } = this.props;
@@ -108,21 +151,33 @@ class SignUpPage extends React.Component {
                             required name="inputEmail" value={inputEmail}
                             onChange={this.handleEmailChange} />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group" hidden={this.state.isEditing}>
                         <input type="password" id="inputPassword" className={`form-control`} placeholder={t("Password")}
                             required name="inputPassword" value={inputPassword}
                             onChange={this.handlePasswordChange} />
                     </div>
                     <div className="form-group mb-2">
-                            <Select
-                                options={this.state.officesOptions}
-                                className="basic-multi-select"
-                                placeholder="Select office"
-                                onChange={this.handleOfficeChange}
-                                required
-                            />
-                        </div>
-                    <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SignUp")}</button>
+                        <Select
+                            options={this.state.officesOptions}
+                            className="basic-multi-select"
+                            placeholder={t("SelectOffice")}
+                            onChange={this.handleOfficeChange}
+                            required
+                            value={this.state.officesOptions.filter(option => option.value === this.state.selectedOffice)}
+                        />
+                    </div>
+                    <div className="form-group mb-2">
+                        <Select
+                            options={this.state.rolesOptions}
+                            className="basic-multi-select"
+                            placeholder={t("SelectEmployeeRole")}
+                            onChange={this.handleRoleChange}
+                            required
+                            value={this.state.rolesOptions.filter(option => option.value === this.state.selectedRole)}
+                        />
+                    </div>
+                    <button hidden={this.state.isEditing} className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SignUp")}</button>
+                    <button hidden={!this.state.isEditing} className={`btn btn-lg btn-primary btn-block`} onClick={this.updateUser}>{t("EditEmployeeInfo")}</button>
                 </form>
             </div>
         );

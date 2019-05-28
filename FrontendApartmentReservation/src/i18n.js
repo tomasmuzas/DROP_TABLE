@@ -112,8 +112,16 @@ i18n.use(LanguageDetector).init({
         "ApartmentsInfoCreated":"Apartments information created",
         "ApartmentsInfoDeleted":"Apartments information deleted",
         "BookHotel" : "Book hotel",
-        "DeleteHotelInfo": "Delete hotel information"
-
+        "DeleteHotelInfo": "Delete hotel information",
+        "Employees" : "Employees",
+        "Employee" : "Employee",
+        "EmptyEmployeesList": "Employees list is empty",
+        "EmptyTripsList": "Trips list is empty",
+        "Admin": "Admin",
+        "Organizer":"Organizer",
+        "Regular": "Regular",
+        "SelectEmployeeRole":"Select employee role",
+        "EditEmployeeInfo": "Edit employee info",
       }
     },
     lt: {
@@ -172,7 +180,6 @@ i18n.use(LanguageDetector).init({
         "CarDocuments": "Mašinos dokumentai",
         "SaveDocuments": "Išsaugoti mašinos dokumentus",        
         "CurrentCarDocuments": "Dabartiniai mašinos dokumentai",
-        "ApartmentsInfoUpdated":"Apartamentų informacija išsaugota",
         "DestinationOffice": "Išvykimo ofisas",
         "CarNumber": "Mašinos numeris",
         "CarAddress": "Mašinos adresas",
@@ -224,7 +231,17 @@ i18n.use(LanguageDetector).init({
         "ApartmentsInfoCreated":"Apartamentų informacija sukurta",
         "ApartmentsInfoDeleted":"Apartamentų informacija ištrinta",
         "BookHotel" : "Užsakyti viešbutį",
-        "DeleteHotelInfo": "Ištrinti viešbučio informaciją"
+        "DeleteHotelInfo": "Ištrinti viešbučio informaciją",
+        "Employees" : "Darbuotojai",
+        "Employee" : "Darbuotojas",
+        "EmptyEmployeesList": "Darbuotojų sąrašas tuščias",
+        "EmptyTripsList": "Kelionių sąrašas tuščias",
+        "Admin": "Administratorius",
+        "Organizer":"Organizatorius",
+        "Regular": "Regularus darbuotojas",
+        "SelectEmployeeRole":"Pasirinkite darbuotojo rolę",
+        "EditEmployeeInfo": "Redaguoti darbuotojo informaciją",
+
       }
     }
   },

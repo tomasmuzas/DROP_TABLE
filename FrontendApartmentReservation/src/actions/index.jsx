@@ -27,6 +27,8 @@ export const UPDATE_MY_TRIPS = "UPDATE_MY_TRIPS";
 export const DELETE_TRIP = "DELETE_TRIP";
 export const GET_PERSONAL_CHECKLIST = "GET_PERSONAL_CHECKLIST";
 export const CLEAR_PERSONAL_CHECKLIST = "CLEAR_PERSONAL_CHECKLIST";
+export const GET_EMPLOYEE_BY_ID = 'GET_EMPLOYEE_BY_ID';
+export const CLEAR_EMPLOYEES = 'CLEAR_EMPLOYEES';
 
 var BACKEND_BASE_URI;
 if (process.env.NODE_ENV === 'production') {
@@ -57,6 +59,11 @@ export const getAllApartments = () => (dispatch) => {
             sessionStorage.removeItem('token');
             throw new Error("Bad response");
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         response.json()
             .then(data => {
                 dispatch({
@@ -77,6 +84,11 @@ export const reserveApartmentsForAll = (tripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             clearTrips();
             dispatch(push('/trip/' + tripId));
@@ -85,7 +97,7 @@ export const reserveApartmentsForAll = (tripId) => (dispatch) => {
 }
 
 export const reserveApartmentsForOne = (employeeId, tripId) => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/'+ employeeId + `/apartment`, {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + `/apartment`, {
         method: "Post",
         headers: getDefaultHeaders()
     }).then(response => {
@@ -93,6 +105,11 @@ export const reserveApartmentsForOne = (employeeId, tripId) => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         if (response.status === 200) {
             clearTrips();
@@ -102,7 +119,7 @@ export const reserveApartmentsForOne = (employeeId, tripId) => (dispatch) => {
 }
 
 export const deleteApartmentsReservationForOne = (employeeId, tripId) => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/'+ employeeId + `/apartment`, {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + `/apartment`, {
         method: "Delete",
         headers: getDefaultHeaders()
     }).then(response => {
@@ -115,11 +132,16 @@ export const deleteApartmentsReservationForOne = (employeeId, tripId) => (dispat
             clearTrips();
             return response.status;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
     }).catch((error) => console.warn(error));
 }
 
 export const deleteApartmentsReservation = (employeeId, tripId) => (dispatch) => {
-    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/'+ employeeId + `/apartment`, {
+    return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + `/apartment`, {
         method: "Delete",
         headers: getDefaultHeaders()
     }).then(response => {
@@ -127,6 +149,11 @@ export const deleteApartmentsReservation = (employeeId, tripId) => (dispatch) =>
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         if (response.status === 200) {
             clearTrips();
@@ -144,6 +171,11 @@ export const getAllOffices = () => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             throw new Error("Bad response");
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         response.json()
             .then(data => {
@@ -163,6 +195,11 @@ export const getAllEmployees = () => (dispatch) => {
         if (response.status === 401) {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         else {
             response.json()
@@ -186,6 +223,11 @@ export const getEmployees = () => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         response.json()
             .then(data => {
                 dispatch({
@@ -193,6 +235,59 @@ export const getEmployees = () => (dispatch) => {
                     payload: data
                 });
             });
+    }).catch((error) => console.warn(error));
+}
+
+export const getEmployeesWithRoles = () => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/employees/full`, {
+        method: "GET",
+        headers: getDefaultHeaders()
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_AVAILABLE_EMPLOYEES,
+                    payload: data
+                });
+            });
+    }).catch((error) => console.warn(error));
+}
+
+export const getEmployeeById = (employeeId) => (dispatch) => {
+    return fetch(BACKEND_BASE_URI + `/api/employees/full/` + employeeId, {
+        method: "GET",
+        headers: getDefaultHeaders()
+    }).then(response => {
+        if (response.status === 401) {
+            dispatch(push('/login'));
+            sessionStorage.removeItem('token');
+            return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
+        if (response.status === 200) {
+            response.json()
+                .then(data => {
+                    dispatch({
+                        type: GET_EMPLOYEE_BY_ID,
+                        payload: data
+                    });
+                });
+            return response.status;
+        }
     }).catch((error) => console.warn(error));
 }
 
@@ -204,6 +299,11 @@ export const getAllTrips = () => (dispatch) => {
         if (response.status === 401) {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         else {
             response.json()
@@ -226,6 +326,11 @@ export const getMyTrips = () => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         else {
             response.json()
                 .then(data => {
@@ -246,6 +351,11 @@ export const getMergeableTrips = (tripId) => (dispatch) => {
         if (response.status === 401) {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         else {
             response.json()
@@ -273,6 +383,11 @@ export const mergeTrips = (FirstTripId, SecondTripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             clearTrips();
             dispatch(push('/trips'));
@@ -290,6 +405,11 @@ export const getBasicTrip = (tripId) => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         response.json()
             .then(data => {
@@ -312,6 +432,11 @@ export const getPlans = (employeeIds) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         response.json()
             .then(data => {
                 dispatch({
@@ -331,6 +456,11 @@ export const getChecklist = (employeeId, tripId) => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         response.json()
             .then(data => {
@@ -352,6 +482,11 @@ export const getPersonalChecklist = (employeeId, tripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         response.json()
             .then(data => {
                 dispatch({
@@ -371,6 +506,11 @@ export const getSingleChecklist = (employeeId, tripId) => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         response.json()
             .then(data => {
@@ -399,6 +539,11 @@ export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) =
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             alert(i18n.t("FlightInfoUpdate") + response.status);
         }
@@ -424,6 +569,11 @@ export const uploadFlightTicket = (flightTicketFile, employeeId, tripId) => (dis
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             alert(i18n.t("FlightInfoUpdate") + response.status);
         }
@@ -435,7 +585,6 @@ export const uploadFlightTicket = (flightTicketFile, employeeId, tripId) => (dis
 
 export const uploadHotelDocuments = (flightTicketFile, employeeId, tripId) => (dispatch) => {
     const formData = new FormData();
-    console.log(flightTicketFile);
     formData.append('file', flightTicketFile);
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel/documents', {
         method: "PUT",
@@ -449,6 +598,11 @@ export const uploadHotelDocuments = (flightTicketFile, employeeId, tripId) => (d
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         if (response.status === 200) {
             alert(i18n.t("FlightInfoUpdate") + response.status);
@@ -475,6 +629,11 @@ export const updateCarDocuments = (flightTicketFile, employeeId, tripId) => (dis
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             alert(i18n.t("FlightInfoUpdate") + response.status);
         }
@@ -495,6 +654,11 @@ export const createFlightInfo = (employeeId, tripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             alert(i18n.t("FlightInfoCreate") + response.status);
         }
@@ -513,6 +677,11 @@ export const createApartmentsInfo = (employeeId, tripId) => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         if (response.status === 200) {
             alert(i18n.t("ApartmentsInfoCreated") + response.status);
@@ -533,6 +702,11 @@ export const deleteHotelReservation = (employeeId, tripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             alert(i18n.t("ApartmentsInfoDeleted") + response.status);
             return response.status;
@@ -552,6 +726,11 @@ export const deleteApartmentsInfo = (employeeId, tripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             alert(i18n.t("ApartmentsInfoDeleted") + response.status);
         }
@@ -564,7 +743,7 @@ export const deleteApartmentsInfo = (employeeId, tripId) => (dispatch) => {
 export const updateApartmentsInfo = (HotelName, DateFrom, DateTo, tripId, employeeId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
         method: "PUT",
-        body: JSON.stringify({HotelName, DateFrom, DateTo}),
+        body: JSON.stringify({ HotelName, DateFrom, DateTo }),
         headers: getDefaultHeaders()
     }).then(response => {
         if (response.status === 401) {
@@ -572,8 +751,13 @@ export const updateApartmentsInfo = (HotelName, DateFrom, DateTo, tripId, employ
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
-            alert(i18n.t("CarInfoUpdate") + response.status);
+            alert(i18n.t("ApartmentsInfoUpdated") + response.status);
         }
         else {
             alert(i18n.t("SignUpError") + response.status);
@@ -590,6 +774,11 @@ export const deleteFlightInfo = (employeeId, tripId) => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         if (response.status === 200) {
             alert(i18n.t("FlightInfoDelete") + response.status);
@@ -617,6 +806,11 @@ export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             alert(i18n.t("CarInfoUpdate") + response.status);
         }
@@ -635,6 +829,11 @@ export const acceptTrip = (tripId) => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         if (response.status === 200) {
             clearTrips();
@@ -660,6 +859,11 @@ export const createCarInfo = (employeeId, tripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             alert(i18n.t("CarInfoCreate") + response.status);
         }
@@ -678,6 +882,11 @@ export const deleteCarInfo = (employeeId, tripId) => (dispatch) => {
             dispatch(push('/login'));
             sessionStorage.removeItem('token');
             return;
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
         if (response.status === 200) {
             alert(i18n.t("CarInfoDelete") + response.status);
@@ -698,9 +907,14 @@ export const deleteTrip = (tripId) => (dispatch) => {
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             dispatch({
-                type : 'DELETE_TRIP',
+                type: 'DELETE_TRIP',
                 payload: tripId
             });
             return response.status;
@@ -719,12 +933,39 @@ export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dis
     }).then(response => {
         if (response.status === 200) {
             response.json().then(data => {
-                sessionStorage.setItem('token', data.jwtToken)
                 dispatch(push('/'))
             });
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         else {
             alert(i18n.t("SignUpError") + response.status);
+        }
+    }).catch((error) => console.warn(error));
+}
+
+export const updateUser = (FirstName, LastName, Email, OfficeId, Role, EmployeeId) => (dispatch) => {
+    fetch(BACKEND_BASE_URI + "/api/employees/" + EmployeeId + "/info", {
+        method: "PUT",
+        body: JSON.stringify({ FirstName, LastName, Email, OfficeId, Role }),
+        headers: getDefaultHeaders()
+    }).then(response => {
+        if (response.status === 200) {
+            dispatch({
+                type: CLEAR_EMPLOYEES
+            });
+            dispatch(push('/users'))
+        }
+        else {
+            alert(i18n.t("SignUpError") + response.status);
+        }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
         }
     }).catch((error) => console.warn(error));
 }
@@ -746,7 +987,7 @@ export const login = (Email, Password) => (dispatch) => {
                 var decodedJson = JSON.parse(decodedString);
                 var userRole = decodedJson["Role"];
                 sessionStorage.setItem('role', userRole);
-                dispatch(push('/'))
+                dispatch(push('/myInfo/myTrips'))
             });
         }
         else {
@@ -766,6 +1007,11 @@ export const createTrip = (employeeIds, destinationOfficeId, departureDate, retu
             sessionStorage.removeItem('token');
             return;
         }
+        if (response.status === 403) {
+            dispatch(push('/error'));
+            sessionStorage.removeItem('token');
+            throw new Error("No rights");
+        }
         if (response.status === 200) {
             dispatch({
                 type: CLEAR_PERSONAL_CHECKLIST
@@ -774,7 +1020,7 @@ export const createTrip = (employeeIds, destinationOfficeId, departureDate, retu
             dispatch({
                 type: CLEAR_MY_TRIPS
             });
-            
+
             response.json().then(data => {
                 dispatch(push('/trip/' + data.tripId))
             });

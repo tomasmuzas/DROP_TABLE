@@ -66,7 +66,7 @@ class PageHeader extends React.Component {
                     </button>
                     <div className={" navbar-collapse collapse" + this.state.collapseDiv} id="navbarColor01">
                         <ul className="pr-2 navbar-nav mr-auto" hidden = {!visibleForAdmin}>
-                            <li className="nav-item pt-1 robot "> <LinkButton link="/apartments" name={t("Apartments")} /></li>
+                            <li className="nav-item pt-1 robot "> <LinkButton link="/users" name={t("Employees")} /></li>
                         </ul>
                         <ul className="pr-2 navbar-nav mr-auto" hidden = {!visibleForOrganizer}>
                             <li className="nav-item pt-1 robot "> <LinkButton link="/trips" name={t("Trips")} /></li>
@@ -86,7 +86,7 @@ class PageHeader extends React.Component {
                         <ul className="pr-2 navbar-nav mr-auto" hidden = {!isLoggedIn}>
                             <li className="nav-item pt-1 robot text-white nav-link"> <a className="nav-link text-white" href="#" onClick={this.logoutClick}> {t("Logout")}</a> </li>
                         </ul>
-                        <ul className="pr-2 navbar-nav mr-auto">
+                        <ul className="pr-2 navbar-nav pull-right">
                             <li className="nav-item pt-1 robot "> <label style={{ color: 'white' }}> LT </label> <Switch
                                 checked={this.state.checked}
                                 onChange={this.handleChange()}
