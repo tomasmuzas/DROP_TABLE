@@ -55,7 +55,8 @@ class CheckListCard extends React.Component {
         if (checklist) {
             
             return (
-                <div className="col-12 col-lg-4" hidden={!checklist.flight.isRequired}>
+                <div className="col-12 col-lg-4 pb-2" hidden={!checklist.flight.isRequired}>
+                    <h5><b>Skrydžio informacija</b></h5>
                     <h6> {t("FlightNumber")}: {checklist.flight.flightNumber}</h6>
                     <h6> {t("FlightCompany")}:  {checklist.flight.company}</h6>
                     <h6> {t("AirportAddress")}:  {checklist.flight.airportAddress}</h6>
@@ -90,7 +91,7 @@ class CheckListCard extends React.Component {
         if (checklist) {
             if(checklist.livingPlace.apartmentReservationInfo.required){
                 return (
-                    <div className="col-12 col-lg-4" hidden={!checklist.livingPlace.isRequired}>
+                    <div className="col-12 col-lg-4 pb-2" hidden={!checklist.livingPlace.isRequired}>
                         <h6> {t("ApartmentAddress")}: {checklist.livingPlace.apartmentReservationInfo.apartmentAddress}</h6>
                         <h6> {t("RoomNumber")}:  {checklist.livingPlace.apartmentReservationInfo.roomNumber}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.apartmentReservationInfo.dateFrom)}</h6>
@@ -100,7 +101,8 @@ class CheckListCard extends React.Component {
             }
             if(checklist.livingPlace.hotelReservationInfo.required){
                 return (
-                    <div className="col-12 col-lg-4" hidden={!checklist.livingPlace.isRequired}>
+                    <div className="col-12 col-lg-4 pb-2" hidden={!checklist.livingPlace.isRequired}>
+                        <h5><b>Viešbučio informacija</b></h5>
                         <h6> {t("Hotel")}: {checklist.livingPlace.hotelReservationInfo.hotelName}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
                         <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
@@ -134,7 +136,7 @@ class CheckListCard extends React.Component {
         const { t } = this.props;
         if (checklist) {
             return (
-                <div className="col-12 col-lg-4" hidden={!checklist.car.isRequired}>
+                <div className="col-12 col-lg-4 pb-2" hidden={!checklist.car.isRequired}>
                     <h6> {t("CarNumber")}: {checklist.car.carNumber}</h6>
                     <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
                     <h6> {t("RentStartTime")}: {this.getFormattedDate(checklist.car.rentStartTime)}</h6>
@@ -168,16 +170,16 @@ class CheckListCard extends React.Component {
         const { checkListInfo, t, tripId } = this.props;
         return (
             <div>
-                <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
-                    <div className="col justify-content-md-center nameDiv pl-5 pb-lg-0 pb-5">
-                        <h5>{checkListInfo.employee.firstName} {checkListInfo.employee.lastName} &nbsp;
+                <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius: "5pt 5pt 0 0"}}>
+                    <div className="col justify-content-md-center nameDiv pb-lg-0 pb-5">
+                        <h5><b>{checkListInfo.employee.firstName} {checkListInfo.employee.lastName} &nbsp;</b>
                         {checkListInfo.hasAcceptedTripConfirmation ?
                                 <span style={{ color: "#81c784" }}>({t("TripAccepted")})</span> :
                                 <span style={{ color: "#f50057" }}>({t("TripNotYetAccepted")})</span>
-                            }
+                        }
                         </h5>
                     </div>
-                    <div className="col-12 col-lg-6 pr-5">
+                    <div className="col pr-5">
                         <div style={{ float: "right" }}>
                             <FormControlLabel
                                 control={<Checkbox checked={checkListInfo.isApartmentRequired} />}
@@ -200,12 +202,12 @@ class CheckListCard extends React.Component {
                     </div>
 
                 </div>
-                <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
-                    <div className="pl-4 pb-4">
+                <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius: this.state.showDetails? "0": "0 0 5pt 5pt" }}>
+                    <div className="pl-3 pb-2">
                         <img src={this.state.showDetails ? arrowUp : arrowDown} alt="lalal" style={{ height: '32px', width: '32px' }} onClick={this.handleShowDetailsChange} />
                     </div>
                 </div>
-                <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }} hidden={!this.state.showDetails}>
+                <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius: "0 0 5pt 5pt" }} hidden={!this.state.showDetails}>
                     {this.showFlight(this.props.checklist[this.props.index])}
                     {this.showCar(this.props.checklist[this.props.index])}
                     {this.showApartments(this.props.checklist[this.props.index])}
