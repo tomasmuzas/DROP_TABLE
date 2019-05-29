@@ -17,7 +17,7 @@ class FlightCheckList extends React.Component {
         super(props);
         this.state = {
             flightInfo: {
-                isRequired: true,
+                isRequired: false,
                 flightNumber: '',
                 company: '',
                 flightTime: '',

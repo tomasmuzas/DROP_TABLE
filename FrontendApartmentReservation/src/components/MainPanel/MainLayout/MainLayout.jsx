@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import MainPage from '../../Pages/MainPage/MainPage';
 import PageNotFound from '../../Pages/PageNotFound/PageNotFound';
 import ApartamentsPage from '../../Pages/ApartmentsPage/ApartmentsPage';
 import UsersPage from '../../Pages/UsersPage/UsersPage';
@@ -22,10 +21,11 @@ export default class MainLayout extends React.Component {
                     <PageHeader/>
                 </div>
                 <Switch className="content">
-                    <Route exact path="/" component={MainPage} />
+                    <Route exact path="/" component={LoginPage} />
                     <Route path="/apartments" component={ApartamentsPage}/>
                     <Route path="/trips" component={TripsPage}/>
                     <Route path="/users" component={UsersPage}/>
+                    <Route path="/signup/:employeeId" component={SignUpPage}/>
                     <Route path="/signup" component={SignUpPage}/>
                     <Route path="/login" component={LoginPage}/>
                     <Route path="/createTrip" component={CreateTrip}/>

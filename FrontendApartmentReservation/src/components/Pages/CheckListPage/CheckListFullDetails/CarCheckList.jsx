@@ -17,7 +17,7 @@ class CarCheckList extends React.Component {
         super(props);
         this.state = {
             carInfo: {
-                isRequired: true,
+                isRequired: false,
                 carNumber: '',
                 carAddress: '',
                 rentStartTime: '',

@@ -11,7 +11,8 @@ class TripsPage extends React.Component {
         super(props);
 
         this.state = {
-            updated: false
+            updated: false,
+            loading: true,
         }
 
         this.updateState = this.updateState.bind(this);
@@ -20,6 +21,9 @@ class TripsPage extends React.Component {
     componentWillMount() {
         this.props.getAllTrips();
         this.props.clearMergableTrips();
+        this.setState({
+            loading: true
+        })
     }
 
     updateState(){
@@ -27,9 +31,25 @@ class TripsPage extends React.Component {
             update: true
         });
     }
+
+    componentWillReceiveProps(newProps){
+        this.setState({
+            loading: false
+        })
+    }
+
     render() {
         const { t } = this.props;
-        if (this.props.trips) {
+        if (this.props.trips === [] || this.props.trips.length === 0 && !this.state.loading) {
+            return (<div className="row mt-5">
+                <div className="col-12">
+                    <h1>{t('EmptyTripsList')}</h1>
+                </div>
+            </div>
+            )
+        }
+        
+        if (this.props.trips.length > 0) {
             return (
                 <div className="row mt-5">
                     <div className="col-12">

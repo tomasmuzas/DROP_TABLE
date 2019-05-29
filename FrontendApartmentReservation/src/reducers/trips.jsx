@@ -3,7 +3,7 @@ export default function reducer(state = [], action = {}) {
         case 'GET_ALL_TRIPS':
             return action.payload;
         case 'CLEAR_TRIPS':
-            return null;
+            return [];
         case 'DELETE_TRIP':
             var deletedTripIndex = state.findIndex(trip => trip.tripId === action.payload);
             var stateCopy = state;
