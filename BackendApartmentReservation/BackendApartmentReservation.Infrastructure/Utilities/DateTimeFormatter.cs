@@ -6,7 +6,7 @@ namespace BackendApartmentReservation.Infrastructure.Utilities
     {
         public static string GetStandardDateTimeString(DateTimeOffset? date)
         {
-            return date?.ToString("yyyy-MM-ddThh:mm:ss");
+            return date?.ToString("yyyy-MM-ddTHH:mm:ss");
         }
     }
 }
