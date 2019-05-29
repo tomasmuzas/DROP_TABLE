@@ -7,9 +7,11 @@ i18n.use(LanguageDetector).init({
     en: {
       translations: {
         Text: "translation",
+        "Administration": "Administration",
+        "TripAdministration": "Trip Management",
         "Apartments": "Apartments",
         "Authentication": "Authentication",
-        "Trips": "Trips",
+        "Trips": "Organized Trips",
         "Users": "Users",
         "SignUp": "Sign up employee", 
         "Name": "Name",
@@ -127,9 +129,11 @@ i18n.use(LanguageDetector).init({
     lt: {
       translations: {
         Text: "translation",
+        "Administration": "Administravimas",
+        "TripAdministration": "Kelionių organizavimas",
         "Apartments": "Apartamentai",
         "Authentication": "Autentikacija",
-        "Trips": "Keliones",
+        "Trips": "Organizuojamos Kelionės",
         "Users": "Naudotojai",
         "SignUp": "Užregistruoti darbuotoją",
         "Name": "Vardas",
@@ -138,7 +142,7 @@ i18n.use(LanguageDetector).init({
         "Password": "Slaptažodis",
         "Office": "Ofisas",
         "SignUpError": "Klaida registruojantis:",
-        "PasswordError": "Slaptažodis turi turėti vieną didžiąją vieną ir mažąją raides, specialų simbolį ir būti 5-15 simbolių ilgio",
+        "PasswordError": "Slaptažodis privalo turėti bent po vieną didžiąją ir mažąją raides, specialų simbolį ir būti 5-15 simbolių ilgio",
         "CreateTrip": "Sukurti kelionę",
         "SelectEmployees": "Pasirinkite darbuotojus",
         "SelectOffice": "Pasirinkite DB offisą",
