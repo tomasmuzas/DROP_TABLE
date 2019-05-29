@@ -16,7 +16,7 @@ class UserCard extends React.Component {
         const { t, employee } = this.props;
 
         return (
-            <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
+            <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius: "5pt" }}>
                 <div className="col-6 justify-content-md-center pt-3 pb-3">
                     <h5>{employee.firstName} {employee.lastName}</h5>
                     <h6>{employee.role === 0 ? t('Regular') : employee.role === 1? t('Organizer') : employee.role === 2? t('Admin') : ''}</h6>

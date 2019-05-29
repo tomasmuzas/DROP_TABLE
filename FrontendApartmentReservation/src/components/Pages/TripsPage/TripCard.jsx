@@ -38,9 +38,9 @@ class TripCard extends React.Component {
         var tripStartTime = new Date(trip.startTime);
         var tripEndTime = new Date(trip.endTime);
         return (
-          <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E' }}>
+          <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius:'5pt' }}>
                 <div className="col-lg-6 col-12 justify-content-md-center pt-3 pb-3">
-                    <h5 >{t("TripDestination")}: {trip.office.address}</h5>
+                    <h4><b>{t("TripDestination")} {trip.office.address}</b></h4>
                     <h6 >{t("DepartureDate")}:  {tripStartTime.toLocaleDateString('lt-LT')}</h6>
                     <h6 >{t("ReturnDate")}:  {tripEndTime.toLocaleDateString('lt-LT')}</h6>
                 </div>
@@ -58,7 +58,7 @@ class TripCard extends React.Component {
                         </Button>
                     </Link>
                 </div>
-                <div className="col-lg-2 col-12 pt-5" hidden={mergeable}>
+                <div className="col-lg-2 col-12 pt-5 pb-5" hidden={mergeable}>
                         <Button variant="outlined" color="secondary" onClick={this.deleteTrip}>
                             {t("DeleteTrip")}
                         </Button>
