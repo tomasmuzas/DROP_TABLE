@@ -11,7 +11,7 @@ import { GridLoader } from 'react-spinners';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import moment from 'moment'
-import {BACKEND_URL} from '../../../../actions/index'
+import { BACKEND_URL } from '../../../../actions/index'
 import pdf from '../pdf.png';
 
 class ApartmentsCheckList extends React.Component {
@@ -21,7 +21,7 @@ class ApartmentsCheckList extends React.Component {
             livingPlace: {
                 isRequired: false,
                 apartmentReservationInfo: { required: false, apartmentAddress: undefined, roomNumber: 1, dateFrom: null, dateTo: null },
-                hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '', file: null }
+                hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '', timeFrom: '', timeTo: '', file: null }
             },
             showHotelInfo: false,
             showApartmentsInfo: true,
@@ -37,21 +37,37 @@ class ApartmentsCheckList extends React.Component {
         this.reserveApartmentForOne = this.reserveApartmentForOne.bind(this);
         this.handleDateFromChange = this.handleDateFromChange.bind(this);
         this.handleDateToChange = this.handleDateToChange.bind(this);
+        this.handleTimeFromChange = this.handleTimeFromChange.bind(this);
+        this.handleTimeToChange = this.handleTimeToChange.bind(this);
         this.bookHotel = this.bookHotel.bind(this);
         this.deleteHotelReservation = this.deleteHotelReservation.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
         var showBookHotelButton = !newProps.apartmentsInfo.apartmentReservationInfo.apartmentAddress && !newProps.apartmentsInfo.hotelReservationInfo.hotelName ? true : false;
-        var showApartmentsInfo = (newProps.apartmentsInfo.apartmentReservationInfo.apartmentAddress && !newProps.apartmentsInfo.hotelReservationInfo.hotelName) || 
-        (!newProps.apartmentsInfo.apartmentReservationInfo.apartmentAddress && !newProps.apartmentsInfo.hotelReservationInfo.hotelName) ? true : false;
+        var showApartmentsInfo = (newProps.apartmentsInfo.apartmentReservationInfo.apartmentAddress && !newProps.apartmentsInfo.hotelReservationInfo.hotelName) ||
+            (!newProps.apartmentsInfo.apartmentReservationInfo.apartmentAddress && !newProps.apartmentsInfo.hotelReservationInfo.hotelName) ? true : false;
         var showHotelInfo = !!newProps.apartmentsInfo.hotelReservationInfo.hotelName;
+
+        var currentState = newProps.apartmentsInfo;
+        if (newProps.apartmentsInfo.hotelReservationInfo.dateFrom) {
+            var rentFromArray = newProps.apartmentsInfo.hotelReservationInfo.dateFrom.split('T');
+            currentState.hotelReservationInfo.dateFrom = rentFromArray[0];
+            currentState.hotelReservationInfo.timeFrom = rentFromArray[1];
+        }
+
+        if (newProps.apartmentsInfo.hotelReservationInfo.dateTo) {
+            var rentToArray = newProps.apartmentsInfo.hotelReservationInfo.dateTo.split('T');
+            currentState.hotelReservationInfo.dateTo = rentToArray[0];
+            currentState.hotelReservationInfo.timeTo = rentToArray[1];
+        }
+
         this.setState({
-            livingPlace: newProps.apartmentsInfo,
+            livingPlace: currentState,
             apartmentsSpace: this.props.tripbasic.availableApartments,
             showBookHotelButton: showBookHotelButton,
-            showApartmentsInfo : showApartmentsInfo,
-            showHotelInfo : showHotelInfo
+            showApartmentsInfo: showApartmentsInfo,
+            showHotelInfo: showHotelInfo
         })
     }
 
@@ -59,14 +75,16 @@ class ApartmentsCheckList extends React.Component {
         e.preventDefault();
         const { file } = this.state.livingPlace.hotelReservationInfo;
 
-        if(file){
+        if (file) {
             this.props.uploadHotelDocuments(file, this.props.employeeId, this.props.tripId)
         }
     }
 
     handleHotelSubmit(e) {
         e.preventDefault();
-        const { hotelName, dateFrom, dateTo } = this.state.livingPlace.hotelReservationInfo;
+        var { hotelName, dateFrom, dateTo, timeTo, timeFrom } = this.state.livingPlace.hotelReservationInfo;
+        dateFrom = dateFrom + ' ' + timeFrom;
+        dateTo  = dateTo + ' ' + timeTo;
 
         this.props.updateApartmentsInfo(hotelName, dateFrom, dateTo, this.props.tripId, this.props.employeeId);
     }
@@ -148,6 +166,14 @@ class ApartmentsCheckList extends React.Component {
         });
     }
 
+    handleTimeFromChange(e) {
+        var livingPlace = this.state.livingPlace;
+        livingPlace.hotelReservationInfo.timeFrom = e.target.value;
+        this.setState({
+            livingPlace: livingPlace
+        });
+    }
+
     handleDateToChange(e) {
         var livingPlace = this.state.livingPlace;
         livingPlace.hotelReservationInfo.dateTo = e.target.value;
@@ -156,9 +182,17 @@ class ApartmentsCheckList extends React.Component {
         });
     }
 
-    
+    handleTimeToChange(e) {
+        var livingPlace = this.state.livingPlace;
+        livingPlace.hotelReservationInfo.timeTo = e.target.value;
+        this.setState({
+            livingPlace: livingPlace
+        });
+    }
+
+
     handleHotelDocumentsChange(e) {
-        var livingPlace = this.state.livingPlace; 
+        var livingPlace = this.state.livingPlace;
         var hotelInfo = livingPlace.hotelReservationInfo;
         hotelInfo.file = e.target.files[0];
         this.setState({
@@ -188,37 +222,49 @@ class ApartmentsCheckList extends React.Component {
                     </div>
                     <div className="form-group mb-2">
                         {i18next.t("DateFrom")}
-                        <input type="datetime-local" id="DateFrom" className={`form-control`} placeholder={i18next.t("DateFrom")}
+                        <input type="date" id="DateFrom" className={`form-control`} placeholder={i18next.t("DateFrom")}
                             name="DateFrom" value={this.state.livingPlace.hotelReservationInfo.dateFrom}
                             onChange={this.handleDateFromChange} />
                     </div>
                     <div className="form-group mb-2">
+                        {i18next.t("DateFrom")}
+                        <input type="time" id="TimeFrom" className={`form-control`} placeholder={i18next.t("DateFrom")}
+                            name="DateFrom" value={this.state.livingPlace.hotelReservationInfo.timeFrom}
+                            onChange={this.handleTimeFromChange} />
+                    </div>
+                    <div className="form-group mb-2">
                         {i18next.t("DateTo")}
-                        <input type="datetime-local" id="DateTo" className={`form-control`} placeholder={i18next.t("DateTo")}
+                        <input type="date" id="DateTo" className={`form-control`} placeholder={i18next.t("DateTo")}
                             name="DateTo" value={this.state.livingPlace.hotelReservationInfo.dateTo}
                             onChange={this.handleDateToChange} />
+                    </div>
+                    <div className="form-group mb-2">
+                        {i18next.t("DateTo")}
+                        <input type="time" id="TimeTo" className={`form-control`} placeholder={i18next.t("DateTo")}
+                            name="DateTo" value={this.state.livingPlace.hotelReservationInfo.timeTo}
+                            onChange={this.handleTimeToChange} />
                     </div>
                     <button className={`btn btn-lg btn-primary btn-block`} onClick={this.deleteHotelReservation}>{i18next.t("DeleteHotelInfo")}</button>
                     <button className={`btn btn-lg btn-primary btn-block`} type="submit">{i18next.t("SaveHotelInfo")}</button>
                 </form>
 
-                <form className={`form-signin`} encType= "multipart/form-data" hidden={!this.state.showHotelInfo} onSubmit={this.handleHotelDocumentsSubmit}>
-                            <div className="form-group">
-                                <h3>{i18next.t("HotelDocuments")}</h3>
-                                <div className="mt-4 mb-4">
-                                    {this.state.livingPlace.hotelReservationInfo.documentsFileId &&
-                                        <a href={BACKEND_URL + '/files/' + this.state.livingPlace.hotelReservationInfo.documentsFileId}>
-                                            {i18next.t("CurrentHotelDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '32px' }}/>
-                                        </a>
-                                    }
-                                </div>
-                                <input type="file" accept="application/pdf" id="FlightTicket" className={`form-control`}
-                                    name="HotelDocument"
-                                    onChange={this.handleHotelDocumentsChange} />
-                            </div>
+                <form className={`form-signin`} encType="multipart/form-data" hidden={!this.state.showHotelInfo} onSubmit={this.handleHotelDocumentsSubmit}>
+                    <div className="form-group">
+                        <h3>{i18next.t("HotelDocuments")}</h3>
+                        <div className="mt-4 mb-4">
+                            {this.state.livingPlace.hotelReservationInfo.documentsFileId &&
+                                <a href={BACKEND_URL + '/files/' + this.state.livingPlace.hotelReservationInfo.documentsFileId}>
+                                    {i18next.t("CurrentHotelDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '32px' }} />
+                                </a>
+                            }
+                        </div>
+                        <input type="file" accept="application/pdf" id="FlightTicket" className={`form-control`}
+                            name="HotelDocument"
+                            onChange={this.handleHotelDocumentsChange} />
+                    </div>
 
-                            <button className={`btn btn-lg btn-primary btn-block`} type="submit">{i18next.t("SaveHotelDocuments")}</button>                            
-                        </form>
+                    <button className={`btn btn-lg btn-primary btn-block`} type="submit">{i18next.t("SaveHotelDocuments")}</button>
+                </form>
             </div>
         )
     }
@@ -242,7 +288,7 @@ class ApartmentsCheckList extends React.Component {
     livingPlaceForm() {
         return (
             <div className="row">
-                <div className={this.state.livingPlace.apartmentReservationInfo.apartmentAddress? "col-12" : "col-6" + " form-group mb-2 mt-2"} hidden={!this.state.showApartmentsInfo}>
+                <div className={this.state.livingPlace.apartmentReservationInfo.apartmentAddress ? "col-12" : "col-6" + " form-group mb-2 mt-2"} hidden={!this.state.showApartmentsInfo}>
                     {this.apartmentsForm()}
                 </div>
                 <div className={this.state.showHotelInfo ? "col-12" : "col-6" + " form-group mb-2 mt-2 "}>

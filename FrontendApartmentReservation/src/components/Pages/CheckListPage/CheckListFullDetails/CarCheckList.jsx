@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux'; import { Link } from 'react-router-d
 import Checkbox from '@material-ui/core/Checkbox';
 import { GridLoader } from 'react-spinners';
 import moment from 'moment'
-import {BACKEND_URL} from '../../../../actions/index'
+import { BACKEND_URL } from '../../../../actions/index'
 import pdf from '../pdf.png';
 
 
@@ -22,6 +22,8 @@ class CarCheckList extends React.Component {
                 carAddress: '',
                 rentStartTime: '',
                 rentEndTime: '',
+                rentStartDate: '',
+                rentEndDate: '',
             },
             carDocuments: {
                 file: null
@@ -33,14 +35,29 @@ class CarCheckList extends React.Component {
         this.handleIsRequiredChange = this.handleIsRequiredChange.bind(this);
         this.handleCarNumberChange = this.handleCarNumberChange.bind(this);
         this.handleCarAddressChange = this.handleCarAddressChange.bind(this);
+        this.handleRentStartDateChange = this.handleRentStartDateChange.bind(this);
         this.handleRentStartTimeChange = this.handleRentStartTimeChange.bind(this);
+        this.handleRentEndDateChange = this.handleRentEndDateChange.bind(this);
         this.handleRentEndTimeChange = this.handleRentEndTimeChange.bind(this);
         this.handleDocumentChange = this.handleDocumentChange.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
+        var currentState = newProps.carInfo;
+        if (newProps.carInfo.rentStartTime) {
+            var rentStartDateArray = newProps.carInfo.rentStartTime.split('T');
+            currentState.rentStartDate = rentStartDateArray[0];
+            currentState.rentStartTime = rentStartDateArray[1];
+        }
+
+        if (newProps.carInfo.rentEndTime) {
+            var rentEndDateArray = newProps.carInfo.rentEndTime.split('T');
+            currentState.rentEndDate = rentEndDateArray[0];
+            currentState.rentEndTime = rentEndDateArray[1];
+        }
+
         this.setState({
-            carInfo: newProps.carInfo
+            carInfo: currentState
         })
     }
 
@@ -53,7 +70,7 @@ class CarCheckList extends React.Component {
     handleDocumentSubmit(e) {
         e.preventDefault();
         const { carDocuments } = this.state;
-        if(this.state.carDocuments.file){
+        if (this.state.carDocuments.file) {
             this.props.updateCarDocuments(carDocuments.file, this.props.employeeId, this.props.tripId);
         }
     }
@@ -88,9 +105,25 @@ class CarCheckList extends React.Component {
         });
     }
 
+    handleRentStartDateChange(e) {
+        var carInfo = this.state.carInfo;
+        carInfo.rentStartDate = e.target.value;
+        this.setState({
+            carInfo: carInfo
+        });
+    }
+
     handleRentStartTimeChange(e) {
         var carInfo = this.state.carInfo;
         carInfo.rentStartTime = e.target.value;
+        this.setState({
+            carInfo: carInfo
+        });
+    }
+
+    handleRentEndDateChange(e) {
+        var carInfo = this.state.carInfo;
+        carInfo.rentEndDate = e.target.value;
         this.setState({
             carInfo: carInfo
         });
@@ -138,26 +171,38 @@ class CarCheckList extends React.Component {
                             </div>
                             <div className="form-group mb-2">
                                 {t("RentStartTime")}
-                                <input type="datetime-local" id="RentStartTime" className={`form-control`} placeholder={t("RentStartTime")}
-                                    name="RentStartTime" value={this.state.carInfo.rentEndTime}
+                                <input type="date" id="RentStartDate" className={`form-control`} placeholder={t("RentStartTime")}
+                                    name="RentStartTime" value={this.state.carInfo.rentStartDate}
+                                    onChange={this.handleRentStartDateChange} />
+                            </div>
+                            <div className="form-group mb-2">
+                                {t("RentStartTime")}
+                                <input type="time" id="RentStartTimeHours" className={`form-control`} placeholder={t("RentStartTime")}
+                                    name="RentStartTime" value={this.state.carInfo.rentStartTime}
                                     onChange={this.handleRentStartTimeChange} />
                             </div>
                             <div className="form-group mb-2">
                                 {t("RentEndTime")}
-                                <input type="datetime-local" id="RentEndTime" className={`form-control`} placeholder={t("RentEndTime")}
+                                <input type="date" id="RentEndTime" className={`form-control`} placeholder={t("RentEndTime")}
+                                    name="RentEndTime" value={this.state.carInfo.rentEndDate}
+                                    onChange={this.handleRentEndDateChange} />
+                            </div>
+                            <div className="form-group mb-2">
+                                {t("RentEndTime")}
+                                <input type="time" id="RentEndTimeHours" className={`form-control`} placeholder={t("RentEndTime")}
                                     name="RentEndTime" value={this.state.carInfo.rentEndTime}
                                     onChange={this.handleRentEndTimeChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveCarInfo")}</button>
                         </form>
 
-                        <form className={`form-signin`} encType= "multipart/form-data" onSubmit={this.handleDocumentSubmit}>
+                        <form className={`form-signin`} encType="multipart/form-data" onSubmit={this.handleDocumentSubmit}>
                             <div className="form-group">
                                 <h3>{t("CarDocuments")}</h3>
                                 {this.state.carInfo.documentsFileId &&
                                     <div className="mt-4 mb-4">
                                         <a href={BACKEND_URL + '/files/' + this.state.carInfo.documentsFileId}>
-                                            {t("CurrentCarDocuments")}  <img src={pdf} alt="pdf-icon" style={{ height: '32px' }}/>
+                                            {t("CurrentCarDocuments")}  <img src={pdf} alt="pdf-icon" style={{ height: '32px' }} />
                                         </a>
                                     </div>
                                 }
@@ -165,7 +210,7 @@ class CarCheckList extends React.Component {
                                     name="Document"
                                     onChange={this.handleDocumentChange} />
                             </div>
-                            <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveDocuments")}</button>                            
+                            <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveDocuments")}</button>
                         </form>
                     </div>
                 </div>

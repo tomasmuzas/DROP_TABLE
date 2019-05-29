@@ -43,7 +43,7 @@ class CheckListCard extends React.Component {
     getFormattedDate(checklistDate){
         if(checklistDate){
             var tempDate = new Date(checklistDate);
-             return tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+             return tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('lt-LT', { hour: '2-digit', minute: '2-digit' });
         }
         else{
             return checklistDate;
@@ -106,7 +106,7 @@ class CheckListCard extends React.Component {
                         <h5><b>{t("HotelInformation")}</b></h5>
                         <h6> {t("Hotel")}: {checklist.livingPlace.hotelReservationInfo.hotelName}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
-                        <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
+                        <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateTo)}</h6>
                         <h6>                                    
                             {checklist.livingPlace.hotelReservationInfo.documentsFileId &&
                                 <a href={BACKEND_URL + '/files/' + checklist.livingPlace.hotelReservationInfo.documentsFileId}>
@@ -142,7 +142,7 @@ class CheckListCard extends React.Component {
                     <h6> {t("CarNumber")}: {checklist.car.carNumber}</h6>
                     <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
                     <h6> {t("RentStartTime")}: {this.getFormattedDate(checklist.car.rentStartTime)}</h6>
-                    <h6> {t("RentEndTime")}: {this.getFormattedDate(checklist.car.rentEndtTime)}</h6>
+                    <h6> {t("RentEndTime")}: {this.getFormattedDate(checklist.car.rentEndTime)}</h6>
                     <h6>                                    
                         {checklist.car.documentsFileId &&
                             <a href={BACKEND_URL + '/files/' + checklist.car.documentsFileId}>
