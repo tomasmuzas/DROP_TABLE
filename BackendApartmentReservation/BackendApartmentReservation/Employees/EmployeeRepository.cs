@@ -22,7 +22,9 @@
 
         public async Task<IEnumerable<DbEmployee>> GetAllEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            return await _context.Employees
+                .Include(e => e.Office)
+                .ToListAsync();
         }
 
         public async Task<DbEmployee> GetEmployeeById(int employeeID)
@@ -32,7 +34,9 @@
 
         public async Task<DbEmployee> GetEmployeeByEmployeeId(string employeeID)
         {
-            return await _context.Employees.FirstOrDefaultAsync(e => e.ExternalEmployeeId == employeeID);
+            return await _context.Employees
+                .Include(e => e.Office)
+                .FirstOrDefaultAsync(e => e.ExternalEmployeeId == employeeID);
         }
 
         public async Task CreateEmployee(DbEmployee dbEmployee)
