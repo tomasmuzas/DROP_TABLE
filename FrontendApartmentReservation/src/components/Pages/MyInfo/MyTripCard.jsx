@@ -70,7 +70,7 @@ class MyTripCard extends React.Component {
             
             return (
                 <div className="col-12 col-lg-4 pb-2" hidden={!checklist.flight.isRequired}>
-                    <h5><b>Skrydžio informacija</b></h5>
+                    <h5><b>{t("FlightInformation")}</b></h5>                                            
                     <h6> {t("FlightNumber")}: {checklist.flight.flightNumber}</h6>
                     <h6> {t("FlightCompany")}:  {checklist.flight.company}</h6>
                     <h6> {t("AirportAddress")}:  {checklist.flight.airportAddress}</h6>
@@ -106,6 +106,7 @@ class MyTripCard extends React.Component {
             if(checklist.livingPlace.apartmentReservationInfo.required){
                 return (
                     <div className="col-12 col-lg-4 pb-2" hidden={!checklist.livingPlace.isRequired}>
+                        <h5><b>{t("ApartmentInformation")}</b></h5>                                                                        
                         <h6> {t("ApartmentAddress")}: {checklist.livingPlace.apartmentReservationInfo.apartmentAddress}</h6>
                         <h6> {t("RoomNumber")}:  {checklist.livingPlace.apartmentReservationInfo.roomNumber}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.apartmentReservationInfo.dateFrom)}</h6>
@@ -116,7 +117,7 @@ class MyTripCard extends React.Component {
             if(checklist.livingPlace.hotelReservationInfo.required){
                 return (
                     <div className="col-12 col-lg-4 pb-2" hidden={!checklist.livingPlace.isRequired}>
-                        <h5><b>Viešbučio informacija</b></h5>
+                        <h5><b>{t("HotelInformation")}</b></h5>                        
                         <h6> {t("Hotel")}: {checklist.livingPlace.hotelReservationInfo.hotelName}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
                         <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
@@ -151,6 +152,7 @@ class MyTripCard extends React.Component {
         if (checklist) {
             return (
                 <div className="col-12 col-lg-4 pb-2" hidden={!checklist.car.isRequired}>
+                    <h5><b>{t("CarInformation")}</b></h5>                    
                     <h6> {t("CarNumber")}: {checklist.car.carNumber}</h6>
                     <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
                     <h6> {t("RentStartTime")}: {this.getFormattedDate(checklist.car.rentStartTime)}</h6>
