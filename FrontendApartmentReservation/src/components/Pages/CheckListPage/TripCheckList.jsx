@@ -32,7 +32,7 @@ class TripCheckList extends React.Component {
         if (this.props.tripbasic && this.props.tripbasic.checklistInfos && this.props.tripbasic.tripId === this.props.match.params.tripId) {
             return (
                 <div>
-                    <h2 className="row mt-5 mx-5">{t("TripDestination")} {this.props.tripbasic.office.address}</h2>
+                    <h2 className="row mt-5 mx-5"><b>{t("TripDestination")} {this.props.tripbasic.office.address}</b></h2>
                     <h5 className="row mt-2 mx-5">{t("TripStart")} {new Date(this.props.tripbasic.startTime).toLocaleDateString("lt-LT")} {t("TripEnd")} {new Date(this.props.tripbasic.endTime).toLocaleDateString("lt-LT")}</h5>
                     {
                         // everyone doesnt have apartments requested
