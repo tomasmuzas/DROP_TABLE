@@ -49,7 +49,8 @@
                 Email = e.Email,
                 FirstName = e.FirstName,
                 LastName = e.LastName,
-                Role = e.Role
+                Role = e.Role,
+                Office = e.Office.ExternalOfficeId
             });
         }
 
@@ -74,7 +75,8 @@
                 Email = employee.Email,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
-                Role = employee.Role
+                Role = employee.Role,
+                Office = employee.Office.ExternalOfficeId
             };
         }
 

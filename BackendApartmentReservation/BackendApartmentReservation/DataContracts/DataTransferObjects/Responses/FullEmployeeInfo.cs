@@ -21,6 +21,8 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Response
         [EmailAddress]
         public string Email { get; set; }
 
+        public string Office { get; set; }
+
         [Required]
         public EmployeeRole Role { get; set; }
     }
