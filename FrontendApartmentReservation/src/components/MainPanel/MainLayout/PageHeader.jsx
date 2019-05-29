@@ -73,36 +73,36 @@ class PageHeader extends React.Component {
                     </button>
                     <div className={" navbar-collapse collapse" + this.state.collapseDiv} id="navbarColor01">
                         <ul className="pr-2 navbar-nav mr-auto" hidden = {isLoggedIn}>
-                            <li className="nav-item pt-1 robot "> <LinkButton link="/login" name={t("Login")} /></li>
+                            <li className="nav-item robot "> <LinkButton link="/login" name={t("Login")} /></li>
                         </ul>
                         <ul hidden = {!visibleForAdmin} class="pr-2 navbar-nav mr-auto">
-                            <li class="dropdown nav-item pt-1 robot text-white nav-link">
+                            <li class="dropdown nav-item robot text-white nav-link">
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {t("Administration")}
                                 </a>
                                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                                    <a className="dropdown-item text-white bg-dark nav-item pt-1 " href="/users">{t("Employees")} </a>
-                                    <a className="dropdown-item text-white bg-dark nav-item pt-1 " href="/signUp">{t("SignUp")} </a>
+                                    <a className="dropdown-item text-white bg-dark nav-item " href="/users">{t("Employees")} </a>
+                                    <a className="dropdown-item text-white bg-dark nav-item " href="/signUp">{t("SignUp")} </a>
                                 </div>
                             </li>
                         </ul>
                         <ul hidden = {!visibleForOrganizer} class="pr-2 navbar-nav mr-auto">
-                            <li class="dropdown nav-item pt-1 robot text-white nav-link">
+                            <li class="dropdown nav-item robot text-white nav-link">
                                 <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {t("TripAdministration")}
                                 </a>
                                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
-                                    <a className="dropdown-item text-white bg-dark nav-item pt-1 " href="/trips">{t("Trips")} </a>
-                                    <a className="dropdown-item text-white bg-dark nav-item pt-1 " href="/createTrip">{t("CreateTrip")} </a>
+                                    <a className="dropdown-item text-white bg-dark nav-item " href="/trips">{t("Trips")} </a>
+                                    <a className="dropdown-item text-white bg-dark nav-item " href="/createTrip">{t("CreateTrip")} </a>
                                 </div>
                             </li>
                         </ul>
                         <ul className="pr-2 navbar-nav mr-auto" hidden={!isLoggedIn}>
-                            <li className="nav-item pt-1 robot "> <LinkButton link="/myInfo/myTrips" name={t("MyTrips")} /></li>
+                            <li className="nav-item robot "> <LinkButton link="/myInfo/myTrips" name={t("MyTrips")} /></li>
                         </ul>
                         <ul className="pr-2 navbar-nav pull-right">
-                            <li className="nav-item pt-1 robot text-white nav-link"> <a className="nav-link text-white" href="#" onClick={this.logoutClick}> {t("Logout")}</a> </li>
-                            <li className="nav-item pt-1 robot "> <label style={{ color: 'white' }}> LT </label> <Switch
+                            <li className="nav-item robot text-white nav-link"> <a className="nav-link text-white" href="#" onClick={this.logoutClick}> {t("Logout")}</a> </li>
+                            <li className="nav-item robot pt-1"> <label style={{ color: 'white' }}> LT </label> <Switch
                                 checked={this.state.checked}
                                 onChange={this.handleChange()}
                             /><label style={{ color: 'white' }}> EN </label> </li>
