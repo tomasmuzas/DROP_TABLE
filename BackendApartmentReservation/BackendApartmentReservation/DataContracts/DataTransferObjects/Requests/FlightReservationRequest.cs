@@ -11,5 +11,7 @@
         public DateTimeOffset? FlightTime { get; set; }
 
         public string AirportAddress { get; set; }
+
+        public decimal Cost { get; set; }
     }
 }

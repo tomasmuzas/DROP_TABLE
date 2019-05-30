@@ -14,5 +14,7 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
         public DateTimeOffset? RentEndTime { get; set; }
 
         public string CarAddress { get; set; }
+
+        public decimal Cost { get; set; }
     }
 }

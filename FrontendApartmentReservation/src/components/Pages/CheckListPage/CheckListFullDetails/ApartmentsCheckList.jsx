@@ -21,7 +21,7 @@ class ApartmentsCheckList extends React.Component {
             livingPlace: {
                 isRequired: false,
                 apartmentReservationInfo: { required: false, apartmentAddress: undefined, roomNumber: 1, dateFrom: null, dateTo: null },
-                hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '', timeFrom: '', timeTo: '', file: null, price: '' }
+                hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '', timeFrom: '', timeTo: '', file: null, cost: '' }
             },
             showHotelInfo: false,
             showApartmentsInfo: true,
@@ -83,7 +83,7 @@ class ApartmentsCheckList extends React.Component {
 
     handleHotelSubmit(e) {
         e.preventDefault();
-        var { hotelName, dateFrom, dateTo, timeTo, timeFrom, price } = this.state.livingPlace.hotelReservationInfo;
+        var { hotelName, dateFrom, dateTo, timeTo, timeFrom, cost } = this.state.livingPlace.hotelReservationInfo;
         if (!!dateFrom && !!timeFrom) {
             dateFrom = dateFrom + ' ' + timeFrom;
         }
@@ -92,7 +92,7 @@ class ApartmentsCheckList extends React.Component {
             dateTo = dateTo + ' ' + timeTo;
         }
 
-        this.props.updateApartmentsInfo(hotelName, dateFrom, dateTo, this.props.tripId, this.props.employeeId, price);
+        this.props.updateApartmentsInfo(hotelName, dateFrom, dateTo, this.props.tripId, this.props.employeeId, cost);
     }
 
     deleteReservation() {
@@ -198,7 +198,7 @@ class ApartmentsCheckList extends React.Component {
 
     handleHotelPriceChange(e) {
         var livingPlace = this.state.livingPlace;
-        livingPlace.hotelReservationInfo.price = e.target.value;
+        livingPlace.hotelReservationInfo.cost = e.target.value;
         this.setState({
             livingPlace: livingPlace
         });
@@ -261,7 +261,7 @@ class ApartmentsCheckList extends React.Component {
                     <div className="form-group">
                                 {i18next.t("Price")}
                                 <input type="number" id="HotelPrice" className={`form-control`} placeholder={i18next.t("Price")}
-                                    name="HotelPrice" value={this.state.livingPlace.hotelReservationInfo.price}
+                                    name="HotelPrice" value={this.state.livingPlace.hotelReservationInfo.cost}
                                     onChange={this.handleHotelPriceChange} />
                             </div>
                     <button className={`btn btn-lg btn-primary btn-block`} type="submit">{i18next.t("SaveHotelInfo")}</button>

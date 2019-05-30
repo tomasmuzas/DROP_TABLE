@@ -141,6 +141,7 @@ namespace BackendApartmentReservation.Checklists
             flight.FlightReservation.Company = info.Company;
             flight.FlightReservation.AirportAddress = info.AirportAddress;
             flight.FlightReservation.FlightTime = info.FlightTime;
+            flight.Cost = info.Cost;
 
             await _flightRepository.UpdateFlight(flight);
             _logger.LogInformation(
@@ -282,6 +283,7 @@ namespace BackendApartmentReservation.Checklists
             carRent.CarReservation.RentStartTime = info.RentStartTime;
             carRent.CarReservation.RentEndTime = info.RentEndTime;
             carRent.CarReservation.CarAddress = info.CarAddress;
+            carRent.Cost = info.Cost;
 
             await _carRentRepository.UpdateCarRent(carRent);
             _logger.LogInformation($"Updated car rent information for the checklist for employee {employeeId} and trip {tripId}");
@@ -369,7 +371,7 @@ namespace BackendApartmentReservation.Checklists
             hotelReservationInfo.DateFrom = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateFrom);
             hotelReservationInfo.DateTo = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateTo);
             hotelReservationInfo.DocumentsFileId = hotelReservation.Documents?.ExternalFileId;
-            hotelReservationInfo.Price = hotelReservation.Cost;
+            hotelReservationInfo.Cost = hotelReservation.Cost;
 
             return hotelReservationInfo;
         }
@@ -381,6 +383,7 @@ namespace BackendApartmentReservation.Checklists
             hotelReservation.HotelName = info.HotelName;
             hotelReservation.DateTo = info.DateTo;
             hotelReservation.DateFrom = info.DateFrom;
+            hotelReservation.Cost = info.Cost;
 
             await _hotelRepository.UpdateHotelReservation(hotelReservation);
             _logger.LogInformation($"Updated hotel reservation information for the checklist for employee {employeeId} and trip {tripId}");
