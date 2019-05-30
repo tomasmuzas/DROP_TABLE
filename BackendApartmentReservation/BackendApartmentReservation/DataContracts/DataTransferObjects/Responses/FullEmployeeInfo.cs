@@ -25,5 +25,7 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Response
 
         [Required]
         public EmployeeRole Role { get; set; }
+
+        public string Version { get; set; }
     }
 }

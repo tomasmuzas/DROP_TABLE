@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Database.Entities;
     using DataContracts.DataTransferObjects.IntermediaryDTOs;
@@ -76,7 +77,8 @@
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 Role = employee.Role,
-                Office = employee.Office.ExternalOfficeId
+                Office = employee.Office.ExternalOfficeId,
+                Version = Encoding.UTF8.GetString(employee.Version)
             };
         }
 
@@ -90,9 +92,9 @@
             });
         }
 
-        public async Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest)
+        public async Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest, bool force = false)
         {
-            await _employeeRepository.ChangeUserInfo(employeeId, changeUserInfoRequest);
+            await _employeeRepository.ChangeUserInfo(employeeId, changeUserInfoRequest, force);
         }
     }
 }

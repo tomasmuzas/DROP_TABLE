@@ -21,6 +21,6 @@
 
         Task<IEnumerable<EmployeePlanInfo>> GetEmployeePlans(IEnumerable<string> employeeIds);
 
-        Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest);
+        Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest, bool force = false);
     }
 }

@@ -3,6 +3,8 @@ using BackendApartmentReservation.Employees;
 
 namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
 {
+    using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+
     public class ChangeUserInfoRequest
     {
         [Required(AllowEmptyStrings = false)]
@@ -19,5 +21,7 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
 
         [Required]
         public EmployeeRole Role { get; set; }
+
+        public string Version { get; set; }
     }
 }

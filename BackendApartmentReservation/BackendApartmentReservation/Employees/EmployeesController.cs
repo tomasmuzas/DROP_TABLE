@@ -117,9 +117,10 @@ namespace BackendApartmentReservation.Employees
         [Route("employees/{employeeId}/info")]
         public async Task ChangeEmployeeInfo(
             string employeeId,
-            [FromBody]ChangeUserInfoRequest changeUserInfoRequest)
+            [FromBody]ChangeUserInfoRequest changeUserInfoRequest,
+            [FromQuery] bool force)
         {
-            await _employeeManager.ChangeUserInfo(employeeId, changeUserInfoRequest);
+            await _employeeManager.ChangeUserInfo(employeeId, changeUserInfoRequest, force);
         }
     }
 }
