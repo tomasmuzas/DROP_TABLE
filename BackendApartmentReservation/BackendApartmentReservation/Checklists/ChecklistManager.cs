@@ -78,6 +78,7 @@ namespace BackendApartmentReservation.Checklists
 
             return new ChecklistInformationResponse
             {
+                TripId = tripId,
                 Flight = flightInfo,
                 Car = carInfo,
                 LivingPlace = new LivingPlaceReservationInfo
