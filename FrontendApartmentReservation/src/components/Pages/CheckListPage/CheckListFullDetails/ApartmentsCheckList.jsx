@@ -83,8 +83,13 @@ class ApartmentsCheckList extends React.Component {
     handleHotelSubmit(e) {
         e.preventDefault();
         var { hotelName, dateFrom, dateTo, timeTo, timeFrom } = this.state.livingPlace.hotelReservationInfo;
-        dateFrom = dateFrom + ' ' + timeFrom;
-        dateTo  = dateTo + ' ' + timeTo;
+        if (!!dateFrom && !!timeFrom) {
+            dateFrom = dateFrom + ' ' + timeFrom;
+        }
+
+        if (!!dateTo && !!timeTo) {
+            dateTo = dateTo + ' ' + timeTo;
+        }
 
         this.props.updateApartmentsInfo(hotelName, dateFrom, dateTo, this.props.tripId, this.props.employeeId);
     }

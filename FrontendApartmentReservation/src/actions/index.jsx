@@ -523,13 +523,18 @@ export const getSingleChecklist = (employeeId, tripId) => (dispatch) => {
 }
 
 export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) => {
+    var returnFlight = '';
+    if (!!flightInfo.flightDate && !!flightInfo.flightTime) {
+        returnFlight = flightInfo.flightDate + ' ' + flightInfo.flightTime;
+     }
+
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
         method: "PUT",
         body: JSON.stringify({
             isRequired: flightInfo.isRequired,
             flightNumber: flightInfo.flightNumber,
             company: flightInfo.company,
-            flightTime: flightInfo.flightDate + ' ' + flightInfo.flightTime,
+            flightTime: returnFlight,
             airportAddress: flightInfo.airportAddress
         }),
         headers: getDefaultHeaders()
@@ -790,14 +795,23 @@ export const deleteFlightInfo = (employeeId, tripId) => (dispatch) => {
 }
 
 export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
+    var returnStart = '';
+    var returnEnd = '';
+    if (!!carInfo.rentEndDate && !!carInfo.rentEndTime) {
+       returnEnd = carInfo.rentEndDate + ' ' + carInfo.rentEndTime;
+    }
+
+    if (!!carInfo.rentStartDate && !!carInfo.rentStartTime) {
+        returnStart = carInfo.rentStartDate + ' ' + carInfo.rentStartTime;
+    }
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
         method: "PUT",
         body: JSON.stringify({
             isRequired: carInfo.isRequired,
             carNumber: carInfo.carNumber,
             carAddress: carInfo.carAddress,
-            rentEndTime: carInfo.rentEndDate + ' ' + carInfo.rentEndTime,
-            rentStartTime: carInfo.rentStartDate + ' ' + carInfo.rentStartTime
+            rentEndTime: returnEnd,
+            rentStartTime: returnStart
         }),
         headers: getDefaultHeaders()
     }).then(response => {
