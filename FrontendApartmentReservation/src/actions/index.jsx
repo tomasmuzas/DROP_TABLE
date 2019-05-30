@@ -31,7 +31,7 @@ export const GET_EMPLOYEE_BY_ID = 'GET_EMPLOYEE_BY_ID';
 export const CLEAR_EMPLOYEES = 'CLEAR_EMPLOYEES';
 
 var BACKEND_BASE_URI;
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
     BACKEND_BASE_URI = process.env.REACT_APP_PROD_BASE_URI;
 }
 else {

@@ -24,6 +24,7 @@ class CarCheckList extends React.Component {
                 rentEndTime: '',
                 rentStartDate: '',
                 rentEndDate: '',
+                price: '',
             },
             carDocuments: {
                 file: null
@@ -35,6 +36,7 @@ class CarCheckList extends React.Component {
         this.handleIsRequiredChange = this.handleIsRequiredChange.bind(this);
         this.handleCarNumberChange = this.handleCarNumberChange.bind(this);
         this.handleCarAddressChange = this.handleCarAddressChange.bind(this);
+        this.handleCarPriceChange = this.handleCarPriceChange.bind(this);
         this.handleRentStartDateChange = this.handleRentStartDateChange.bind(this);
         this.handleRentStartTimeChange = this.handleRentStartTimeChange.bind(this);
         this.handleRentEndDateChange = this.handleRentEndDateChange.bind(this);
@@ -145,6 +147,14 @@ class CarCheckList extends React.Component {
         });
     }
 
+    handleCarPriceChange(e) {
+        var carInfo = this.state.carInfo;
+        carInfo.price = e.target.value;
+        this.setState({
+            carInfo: carInfo
+        }); 
+    }
+
     render() {
         const { t } = this.props;
         if (this.state.carInfo) {
@@ -192,6 +202,12 @@ class CarCheckList extends React.Component {
                                 <input type="time" id="RentEndTimeHours" className={`form-control`} placeholder={t("RentEndTime")}
                                     name="RentEndTime" value={this.state.carInfo.rentEndTime}
                                     onChange={this.handleRentEndTimeChange} />
+                            </div>
+                            <div className="form-group">
+                                {t("Price")}
+                                <input type="number" id="CarPrice" className={`form-control`} placeholder={t("Price")}
+                                    name="CarPrice" value={this.state.carInfo.price}
+                                    onChange={this.handleCarPriceChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveCarInfo")}</button>
                         </form>
