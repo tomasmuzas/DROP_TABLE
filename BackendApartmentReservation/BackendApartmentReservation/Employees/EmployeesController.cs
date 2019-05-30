@@ -118,7 +118,7 @@ namespace BackendApartmentReservation.Employees
         public async Task ChangeEmployeeInfo(
             string employeeId,
             [FromBody]ChangeUserInfoRequest changeUserInfoRequest,
-            [FromRoute] bool force)
+            [FromQuery] bool force)
         {
             await _employeeManager.ChangeUserInfo(employeeId, changeUserInfoRequest, force);
         }

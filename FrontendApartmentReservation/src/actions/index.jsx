@@ -665,7 +665,7 @@ export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dis
 }
 
 export const updateUser = (FirstName, LastName, Email, OfficeId, Role, EmployeeId, Version, force = false) => (dispatch) => {
-    fetch(BACKEND_BASE_URI + "/api/employees/" + EmployeeId + "/info" + force ? "?force=true": "", {
+    fetch(BACKEND_BASE_URI + "/api/employees/" + EmployeeId + "/info" + (force? "?force=true":"") , {
         method: "PUT",
         body: JSON.stringify({ FirstName, LastName, Email, OfficeId, Role, Version }),
         headers: getDefaultHeaders()
@@ -679,16 +679,16 @@ export const updateUser = (FirstName, LastName, Email, OfficeId, Role, EmployeeI
             dispatch(push('/users'))
         }
         else{
-            const force = window.confirm(i18n.t("EmployeeOverwriteWarning"))
-            if(force){
-                updateUser(FirstName, LastName, Email, OfficeId, Role, EmployeeId, Version, true);
+            const forceUpdate = window.confirm(i18n.t("EmployeeOverwriteWarning"))
+            if(forceUpdate){
+                dispatch(updateUser(FirstName, LastName, Email, OfficeId, Role, EmployeeId, Version, true))
             }
             else{
                 window.location.reload();
             }
         }
 
-    }).catch((error) => console.warn(error));
+    });
 }
 
 export const login = (Email, Password) => (dispatch) => {

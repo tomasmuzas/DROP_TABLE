@@ -80,7 +80,7 @@ class SignUpPage extends React.Component {
         const { inputName, inputSurname, inputEmail, inputPassword, selectedOffice, selectedRole } = this.state;
         const regex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*d).{8,}$', 'i');
         if (regex.test(inputPassword)) {
-            this.props.signUpUser(inputName, inputSurname, inputEmail, inputPassword, selectedOffice, selectedRole);
+            this.props.signUpUser(inputName, inputSurname, inputEmail, inputPassword, selectedOffice, selectedRole)
         } else {
             alert(this.props.t("PasswordError"));
         }
@@ -88,8 +88,7 @@ class SignUpPage extends React.Component {
 
     updateUser() {
         const { inputName, inputSurname, inputEmail, selectedOffice, selectedRole } = this.state;
-        console.log(this.props)
-        this.props.updateUser(inputName, inputSurname, inputEmail, selectedOffice, selectedRole, this.props.match.params.employeeId, this.props.employees.version);
+        this.props.updateUser(inputName, inputSurname, inputEmail, selectedOffice, selectedRole, this.props.match.params.employeeId, this.props.employees.version, false);
     }
 
     handleNameChange(e) {
