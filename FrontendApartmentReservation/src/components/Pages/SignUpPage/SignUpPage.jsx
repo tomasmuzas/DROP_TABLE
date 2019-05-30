@@ -41,13 +41,7 @@ class SignUpPage extends React.Component {
             isEditing: isEditingParmsNotNull,
         })
         if (isEditingParmsNotNull) {
-            if (this.props.employees && this.props.employee !== [] && this.props.employees.length !== 0) {
-                var employee = this.props.employees.find(employee => employee.id === this.props.match.params.employeeId);
-                this.setStateWithEmployee(employee);
-            }
-            else {
-                this.props.getEmployeeById(this.props.match.params.employeeId)
-            }
+            this.props.getEmployeeById(this.props.match.params.employeeId);
         }
     }
 
@@ -62,8 +56,10 @@ class SignUpPage extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        console.log("calling")
         this.setOfficesArray(newProps.offices);
-        if(this.state.isEditing && this.props.employees !== null && this.props.employees.length === 0 && newProps.employees !== [] && newProps.employees.length !== 0){
+        if(this.state.isEditing && newProps.employees !== [] && newProps.employees.length !== 0){
+            console.log(newProps.employees)
             this.setStateWithEmployee(newProps.employees)
         }
     }
@@ -92,7 +88,8 @@ class SignUpPage extends React.Component {
 
     updateUser() {
         const { inputName, inputSurname, inputEmail, selectedOffice, selectedRole } = this.state;
-        this.props.updateUser(inputName, inputSurname, inputEmail, selectedOffice, selectedRole, this.props.match.params.employeeId);
+        console.log(this.props)
+        this.props.updateUser(inputName, inputSurname, inputEmail, selectedOffice, selectedRole, this.props.match.params.employeeId, this.props.employees.version);
     }
 
     handleNameChange(e) {
