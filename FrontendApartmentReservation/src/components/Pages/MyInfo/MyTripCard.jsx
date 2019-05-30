@@ -187,6 +187,7 @@ class MyTripCard extends React.Component {
         var tripStartTime = new Date(trip.startTime);
         var tripEndTime = new Date(trip.endTime);
         if (this.props.personalChecklist && this.props.personalChecklist !== []) {
+            var currentChecklist = this.props.personalChecklist.find(checklist => checklist.tripId === this.props.trip.tripId);
             return (
                 <div>
                     <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius: "5pt 5pt 0 0" }}>
@@ -226,9 +227,9 @@ class MyTripCard extends React.Component {
                         </div>
                     </div>
                     <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E',  borderRadius: "0 0 5pt 5pt" }} hidden={!this.state.showDetails}>
-                        {this.showFlight(this.props.personalChecklist[this.props.index])}
-                        {this.showCar(this.props.personalChecklist[this.props.index])}
-                        {this.showApartments(this.props.personalChecklist[this.props.index])}
+                        {this.showFlight(currentChecklist)}
+                        {this.showCar(currentChecklist)}
+                        {this.showApartments(currentChecklist)}
                     </div>
                 </div>
             )
