@@ -44,7 +44,7 @@ class MergeTrips extends React.Component {
         if ((this.props.mergeableTrips === [] || this.props.mergeableTrips.length === 0) && this.state.loading) {
             return (<div className="row mt-5">
                 <div className="col-12">
-                    <h1>{i18next.t('EmptyTripsList')}</h1>
+                    <h1>{i18next.t('NoTripsToMerge')}</h1>
                 </div>
             </div>
             )
@@ -52,8 +52,7 @@ class MergeTrips extends React.Component {
         if (this.props.mergeableTrips.length > 0) {
             return (
                 <div className="pl-5">
-                    {this.props.mergeableTrips === [] ?
-                        <h3> {i18next.t("TripsPossibleToMerge")}</h3> : <h3>{i18next.t("NoTripsToMerge")}</h3>}
+                    <h3> {i18next.t("TripsPossibleToMerge")}</h3>
                     {this.props.mergeableTrips.map(trip => <TripCard key={trip.tripId} trip={trip} mergeable={true}
                         mergeableTripId={this.props.match.params.tripId} />)}
                 </div>
