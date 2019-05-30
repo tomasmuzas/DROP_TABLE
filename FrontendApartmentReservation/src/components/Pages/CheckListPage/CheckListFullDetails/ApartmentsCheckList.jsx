@@ -21,7 +21,7 @@ class ApartmentsCheckList extends React.Component {
             livingPlace: {
                 isRequired: false,
                 apartmentReservationInfo: { required: false, apartmentAddress: undefined, roomNumber: 1, dateFrom: null, dateTo: null },
-                hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '', timeFrom: '', timeTo: '', file: null }
+                hotelReservationInfo: { required: false, hotelName: '', dateFrom: '', dateTo: '', timeFrom: '', timeTo: '', file: null, price: '' }
             },
             showHotelInfo: false,
             showApartmentsInfo: true,
@@ -32,6 +32,7 @@ class ApartmentsCheckList extends React.Component {
         this.handleHotelDocumentsSubmit = this.handleHotelDocumentsSubmit.bind(this);
         this.handleIsRequiredChange = this.handleIsRequiredChange.bind(this);
         this.handleHotelNameChange = this.handleHotelNameChange.bind(this);
+        this.handleHotelPriceChange = this.handleHotelPriceChange.bind(this);
         this.handleHotelDocumentsChange = this.handleHotelDocumentsChange.bind(this);
         this.deleteReservation = this.deleteReservation.bind(this);
         this.reserveApartmentForOne = this.reserveApartmentForOne.bind(this);
@@ -82,7 +83,7 @@ class ApartmentsCheckList extends React.Component {
 
     handleHotelSubmit(e) {
         e.preventDefault();
-        var { hotelName, dateFrom, dateTo, timeTo, timeFrom } = this.state.livingPlace.hotelReservationInfo;
+        var { hotelName, dateFrom, dateTo, timeTo, timeFrom, price } = this.state.livingPlace.hotelReservationInfo;
         if (!!dateFrom && !!timeFrom) {
             dateFrom = dateFrom + ' ' + timeFrom;
         }
@@ -91,7 +92,7 @@ class ApartmentsCheckList extends React.Component {
             dateTo = dateTo + ' ' + timeTo;
         }
 
-        this.props.updateApartmentsInfo(hotelName, dateFrom, dateTo, this.props.tripId, this.props.employeeId);
+        this.props.updateApartmentsInfo(hotelName, dateFrom, dateTo, this.props.tripId, this.props.employeeId, price);
     }
 
     deleteReservation() {
@@ -195,6 +196,14 @@ class ApartmentsCheckList extends React.Component {
         });
     }
 
+    handleHotelPriceChange(e) {
+        var livingPlace = this.state.livingPlace;
+        livingPlace.hotelReservationInfo.price = e.target.value;
+        this.setState({
+            livingPlace: livingPlace
+        });
+    }
+
 
     handleHotelDocumentsChange(e) {
         var livingPlace = this.state.livingPlace;
@@ -249,8 +258,14 @@ class ApartmentsCheckList extends React.Component {
                             name="DateTo" value={this.state.livingPlace.hotelReservationInfo.timeTo}
                             onChange={this.handleTimeToChange} />
                     </div>
-                    <button className={`btn btn-lg btn-primary btn-block`} onClick={this.deleteHotelReservation}>{i18next.t("DeleteHotelInfo")}</button>
+                    <div className="form-group">
+                                {i18next.t("Price")}
+                                <input type="number" id="HotelPrice" className={`form-control`} placeholder={i18next.t("Price")}
+                                    name="HotelPrice" value={this.state.livingPlace.hotelReservationInfo.price}
+                                    onChange={this.handleHotelPriceChange} />
+                            </div>
                     <button className={`btn btn-lg btn-primary btn-block`} type="submit">{i18next.t("SaveHotelInfo")}</button>
+                    <button className={`btn btn-lg btn-primary btn-block`} onClick={this.deleteHotelReservation}>{i18next.t("DeleteHotelInfo")}</button>
                 </form>
 
                 <form className={`form-signin`} encType="multipart/form-data" hidden={!this.state.showHotelInfo} onSubmit={this.handleHotelDocumentsSubmit}>
