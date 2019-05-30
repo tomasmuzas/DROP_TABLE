@@ -3,7 +3,7 @@ export default function reducer(state = [], action = {}) {
         case 'GET_MERGEABLE_TRIPS':
             return action.payload;
         case 'CLEAR_MERGEABLE_TRIPS':
-            return null
+            return []
         default:
             return state;
     }
