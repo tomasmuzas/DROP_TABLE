@@ -40,19 +40,22 @@ class TripCheckList extends React.Component {
                         // there are enough available apartments
                         this.props.tripbasic.availableApartments >= this.props.tripbasic.checklistInfos.filter(c => !c.isApartmentRequired).length &&
 
-                        <span className="row mt-5 mx-5" style={{"display": "inline-block"}}> 
-                            {t("TripEnoughApartments")} 
-                            <Link className={`btn btn-primary mx-3`} to={''} onClick= {this.reserveApartments}>{t("ReserveApartmentForAll")}</Link>
-                        </span> 
+                        <span className="row mt-5 mx-5" style={{ "display": "inline-block" }}>
+                            {t("TripEnoughApartments")}
+                            <Link className={`btn btn-primary mx-3`} to={''} onClick={this.reserveApartments}>{t("ReserveApartmentForAll")}</Link>
+                        </span>
                     }
                     <div>
                         {this.props.tripbasic.checklistInfos.map((checkListInfo, index) =>
                             <CheckListCard checkListInfo={checkListInfo} availableApartments={this.props.tripbasic.availableApartments} index={index} tripId={this.props.tripbasic.tripId} key={checkListInfo.employee.id} />)}
                     </div>
 
+                    <h2 className="row mt-5 mb-5 mx-right pr-5 mr-auto" style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>{t("TotalPriceCost")}
+                        <span className="ml-2" style={{ color: "#f50057" }}> <b> 1234</b></span>
+                        <b>€</b></h2>
                     <Link className='justify-content-md-center' to={''}>
-                    <button className={`btn btn-lg btn-primary btn-block center mx-auto mt-5`}
-                     style={{width: '30%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>{t("FinishCreation")}</button>
+                        <button className={`btn btn-lg btn-primary btn-block center mx-auto mt-5`}
+                            style={{ width: '30%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>{t("FinishCreation")}</button>
                     </Link>
                 </div>
             );

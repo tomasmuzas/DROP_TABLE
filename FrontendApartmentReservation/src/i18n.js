@@ -110,6 +110,7 @@ i18n.use(LanguageDetector).init({
         "SelectEmployeeRole":"Select employee role",
         "EditEmployeeInfo": "Edit employee info",
         "Price": "Price",
+        "TotalPriceCost": "Total price of this trip: "
       }
     },
     lt: {
@@ -224,6 +225,7 @@ i18n.use(LanguageDetector).init({
         "SelectEmployeeRole":"Pasirinkite darbuotojo rolę",
         "EditEmployeeInfo": "Redaguoti darbuotojo informaciją",
         "Price": "Kaina",
+        "TotalPriceCost": "Visos kelionės kaina: "
       }
     }
   },

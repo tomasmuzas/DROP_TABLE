@@ -18,7 +18,7 @@ import arrowUp from './up-arrow.png';
 import arrowDown from './down-arrow.png';
 import pdf from './pdf.png';
 import { GridLoader } from 'react-spinners';
-import {BACKEND_URL} from '../../../actions/index'
+import { BACKEND_URL } from '../../../actions/index'
 
 class CheckListCard extends React.Component {
     constructor(props) {
@@ -40,12 +40,12 @@ class CheckListCard extends React.Component {
         this.props.getChecklist(this.props.checkListInfo.employee.id, this.props.tripId);
     }
 
-    getFormattedDate(checklistDate){
-        if(checklistDate){
+    getFormattedDate(checklistDate) {
+        if (checklistDate) {
             var tempDate = new Date(checklistDate);
-             return tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('lt-LT', { hour: '2-digit', minute: '2-digit' });
+            return tempDate.toLocaleDateString('lt-LT') + " " + tempDate.toLocaleTimeString('lt-LT', { hour: '2-digit', minute: '2-digit' });
         }
-        else{
+        else {
             return checklistDate;
         }
     }
@@ -53,18 +53,20 @@ class CheckListCard extends React.Component {
     showFlight(checklist) {
         const { t } = this.props;
         if (checklist) {
-            
+
             return (
                 <div className="col-12 col-lg-4 pb-2" hidden={!checklist.flight.isRequired}>
-                    <h5><b>{t("FlightInformation")}</b></h5>                                            
+                    <h5><b>{t("FlightInformation")}</b></h5>
                     <h6> {t("FlightNumber")}: {checklist.flight.flightNumber}</h6>
                     <h6> {t("FlightCompany")}:  {checklist.flight.company}</h6>
                     <h6> {t("AirportAddress")}:  {checklist.flight.airportAddress}</h6>
                     <h6> {t("FlightTime")}: {this.getFormattedDate(checklist.flight.flightTime)} </h6>
-                    <h6>                                    
+                    <h6> {t("Price")}: {checklist.flight.price} {checklist.flight.price? '€': ''} </h6>
+
+                    <h6>
                         {checklist.flight.ticketFileId &&
                             <a href={BACKEND_URL + '/files/' + checklist.flight.ticketFileId}>
-                                {t("CurrentFlightTicket")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }}/>
+                                {t("CurrentFlightTicket")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }} />
                             </a>
                         }
                     </h6>
@@ -89,10 +91,10 @@ class CheckListCard extends React.Component {
     showApartments(checklist) {
         const { t } = this.props;
         if (checklist) {
-            if(checklist.livingPlace.apartmentReservationInfo.required){
+            if (checklist.livingPlace.apartmentReservationInfo.required) {
                 return (
                     <div className="col-12 col-lg-4 pb-2" hidden={!checklist.livingPlace.isRequired}>
-                        <h5><b>{t("ApartmentInformation")}</b></h5>                        
+                        <h5><b>{t("ApartmentInformation")}</b></h5>
                         <h6> {t("ApartmentAddress")}: {checklist.livingPlace.apartmentReservationInfo.apartmentAddress}</h6>
                         <h6> {t("RoomNumber")}:  {checklist.livingPlace.apartmentReservationInfo.roomNumber}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.apartmentReservationInfo.dateFrom)}</h6>
@@ -100,17 +102,18 @@ class CheckListCard extends React.Component {
                     </div>
                 )
             }
-            if(checklist.livingPlace.hotelReservationInfo.required){
+            if (checklist.livingPlace.hotelReservationInfo.required) {
                 return (
                     <div className="col-12 col-lg-4 pb-2" hidden={!checklist.livingPlace.isRequired}>
                         <h5><b>{t("HotelInformation")}</b></h5>
                         <h6> {t("Hotel")}: {checklist.livingPlace.hotelReservationInfo.hotelName}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
                         <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateTo)}</h6>
-                        <h6>                                    
+                        <h6> {t("Price")}:  {checklist.livingPlace.hotelReservationInfo.price} {checklist.livingPlace.hotelReservationInfo.price? '€': ''} </h6>
+                        <h6>
                             {checklist.livingPlace.hotelReservationInfo.documentsFileId &&
                                 <a href={BACKEND_URL + '/files/' + checklist.livingPlace.hotelReservationInfo.documentsFileId}>
-                                    {t("CurrentHotelDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }}/>
+                                    {t("CurrentHotelDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }} />
                                 </a>
                             }
                         </h6>
@@ -143,10 +146,11 @@ class CheckListCard extends React.Component {
                     <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
                     <h6> {t("RentStartTime")}: {this.getFormattedDate(checklist.car.rentStartTime)}</h6>
                     <h6> {t("RentEndTime")}: {this.getFormattedDate(checklist.car.rentEndTime)}</h6>
-                    <h6>                                    
+                    <h6> {t("Price")}: {checklist.car.price} {checklist.car.price? '€': ''}</h6>
+                    <h6>
                         {checklist.car.documentsFileId &&
                             <a href={BACKEND_URL + '/files/' + checklist.car.documentsFileId}>
-                                {t("CurrentCarDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }}/>
+                                {t("CurrentCarDocuments")} <img src={pdf} alt="pdf-icon" style={{ height: '16px' }} />
                             </a>
                         }
                     </h6>
@@ -172,13 +176,13 @@ class CheckListCard extends React.Component {
         const { checkListInfo, t, tripId } = this.props;
         return (
             <div>
-                <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius: "5pt 5pt 0 0"}}>
+                <div className="row mt-5 mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius: "5pt 5pt 0 0" }}>
                     <div className="col justify-content-md-center nameDiv pb-lg-0 pb-5">
                         <h5><b>{checkListInfo.employee.firstName} {checkListInfo.employee.lastName} &nbsp;</b>
-                        {checkListInfo.hasAcceptedTripConfirmation ?
+                            {checkListInfo.hasAcceptedTripConfirmation ?
                                 <span style={{ color: "#81c784" }}>({t("TripAccepted")})</span> :
                                 <span style={{ color: "#f50057" }}>({t("TripNotYetAccepted")})</span>
-                        }
+                            }
                         </h5>
                     </div>
                     <div className="col pr-5">
@@ -204,7 +208,7 @@ class CheckListCard extends React.Component {
                     </div>
 
                 </div>
-                <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius: this.state.showDetails? "0": "0 0 5pt 5pt" }}>
+                <div className="row mx-5" style={{ backgroundColor: '#eaecef', boxShadow: '1px 3px 1px #9E9E9E', borderRadius: this.state.showDetails ? "0" : "0 0 5pt 5pt" }}>
                     <div className="pl-3 pb-2">
                         <img src={this.state.showDetails ? arrowUp : arrowDown} alt="lalal" style={{ height: '32px', width: '32px' }} onClick={this.handleShowDetailsChange} />
                     </div>

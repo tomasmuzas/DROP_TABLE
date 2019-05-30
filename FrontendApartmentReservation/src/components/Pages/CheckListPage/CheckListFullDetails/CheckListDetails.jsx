@@ -19,17 +19,17 @@ class CheckListDetails extends React.Component {
         if (this.props.singleChecklist) {
             return (
                 <div>
-                    <Link to={'/trip/' + this.props.match.params.tripId }style={{ textDecoration: 'none', color:'black' }}>
-                    <button className={`btn btn-lg btn-primary btn-block`}>{t("GoBack")}</button>
+                    <Link to={'/trip/' + this.props.match.params.tripId} style={{ textDecoration: 'none', color: 'black' }}>
+                        <button className={`btn btn-lg btn-primary btn-block`}>{t("GoBack")}</button>
                     </Link>
                     <div className="p-5">
-                        <FlightCheckList flightInfo ={this.props.singleChecklist.flight} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
+                        <FlightCheckList flightInfo={this.props.singleChecklist.flight} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                     <div className="p-5">
-                        <CarCheckList carInfo ={this.props.singleChecklist.car} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
+                        <CarCheckList carInfo={this.props.singleChecklist.car} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                     <div className="p-5">
-                        <ApartmentsCheckList apartmentsInfo ={this.props.singleChecklist.livingPlace} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
+                        <ApartmentsCheckList apartmentsInfo={this.props.singleChecklist.livingPlace} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                 </div>
             );
@@ -56,7 +56,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
     return {
         tripbasic: state.tripbasic,
-        singleChecklist : state.singleChecklist
+        singleChecklist: state.singleChecklist
     };
 }
 
