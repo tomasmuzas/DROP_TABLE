@@ -128,6 +128,7 @@ i18n.use(LanguageDetector).init({
         "Regular": "Regular",
         "SelectEmployeeRole":"Select employee role",
         "EditEmployeeInfo": "Edit employee info",
+        "EmployeeOverwriteWarning": "While you were editing employee information, it has changed. If you want to overwrite, press \"OK\", else - \"Cancel\". Your changes will be lost."
       }
     },
     lt: {
@@ -253,7 +254,7 @@ i18n.use(LanguageDetector).init({
         "Regular": "Regularus darbuotojas",
         "SelectEmployeeRole":"Pasirinkite darbuotojo rolę",
         "EditEmployeeInfo": "Redaguoti darbuotojo informaciją",
-
+        "EmployeeOverwriteWarning": "Kol jūs redagavote vartotojo informaciją, ji buvo pakeista. Jeigu norite perrašyti esamus duomenis, spaskite \"OK\", jei ne - \"Atšaukti\". Jūsų pakeitimai bus prarasti."
       }
     }
   },
