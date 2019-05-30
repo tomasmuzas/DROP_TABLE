@@ -49,21 +49,47 @@ const getDefaultHeaders = () => {
     }
 }
 
+const verifyAuthorization = (response, dispatch) => new Promise((resolve, reject) =>{    
+    if (response.status === 401) {
+        dispatch(push('/login'));
+        sessionStorage.removeItem('token');
+        reject("Bad response");
+        return;
+    }
+    if (response.status === 403) {
+        dispatch(push('/error'));
+        sessionStorage.removeItem('token');
+        reject("No rights");
+        return
+    }
+    resolve(response)
+});
+
+const assertSuccessStatusCode = (response, dispatch) => new Promise((resolve, reject) => {
+    if(response.status !== 200){
+        if(response.errorCode){
+            alert(i18n.t(response.errorCode));
+            reject(response.errorCode);
+            return;
+        }
+        else{
+            alert(i18n.t("SomethingWentWrong"));
+            reject(response.status);
+            return;
+        }
+    }
+
+    resolve(response);
+})
+
 export const getAllApartments = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/apartments`, {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            throw new Error("Bad response");
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
         response.json()
             .then(data => {
                 dispatch({
@@ -78,21 +104,12 @@ export const reserveApartmentsForAll = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + `/apartment`, {
         method: "Post",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            clearTrips();
-            dispatch(push('/trip/' + tripId));
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        clearTrips();
+        dispatch(push('/trip/' + tripId));
     }).catch((error) => console.warn(error));
 }
 
@@ -100,21 +117,12 @@ export const reserveApartmentsForOne = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + `/apartment`, {
         method: "Post",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            clearTrips();
-            return response.status;
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        clearTrips();
+        return response.status;
     }).catch((error) => console.warn(error));
 }
 
@@ -122,21 +130,12 @@ export const deleteApartmentsReservationForOne = (employeeId, tripId) => (dispat
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + `/apartment`, {
         method: "Delete",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 200) {
-            clearTrips();
-            return response.status;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        clearTrips();
+        return response.status;   
     }).catch((error) => console.warn(error));
 }
 
@@ -144,21 +143,12 @@ export const deleteApartmentsReservation = (employeeId, tripId) => (dispatch) =>
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + `/apartment`, {
         method: "Delete",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            clearTrips();
-            dispatch(push('/trip/' + tripId));
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        clearTrips();
+        dispatch(push('/trip/' + tripId));
     }).catch((error) => console.warn(error));
 }
 
@@ -166,17 +156,10 @@ export const getAllOffices = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/offices`, {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            throw new Error("Bad response");
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
         response.json()
             .then(data => {
                 dispatch({
@@ -191,25 +174,17 @@ export const getAllEmployees = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees`, {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        else {
-            response.json()
-                .then(data => {
-                    dispatch({
-                        type: GET_ALL_EMPLOYEES,
-                        payload: data
-                    });
-                })
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_ALL_EMPLOYEES,
+                    payload: data
+                });
+            })
     }).catch((error) => console.warn(error));
 }
 
@@ -217,17 +192,10 @@ export const getEmployees = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees`, {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
         response.json()
             .then(data => {
                 dispatch({
@@ -242,17 +210,10 @@ export const getEmployeesWithRoles = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees/full`, {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
         response.json()
             .then(data => {
                 dispatch({
@@ -267,27 +228,18 @@ export const getEmployeeById = (employeeId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/employees/full/` + employeeId, {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            response.json()
-                .then(data => {
-                    dispatch({
-                        type: GET_EMPLOYEE_BY_ID,
-                        payload: data
-                    });
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_EMPLOYEE_BY_ID,
+                    payload: data
                 });
-            return response.status;
-        }
+            });
+        return response.status;
     }).catch((error) => console.warn(error));
 }
 
@@ -295,25 +247,17 @@ export const getAllTrips = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/tripinfo/organized`, {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        else {
-            response.json()
-                .then(data => {
-                    dispatch({
-                        type: GET_ALL_TRIPS,
-                        payload: data
-                    });
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_ALL_TRIPS,
+                    payload: data
                 });
-        }
+            });
     }).catch((error) => console.warn(error));
 }
 
@@ -321,25 +265,17 @@ export const getMyTrips = () => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/tripinfo/participating`, {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        else {
-            response.json()
-                .then(data => {
-                    dispatch({
-                        type: GET_MY_TRIPS,
-                        payload: data
-                    });
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_MY_TRIPS,
+                    payload: data
                 });
-        }
+            });
     }).catch((error) => console.warn(error));
 }
 
@@ -347,25 +283,16 @@ export const getMergeableTrips = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/mergeableTrips/?firstTripId=` + tripId, {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        else {
-            response.json()
-                .then(data => {
-                    dispatch({
-                        type: GET_MERGEABLE_TRIPS,
-                        payload: data
-                    });
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => {
+        response.json()
+            .then(data => {
+                dispatch({
+                    type: GET_MERGEABLE_TRIPS,
+                    payload: data
                 });
-        }
+            });
     }).catch((error) => console.warn(error));
 }
 
@@ -377,22 +304,13 @@ export const mergeTrips = (FirstTripId, SecondTripId) => (dispatch) => {
             FirstTripId,
             SecondTripId
         }),
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            clearTrips();
-            dispatch(push('/trips'));
-            alert(i18n.t("TripMerged") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        clearTrips();
+        dispatch(push('/trips'));
+        alert(i18n.t("TripMerged") + response.status);
     }).catch((error) => console.warn(error));
 }
 
@@ -400,17 +318,10 @@ export const getBasicTrip = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/tripinfo/` + tripId + '/basic', {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
         response.json()
             .then(data => {
                 dispatch({
@@ -426,17 +337,10 @@ export const getPlans = (employeeIds) => (dispatch) => {
         method: "POST",
         body: JSON.stringify(employeeIds),
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
         response.json()
             .then(data => {
                 dispatch({
@@ -451,17 +355,10 @@ export const getChecklist = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
         response.json()
             .then(data => {
                 dispatch({
@@ -476,17 +373,10 @@ export const getPersonalChecklist = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist/personal', {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
         response.json()
             .then(data => {
                 dispatch({
@@ -501,17 +391,10 @@ export const getSingleChecklist = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/checklist', {
         method: "GET",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
         response.json()
             .then(data => {
                 dispatch({
@@ -538,23 +421,11 @@ export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) =
             airportAddress: flightInfo.airportAddress
         }),
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("FlightInfoUpdate") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("FlightInfoUpdate"));
     }).catch((error) => console.warn(error));
 }
 
@@ -568,23 +439,11 @@ export const uploadFlightTicket = (flightTicketFile, employeeId, tripId) => (dis
             "Authorization": "Bearer " + sessionStorage.getItem('token'),
             "x-correlation-id": uuid()
         }
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("FlightInfoUpdate") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("FlightInfoUpdate"));
     }).catch((error) => console.warn(error));
 }
 
@@ -598,23 +457,11 @@ export const uploadHotelDocuments = (flightTicketFile, employeeId, tripId) => (d
             "Authorization": "Bearer " + sessionStorage.getItem('token'),
             "x-correlation-id": uuid()
         }
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("FlightInfoUpdate") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("FlightInfoUpdate"));
     }).catch((error) => console.warn(error));
 }
 
@@ -628,23 +475,11 @@ export const updateCarDocuments = (flightTicketFile, employeeId, tripId) => (dis
             "Authorization": "Bearer " + sessionStorage.getItem('token'),
             "x-correlation-id": uuid()
         }
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("FlightInfoUpdate") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("FlightInfoUpdate"));
     }).catch((error) => console.warn(error));
 }
 
@@ -653,23 +488,11 @@ export const createFlightInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
         method: "POST",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("FlightInfoCreate") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("FlightInfoCreate"));
     }).catch((error) => console.warn(error));
 }
 
@@ -677,23 +500,11 @@ export const createApartmentsInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
         method: "POST",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("ApartmentsInfoCreated") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("ApartmentsInfoCreated"));
     }).catch((error) => console.warn(error));
 }
 
@@ -701,47 +512,23 @@ export const deleteHotelReservation = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
         method: "DELETE",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("ApartmentsInfoDeleted") + response.status);
-            return response.status;
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("ApartmentsInfoDeleted"));
+        return response.status;
     }).catch((error) => console.warn(error));
 }
 export const deleteApartmentsInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/livingplace', {
         method: "DELETE",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("ApartmentsInfoDeleted") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("ApartmentsInfoDeleted"));
     }).catch((error) => console.warn(error));
 }
 
@@ -750,23 +537,11 @@ export const updateApartmentsInfo = (HotelName, DateFrom, DateTo, tripId, employ
         method: "PUT",
         body: JSON.stringify({ HotelName, DateFrom, DateTo }),
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("ApartmentsInfoUpdated") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("ApartmentsInfoUpdated") + response.status);
     }).catch((error) => console.warn(error));
 }
 
@@ -774,23 +549,11 @@ export const deleteFlightInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/flight', {
         method: "DELETE",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("FlightInfoDelete") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("FlightInfoDelete"));
     }).catch((error) => console.warn(error));
 }
 
@@ -814,23 +577,11 @@ export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
             rentStartTime: returnStart
         }),
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("CarInfoUpdate") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("CarInfoUpdate"));
     }).catch((error) => console.warn(error));
 }
 
@@ -838,28 +589,16 @@ export const acceptTrip = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/participation/accept', {
         method: "POST",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            clearTrips();
-            dispatch({
-                type: UPDATE_MY_TRIPS,
-                payload: tripId
-            })
-            return response.status;
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        clearTrips();
+        dispatch({
+            type: UPDATE_MY_TRIPS,
+            payload: tripId
+        })
+        return response.status;
     }).catch((error) => console.warn(error));
 }
 
@@ -867,23 +606,11 @@ export const createCarInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
         method: "POST",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("CarInfoCreate") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("CarInfoCreate"));
     }).catch((error) => console.warn(error));
 }
 
@@ -891,23 +618,11 @@ export const deleteCarInfo = (employeeId, tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/car', {
         method: "DELETE",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            alert(i18n.t("CarInfoDelete") + response.status);
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        alert(i18n.t("CarInfoDelete"));
     }).catch((error) => console.warn(error));
 }
 
@@ -915,27 +630,15 @@ export const deleteTrip = (tripId) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId, {
         method: "DELETE",
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            dispatch({
-                type: 'DELETE_TRIP',
-                payload: tripId
-            });
-            return response.status;
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        dispatch({
+            type: 'DELETE_TRIP',
+            payload: tripId
+        });
+        return response.status;
     }).catch((error) => console.warn(error));
 }
 
@@ -992,8 +695,9 @@ export const login = (Email, Password) => (dispatch) => {
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-    }).then(response => {
-        if (response.status === 200) {
+    })
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
             response.json().then(data => {
                 sessionStorage.setItem('token', data.jwtToken);
                 var usefulInfo = data.jwtToken.split('.');
@@ -1003,10 +707,6 @@ export const login = (Email, Password) => (dispatch) => {
                 sessionStorage.setItem('role', userRole);
                 dispatch(push('/myInfo/myTrips'))
             });
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
     }).catch((error) => console.warn(error));
 }
 
@@ -1015,33 +715,21 @@ export const createTrip = (employeeIds, destinationOfficeId, departureDate, retu
         method: "POST",
         body: JSON.stringify({ employeeIds, destinationOfficeId, departureDate, returnDate }),
         headers: getDefaultHeaders()
-    }).then(response => {
-        if (response.status === 401) {
-            dispatch(push('/login'));
-            sessionStorage.removeItem('token');
-            return;
-        }
-        if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
-        if (response.status === 200) {
-            dispatch({
-                type: CLEAR_PERSONAL_CHECKLIST
-            });
+    })
+    .then(response => verifyAuthorization(response, dispatch))
+    .then(response => assertSuccessStatusCode(response, dispatch))
+    .then(response => {
+        dispatch({
+            type: CLEAR_PERSONAL_CHECKLIST
+        });
 
-            dispatch({
-                type: CLEAR_MY_TRIPS
-            });
+        dispatch({
+            type: CLEAR_MY_TRIPS
+        });
 
-            response.json().then(data => {
-                dispatch(push('/trip/' + data.tripId))
-            });
-        }
-        else {
-            alert(i18n.t("SignUpError") + response.status);
-        }
+        response.json().then(data => {
+            dispatch(push('/trip/' + data.tripId))
+        });
     }).catch((error) => console.warn(error));
 }
 
