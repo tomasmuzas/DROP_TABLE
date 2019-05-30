@@ -24,6 +24,6 @@
 
         Task<DbEmployeePlan> CreateEmployeePlan(DbEmployeePlan dbEmployeePlan);
 
-        Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest);
+        Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest, bool force);
     }
 }

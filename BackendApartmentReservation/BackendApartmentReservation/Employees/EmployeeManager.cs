@@ -92,9 +92,9 @@
             });
         }
 
-        public async Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest)
+        public async Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest, bool force = false)
         {
-            await _employeeRepository.ChangeUserInfo(employeeId, changeUserInfoRequest);
+            await _employeeRepository.ChangeUserInfo(employeeId, changeUserInfoRequest, force);
         }
     }
 }

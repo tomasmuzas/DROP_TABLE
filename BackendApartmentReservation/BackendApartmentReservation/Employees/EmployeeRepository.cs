@@ -80,7 +80,7 @@
             return dbEmployeePlan;
         }
 
-        public async Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest)
+        public async Task ChangeUserInfo(string employeeId, ChangeUserInfoRequest changeUserInfoRequest, bool force)
         {
             var employee = await _context.Employees
                 .SingleOrDefaultAsync(e => 
@@ -104,7 +104,12 @@
             employee.Email = changeUserInfoRequest.Email;
             employee.Role = changeUserInfoRequest.Role;
             employee.Office = office;
-            _context.Entry(employee).OriginalValues["Version"] = Encoding.UTF8.GetBytes(changeUserInfoRequest.Version);
+
+            if (!force)
+            {
+                // Do not get current version, assume request one is latest
+                _context.Entry(employee).OriginalValues["Version"] = Encoding.UTF8.GetBytes(changeUserInfoRequest.Version);
+            }
 
             _context.Employees.Update(employee);
             try
