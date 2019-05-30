@@ -240,6 +240,7 @@ namespace BackendApartmentReservation.Checklists
             flightInfo.AirportAddress = flight.FlightReservation.AirportAddress;
             flightInfo.FlightTime = DateTimeFormatter.GetStandardDateTimeString(flight.FlightReservation.FlightTime);
             flightInfo.TicketFileId = flight.Ticket?.ExternalFileId;
+            flightInfo.Cost = flight.Cost;
 
             return flightInfo;
         }
@@ -305,6 +306,7 @@ namespace BackendApartmentReservation.Checklists
             carReservationInfo.RentEndTime = DateTimeFormatter.GetStandardDateTimeString(carRent.CarReservation.RentEndTime);
             carReservationInfo.CarAddress = carRent.CarReservation.CarAddress;
             carReservationInfo.DocumentsFileId = carRent.Documents?.ExternalFileId;
+            carReservationInfo.Cost = carRent.Cost;
 
             return carReservationInfo;
         }
@@ -367,6 +369,7 @@ namespace BackendApartmentReservation.Checklists
             hotelReservationInfo.DateFrom = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateFrom);
             hotelReservationInfo.DateTo = DateTimeFormatter.GetStandardDateTimeString(hotelReservation.DateTo);
             hotelReservationInfo.DocumentsFileId = hotelReservation.Documents?.ExternalFileId;
+            hotelReservationInfo.Price = hotelReservation.Cost;
 
             return hotelReservationInfo;
         }

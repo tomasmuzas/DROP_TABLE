@@ -13,5 +13,7 @@
         public string DateTo { get; set; }
 
         public string DocumentsFileId { get; set; }
+
+        public decimal Price { get; set; }
     }
 }
