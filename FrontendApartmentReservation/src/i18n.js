@@ -73,26 +73,7 @@ i18n.use(LanguageDetector).init({
         "RentEndTime": "End Time of Rent",
         "RentStartTime": "Start Time of Rent",
         "GoBack": "Go back",
-        "Monday": "Mon",
-        "Tuesday": "Tue",
-        "Wednesday": "Wed",
-        "Thursday": "Thu",
-        "Friday": "Fri",
-        "Saturday": "Sat",
-        "Sunday": "Sun",
         "ErrorDateMessage": "Selected range must not overlap with disabled dates.",
-        "Sausis" : "January",
-        "Vasaris" : "February",
-        "Kovas" : "March",
-        "Balandis" : "April",
-        "Gegužė" : "May",
-        "Birželis" : "June",
-        "Liepa" : "July",
-        "Rugpjūtis" : "August",
-        "Rugsėjis" : "September",
-        "Spalis" : "October",
-        "Lapkritis" : "November",
-        "Gruodis" : "December",
         "Login": "Login",
         "Logout": "Logout",
         "Merge": "Merge",
@@ -129,6 +110,8 @@ i18n.use(LanguageDetector).init({
         "SelectEmployeeRole":"Select employee role",
         "EditEmployeeInfo": "Edit employee info",
         "EmployeeOverwriteWarning": "While you were editing employee information, it has changed. If you want to overwrite, press \"OK\", else - \"Cancel\". Your changes will be lost."
+        "Price": "Price",
+        "TotalPriceCost": "Total price of this trip: "
       }
     },
     lt: {
@@ -207,18 +190,6 @@ i18n.use(LanguageDetector).init({
         "Saturday": "Š",
         "Sunday": "S",
         "ErrorDateMessage": "Pasirinktomis dienomis darbuotojai(as) yra užtimti",
-        "January" : "Sausis",
-        "February" : "Vasaris",
-        "March" : "Kovas",
-        "April" : "Balandis",
-        "May" : "Gegužė",
-        "June" : "Birželis",
-        "July" : "Liepa",
-        "August" : "Rugpjūtis",
-        "September" : "Rugsėjis",
-        "October" : "Spalis",
-        "November" : "Lapkritis",
-        "December" : "Gruodis",
         "Login": "Prisijungti",
         "Logout": "Atsijungti",
         "Merge": "Sujungti",
@@ -255,11 +226,13 @@ i18n.use(LanguageDetector).init({
         "SelectEmployeeRole":"Pasirinkite darbuotojo rolę",
         "EditEmployeeInfo": "Redaguoti darbuotojo informaciją",
         "EmployeeOverwriteWarning": "Kol jūs redagavote vartotojo informaciją, ji buvo pakeista. Jeigu norite perrašyti esamus duomenis, spaskite \"OK\", jei ne - \"Atšaukti\". Jūsų pakeitimai bus prarasti."
+        "Price": "Kaina",
+        "TotalPriceCost": "Visos kelionės kaina: "
       }
     }
   },
   fallbackLng: "en",
-  debug: true,
+  debug: false,
 
   // have a common namespace used around the full app
   ns: ["translations"],

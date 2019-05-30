@@ -22,7 +22,8 @@ class FlightCheckList extends React.Component {
                 company: '',
                 flightTime: '',
                 flightDate: '',
-                airportAddress: ''
+                airportAddress: '',
+                price: '',
             },
             flightTicket: {
                 file: null
@@ -38,6 +39,8 @@ class FlightCheckList extends React.Component {
         this.handleFlightTimeChange = this.handleFlightTimeChange.bind(this);
         this.handleFlightDateChange = this.handleFlightDateChange.bind(this);
         this.handleFlightTicketChange = this.handleFlightTicketChange.bind(this);
+        this.handleFlightPriceChange = this.handleFlightPriceChange.bind(this);
+
     }
 
     componentWillReceiveProps(newProps){
@@ -129,6 +132,14 @@ class FlightCheckList extends React.Component {
         });
     }
 
+    handleFlightPriceChange(e) {
+        var flightInfo = this.state.flightInfo;
+        flightInfo.price = e.target.value;
+        this.setState({
+            flightInfo: flightInfo
+        })
+    }
+
     render() {
         const { t } = this.props;
         if (this.state.flightInfo) {
@@ -170,6 +181,12 @@ class FlightCheckList extends React.Component {
                                 <input type="text" id="FlightCompany" className={`form-control`} placeholder={t("FlightCompany")}
                                     name="FlightCompany" value={this.state.flightInfo.company}
                                     onChange={this.handleFlightCompanyChange} />
+                            </div>
+                            <div className="form-group">
+                                {t("Price")}
+                                <input type="number" id="FlightPrice" className={`form-control`} placeholder={t("Price")}
+                                    name="FlightPrice" value={this.state.flightInfo.price}
+                                    onChange={this.handleFlightPriceChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveFlightInfo")}</button>
                         </form>
