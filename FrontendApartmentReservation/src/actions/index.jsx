@@ -664,8 +664,8 @@ export const signUpUser = (FirstName, LastName, Email, Password, Office) => (dis
     }).catch((error) => console.warn(error));
 }
 
-export const updateUser = (FirstName, LastName, Email, OfficeId, Role, EmployeeId, Version) => (dispatch) => {
-    fetch(BACKEND_BASE_URI + "/api/employees/" + EmployeeId + "/info", {
+export const updateUser = (FirstName, LastName, Email, OfficeId, Role, EmployeeId, Version, force = false) => (dispatch) => {
+    fetch(BACKEND_BASE_URI + "/api/employees/" + EmployeeId + "/info" + force ? "?force=true": "", {
         method: "PUT",
         body: JSON.stringify({ FirstName, LastName, Email, OfficeId, Role, Version }),
         headers: getDefaultHeaders()
@@ -678,18 +678,13 @@ export const updateUser = (FirstName, LastName, Email, OfficeId, Role, EmployeeI
             });
             dispatch(push('/users'))
         }
-        else if (response.status === 403) {
-            dispatch(push('/error'));
-            sessionStorage.removeItem('token');
-            throw new Error("No rights");
-        }
         else{
-            const force = window.confirm(i18n.t("EmployeeConcurrency"))
+            const force = window.confirm(i18n.t("EmployeeOverwriteWarning"))
             if(force){
-                alert("You have chosen to overwrite")
+                updateUser(FirstName, LastName, Email, OfficeId, Role, EmployeeId, Version, true);
             }
             else{
-                window.location.reload()
+                window.location.reload();
             }
         }
 
