@@ -21,6 +21,7 @@ class FlightCheckList extends React.Component {
                 flightNumber: '',
                 company: '',
                 flightTime: '',
+                flightDate: '',
                 airportAddress: ''
             },
             flightTicket: {
@@ -35,12 +36,20 @@ class FlightCheckList extends React.Component {
         this.handleAirportAddressChange = this.handleAirportAddressChange.bind(this);
         this.handleFlightCompanyChange = this.handleFlightCompanyChange.bind(this);
         this.handleFlightTimeChange = this.handleFlightTimeChange.bind(this);
+        this.handleFlightDateChange = this.handleFlightDateChange.bind(this);
         this.handleFlightTicketChange = this.handleFlightTicketChange.bind(this);
     }
 
     componentWillReceiveProps(newProps){
+        var currentState = newProps.flightInfo;
+        if (newProps.flightInfo.flightTime) {
+            var rentStartDateArray = newProps.flightInfo.flightTime.split('T');
+            currentState.flightDate = rentStartDateArray[0];
+            currentState.flightTime = rentStartDateArray[1];
+        }
+
         this.setState({
-            flightInfo: newProps.singleFlightInfo
+            flightInfo: currentState
         })
     }
 
@@ -104,6 +113,14 @@ class FlightCheckList extends React.Component {
         });
     }
 
+    handleFlightDateChange(e) {
+        var flightInfo = this.state.flightInfo;
+        flightInfo.flightDate = e.target.value;
+        this.setState({
+            flightInfo: flightInfo
+        });
+    }
+
     handleFlightTicketChange(e) {
         var flightTicket = this.state.flightTicket;
         flightTicket.file = e.target.files[0];
@@ -132,7 +149,13 @@ class FlightCheckList extends React.Component {
                             </div>
                             <div className="form-group mb-2">
                                 {t("FlightTime")}
-                                <input type="datetime-local" id="FlightTime" className={`form-control`} placeholder={t("FlightTime")}
+                                <input type="date" id="FlightDate" className={`form-control`} placeholder={t("FlightTime")}
+                                    name="FlightDate" value={this.state.flightInfo.flightDate}
+                                    onChange={this.handleFlightDateChange} />
+                            </div>
+                            <div className="form-group mb-2">
+                                {t("FlightTime")}
+                                <input type="time" id="FlightTime" className={`form-control`} placeholder={t("FlightTime")}
                                     name="FlightTime" value={this.state.flightInfo.flightTime}
                                     onChange={this.handleFlightTimeChange} />
                             </div>

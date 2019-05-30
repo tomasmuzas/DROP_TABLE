@@ -56,7 +56,8 @@ class SignUpPage extends React.Component {
             inputName: employee.firstName,
             inputSurname: employee.lastName,
             inputEmail: employee.email,
-            selectedRole: employee.role
+            selectedRole: employee.role,
+            selectedOffice : employee.office
         })
     }
 

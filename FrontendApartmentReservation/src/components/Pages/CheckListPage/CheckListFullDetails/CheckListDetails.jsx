@@ -23,7 +23,7 @@ class CheckListDetails extends React.Component {
                     <button className={`btn btn-lg btn-primary btn-block`}>{t("GoBack")}</button>
                     </Link>
                     <div className="p-5">
-                        <FlightCheckList singleFlightInfo ={this.props.singleChecklist.flight} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
+                        <FlightCheckList flightInfo ={this.props.singleChecklist.flight} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />
                     </div>
                     <div className="p-5">
                         <CarCheckList carInfo ={this.props.singleChecklist.car} employeeId={this.props.match.params.employeeId} tripId={this.props.match.params.tripId} />

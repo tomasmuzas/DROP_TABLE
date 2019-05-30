@@ -529,7 +529,7 @@ export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) =
             isRequired: flightInfo.isRequired,
             flightNumber: flightInfo.flightNumber,
             company: flightInfo.company,
-            flightTime: flightInfo.flightTime,
+            flightTime: flightInfo.flightDate + ' ' + flightInfo.flightTime,
             airportAddress: flightInfo.airportAddress
         }),
         headers: getDefaultHeaders()
@@ -796,8 +796,8 @@ export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
             isRequired: carInfo.isRequired,
             carNumber: carInfo.carNumber,
             carAddress: carInfo.carAddress,
-            rentEndTime: carInfo.rentEndTime,
-            rentStartTime: carInfo.rentStartTime
+            rentEndTime: carInfo.rentEndDate + ' ' + carInfo.rentEndTime,
+            rentStartTime: carInfo.rentStartDate + ' ' + carInfo.rentStartTime
         }),
         headers: getDefaultHeaders()
     }).then(response => {
