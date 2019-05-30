@@ -4,6 +4,8 @@
 
     public class ChecklistInformationResponse
     {
+        public string TripId { get; set; }
+
         public FlightReservationInfo Flight { get; set; }
 
         public CarReservationInfo Car { get; set; }
