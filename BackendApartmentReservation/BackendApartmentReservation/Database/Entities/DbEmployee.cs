@@ -22,5 +22,8 @@ namespace BackendApartmentReservation.Database.Entities
 
         [Column(TypeName = "nvarchar(24)")]
         public EmployeeRole Role { get; set; }
+
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }
