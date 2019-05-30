@@ -26,10 +26,19 @@ class TripCheckList extends React.Component {
         this.props.reserveApartmentsForAll(this.props.tripbasic.tripId)
     }
 
+    getTripPrice() {
+        var sum = 0;
+        this.props.checklist.forEach(function (checklist) {
+            sum = sum + checklist.flight.price + checklist.car.price + checklist.livingPlace.hotelReservationInfo.price;
+        })
+        
+        return isNaN(sum)? 0: sum;
+    }
+
     render() {
         const { t } = this.props;
 
-        if (this.props.tripbasic && this.props.tripbasic.checklistInfos && this.props.tripbasic.tripId === this.props.match.params.tripId) {
+        if (this.props.tripbasic && this.props.tripbasic.checklistInfos && this.props.tripbasic.tripId === this.props.match.params.tripId && this.props.checklist) {
             return (
                 <div>
                     <h2 className="row mt-5 mx-5"><b>{t("TripDestination")} {this.props.tripbasic.office.address}</b></h2>
@@ -51,7 +60,7 @@ class TripCheckList extends React.Component {
                     </div>
 
                     <h2 className="row mt-5 mb-5 mx-right pr-5 mr-auto" style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>{t("TotalPriceCost")}
-                        <span className="ml-2" style={{ color: "#f50057" }}> <b> 1234</b></span>
+                        <span className="ml-2" style={{ color: "#f50057" }}> <b>{this.getTripPrice()}</b></span>
                         <b>€</b></h2>
                     <Link className='justify-content-md-center' to={''}>
                         <button className={`btn btn-lg btn-primary btn-block center mx-auto mt-5`}
@@ -83,6 +92,7 @@ const mapStateToProps = (state) => {
     return {
         tripbasic: state.tripbasic,
         tripId: state.trips.tripId,
+        checklist: state.checklist
     };
 }
 
