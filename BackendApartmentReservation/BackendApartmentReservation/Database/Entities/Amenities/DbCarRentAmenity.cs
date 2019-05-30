@@ -11,5 +11,7 @@
         public DbCarReservation CarReservation { get; set; }
 
         public DbFile Documents { get; set; }
+
+        public decimal Cost { get; set; }
     }
 }

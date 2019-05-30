@@ -417,7 +417,7 @@ export const updateFlightInfo = (flightInfo, employeeId, tripId) => (dispatch) =
             isRequired: flightInfo.isRequired,
             flightNumber: flightInfo.flightNumber,
             company: flightInfo.company,
-            price: flightInfo.price,
+            cost: flightInfo.cost,
             flightTime: returnFlight,
             airportAddress: flightInfo.airportAddress
         }),
@@ -533,10 +533,10 @@ export const deleteApartmentsInfo = (employeeId, tripId) => (dispatch) => {
     }).catch((error) => console.warn(error));
 }
 
-export const updateApartmentsInfo = (HotelName, DateFrom, DateTo, tripId, employeeId, Price) => (dispatch) => {
+export const updateApartmentsInfo = (HotelName, DateFrom, DateTo, tripId, employeeId, Cost) => (dispatch) => {
     return fetch(BACKEND_BASE_URI + `/api/trips/` + tripId + '/employees/' + employeeId + '/hotel', {
         method: "PUT",
-        body: JSON.stringify({ HotelName, DateFrom, DateTo, Price}),
+        body: JSON.stringify({ HotelName, DateFrom, DateTo, Cost}),
         headers: getDefaultHeaders()
     })
     .then(response => verifyAuthorization(response, dispatch))
@@ -574,7 +574,7 @@ export const updateCarInfo = (carInfo, employeeId, tripId) => (dispatch) => {
             isRequired: carInfo.isRequired,
             carNumber: carInfo.carNumber,
             carAddress: carInfo.carAddress,
-            price: carInfo.price,
+            cost: carInfo.cost,
             rentEndTime: returnEnd,
             rentStartTime: returnStart
         }),

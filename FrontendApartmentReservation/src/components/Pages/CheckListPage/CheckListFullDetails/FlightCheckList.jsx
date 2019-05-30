@@ -23,7 +23,7 @@ class FlightCheckList extends React.Component {
                 flightTime: '',
                 flightDate: '',
                 airportAddress: '',
-                price: '',
+                cost: '',
             },
             flightTicket: {
                 file: null
@@ -134,7 +134,7 @@ class FlightCheckList extends React.Component {
 
     handleFlightPriceChange(e) {
         var flightInfo = this.state.flightInfo;
-        flightInfo.price = e.target.value;
+        flightInfo.cost = e.target.value;
         this.setState({
             flightInfo: flightInfo
         })
@@ -185,7 +185,7 @@ class FlightCheckList extends React.Component {
                             <div className="form-group">
                                 {t("Price")}
                                 <input type="number" id="FlightPrice" className={`form-control`} placeholder={t("Price")}
-                                    name="FlightPrice" value={this.state.flightInfo.price}
+                                    name="FlightPrice" value={this.state.flightInfo.cost}
                                     onChange={this.handleFlightPriceChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveFlightInfo")}</button>

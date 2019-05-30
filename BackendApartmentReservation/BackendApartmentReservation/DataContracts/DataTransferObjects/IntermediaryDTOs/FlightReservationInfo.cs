@@ -15,5 +15,7 @@
         public string AirportAddress { get; set; }
 
         public string TicketFileId { get; set; }
+
+        public decimal Cost { get; set; }
     }
 }

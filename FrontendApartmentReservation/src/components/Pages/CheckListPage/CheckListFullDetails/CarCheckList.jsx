@@ -24,7 +24,7 @@ class CarCheckList extends React.Component {
                 rentEndTime: '',
                 rentStartDate: '',
                 rentEndDate: '',
-                price: '',
+                cost: '',
             },
             carDocuments: {
                 file: null
@@ -149,7 +149,7 @@ class CarCheckList extends React.Component {
 
     handleCarPriceChange(e) {
         var carInfo = this.state.carInfo;
-        carInfo.price = e.target.value;
+        carInfo.cost = e.target.value;
         this.setState({
             carInfo: carInfo
         }); 
@@ -206,7 +206,7 @@ class CarCheckList extends React.Component {
                             <div className="form-group">
                                 {t("Price")}
                                 <input type="number" id="CarPrice" className={`form-control`} placeholder={t("Price")}
-                                    name="CarPrice" value={this.state.carInfo.price}
+                                    name="CarPrice" value={this.state.carInfo.cost}
                                     onChange={this.handleCarPriceChange} />
                             </div>
                             <button className={`btn btn-lg btn-primary btn-block`} type="submit">{t("SaveCarInfo")}</button>

@@ -61,7 +61,7 @@ class CheckListCard extends React.Component {
                     <h6> {t("FlightCompany")}:  {checklist.flight.company}</h6>
                     <h6> {t("AirportAddress")}:  {checklist.flight.airportAddress}</h6>
                     <h6> {t("FlightTime")}: {this.getFormattedDate(checklist.flight.flightTime)} </h6>
-                    <h6> {t("Price")}: {checklist.flight.price} {checklist.flight.price? '€': ''} </h6>
+                    <h6> {t("Price")}: {checklist.flight.cost} {checklist.flight.cost? '€': ''} </h6>
 
                     <h6>
                         {checklist.flight.ticketFileId &&
@@ -109,7 +109,7 @@ class CheckListCard extends React.Component {
                         <h6> {t("Hotel")}: {checklist.livingPlace.hotelReservationInfo.hotelName}</h6>
                         <h6> {t("DateFrom")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateFrom)}</h6>
                         <h6> {t("DateTo")}:  {this.getFormattedDate(checklist.livingPlace.hotelReservationInfo.dateTo)}</h6>
-                        <h6> {t("Price")}:  {checklist.livingPlace.hotelReservationInfo.price} {checklist.livingPlace.hotelReservationInfo.price? '€': ''} </h6>
+                        <h6> {t("Price")}:  {checklist.livingPlace.hotelReservationInfo.cost} {checklist.livingPlace.hotelReservationInfo.cost? '€': ''} </h6>
                         <h6>
                             {checklist.livingPlace.hotelReservationInfo.documentsFileId &&
                                 <a href={BACKEND_URL + '/files/' + checklist.livingPlace.hotelReservationInfo.documentsFileId}>
@@ -146,7 +146,7 @@ class CheckListCard extends React.Component {
                     <h6> {t("CarAddress")}:  {checklist.car.carAddress}</h6>
                     <h6> {t("RentStartTime")}: {this.getFormattedDate(checklist.car.rentStartTime)}</h6>
                     <h6> {t("RentEndTime")}: {this.getFormattedDate(checklist.car.rentEndTime)}</h6>
-                    <h6> {t("Price")}: {checklist.car.price} {checklist.car.price? '€': ''}</h6>
+                    <h6> {t("Price")}: {checklist.car.cost} {checklist.car.cost? '€': ''}</h6>
                     <h6>
                         {checklist.car.documentsFileId &&
                             <a href={BACKEND_URL + '/files/' + checklist.car.documentsFileId}>

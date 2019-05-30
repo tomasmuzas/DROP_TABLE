@@ -15,5 +15,7 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Intermed
         public string CarAddress { get; set; }
 
         public string DocumentsFileId { get; set; }
+
+        public decimal Cost { get; set; }
     }
 }

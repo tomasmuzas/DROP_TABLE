@@ -29,10 +29,10 @@ class TripCheckList extends React.Component {
     getTripPrice() {
         var sum = 0;
         this.props.checklist.forEach(function (checklist) {
-            sum = sum + checklist.flight.price + checklist.car.price + checklist.livingPlace.hotelReservationInfo.price;
+            sum = sum + checklist.flight.cost + checklist.car.cost + checklist.livingPlace.hotelReservationInfo.cost;
         })
         
-        return isNaN(sum)? 0: sum;
+        return isNaN(sum)? 0: sum.toFixed(2);
     }
 
     render() {

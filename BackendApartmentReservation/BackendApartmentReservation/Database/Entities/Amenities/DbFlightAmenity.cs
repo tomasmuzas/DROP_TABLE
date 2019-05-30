@@ -11,5 +11,7 @@
         public DbFlightReservation FlightReservation { get; set; }
 
         public DbFile Ticket { get; set; }
+
+        public decimal Cost { get; set; }
     }
 }
