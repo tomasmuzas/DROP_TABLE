@@ -20,6 +20,15 @@ class MergeTrips extends React.Component {
 
     componentWillMount() {
         this.props.getMergeableTrips(this.props.match.params.tripId);
+        this.setState({
+            loading: true
+        })
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            loading: false
+        })
     }
 
     getCurrentTrip(trips) {
@@ -32,13 +41,20 @@ class MergeTrips extends React.Component {
     }
 
     getTripsList() {
-        if (this.props.mergeableTrips && this.props.mergeableTrips) {
+        if ((this.props.mergeableTrips === [] || this.props.mergeableTrips.length === 0) && this.state.loading) {
+            return (<div className="row mt-5">
+                <div className="col-12">
+                    <h1>{i18next.t('NoTripsToMerge')}</h1>
+                </div>
+            </div>
+            )
+        }
+        if (this.props.mergeableTrips.length > 0) {
             return (
                 <div className="pl-5">
-                    {this.props.mergeableTrips === [] ?
-                    <h3> {i18next.t("TripsPossibleToMerge")}</h3> : <h3>{i18next.t("NoTripsToMerge")}</h3>}
-                    {this.props.mergeableTrips.map(trip => <TripCard key={trip.tripId} trip={trip} mergeable={true} 
-                    mergeableTripId ={this.props.match.params.tripId}/>)}
+                    <h3> {i18next.t("TripsPossibleToMerge")}</h3>
+                    {this.props.mergeableTrips.map(trip => <TripCard key={trip.tripId} trip={trip} mergeable={true}
+                        mergeableTripId={this.props.match.params.tripId} />)}
                 </div>
             )
         }
@@ -68,7 +84,7 @@ class MergeTrips extends React.Component {
                     <div className="pl-5 pt-3">
                         <h3>{t("MyTripToMerge")}</h3>
                         <h5> {t("DestinationOffice")} : {currentTrip.office.address} </h5>
-                        <h5> {t("DepartureDate")} : {tripStartTime.toLocaleDateString('lt-LT')} , 
+                        <h5> {t("DepartureDate")} : {tripStartTime.toLocaleDateString('lt-LT')} ,
                          {t("ReturnDate")} : {tripEndTime.toLocaleDateString('lt-LT')} </h5>
                     </div>
                     {this.getTripsList()}

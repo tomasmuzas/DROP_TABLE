@@ -40,7 +40,7 @@ class TripsPage extends React.Component {
 
     render() {
         const { t } = this.props;
-        if (this.props.trips === [] || this.props.trips.length === 0 && !this.state.loading) {
+        if ((this.props.trips === [] || this.props.trips.length === 0) && !this.state.loading) {
             return (<div className="row mt-5">
                 <div className="col-12">
                     <h1>{t('EmptyTripsList')}</h1>
