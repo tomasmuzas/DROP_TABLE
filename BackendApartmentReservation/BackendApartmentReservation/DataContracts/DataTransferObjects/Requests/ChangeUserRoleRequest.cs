@@ -22,6 +22,6 @@ namespace BackendApartmentReservation.DataContracts.DataTransferObjects.Requests
         [Required]
         public EmployeeRole Role { get; set; }
 
-        public string Version { get; set; }
+        public byte[] Version { get; set; }
     }
 }

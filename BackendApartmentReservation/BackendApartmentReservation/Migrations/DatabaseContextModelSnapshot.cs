@@ -187,8 +187,8 @@ namespace BackendApartmentReservation.Migrations
                         .HasColumnType("nvarchar(24)");
 
                     b.Property<byte[]>("Version")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
+                        .IsRowVersion()
+                        .ValueGeneratedOnAdd();
 
                     b.HasKey("Id");
 
