@@ -108,7 +108,8 @@
             if (!force)
             {
                 // Do not get current version, assume request one is latest
-                _context.Entry(employee).OriginalValues["Version"] = Encoding.UTF8.GetBytes(changeUserInfoRequest.Version);
+                var bytes = changeUserInfoRequest.Version;
+                _context.Entry(employee).OriginalValues["Version"] = bytes;
             }
 
             _context.Employees.Update(employee);
@@ -116,7 +117,7 @@
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 throw new ErrorCodeException(ErrorCodes.ConcurrencyViolation);
             }

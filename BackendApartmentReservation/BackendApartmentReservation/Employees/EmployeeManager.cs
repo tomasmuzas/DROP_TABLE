@@ -78,7 +78,7 @@
                 LastName = employee.LastName,
                 Role = employee.Role,
                 Office = employee.Office.ExternalOfficeId,
-                Version = Encoding.UTF8.GetString(employee.Version)
+                Version = employee.Version
             };
         }
 

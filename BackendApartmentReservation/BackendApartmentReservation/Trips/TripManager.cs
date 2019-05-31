@@ -121,16 +121,14 @@ namespace BackendApartmentReservation.Trips
 
         public async Task<TripCreatedResponse> MergeTrips(MergeTripsRequest mergeTripsRequest, string managerId)
         {
-            var firstTripToMerge = await _tripRepository.GetTrip(mergeTripsRequest.FirstTripId);
-            var secondTripToMerge = await _tripRepository.GetTrip(mergeTripsRequest.SecondTripId);
-            var isMergeable = IsPossibleToMergeTrips(firstTripToMerge, secondTripToMerge);
+            var firstTrip = await _tripRepository.GetTrip(mergeTripsRequest.FirstTripId);
+            var secondTrip = await _tripRepository.GetTrip(mergeTripsRequest.SecondTripId);
+
+            var isMergeable = IsPossibleToMergeTrips(firstTrip, secondTrip);
             if (!isMergeable)
             {
                 throw new ErrorCodeException(ErrorCodes.TripsNotMergeable);
             }
-
-            var firstTrip = await _tripRepository.GetTrip(mergeTripsRequest.FirstTripId);
-            var secondTrip = await _tripRepository.GetTrip(mergeTripsRequest.SecondTripId);
 
             var departureDate = firstTrip.DepartureDate <= secondTrip.DepartureDate ? firstTrip.DepartureDate : secondTrip.DepartureDate;
             var returnDate = firstTrip.ReturnDate >= secondTrip.ReturnDate ? firstTrip.ReturnDate : secondTrip.ReturnDate;
